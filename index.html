@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mila Palviainen Portfolio</title>
+<meta name="description" content="Mila Palviainen – IT business student and mixed media artist from Tampere. UX/UI, code and art in a tech × dark academia style.">
+<meta name="theme-color" content="#2e0f17">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Mila Palviainen – portfolio">
+<meta property="og:description" content="IT business student & mixed media artist. Tech × art × dark academia.">
+<meta property="og:image" content="https://mmilymary.github.io/img/og.jpg">
+<meta property="og:url" content="https://mmilymary.github.io/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Courier+Prime:wght@400;700&family=Pinyon+Script&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --hero-in: #4a1a26; --hero-mid: #2e0f17; --hero-out: #16070b;
+    --bg: #1c0b10;
+    --surface: #2a1419;
+    --line: #4a2a31;
+    --cream: #eee6e2;
+    --muted: #b39a97;
+    --dusty: #c9a3a6;
+    --rose: #b5475a;
+    --neon: #ff7aa2;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg); color: var(--cream);
+    font-family: "Courier Prime", ui-monospace, monospace;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--dusty); outline-offset: 3px; }
+
+  /* ---------- nav ---------- */
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 14px clamp(16px, 4vw, 48px);
+    background: rgba(22,7,11,.72); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201,163,166,.18);
+    transition: background .4s;
+  }
+  .nav.solid { background: rgba(28,11,16,.88); }
+  .nav .logo { white-space: nowrap; font-family: "VT323", monospace; font-size: 24px; color: #f0d4d8; text-decoration: none; letter-spacing: .04em; }
+  .nav ul { list-style: none; display: flex; gap: clamp(12px, 3vw, 32px); margin: 0; padding: 0; }
+  .nav ul a { text-decoration: none; font-size: 15px; color: #e6dad6; letter-spacing: .06em; transition: color .2s; }
+  .nav ul a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,122,162,.6); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden;
+    background: radial-gradient(ellipse 70% 60% at 50% 45%, var(--hero-in) 0%, var(--hero-mid) 55%, var(--hero-out) 100%);
+    touch-action: pan-y;
+  }
+  .hero::after { /* soft fade into the next section */
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px;
+    background: linear-gradient(to bottom, transparent, var(--bg)); pointer-events: none; z-index: 3;
+  }
+  #chains { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+  .flower {
+    position: absolute; height: min(var(--h, 30vh), 42vw); width: auto;
+    user-select: none; -webkit-user-drag: none; pointer-events: none;
+    filter: saturate(.72) brightness(.88) drop-shadow(0 18px 22px rgba(0,0,0,.55)) drop-shadow(0 4px 6px rgba(0,0,0,.45));
+  }
+  .left { left: -1px; } .right { right: -1px; }
+  .hero .center {
+    position: absolute; inset: 0; z-index: 4;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: clamp(8px, 2vh, 20px); padding: 0 16px; pointer-events: none;
+  }
+  .hero h1 {
+    margin: 0; font-family: "Cormorant Garamond", serif; font-weight: 500;
+    font-size: clamp(34px, 7.4vw, 118px); letter-spacing: .12em; line-height: 1; text-align: center;
+    text-shadow: 0 2px 18px rgba(0,0,0,.6);
+  }
+  .hero .eyebrow { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--muted); font-size: clamp(15px, 1.6vw, 22px); letter-spacing: .04em; }
+  .heart {
+    height: clamp(140px, 30vh, 280px); cursor: pointer; pointer-events: auto;
+    filter: saturate(1.08) drop-shadow(0 16px 20px rgba(0,0,0,.6));
+    transform-origin: 50% 55%; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-drag: none;
+  }
+  .heart:hover, .heart.beat { animation: beat .95s ease-in-out infinite; filter: drop-shadow(0 16px 20px rgba(0,0,0,.6)) drop-shadow(0 0 28px rgba(181,71,90,.55)); }
+  @keyframes beat { 0%,100% { transform: scale(1) } 14% { transform: scale(1.07) } 28% { transform: scale(.99) } 42% { transform: scale(1.11) } 70% { transform: scale(1) } }
+  .hero .tag { font-family: "VT323", monospace; color: var(--dusty); font-size: clamp(16px, 1.5vw, 21px); letter-spacing: .1em; opacity: .85; }
+  .scroll-cue {
+    position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 5;
+    font-family: "VT323", monospace; font-size: 18px; color: var(--muted); text-decoration: none; letter-spacing: .1em;
+    animation: cue 2.4s ease-in-out infinite;
+  }
+  @keyframes cue { 0%,100% { transform: translate(-50%, 0) } 50% { transform: translate(-50%, 6px) } }
+
+  /* ---------- shared section bits ---------- */
+  section { position: relative; }
+  .label { font-weight: 700; color: var(--rose); letter-spacing: .08em; font-size: 14px; margin: 0 0 24px; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 5vw, 60px); }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- about ---------- */
+  .about { padding: clamp(80px, 12vw, 140px) 0; }
+  .about .wrap { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 640px); gap: clamp(32px, 7vw, 96px); justify-content: space-between; }
+  .about h2 { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; margin: 0 0 28px; }
+  .facts { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; color: var(--dusty); font-size: 15px; }
+  .story p { margin: 0 0 22px; color: var(--muted); font-size: 17px; line-height: 1.7; }
+  .story p:first-child { color: var(--cream); font-size: 20px; }
+
+
+  /* ---------- work ---------- */
+  .work { padding: clamp(60px, 9vw, 110px) 0 clamp(80px, 10vw, 130px); }
+  .work .head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: clamp(40px, 6vw, 72px); flex-wrap: wrap; }
+  .work h2 { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: clamp(38px, 4.6vw, 56px); line-height: 1.05; margin: 0; }
+  .work .count { font-family: "VT323", monospace; font-size: 20px; color: var(--muted); letter-spacing: .08em; }
+  .project { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; margin-bottom: clamp(64px, 9vw, 120px); }
+  .project:nth-of-type(even) .shot { order: 2; }
+  .shot { position: relative; display: block; text-decoration: none; }
+  .window { border: 1px solid rgba(201,163,166,.28); border-radius: 12px; overflow: hidden; background: #140709; box-shadow: 0 30px 60px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.4); transition: transform .6s cubic-bezier(.2,.7,.2,1), box-shadow .6s, border-color .4s; }
+  .window .bar { display: flex; align-items: center; gap: 7px; padding: 10px 14px; background: linear-gradient(#2a1419, #1f0e12); border-bottom: 1px solid rgba(201,163,166,.18); font-family: "VT323", monospace; font-size: 16px; color: var(--muted); }
+  .window .bar i { width: 10px; height: 10px; border-radius: 50%; background: #4a2a31; display: inline-block; }
+  .window .bar i:first-child { background: var(--rose); }
+  .window .bar span { margin-left: 8px; letter-spacing: .06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .window img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+  .shot:hover .window { transform: translateY(-6px) rotate(-.4deg); border-color: var(--neon); box-shadow: 0 40px 70px rgba(0,0,0,.6), 0 0 26px rgba(255,122,162,.18); }
+  .shot .pin { position: absolute; width: 34px; height: 34px; top: -14px; right: -12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,.55)); }
+  .project .num { font-family: "VT323", monospace; font-size: 22px; color: var(--rose); letter-spacing: .1em; }
+  .project h3 { font-family: "Bodoni Moda", serif; font-weight: 400; font-size: clamp(34px, 4vw, 52px); line-height: 1; margin: 8px 0 18px; letter-spacing: -.01em; }
+  .project p { color: var(--muted); font-size: 16px; line-height: 1.7; margin: 0 0 16px; }
+  .project p.lead { color: var(--cream); font-size: 18px; }
+  .project dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0 0 20px; font-size: 14px; }
+  .project dt { color: var(--dusty); } .project dd { margin: 0; color: var(--muted); }
+  .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0 0 24px; }
+  .tags li { font-size: 12px; letter-spacing: .06em; color: var(--dusty); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 18px; border-radius: 999px; text-decoration: none; font-size: 15px; letter-spacing: .04em; border: 1px solid var(--line); color: var(--cream); transition: border-color .3s, box-shadow .3s, background .3s; }
+  .btn.primary { background: var(--rose); border-color: var(--rose); color: #fff; }
+  .btn:hover { border-color: var(--neon); box-shadow: 0 0 18px rgba(255,122,162,.25); }
+  .btn.ghost { color: var(--muted); cursor: default; }
+  .next { border: 1px dashed rgba(201,163,166,.35); border-radius: 16px; padding: clamp(28px, 5vw, 48px); text-align: center; }
+  .next .num { font-family: "VT323", monospace; font-size: 22px; color: var(--rose); letter-spacing: .1em; }
+  .next h3 { font-family: "Bodoni Moda", serif; font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); margin: 8px 0 10px; }
+  .next p { margin: 0; color: var(--muted); }
+  .cursor { display: inline-block; width: .6em; height: 1.05em; vertical-align: -.15em; background: var(--dusty); margin-left: 4px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (max-width: 860px) { .project { grid-template-columns: 1fr; } .project:nth-of-type(even) .shot { order: 0; } .work .count { font-size: 16px; } .shot .pin { right: -4px; } }
+
+  /* ---------- curiosities ---------- */
+  .curiosities {
+    padding: 56px 16px 120px; overflow: hidden; isolation: isolate;
+    background:
+      radial-gradient(ellipse 60% 50% at 30% 40%, rgba(74,26,38,.55), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 80% 70%, rgba(74,26,38,.4), transparent 70%),
+      var(--bg);
+  }
+  body::after {
+    content: ""; position: fixed; inset: -50%;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .9  0 0 0 0 .9  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: .06; pointer-events: none; z-index: 40; mix-blend-mode: screen; animation: grain 1.2s steps(4) infinite;
+  }
+  @keyframes grain { 0%{transform:translate(0,0)} 25%{transform:translate(-3%,2%)} 50%{transform:translate(2%,-3%)} 75%{transform:translate(-2%,-1%)} 100%{transform:translate(0,0)} }
+  .word {
+    position: absolute; left: 0; right: 0; top: 70px; margin: 0; text-align: center; z-index: 1;
+    font-family: "Bodoni Moda", serif; font-weight: 400; font-size: min(19vw, 290px); line-height: .8; letter-spacing: -.04em;
+    color: var(--cream); pointer-events: none; user-select: none;
+  }
+  .stage {
+    position: relative; max-width: 980px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 120px; align-items: start;
+    padding-top: calc(min(19vw, 290px) * .8 + 70px);
+  }
+  .specimen { position: relative; z-index: 3; margin: 0; cursor: pointer; }
+  .specimen .box { position: relative; aspect-ratio: 640 / 900; width: 100%; transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+  .specimen .frame { position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(0 20px 26px rgba(0,0,0,.6)); }
+  .specimen .glass {
+    position: absolute; left: 20.3%; top: 18.7%; width: 59.4%; height: 58.2%; border-radius: 50%;
+    background: radial-gradient(ellipse at 45% 38%, #f4efe7 0%, #ebe3d7 55%, #d6cabb 100%);
+    box-shadow: inset 0 0 38px rgba(70,35,30,.45), inset 0 0 6px rgba(0,0,0,.4); overflow: hidden;
+  }
+  .specimen .glass::before { content: ""; position: absolute; left: 0; right: 0; height: 22%; top: -25%; background: linear-gradient(to bottom, transparent, rgba(181,71,90,.10) 70%, rgba(181,71,90,.55) 98%, transparent); opacity: 0; }
+  .specimen:hover .glass::before, .specimen.on .glass::before { animation: scan 1.8s cubic-bezier(.5,0,.5,1) infinite; opacity: 1; }
+  @keyframes scan { from { top: -25%; } to { top: 105%; } }
+  .specimen .glass::after {
+    content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity .4s;
+    background:
+      linear-gradient(to right, transparent calc(50% - .5px), rgba(181,71,90,.35) 50%, transparent calc(50% + .5px)),
+      linear-gradient(to bottom, transparent calc(50% - .5px), rgba(181,71,90,.35) 50%, transparent calc(50% + .5px)),
+      repeating-linear-gradient(to right, rgba(46,15,23,.07) 0 1px, transparent 1px 22px),
+      repeating-linear-gradient(to bottom, rgba(46,15,23,.07) 0 1px, transparent 1px 22px);
+  }
+  .specimen:hover .glass::after, .specimen.on .glass::after { opacity: 1; }
+  .specimen .bug { position: absolute; left: 50%; top: 47.8%; height: 46%; width: auto; transform: translate(-50%, -50%); filter: drop-shadow(0 8px 8px rgba(70,35,30,.35)) drop-shadow(0 2px 2px rgba(40,20,20,.3)); transition: transform .6s cubic-bezier(.2,.7,.2,1), filter .6s; z-index: 2; }
+  .specimen:hover .bug, .specimen.on .bug { transform: translate(-50%, calc(-50% - 6px)) scale(1.03); filter: drop-shadow(0 18px 14px rgba(70,35,30,.35)) drop-shadow(0 2px 2px rgba(40,20,20,.3)); }
+  .specimen .hud { position: absolute; inset: 0 -6px -4px; pointer-events: none; z-index: 3; }
+  .hud i { position: absolute; width: 22px; height: 22px; border-color: var(--dusty); border-style: solid; opacity: .7; transition: all .4s; }
+  .hud i:nth-child(1) { left: 0; top: 0; border-width: 1px 0 0 1px; }
+  .hud i:nth-child(2) { right: 0; top: 0; border-width: 1px 1px 0 0; }
+  .hud i:nth-child(3) { left: 0; bottom: 0; border-width: 0 0 1px 1px; }
+  .hud i:nth-child(4) { right: 0; bottom: 0; border-width: 0 1px 1px 0; }
+  .specimen:hover .hud i, .specimen.on .hud i { opacity: 1; border-color: var(--neon); }
+  .specimen:hover .hud i:nth-child(1), .specimen.on .hud i:nth-child(1) { left: 8px; top: 8px; }
+  .specimen:hover .hud i:nth-child(2), .specimen.on .hud i:nth-child(2) { right: 8px; top: 8px; }
+  .specimen:hover .hud i:nth-child(3), .specimen.on .hud i:nth-child(3) { left: 8px; bottom: 8px; }
+  .specimen:hover .hud i:nth-child(4), .specimen.on .hud i:nth-child(4) { right: 8px; bottom: 8px; }
+  .ruler { position: absolute; right: -30px; top: 18%; height: 60%; width: 10px; opacity: .45; background: repeating-linear-gradient(to bottom, var(--dusty) 0 1px, transparent 1px 10px); -webkit-mask: linear-gradient(to right, #000 40%, transparent 40%); mask: linear-gradient(to right, #000 40%, transparent 40%); }
+  .ruler::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: repeating-linear-gradient(to bottom, var(--dusty) 0 1px, transparent 1px 50px); }
+  .specimen figcaption { margin-top: -4%; padding-bottom: 18px; display: grid; justify-items: center; gap: 3px; text-align: center; font-size: 13px; color: var(--muted); letter-spacing: .04em; }
+  .specimen figcaption b { font-family: "VT323", monospace; font-weight: 400; font-size: 22px; color: var(--dusty); letter-spacing: .1em; }
+  .specimen .status { font-family: "VT323", monospace; font-size: 18px; color: var(--neon); min-height: 1.2em; text-shadow: 0 0 8px rgba(255,122,162,.6); }
+  .star { position: absolute; z-index: 7; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,.55)) drop-shadow(0 0 10px rgba(255,255,255,.12)); animation: twinkle 5s ease-in-out infinite; }
+  .star.s1 { width: 58px; height: 58px; left: calc(50% - 470px); top: 48px; animation-delay: -1s; }
+  .star.s2 { width: 30px; height: 30px; left: calc(50% + 430px); top: 34px; animation-delay: -2.5s; }
+  .star.s3 { width: 22px; height: 22px; left: calc(50% + 480px); top: 92px; animation-delay: -3.6s; }
+  .star.s4 { width: 34px; height: 34px; left: calc(50% - 17px); top: 600px; animation-delay: -.4s; }
+  .star.s5 { width: 56px; height: 56px; left: calc(50% + 550px); top: 460px; animation-delay: -1.8s; }
+  @keyframes twinkle { 0%,100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(.82) rotate(12deg); } }
+
+  /* ---------- quote ---------- */
+  .quote { padding: clamp(80px, 12vw, 150px) 0; text-align: center; }
+  .quote blockquote { margin: 0 auto; max-width: 1140px; padding: 0 16px; font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: clamp(30px, 4.6vw, 62px); line-height: 1.15; color: var(--cream); }
+  .quote .qstar { width: 44px; height: 44px; display: block; margin: 0 auto 28px; filter: drop-shadow(0 4px 6px rgba(0,0,0,.55)); }
+
+  /* ---------- contact ---------- */
+  .contact { padding: 40px 0 clamp(80px, 10vw, 120px); text-align: center; }
+  .contact .neon {
+    font-family: "Pinyon Script", cursive; font-weight: 400; font-size: clamp(64px, 10vw, 132px); line-height: 1.1; margin: 0 0 24px;
+    color: #ffd6e2; text-shadow: 0 0 4px #fff0f5, 0 0 12px var(--neon), 0 0 28px var(--neon), 0 0 56px #e0577f, 0 0 90px rgba(224,87,127,.55);
+    animation: flicker 7s infinite;
+  }
+  @keyframes flicker { 0%, 92%, 96%, 100% { opacity: 1 } 93% { opacity: .55 } 94% { opacity: .95 } 95% { opacity: .7 } }
+  .links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .links a {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 10px 18px; border: 1px solid var(--line); border-radius: 999px;
+    text-decoration: none; color: var(--dusty); font-size: 15px; letter-spacing: .04em; transition: border-color .3s, color .3s, box-shadow .3s;
+  }
+  .links a:hover { border-color: var(--neon); color: var(--cream); box-shadow: 0 0 18px rgba(255,122,162,.25); }
+  footer { border-top: 1px solid var(--line); padding: 24px 16px; text-align: center; color: var(--muted); font-size: 13px; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px) {
+    .about .wrap { grid-template-columns: 1fr; }
+    .stage { gap: 32px; }
+    .star.s1 { left: 16px; top: 20px; width: 40px; height: 40px; } .star.s2 { left: auto; right: 16px; } .star.s3, .star.s4, .star.s5 { display: none; }
+  }
+  @media (max-width: 700px) {
+    .nav ul a { font-size: 13px; }
+    .curiosities { padding-top: 40px; }
+    .stage { grid-template-columns: 1fr; padding-top: calc(19vw * .8 + 50px); }
+    .specimen { max-width: 340px; margin: 0 auto; width: 100%; }
+    .specimen + .specimen { margin-top: 40px; }
+    .ruler { display: none; }
+  }
+  @media (max-width: 420px) { .nav { padding: 12px; gap: 8px; } .nav .logo { font-size: 18px; letter-spacing: 0; } .nav ul { gap: 10px; } .nav ul a { font-size: 12px; letter-spacing: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    body::after, .star, .contact .neon, .scroll-cue, .cursor { animation: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .heart:hover, .heart.beat { animation-duration: 2.4s; }
+    .specimen:hover .glass::before, .specimen.on .glass::before { animation: none; opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="star-chrome" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#b7bec8"/>
+      <stop offset=".5" stop-color="#ffffff"/><stop offset=".68" stop-color="#6d7681"/><stop offset="1" stop-color="#e3e7ec"/>
+    </linearGradient>
+    <symbol id="y2k-star" viewBox="-50 -50 100 100">
+      <path d="M0 -48 C 5 -12 12 -5 48 0 C 12 5 5 12 0 48 C -5 12 -12 5 -48 0 C -12 -5 -5 -12 0 -48 Z" fill="url(#star-chrome)" stroke="#1c0b10" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M0 -40 C 3 -14 6 -8 12 -6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".9"/>
+    </symbol>
+  </defs>
+</svg>
+
+<nav class="nav" id="nav" aria-label="Main">
+  <a class="logo" href="#top">&gt; mila.palviainen</a>
+  <ul>
+    <li><a href="#work">work</a></li>
+    <li><a href="#about">about</a></li>
+    <li><a href="#art">art</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero" id="hero" aria-label="Intro">
+    <img class="flower left"  src="img/peony_C.webp"   alt="" style="top:0; --h:31vh">
+    <img class="flower right" src="img/peony_G.webp"   alt="" style="top:0; --h:31vh">
+    <img class="flower left"  src="img/peony_F_r.webp" alt="" style="bottom:0; --h:29vh">
+    <img class="flower right" src="img/peony_A_r.webp" alt="" style="bottom:0; --h:25vh; transform: translate(22%, 14%)">
+    <canvas id="chains" aria-hidden="true"></canvas>
+    <div class="center">
+      <span class="eyebrow">IT business student &amp; artist</span>
+      <h1>MILA PALVIAINEN</h1>
+      <img class="heart" id="heart" src="img/heart_cutout.webp" alt="Anatomical heart, mixed media artwork by Mila Palviainen">
+      <span class="tag">&gt; tech × art × dark academia</span>
+    </div>
+    <a class="scroll-cue" href="#about">scroll ↓</a>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="label">// ABOUT ME</p>
+        <h2 id="about-title">Mixed media –<br>now with code.</h2>
+        <ul class="facts">
+          <li>&gt; based_in: Tampere, Finland</li>
+          <li>&gt; studying: BBA, IT @ TAMK</li>
+          <li>&gt; medium: mixed media – whatever the idea needs</li>
+          <li>&gt; into: UX/UI · AI · business</li>
+        </ul>
+      </div>
+      <div class="story reveal">
+        <p>I'm Mila – a mother of four, an artist and an IT business student at TAMK in Tampere.</p>
+        <p>I graduated as a cosmetologist in December 2024, but I never ended up working in the field. Even during those studies it was clear where my curiosity kept pulling me: technology, digital art, advertising and business. In my free time I make mixed media art – watercolours, coloured pencils, acrylics, ink markers and whatever else the piece asks for.</p>
+        <p>While at home with my youngest, I decided to apply to IT, and the field surprised me with how wide it is. It brings together everything I enjoy, and much of it can be done on my own terms.</p>
+        <p>I'm most drawn to UX/UI design, where I can bring my own creativity and hand-drawn touch into interfaces. I'm also drawn to AI studies and to the business side of my BBA degree. Step by step I'm diving into code by building my own projects and sketching concepts in my free time.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- WORK -->
+  <section class="work" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="head reveal">
+        <div>
+          <p class="label">// SELECTED WORK</p>
+          <h2 id="work-title">Things I've built.</h2>
+        </div>
+        <span class="count">[ 02 projects · more loading ]</span>
+      </div>
+
+      <article class="project reveal">
+        <a class="shot" href="https://mmilymary.github.io/recap-generator/" target="_blank" rel="noopener" aria-label="Open recap-generator live">
+          <div class="window">
+            <div class="bar"><i></i><i></i><i></i><span>mmilymary.github.io/recap-generator</span></div>
+            <img src="img/proj_recap.webp" alt="Screenshot of the recap-generator tool with a form on the left and a recap card preview on the right" loading="lazy">
+          </div>
+          <svg class="pin" aria-hidden="true"><use href="#y2k-star"/></svg>
+        </a>
+        <div class="info">
+          <span class="num">01</span>
+          <h3>recap-generator</h3>
+          <p class="lead">A small web tool that turns my weekly study notes into Instagram-ready recap cards.</p>
+          <p>I wanted my study posts to look the same every week without redesigning them in Canva each time. So I built my own generator: type the week's topics, pick a font and a photo, download a 1080 × 1440 card.</p>
+          <dl>
+            <dt>role</dt><dd>idea, design &amp; code</dd>
+            <dt>learned</dt><dd>drawing on canvas, saving state in the browser, designing phone-first</dd>
+          </dl>
+          <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Canvas</li><li>GitHub Pages</li></ul>
+          <div class="actions">
+            <a class="btn primary" href="https://mmilymary.github.io/recap-generator/" target="_blank" rel="noopener">try it live ↗</a>
+            <a class="btn" href="https://github.com/mmilymary/recap-generator" target="_blank" rel="noopener">view code ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project reveal">
+        <a class="shot" href="#top" aria-label="Back to the top of this portfolio">
+          <div class="window">
+            <div class="bar"><i></i><i></i><i></i><span>mila.palviainen / portfolio</span></div>
+            <img src="img/proj_portfolio.webp" alt="Screenshot of this portfolio's hero with chains, peonies and an anatomical heart" loading="lazy">
+          </div>
+          <svg class="pin" aria-hidden="true"><use href="#y2k-star"/></svg>
+        </a>
+        <div class="info">
+          <span class="num">02</span>
+          <h3>this portfolio</h3>
+          <p class="lead">My own mixed media artworks turned into interactive, digital elements.</p>
+          <p>The peonies, the heart and the beetles are photos of my physical artworks, cut out and cleaned up so they can live on a web page. The chains are drawn in code and swing with a small physics simulation – move your mouse over them.</p>
+          <dl>
+            <dt>role</dt><dd>art, design &amp; build</dd>
+            <dt>learned</dt><dd>design systems in Figma, image cut-outs with Python, physics on canvas</dd>
+          </dl>
+          <ul class="tags"><li>Figma</li><li>Python · OpenCV</li><li>HTML · CSS · JS</li><li>Canvas physics</li></ul>
+          <div class="actions">
+            <span class="btn ghost">✦ you're looking at it</span>
+            <a class="btn" href="https://github.com/mmilymary/mmilymary.github.io" target="_blank" rel="noopener">view code ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <div class="next reveal">
+        <span class="num">03</span>
+        <h3>next side quest</h3>
+        <p>loading<span class="cursor" aria-hidden="true"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURIOSITIES -->
+  <section class="curiosities" id="art" aria-labelledby="cur-title">
+    <h2 class="word" id="cur-title">curiosities</h2>
+    <svg class="star s1" aria-hidden="true"><use href="#y2k-star"/></svg>
+    <svg class="star s2" aria-hidden="true"><use href="#y2k-star"/></svg>
+    <svg class="star s3" aria-hidden="true"><use href="#y2k-star"/></svg>
+    <svg class="star s4" aria-hidden="true"><use href="#y2k-star"/></svg>
+    <svg class="star s5" aria-hidden="true"><use href="#y2k-star"/></svg>
+    <div class="stage">
+      <figure class="specimen reveal" data-status="> scan 100% · 6 legs">
+        <div class="box">
+          <div class="glass"></div>
+          <img class="frame" src="img/frame.svg" alt="">
+          <div class="ruler"></div>
+          <img class="bug" src="img/stag.webp" alt="Stag beetle, drawing by Mila Palviainen">
+        </div>
+        <figcaption><b>SPECIMEN_001</b><span>fam. Lucanidae · stag beetle</span><span class="status" aria-live="polite"></span></figcaption>
+        <div class="hud" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      </figure>
+      <figure class="specimen reveal" data-status="> scan 100% · pattern: unique">
+        <div class="box">
+          <div class="glass"></div>
+          <img class="frame" src="img/frame.svg" alt="">
+          <div class="ruler"></div>
+          <img class="bug" src="img/goliath.webp" alt="Orange and black patterned beetle, drawing by Mila Palviainen">
+        </div>
+        <figcaption><b>SPECIMEN_002</b><span>fam. Scarabaeidae · flower chafer</span><span class="status" aria-live="polite"></span></figcaption>
+        <div class="hud" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote" aria-label="Quote">
+    <svg class="qstar" aria-hidden="true"><use href="#y2k-star"/></svg>
+    <blockquote class="reveal">“I’ve always made things by hand.<br>Now I’m learning to make them with code, too.”</blockquote>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <p class="label">// CONTACT</p>
+    <h2 class="neon" id="contact-title">let's talk</h2>
+    <ul class="links">
+      <li><a href="mailto:mila.palviainen2@gmail.com">mila.palviainen2@gmail.com</a></li>
+      <li><a href="https://instagram.com/mmilymary" target="_blank" rel="noopener">instagram @mmilymary</a></li>
+      <li><a href="https://www.linkedin.com/in/mmilymary" target="_blank" rel="noopener">linkedin /mmilymary</a></li>
+      <li><a href="https://github.com/mmilymary" target="_blank" rel="noopener">github /mmilymary</a></li>
+    </ul>
+  </section>
+</main>
+<footer>© 2026 Mila Palviainen · made with care in Tampere</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- nav background after the hero ---------- */
+  const nav = document.getElementById('nav');
+  const hero = document.getElementById('hero');
+  const onScroll = () => nav.classList.toggle('solid', window.scrollY > hero.offsetHeight - 80);
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* ---------- reveal on scroll ---------- */
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* ---------- hero chains (verlet ropes) ---------- */
+  const cv = document.getElementById('chains'), ctx = cv.getContext('2d');
+  let W = 0, H = 0, DPR = 1, ropes = [], S = null, running = true;
+  const grad = (g, x0, y0, x1, y1, stops) => { const gr = g.createLinearGradient(x0, y0, x1, y1); stops.forEach(([o, c]) => gr.addColorStop(o, c)); return gr; };
+  const rrect = (g, x, y, w, h, r) => { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); };
+  function sprites(L) {
+    const s = DPR, pad = 4, Wf = L * .6, t = Math.max(1.6, L * .15);
+    const face = document.createElement('canvas'); face.width = Math.ceil((Wf + t + pad * 2) * s); face.height = Math.ceil((L + t + pad * 2) * s);
+    let g = face.getContext('2d'); g.scale(s, s);
+    const ox = pad + t / 2, oy = pad + t / 2;
+    rrect(g, ox, oy, Wf, L, Wf / 2); g.lineWidth = t + Math.max(1, L * .05); g.strokeStyle = '#1c1e22'; g.stroke();
+    g.lineWidth = t; g.strokeStyle = grad(g, ox, oy, ox + Wf, oy + L, [[0,'#fbfcfe'],[.22,'#b7bec8'],[.42,'#ffffff'],[.6,'#6d7681'],[.8,'#d9dee5'],[1,'#8a939e']]); g.stroke();
+    if (L > 16) { g.beginPath(); g.arc(ox + Wf / 2, oy + Wf / 2, Wf / 2 - t * .15, Math.PI * 1.1, Math.PI * 1.55); g.lineWidth = Math.max(.8, L * .03); g.strokeStyle = 'rgba(255,255,255,.9)'; g.lineCap = 'round'; g.stroke(); }
+    const we = Math.max(1.8, L * .2);
+    const edge = document.createElement('canvas'); edge.width = Math.ceil((we + pad * 2) * s); edge.height = Math.ceil((L + t + pad * 2) * s);
+    g = edge.getContext('2d'); g.scale(s, s);
+    const ex = pad, ey = pad + t / 2 - we * .2;
+    rrect(g, ex - .8, ey - .8, we + 1.6, L + we * .4 + 1.6, (we + 1.6) / 2); g.fillStyle = '#1c1e22'; g.fill();
+    rrect(g, ex, ey, we, L + we * .4, we / 2); g.fillStyle = grad(g, ex, 0, ex + we, 0, [[0,'#5f6873'],[.35,'#ffffff'],[.55,'#c3c9d1'],[1,'#4b535d']]); g.fill();
+    return { face, edge, fw: face.width / s, fh: face.height / s, ew: edge.width / s, eh: edge.height / s };
+  }
+  function rope(x0, y0, len, pitch, end) {
+    const n = Math.max(2, Math.round(len / pitch) + 1), pts = [];
+    const x1 = end ? end[0] : x0, y1 = end ? end[1] : y0 + len;
+    for (let i = 0; i < n; i++) { const f = i / (n - 1); const x = x0 + (x1 - x0) * f, y = y0 + (y1 - y0) * f + (end ? Math.sin(f * Math.PI) * len * .25 : 0); pts.push({ x, y, px: x, py: y }); }
+    return { pts, pitch, end, x0, y0 };
+  }
+  function build() {
+    ropes = [];
+    const k = Math.min(W, H * 1.2) / 900, L = Math.max(16, 28 * k), p = L * .72;
+    S = sprites(L);
+    const side = (dir, xEdge) => {
+      const sx = f => xEdge + dir * W * f;
+      ropes.push(rope(sx(.035), -6, H * .52, p), rope(sx(.085), -6, H * .34, p));
+      const a = [sx(-.01), H * .05], b = [sx(.30), -6];
+      ropes.push(rope(a[0], a[1], Math.hypot(b[0] - a[0], b[1] - a[1]) * 1.55, p, b));
+      const c = [sx(.02), H * .02], e = [sx(.2), -6];
+      ropes.push(rope(c[0], c[1], Math.hypot(e[0] - c[0], e[1] - c[1]) * 1.9, p, e));
+    };
+    side(1, 0); side(-1, W);
+    for (let i = 0; i < 400; i++) step();
+  }
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = hero.clientWidth; H = hero.clientHeight;
+    cv.width = W * DPR; cv.height = H * DPR; build();
+  }
+  const ptr = { x: -9999, y: -9999, vx: 0, vy: 0, active: false };
+  let wind = 0, time = 0;
+  function onMove(e) {
+    const r = hero.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    if (y < 0 || y > r.height) { ptr.active = false; return; }
+    if (ptr.active) { ptr.vx = x - ptr.x; ptr.vy = y - ptr.y; }
+    ptr.x = x; ptr.y = y; ptr.active = true;
+  }
+  window.addEventListener('pointermove', onMove, { passive: true });
+  hero.addEventListener('pointerdown', onMove, { passive: true });
+  hero.addEventListener('pointerleave', () => { ptr.active = false; });
+  window.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') ptr.active = false; });
+  function step() {
+    time += 1 / 60;
+    const g = .16, damp = .955, R = 90, R2 = R * R;
+    wind = wind * .95 + ptr.vx * .0015;
+    const breeze = reduce ? 0 : Math.sin(time * .35) * .005 + Math.sin(time * .9 + 1) * .0025;
+    const pv = Math.min(40, Math.hypot(ptr.vx, ptr.vy));
+    for (const r of ropes) {
+      const P = r.pts, last = P.length - 1;
+      for (let i = 1; i < P.length; i++) {
+        if (r.end && i === last) continue;
+        const q = P[i], vx = (q.x - q.px) * damp, vy = (q.y - q.py) * damp;
+        q.px = q.x; q.py = q.y; q.x += vx + (wind + breeze) * (i / last); q.y += vy + g;
+        if (ptr.active) {
+          const dx = q.x - ptr.x, dy = q.y - ptr.y, d2 = dx * dx + dy * dy;
+          if (d2 < R2) { const d = Math.sqrt(d2) || 1, s = 1 - d / R; q.x += (dx / d) * s * (.35 + pv * .02) + ptr.vx * s * .04; q.y += (dy / d) * s * (.15 + pv * .01) + ptr.vy * s * .02; }
+        }
+      }
+      for (let it = 0; it < 10; it++) {
+        P[0].x = r.x0; P[0].y = r.y0;
+        if (r.end) { P[last].x = r.end[0]; P[last].y = r.end[1]; }
+        for (let i = 0; i < last; i++) {
+          const a = P[i], b = P[i + 1], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1, diff = (d - r.pitch) / d;
+          const wa = i === 0 ? 0 : .5, wb = (r.end && i + 1 === last) ? 0 : (i === 0 ? 1 : .5);
+          a.x += dx * diff * wa; a.y += dy * diff * wa; b.x -= dx * diff * wb; b.y -= dy * diff * wb;
+        }
+      }
+    }
+    ptr.vx *= .6; ptr.vy *= .6;
+  }
+  function draw() {
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H);
+    for (let pass = 0; pass < 2; pass++) {
+      const img = pass ? S.edge : S.face, w = pass ? S.ew : S.fw, h = pass ? S.eh : S.fh;
+      for (const r of ropes) {
+        const P = r.pts;
+        for (let i = pass; i < P.length - 1; i += 2) {
+          const a = P[i], b = P[i + 1], ang = Math.atan2(b.y - a.y, b.x - a.x) - Math.PI / 2, c = Math.cos(ang), s = Math.sin(ang);
+          ctx.setTransform(c * DPR, s * DPR, -s * DPR, c * DPR, (a.x + b.x) / 2 * DPR, (a.y + b.y) / 2 * DPR);
+          ctx.drawImage(img, -w / 2, -h / 2, w, h);
+        }
+      }
+    }
+  }
+  function loop() { if (running) { step(); draw(); } requestAnimationFrame(loop); }
+  new IntersectionObserver(es => { running = es[0].isIntersecting; }).observe(hero);
+  let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 150); });
+  resize(); loop();
+
+  /* heart pulse on touch */
+  const heart = document.getElementById('heart'); let bt;
+  heart.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse') return; heart.classList.add('beat'); clearTimeout(bt); bt = setTimeout(() => heart.classList.remove('beat'), 2800); });
+
+  /* ---------- specimens ---------- */
+  document.querySelectorAll('.specimen').forEach(card => {
+    const box = card.querySelector('.box'), status = card.querySelector('.status');
+    let typing;
+    const type = () => { clearInterval(typing); const txt = card.dataset.status; let i = 0; status.textContent = ''; if (reduce) { status.textContent = txt; return; } typing = setInterval(() => { status.textContent = txt.slice(0, ++i); if (i >= txt.length) clearInterval(typing); }, 28); };
+    const clear = () => { clearInterval(typing); status.textContent = ''; box.style.setProperty('--rx', '0deg'); box.style.setProperty('--ry', '0deg'); };
+    card.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') type(); });
+    card.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') clear(); });
+    card.addEventListener('pointermove', e => {
+      if (reduce || e.pointerType !== 'mouse') return;
+      const r = box.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      box.style.setProperty('--ry', (x * 8).toFixed(2) + 'deg'); box.style.setProperty('--rx', (-y * 8).toFixed(2) + 'deg');
+    });
+    card.addEventListener('click', () => { const on = !card.classList.contains('on'); document.querySelectorAll('.specimen.on').forEach(c => c.classList.remove('on')); if (on) { card.classList.add('on'); type(); } else clear(); });
+  });
+})();
+</script>
+</body>
+</html>
