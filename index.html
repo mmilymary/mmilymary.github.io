@@ -143,6 +143,19 @@
   .btn.primary { background: var(--rose); border-color: var(--rose); color: #fff; }
   .btn:hover { border-color: var(--neon); box-shadow: 0 0 18px rgba(255,122,162,.25); }
   .btn.ghost { color: var(--muted); cursor: default; }
+
+  .ph { aspect-ratio: 16 / 10; display: flex; align-items: flex-end; justify-content: center; gap: 4%; padding: 6% 6% 0;
+    background: radial-gradient(ellipse at 50% 30%, #3a1520, #1a070c 75%); }
+  .ph > div { position: relative; border: 1px solid rgba(201,163,166,.35); border-bottom: 0; border-radius: 14px 14px 0 0; background: #efe7dc;
+    display: flex; flex-direction: column; justify-content: flex-start; padding: 10px; gap: 4px; color: #2e0f17; }
+  .ph-img { align-items: flex-end; padding: 7% 0 0; }
+  .ph-img img { width: 42%; height: auto; aspect-ratio: auto; border-radius: 18px 18px 0 0; border: 2px solid rgba(195,201,209,.6); border-bottom: 0; box-shadow: 0 20px 40px rgba(0,0,0,.5); object-fit: cover; object-position: top; max-height: 100%; }
+  .ph-phone { width: 24%; height: 88%; }
+  .ph-desk { width: 40%; height: 70%; border-radius: 8px 8px 0 0 !important; }
+  .ph span { font-family: "VT323", monospace; font-size: 14px; color: #b5475a; }
+  .ph b { font-family: "Bodoni Moda", serif; font-weight: 400; font-style: italic; font-size: clamp(13px, 1.5vw, 18px); line-height: 1.1; }
+  .ph > div::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 12px; height: 38%;
+    background: repeating-linear-gradient(to bottom, rgba(46,15,23,.12) 0 6px, transparent 6px 16px); }
   .next { border: 1px dashed rgba(201,163,166,.35); border-radius: 16px; padding: clamp(28px, 5vw, 48px); text-align: center; }
   .next .num { font-family: "VT323", monospace; font-size: 22px; color: var(--rose); letter-spacing: .1em; }
   .next h3 { font-family: "Bodoni Moda", serif; font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); margin: 8px 0 10px; }
@@ -338,7 +351,7 @@
           <p class="label">// SELECTED WORK</p>
           <h2 id="work-title">Things I've built.</h2>
         </div>
-        <span class="count">[ 02 projects · more loading ]</span>
+        <span class="count">[ 03 projects · more loading ]</span>
       </div>
 
       <article class="project reveal">
@@ -391,8 +404,32 @@
         </div>
       </article>
 
+      <article class="project reveal">
+        <a class="shot" href="diiva.html" aria-label="Read the Diiva's Juurileipä case study">
+          <div class="window">
+            <div class="bar"><i></i><i></i><i></i><span>diiva's juurileipä · concept</span></div>
+            <img src="img/diiva/d_new_home.webp" alt="The redesigned Diiva's Juurileipä homepage on desktop: chef's hat logo, Kahvila | Ravintola | Leipomo and a big red Order bread button" loading="lazy" style="aspect-ratio:1860/750">
+          </div>
+          <svg class="pin" aria-hidden="true"><use href="#y2k-star"/></svg>
+        </a>
+        <div class="info">
+          <span class="num">03</span>
+          <h3>Diiva's Juurileipä</h3>
+          <p class="lead">A calmer way to order sourdough and book a table – for a real café &amp; bakery in Mänttä.</p>
+          <p>A redesign concept for a lovely, one-of-a-kind café, bakery and restaurant. I simplified bread pre-orders and table booking, refreshed the look to match the brand, and designed a simple dashboard for the staff.</p>
+          <dl>
+            <dt>role</dt><dd>UX research, concept, UI design</dd>
+            <dt>type</dt><dd>real client · concept</dd>
+          </dl>
+          <ul class="tags"><li>UX/UI</li><li>Figma</li><li>Service design</li><li>Mobile + dashboard</li></ul>
+          <div class="actions">
+            <a class="btn primary" href="diiva.html">read the case study →</a>
+          </div>
+        </div>
+      </article>
+
       <div class="next reveal">
-        <span class="num">03</span>
+        <span class="num">04</span>
         <h3>next side quest</h3>
         <p>loading<span class="cursor" aria-hidden="true"></span></p>
       </div>
