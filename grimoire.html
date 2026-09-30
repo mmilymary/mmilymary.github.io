@@ -175,7 +175,7 @@ h1 em { color: var(--ink); }
   <section class="tips" aria-label="Hyvä tietää">
     <h2>Hyvä tietää</h2>
     <ul>
-      <li>Windowsin cmd ei välitä isoista ja pienistä kirjaimista: <code>DIR</code> ja <code>dir</code> ovat sama komento. Linuxissa ja macOS:ssä <code>ls</code> ja <code>LS</code> eivät ole.</li>
+      <li>Windowsin cmd ei välitä isoista ja pienistä kirjaimista: <code>DIR</code> ja <code>dir</code> ovat sama komento. Linuxissa <code>ls</code> ja <code>LS</code> ovat eri asioita. macOS:ssä <code>LS</code> voi toimia, mutta komennot kannattaa aina kirjoittaa pienillä kirjaimilla.</li>
       <li>Useimmat Windows-komennot kertovat valitsimensa, kun perään kirjoittaa <code>/?</code>, esimerkiksi <code>robocopy /?</code>.</li>
       <li>Osa komennoista, kuten <code>chkdsk</code>, vaatii järjestelmänvalvojan oikeudet. Avaa silloin komentokehote hiiren oikealla ja valitse <em>Suorita järjestelmänvalvojana</em>.</li>
       <li>Nuoli ylös tuo edellisen komennon takaisin, ja sarkain täydentää tiedoston tai kansion nimen. Tämä toimii kummassakin ympäristössä.</li>
@@ -214,7 +214,7 @@ h1 em { color: var(--ink); }
     { id: "luo", title: "Luo kansio tai tyhjä tiedosto", tags: ["tiedostot"],
       when: "Kun aloitat uuden projektin tai tarvitset tyhjän tiedoston pohjaksi.",
       cmd: [["md \"Uusi kansio\\Alikansio\"", "Luo kansion ja tarvittaessa myös välissä olevat kansiot. Välilyönnin sisältävä nimi lainausmerkkeihin."],
-            ["type nul > muistio.txt", "Luo tyhjän tiedoston."]],
+            ["type nul > muistio.txt", "Luo tyhjän tiedoston. Jos tiedosto on jo olemassa, se tyhjennetään."]],
       sh:  [["mkdir -p \"Uusi kansio/Alikansio\"", "Luo kansion. -p luo myös välissä olevat kansiot."],
             ["touch muistio.txt", "Luo tyhjän tiedoston, tai päivittää olemassa olevan tiedoston aikaleiman."]] },
 
@@ -226,7 +226,7 @@ h1 em { color: var(--ink); }
       sh:  [["cp raportti.txt ~/Varmuus/", "Kopioi tiedoston."],
             ["mv raportti.txt ~/Arkisto/", "Siirtää tiedoston."],
             ["mv vanha.txt uusi.txt", "Nimeää uudelleen. Linuxissa siirto ja nimeäminen ovat sama komento."]],
-      warn: "Jos kohteessa on jo samanniminen tiedosto, mv korvaa sen kysymättä. Windowsin copy ja move kysyvät ensin." },
+      warn: "Jos kohteessa on jo samanniminen tiedosto, mv korvaa sen kysymättä. Windowsin copy ja move kysyvät ensin, kun komennon kirjoittaa itse. Eräajotiedostossa (.bat) ne korvaavat kysymättä." },
 
     { id: "varmuus", title: "Varmuuskopioi koko kansio", tags: ["tiedostot"],
       when: "Kun haluat kopioida kansion alikansioineen esimerkiksi ulkoiselle levylle.",

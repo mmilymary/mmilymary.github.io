@@ -124,6 +124,7 @@ td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(
 .task-label { font: 400 1.15rem/1 var(--font-ui); color: var(--neon); display: flex; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
 .task > p { margin: 0 0 var(--s3); font-size: 1.1rem; }
 .task code:not([class]) { background: var(--surface-2); color: var(--text); }
+.task > p code:not([class]) { white-space: normal; overflow-wrap: anywhere; }
 .task details { border-top: 1px dashed var(--line); }
 .task summary { cursor: pointer; list-style: none; padding: .65rem 0; min-height: 44px; display: flex; align-items: center; gap: var(--s2); font: 400 1.15rem var(--font-ui); color: var(--muted); }
 .task summary::-webkit-details-marker { display: none; }
@@ -186,6 +187,24 @@ td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(
       <span class="k">// sql</span>
       <span class="t">Kyselyjen lunttilappu</span>
       <span class="m">9 osaa · 9 harjoitusta</span>
+      <span class="bar" aria-hidden="true"><i style="transform:scaleX(0)"></i></span>
+    </button>
+    <button class="slip" type="button" aria-pressed="false" aria-controls="sheet-bits" data-sheet="bits">
+      <span class="k">// bin · dec · hex</span>
+      <span class="t">Bittien lunttilappu</span>
+      <span class="m">7 osaa · 7 harjoitusta</span>
+      <span class="bar" aria-hidden="true"><i style="transform:scaleX(0)"></i></span>
+    </button>
+    <button class="slip" type="button" aria-pressed="false" aria-controls="sheet-talous" data-sheet="talous">
+      <span class="k">// % · korko · kate</span>
+      <span class="t">Liiketalouden lunttilappu</span>
+      <span class="m">8 osaa · 8 harjoitusta</span>
+      <span class="bar" aria-hidden="true"><i style="transform:scaleX(0)"></i></span>
+    </button>
+    <button class="slip" type="button" aria-pressed="false" aria-controls="sheet-verkot" data-sheet="verkot">
+      <span class="k">// lan · osi · kyber</span>
+      <span class="t">Verkkojen lunttilappu</span>
+      <span class="m">7 osaa · 7 harjoitusta</span>
       <span class="bar" aria-hidden="true"><i style="transform:scaleX(0)"></i></span>
     </button>
     <div class="slot">seuraava lappu<br>tulee tähän</div>
@@ -1271,6 +1290,1101 @@ COMMIT;
 SELECT * FROM lainaus WHERE kirja_id = 2;
 -- 2  2  Ada    2026-09-15  2026-10-01
 -- 6  2  Linus  2026-10-01  NULL</code></pre></div></details>
+  </div>
+</section>
+
+
+    </div>
+  </main>
+
+  <main class="sheet" id="sheet-bits" data-slip="bits" hidden>
+    <div class="sheet-head">
+      <span class="label">// lukujärjestelmät · ip-osoitteet</span>
+      <h2>Bittien <em>lunttilappu</em></h2>
+      <p>BIN, DEC ja HEX sekä niiden käyttö IPv4- ja IPv6-osoitteissa. Jokainen luku on tarkistettu Pythonilla.</p>
+    </div>
+    <nav class="strip" aria-label="Osat">
+      <ol class="weeks"></ol>
+      <span class="tally"></span>
+    </nav>
+    <div class="course">
+
+
+<!-- 1 -->
+<section class="week" id="b1">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 1</b></span><span>Kantaluku · paikkajärjestelmä</span></div>
+    <h2>Kolme tapaa kirjoittaa sama luku</h2>
+    <p class="tldr">Kantaluku kertoo, montako eri numeromerkkiä järjestelmässä on. Numeron paikka kertoo, millä kantaluvun potenssilla se kerrotaan.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Järjestelmä</th><th>Kantaluku</th><th>Merkit</th><th>Paikkojen arvot oikealta</th></tr></thead>
+    <tbody>
+      <tr><td>DEC</td><td>10</td><td>0–9</td><td>1, 10, 100, 1000…</td></tr>
+      <tr><td>BIN</td><td>2</td><td>0 ja 1</td><td>1, 2, 4, 8, 16, 32, 64, 128…</td></tr>
+      <tr><td>HEX</td><td>16</td><td>0–9 ja A–F</td><td>1, 16, 256, 4096…</td></tr>
+    </tbody>
+  </table></div>
+  <p>Paikat numeroidaan oikealta alkaen nollasta, ja minkä tahansa kantaluvun nollas potenssi on 1. Luvun arvo on jokaisen numeron ja sen paikan arvon tulojen summa.</p>
+  <div class="code"><pre><code class="language-none">DEC  347   = 3·100 + 4·10 + 7·1               = 347
+BIN  1101  = 1·8 + 1·4 + 0·2 + 1·1            = 13
+BIN  10110 = 1·16 + 0·8 + 1·4 + 1·2 + 0·1     = 22
+HEX  2A    = 2·16 + 10·1                      = 42    (A = 10)
+HEX  1F4   = 1·256 + 15·16 + 4·1              = 500   (F = 15)</code></pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>HEX</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr></thead>
+    <tbody><tr><td>DEC</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr></tbody>
+  </table></div>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">int("1101", 2)     # 13
+int("1F4", 16)     # 500</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Luku 10 tarkoittaa eri asiaa eri järjestelmissä: binäärinä se on kaksi, heksana kuusitoista. Merkitse kantaluku, jos se ei ole asiayhteydestä selvä, esimerkiksi 10₂, 10₁₆ tai <code>0b10</code> ja <code>0x10</code>.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 1</span>
+    <p>Muunna desimaaliluvuiksi: <code>101101₂</code> ja <code>3C₁₆</code>.</p>
+    <details><summary>Näytä vihje</summary><p>Kirjoita paikkojen arvot numeroiden yläpuolelle oikealta alkaen: binäärissä 1, 2, 4, 8…, heksassa 1, 16, 256. C on 12.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">101101₂ = 32 + 8 + 4 + 1 = 45
+3C₁₆    = 3·16 + 12·1    = 60</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="week" id="b2">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 2</b></span><span>DEC → BIN</span></div>
+    <h2>Desimaaliluvusta biteiksi</h2>
+    <p class="tldr">Kaksi tapaa: jaa kahdella ja kirjaa jakojäännökset, tai vähennä suurimmat mahtuvat kahden potenssit.</p>
+  </div>
+  <h3>Jakojäännösmenetelmä</h3>
+  <p>Jaa luku kahdella, kunnes osamäärä on nolla. Jakojäännökset luetaan <em>alhaalta ylös</em>.</p>
+  <div class="code"><pre><code class="language-none">156 : 2 = 78   jää 0
+ 78 : 2 = 39   jää 0
+ 39 : 2 = 19   jää 1
+ 19 : 2 =  9   jää 1
+  9 : 2 =  4   jää 1
+  4 : 2 =  2   jää 0
+  2 : 2 =  1   jää 0
+  1 : 2 =  0   jää 1     ↑ luetaan ylöspäin
+
+156 = 1001 1100₂</code></pre></div>
+
+  <h3>Vähennysmenetelmä</h3>
+  <p>Käy läpi kahden potenssit suurimmasta alkaen. Jos potenssi mahtuu jäljellä olevaan lukuun, kirjoita 1 ja vähennä se. Muuten kirjoita 0.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Paikka</th><th>128</th><th>64</th><th>32</th><th>16</th><th>8</th><th>4</th><th>2</th><th>1</th></tr></thead>
+    <tbody>
+      <tr><td>Jäljellä</td><td>156</td><td>28</td><td>28</td><td>28</td><td>12</td><td>4</td><td>0</td><td>0</td></tr>
+      <tr><td>Bitti</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+    </tbody>
+  </table></div>
+  <p>Tarkistus: 128 + 16 + 8 + 4 = 156. Vähennysmenetelmä on nopein IP-osoitteiden kanssa, koska yksi oktetti on aina nämä kahdeksan paikkaa.</p>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">bin(156)               # '0b10011100'
+format(156, "08b")     # '10011100', aina 8 bittiä etunollineen</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Jakojäännösmenetelmässä bitit luetaan väärin päin, jos ne kirjoittaa ylhäältä alas. Tarkista tulos aina laskemalla se takaisin desimaaliluvuksi.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 2</span>
+    <p>Muunna 8-bittisiksi binääriluvuiksi: 200 ja 77.</p>
+    <details><summary>Näytä vihje</summary><p>Vähennysmenetelmällä: mahtuuko 128? Entä 64? Muista etunollat, jotta bittejä on kahdeksan.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">200 = 128 + 64 + 8      = 1100 1000
+ 77 = 64 + 8 + 4 + 1    = 0100 1101</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="week" id="b3">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 3</b></span><span>BIN ↔ HEX · DEC → HEX</span></div>
+    <h2>Neljän bitin nippusääntö</h2>
+    <p class="tldr">Yksi heksamerkki on aina tasan neljä bittiä. Siksi binääriluvun saa heksaksi ryhmittelemällä, eikä mitään tarvitse laskea desimaalien kautta.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>HEX</th><th>BIN</th><th>HEX</th><th>BIN</th><th>HEX</th><th>BIN</th><th>HEX</th><th>BIN</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>0000</td><td>4</td><td>0100</td><td>8</td><td>1000</td><td>C</td><td>1100</td></tr>
+      <tr><td>1</td><td>0001</td><td>5</td><td>0101</td><td>9</td><td>1001</td><td>D</td><td>1101</td></tr>
+      <tr><td>2</td><td>0010</td><td>6</td><td>0110</td><td>A</td><td>1010</td><td>E</td><td>1110</td></tr>
+      <tr><td>3</td><td>0011</td><td>7</td><td>0111</td><td>B</td><td>1011</td><td>F</td><td>1111</td></tr>
+    </tbody>
+  </table></div>
+  <div class="code"><pre><code class="language-none">BIN → HEX   1101 0110   →  D 6      →  D6₁₆   (= 214)
+HEX → BIN   7C          →  0111 1100          (= 124)</code></pre></div>
+  <p>Ryhmittele aina <em>oikealta</em>. Jos vasemmalle jää alle neljä bittiä, lisää eteen nollia.</p>
+
+  <h3>DEC → HEX</h3>
+  <p>Sama jakojäännösmenetelmä kuin binäärissä, mutta jakajana on 16.</p>
+  <div class="code"><pre><code class="language-none">500 : 16 = 31   jää 4
+ 31 : 16 =  1   jää 15 = F
+  1 : 16 =  0   jää 1        ↑ luetaan ylöspäin
+
+500 = 1F4₁₆</code></pre></div>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">hex(500)                  # '0x1f4'
+hex(int("11010110", 2))   # '0xd6'</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Jos ryhmittelee vasemmalta, tulos menee väärin aina, kun bittien määrä ei ole neljällä jaollinen. Esimerkiksi <code>11011</code> ryhmitellään oikealta <code>1 1011</code> = 1B₁₆ = 27. Vasemmalta ryhmiteltynä <code>1101 1</code> saisi väärän vastauksen.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 3</span>
+    <p>Muunna <code>1010 1111 0011₂</code> heksaksi ja desimaaliluvuksi. Muunna sitten 1000₁₀ heksaksi.</p>
+    <details><summary>Näytä vihje</summary><p>Ensimmäisessä katso taulukosta jokainen neljän bitin ryhmä. Toisessa jaa 16:lla ja muista, että jakojäännös 14 on E.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">1010 1111 0011₂ = AF3₁₆ = 10·256 + 15·16 + 3 = 2803
+
+1000 : 16 = 62   jää 8
+  62 : 16 =  3   jää 14 = E
+   3 : 16 =  0   jää 3
+1000 = 3E8₁₆</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="week" id="b4">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 4</b></span><span>Bitit · tavut · arvoalue</span></div>
+    <h2>Montako arvoa bitteihin mahtuu</h2>
+    <p class="tldr">n bitillä voi esittää 2ⁿ eri arvoa. Koska laskeminen alkaa nollasta, suurin luku on 2ⁿ − 1.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Bittejä</th><th>Arvoja</th><th>Suurin luku</th><th>Missä</th></tr></thead>
+    <tbody>
+      <tr><td>4</td><td>16</td><td>15 (F)</td><td>yksi heksamerkki</td></tr>
+      <tr><td>8</td><td>256</td><td>255 (FF)</td><td>yksi tavu, yksi IPv4-oktetti</td></tr>
+      <tr><td>16</td><td>65 536</td><td>65 535 (FFFF)</td><td>yksi IPv6-hekstetti</td></tr>
+      <tr><td>32</td><td>4 294 967 296</td><td></td><td>koko IPv4-osoite</td></tr>
+      <tr><td>128</td><td>noin 3,4 · 10³⁸</td><td></td><td>koko IPv6-osoite</td></tr>
+    </tbody>
+  </table></div>
+  <p>IPv4-osoitteita on siis reilut neljä miljardia, mikä ei riitä kaikille internetiin kytketyille laitteille. IPv6 kehitettiin tämän takia.</p>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>8 bitin suurin luku on 255, mutta arvoja on 256, koska nolla lasketaan mukaan. Sama virhe tulee helposti vastaan, kun lasketaan aliverkon osoitteita.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 4</span>
+    <p>Montako eri arvoa mahtuu 12 bittiin, ja mikä on suurin 12 bitin luku desimaalina ja heksana?</p>
+    <details><summary>Näytä vihje</summary><p>2¹² = 2¹⁰ · 2² = 1024 · 4. Heksana 12 bittiä on kolme merkkiä.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">2¹² = 4096 arvoa
+suurin = 4096 − 1 = 4095 = 1111 1111 1111₂ = FFF₁₆</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="week" id="b5">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 5</b></span><span>IPv4 · oktetit</span></div>
+    <h2>IPv4-osoite biteiksi ja takaisin</h2>
+    <p class="tldr">IPv4-osoite on 32 bittiä, jotka jaetaan neljään 8 bitin oktettiin. Jokainen oktetti kirjoitetaan desimaalilukuna väliltä 0–255.</p>
+  </div>
+  <div class="code"><pre><code class="language-none">172.16.5.200
+
+172 = 128 + 32 + 8 + 4           = 10101100
+ 16 = 16                         = 00010000
+  5 = 4 + 1                      = 00000101
+200 = 128 + 64 + 8               = 11001000
+
+→ 10101100.00010000.00000101.11001000</code></pre></div>
+  <p>Takaisinpäin sama toisin päin: jokainen 8 bitin ryhmä omaksi desimaaliluvukseen.</p>
+  <div class="code"><pre><code class="language-none">11000000.10101000.00001010.00000001  →  192.168.10.1</code></pre></div>
+
+  <h3>Yksityiset osoitteet</h3>
+  <p>Kotien ja yritysten sisäverkoissa käytetään osoitteita, jotka eivät näy suoraan internetiin. Siksi näet usein osoitteita, jotka alkavat 192.168.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Alue</th><th>CIDR</th></tr></thead>
+    <tbody>
+      <tr><td>10.0.0.0 – 10.255.255.255</td><td>10.0.0.0/8</td></tr>
+      <tr><td>172.16.0.0 – 172.31.255.255</td><td>172.16.0.0/12</td></tr>
+      <tr><td>192.168.0.0 – 192.168.255.255</td><td>192.168.0.0/16</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">osoite = "172.16.5.200"
+".".join(format(int(o), "08b") for o in osoite.split("."))
+# '10101100.00010000.00000101.11001000'</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Jokaisessa oktetissa on aina kahdeksan bittiä. Esimerkiksi 5 on oktettina <code>00000101</code>, ei <code>101</code>. Ilman etunollia osoitteen bitit eivät asetu oikeille paikoilleen, ja aliverkon laskut menevät väärin.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 5</span>
+    <p>Kirjoita osoite 10.0.37.129 bitteinä.</p>
+    <details><summary>Näytä vihje</summary><p>Tee jokaiselle oktetille vähennysmenetelmä 128, 64, 32, 16, 8, 4, 2, 1. Nollasta tulee kahdeksan nollaa.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none"> 10 = 8 + 2              = 00001010
+  0                      = 00000000
+ 37 = 32 + 4 + 1         = 00100101
+129 = 128 + 1            = 10000001
+
+→ 00001010.00000000.00100101.10000001</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="week" id="b6">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 6</b></span><span>Aliverkon peite · CIDR · AND</span></div>
+    <h2>Mikä osa osoitteesta on verkkoa</h2>
+    <p class="tldr">Aliverkon peite on jono ykkösiä ja sen perässä nollia. Ykköset merkitsevät verkko-osaa, nollat laiteosaa. CIDR-merkintä /24 kertoo ykkösten määrän.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>CIDR</th><th>Peite</th><th>Laitebittejä</th><th>Laitteita</th></tr></thead>
+    <tbody>
+      <tr><td>/24</td><td>255.255.255.0</td><td>8</td><td>2⁸ − 2 = 254</td></tr>
+      <tr><td>/21</td><td>255.255.248.0</td><td>11</td><td>2¹¹ − 2 = 2046</td></tr>
+      <tr><td>/26</td><td>255.255.255.192</td><td>6</td><td>2⁶ − 2 = 62</td></tr>
+    </tbody>
+  </table></div>
+  <p>Laitteiden määrästä vähennetään kaksi, koska verkossa on kaksi varattua osoitetta. Ensimmäinen, jossa kaikki laitebitit ovat nollia, on <strong>verkko-osoite</strong>. Viimeinen, jossa kaikki laitebitit ovat ykkösiä, on <strong>yleislähetysosoite</strong> (broadcast).</p>
+
+  <h3>Verkko-osoite AND-operaatiolla</h3>
+  <p>AND antaa ykkösen vain, jos molemmat bitit ovat ykkösiä. Kun osoite ja peite AND-ataan bitti kerrallaan, laiteosa nollautuu ja jäljelle jää verkko-osoite.</p>
+  <div class="code"><pre><code class="language-none">172.16.13.200/21
+
+Osoite    10101100.00010000.00001101.11001000   172.16.13.200
+Peite     11111111.11111111.11111000.00000000   255.255.248.0
+AND       10101100.00010000.00001000.00000000   172.16.8.0      ← verkko-osoite
+
+Yleislähetys: laitebitit ykkösiksi          →   172.16.15.255
+Laitteille:   172.16.8.1 – 172.16.15.254   (2046 osoitetta)</code></pre></div>
+  <p>Oktetit, joissa peite on 255, pysyvät sellaisenaan, ja oktetit, joissa peite on 0, muuttuvat nolliksi. Bitteinä tarvitsee laskea vain se oktetti, jossa peite vaihtuu kesken.</p>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">import ipaddress
+verkko = ipaddress.ip_network("172.16.13.200/21", strict=False)
+verkko.network_address     # 172.16.8.0
+verkko.broadcast_address   # 172.16.15.255
+verkko.netmask             # 255.255.248.0</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>/21-verkon verkko-osoite ei ole 172.16.13.0, vaikka se näyttäisi luontevalta. Peite leikkaa kolmannen oktetin keskeltä, joten 13 täytyy laskea bitteinä: <code>00001101 AND 11111000 = 00001000</code> eli 8.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 6</span>
+    <p>Osoite on 10.1.100.50/26. Mikä on peite, verkko-osoite ja yleislähetysosoite? Montako laitetta verkkoon mahtuu?</p>
+    <details><summary>Näytä vihje</summary><p>/26 tarkoittaa, että kolme ensimmäistä oktettia ovat kokonaan verkkoa ja neljännestä kaksi ensimmäistä bittiä: 11000000 = 192. Laske 50 AND 192 bitteinä.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">Peite          255.255.255.192
+50 AND 192     00110010 AND 11000000 = 00000000 = 0
+Verkko         10.1.100.0
+Yleislähetys   10.1.100.63     (laitebitit 111111 = 63)
+Laitteita      2⁶ − 2 = 62     (10.1.100.1 – 10.1.100.62)</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="week" id="b7">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 7</b></span><span>IPv6 · hekstetit · tiivistys</span></div>
+    <h2>IPv6 ja sen lyhentäminen</h2>
+    <p class="tldr">IPv6-osoite on 128 bittiä: kahdeksan 16 bitin ryhmää eli hekstettiä. Jokainen hekstetti kirjoitetaan neljällä heksamerkillä, ja ryhmät erotetaan kaksoispisteillä.</p>
+  </div>
+  <div class="code"><pre><code class="language-none">2001:0db8:0000:0000:0000:ff00:0042:8329
+
+Yksi hekstetti bitteinä nippusäännöllä:
+0db8  →  0000 1101 1011 1000</code></pre></div>
+  <p>Kirjaimet voi kirjoittaa isoina tai pieninä, mutta suositus on pienet kirjaimet.</p>
+
+  <h3>Tiivistyksen kaksi sääntöä</h3>
+  <ol>
+    <li>Jokaisesta hekstetistä saa jättää <strong>etunollat</strong> pois: <code>0db8</code> → <code>db8</code>, <code>0042</code> → <code>42</code>, <code>0000</code> → <code>0</code>.</li>
+    <li>Yhden peräkkäisten nollahekstettien jonon saa korvata merkillä <code>::</code>, mutta vain kerran osoitteessa.</li>
+  </ol>
+  <div class="code"><pre><code class="language-none">2001:0db8:0000:0000:0000:ff00:0042:8329
+2001:db8:0:0:0:ff00:42:8329          ← etunollat pois
+2001:db8::ff00:42:8329               ← nollajono ::-merkiksi</code></pre></div>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">import ipaddress
+ipaddress.ip_address("2001:0db8:0000:0000:0000:ff00:0042:8329").compressed
+# '2001:db8::ff00:42:8329'
+ipaddress.ip_address("2001:db8:a::1").exploded
+# '2001:0db8:000a:0000:0000:0000:0000:0001'</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p><code>::</code> saa esiintyä vain kerran. Jos niitä olisi kaksi, ei voisi tietää, montako nollaryhmää kumpikin tarkoittaa. Kun nollajonoja on kaksi yhtä pitkää, tiivistetään ensimmäinen: <code>2001:db8:0:0:1:0:0:1</code> → <code>2001:db8::1:0:0:1</code>.</p>
+    <p>Hekstetin <em>lopussa</em> olevia nollia ei saa poistaa. <code>ff00</code> pysyy <code>ff00</code>:na, koska <code>ff</code> tarkoittaisi <code>00ff</code>:ää.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 7</span>
+    <p>Tiivistä osoite <code>fe80:0000:0000:0000:0202:b3ff:fe1e:8329</code>. Kirjoita sitten <code>2001:db8:a::1</code> täydessä muodossa.</p>
+    <details><summary>Näytä vihje</summary><p>Tiivistäessä pudota ensin etunollat ja korvaa sitten nollajono. Laajentaessa laske, montako hekstettiä puuttuu kahdeksasta: niin monta <code>0000</code>-ryhmää :: tarkoittaa.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">fe80:0000:0000:0000:0202:b3ff:fe1e:8329  →  fe80::202:b3ff:fe1e:8329
+
+2001:db8:a::1 → näkyvissä 4 hekstettiä, puuttuu 4
+→ 2001:0db8:000a:0000:0000:0000:0000:0001</code></pre></div></details>
+  </div>
+</section>
+
+
+    </div>
+  </main>
+
+  <main class="sheet" id="sheet-talous" data-slip="talous" hidden>
+    <div class="sheet-head">
+      <span class="label">// liiketalouden laskut</span>
+      <h2>Liiketalouden <em>lunttilappu</em></h2>
+      <p>Prosentit, indeksit, korot, lainat, katetuotto ja valtion tulovero. Jokainen luku on laskettu uudelleen Pythonilla.</p>
+    </div>
+    <nav class="strip" aria-label="Osat">
+      <ol class="weeks"></ol>
+      <span class="tally"></span>
+    </nav>
+    <div class="course">
+
+
+<!-- 1 -->
+<section class="week" id="t1">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 1</b></span><span>Prosenttiarvo · -osuus · muutos · %-yksikkö</span></div>
+    <h2>Prosenttilaskun neljä kysymystä</h2>
+    <p class="tldr">Prosentti on sadasosa: 1 % = 1/100 = 0,01. Melkein jokainen prosenttitehtävä on jokin näistä neljästä kysymyksestä.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Kysymys</th><th>Kaava</th><th>Esimerkki</th></tr></thead>
+    <tbody>
+      <tr><td>Paljonko on x % luvusta a?</td><td>x/100 · a</td><td>15 % luvusta 240 = 0,15 · 240 = 36</td></tr>
+      <tr><td>Montako % b on a:sta?</td><td>b / a · 100 %</td><td>45 / 180 · 100 % = 25 %</td></tr>
+      <tr><td>Paljonko arvo muuttui?</td><td>(uusi − vanha) / vanha · 100 %</td><td>80 → 92: 12 / 80 · 100 % = +15 %<br>250 → 200: −50 / 250 · 100 % = −20 %</td></tr>
+      <tr><td>Paljonko osuus muuttui?</td><td>uusi % − vanha %</td><td>korko 2,5 % → 3,0 %: +0,5 %-yksikköä</td></tr>
+    </tbody>
+  </table></div>
+  <p>Viimeinen rivi on se, joka menee useimmin väärin. Kun korko nousee 2,5 prosentista 3,0 prosenttiin, se nousee 0,5 <em>prosenttiyksikköä</em>, mutta suhteellisesti 20 <em>prosenttia</em> (0,5 / 2,5).</p>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">0.15 * 240             # 36.0
+45 / 180 * 100         # 25.0
+(92 - 80) / 80 * 100   # 15.0</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Muutosprosentti lasketaan aina <em>vanhasta</em> arvosta. Siksi nousu ja yhtä suuri lasku eivät kumoa toisiaan: 100 € + 20 % = 120 €, ja siitä −20 % = 96 €.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 1</span>
+    <p>Takki maksaa 120 €, ja siitä saa 30 % alennusta. Paljonko takki maksaa alennuksen jälkeen? Kaupan myynti kasvoi 1 200 kappaleesta 1 500 kappaleeseen. Montako prosenttia myynti kasvoi?</p>
+    <details><summary>Näytä vihje</summary><p>30 % alennuksen jälkeen jää 70 % hinnasta. Muutoksessa jaa erotus vanhalla arvolla.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">120 € · 0,70 = 84 €
+(1 500 − 1 200) / 1 200 · 100 % = 300 / 1 200 · 100 % = 25 %</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="week" id="t2">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 2</b></span><span>Muutoskerroin · reaalimuutos</span></div>
+    <h2>Muutoskerroin</h2>
+    <p class="tldr">Kasvu tai lasku kannattaa kirjoittaa kertoimeksi: +8 % on 1,08 ja −15 % on 0,85. Peräkkäiset muutokset kerrotaan keskenään.</p>
+  </div>
+  <div class="code"><pre><code class="language-none">+10 % ja sitten −10 %:   1,10 · 0,90 = 0,99   → yhteensä −1 %
++5 % kolmena vuonna:     1,05³ = 1,1576       → yhteensä +15,76 %</code></pre></div>
+
+  <h3>Reaalimuutos</h3>
+  <p>Nimellinen muutos kertoo, paljonko euroja tulee lisää. Reaalimuutos kertoo, paljonko niillä saa enemmän, kun hintojen nousu otetaan huomioon. Kertoimet <em>jaetaan</em> keskenään.</p>
+  <div class="code"><pre><code class="language-none">Palkka +4 %, hinnat +1,5 %
+
+reaalimuutos = 1,04 / 1,015 − 1 = 0,0246  → +2,46 %</code></pre></div>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">round((1.04 / 1.015 - 1) * 100, 2)   # 2.46
+round((1.05 ** 3 - 1) * 100, 2)      # 15.76</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Reaalimuutos ei ole tasan 4 % − 1,5 % = 2,5 %. Vähennyslasku antaa pienillä luvuilla lähes oikean vastauksen, mutta oikea tapa on jakaa kertoimet.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 2</span>
+    <p>Palkka nousi 3 %, ja hinnat nousivat samana aikana 4 %. Mikä on reaalinen palkanmuutos?</p>
+    <details><summary>Näytä vihje</summary><p>Jaa palkan kerroin hintojen kertoimella ja vähennä 1. Tulos voi olla negatiivinen.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">1,03 / 1,04 − 1 = −0,0096  → −0,96 %
+Euroja tuli lisää, mutta ostovoima heikkeni.</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="week" id="t3">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 3</b></span><span>Indeksit · EKI · KHI</span></div>
+    <h2>Rahan arvo eri aikoina</h2>
+    <p class="tldr">Hintaindeksi kertoo hintatason. Rahasumma siirretään ajasta toiseen kertomalla se indeksien suhteella: uusi indeksi jaettuna vanhalla.</p>
+  </div>
+  <p>Suomessa käytetään elinkustannusindeksiä (EKI) pitkiin aikasarjoihin ja kuluttajahintaindeksiä (KHI) lähempiin vuosiin. Molempia julkaisee Tilastokeskus. Alla olevat indeksiluvut ovat keksittyjä, jotta laskutapa näkyy selvästi.</p>
+  <div class="code"><pre><code class="language-none">summa nyt = summa silloin · indeksi nyt / indeksi silloin
+
+Indeksi vuonna A: 120,0     Indeksi vuonna B: 138,0
+
+500 € vuonna A   →  500 € · 138,0 / 120,0 = 575,00 €   vuonna B
+800 € vuonna B   →  800 € · 120,0 / 138,0 = 695,65 €   vuonna A
+
+Hinnat nousivat  138,0 / 120,0 − 1 = 0,15  → 15 %</code></pre></div>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">500 * 138.0 / 120.0            # 575.0
+round(800 * 120.0 / 138.0, 2)  # 695.65</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Kun siirrät rahaa ajassa taaksepäin, jakajaksi tulee uudemman ajan indeksi. Tarkista järkevyys: vanhempana aikana hinnat olivat yleensä alempia, joten saman ostovoiman pitää olla silloin pienempi summa.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 3</span>
+    <p>Indeksi oli 104,2 ja on nyt 112,7. Paljonko 2 000 € silloin vastaa nyt? Montako prosenttia hinnat nousivat?</p>
+    <details><summary>Näytä vihje</summary><p>Rahaa siirretään eteenpäin, joten uudempi indeksi on osoittajassa.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">2 000 € · 112,7 / 104,2 = 2 163,15 €
+112,7 / 104,2 − 1 = 0,0816  → 8,16 %</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="week" id="t4">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 4</b></span><span>Yksinkertainen korko · viivästyskorko</span></div>
+    <h2>Korko ilman korkoa korolle</h2>
+    <p class="tldr">r = k · i · t. Korko on pääoma kertaa korkokanta desimaalilukuna kertaa aika vuosina.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Merkki</th><th>Tarkoittaa</th></tr></thead>
+    <tbody>
+      <tr><td>k</td><td>pääoma</td></tr>
+      <tr><td>r</td><td>korko euroina</td></tr>
+      <tr><td>i</td><td>korkokanta desimaalilukuna: 4,5 % = 0,045</td></tr>
+      <tr><td>t</td><td>aika vuosina: 9 kk = 9/12, 45 päivää = 45/365</td></tr>
+      <tr><td>K</td><td>korkoa kasvanut pääoma, K = k + r</td></tr>
+    </tbody>
+  </table></div>
+  <div class="code"><pre><code class="language-none">8 000 €, 4,5 %, 1 vuosi     r = 8 000 · 0,045 · 1      = 360,00 €
+8 000 €, 4,5 %, 9 kk        r = 8 000 · 0,045 · 9/12   = 270,00 €</code></pre></div>
+  <p>Kysytyn muuttujan saa ratkaisemalla yhtälön sen suhteen, esimerkiksi i = r / (k · t).</p>
+
+  <h3>Viivästyskorko</h3>
+  <p>Sama kaava, mutta aika lasketaan päivinä. Jakaja on yleensä 365, joskus 360. Tehtävässä kerrotaan, kumpaa käytetään.</p>
+  <div class="code"><pre><code class="language-none">Lasku 2 400 €, viivästyskorko 11,5 %, myöhässä 45 päivää
+
+r = 2 400 · 0,115 · 45/365 = 34,03 €</code></pre></div>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">round(2400 * 0.115 * 45 / 365, 2)   # 34.03</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Korkokanta kaavaan aina desimaalilukuna: 4,5 % on 0,045, ei 4,5. Kaavassa k ja K ovat eri asioita, joten kirjainten koolla on väliä.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 4</span>
+    <p>a) Paljonko korkoa kertyy 5 000 eurolle 3 %:n korolla 18 kuukaudessa? b) 4 000 eurolle maksettiin vuodessa 120 € korkoa. Mikä oli korkokanta?</p>
+    <details><summary>Näytä vihje</summary><p>18 kk on 18/12 = 1,5 vuotta. Kohdassa b ratkaise i kaavasta r = k · i · t.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">a) r = 5 000 · 0,03 · 18/12 = 225,00 €
+b) i = r / (k · t) = 120 / (4 000 · 1) = 0,03  → 3 %</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="week" id="t5">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 5</b></span><span>Korkoa korolle</span></div>
+    <h2>Kun korko kasvaa korkoa</h2>
+    <p class="tldr">K = k · (1 + i)ᵗ. Joka vuosi korko lasketaan myös aiemmin kertyneelle korolle, joten kasvu kiihtyy.</p>
+  </div>
+  <div class="code"><pre><code class="language-none">10 000 €, 4 %, 5 vuotta
+
+K = 10 000 · 1,04⁵ = 12 166,53 €
+r = K − k           =  2 166,53 €
+
+Yksinkertaisella korolla samassa ajassa: 10 000 · 0,04 · 5 = 2 000,00 €</code></pre></div>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">round(10000 * 1.04 ** 5, 2)   # 12166.53</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Potenssiin korotetaan koko muutoskerroin (1 + i), ei pelkkää korkokantaa, joten sulut ovat tärkeät. Pythonissa potenssi kirjoitetaan <code>**</code>. Merkki <code>^</code> on Pythonissa bittien XOR-operaatio: <code>2 ^ 3</code> on 1 eikä 8.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 5</span>
+    <p>Sijoitat 2 500 € 3,2 %:n vuosikorolla 10 vuodeksi, ja korko lisätään pääomaan vuosittain. Paljonko sinulla on lopussa, ja paljonko siitä on korkoa?</p>
+    <details><summary>Näytä vihje</summary><p>Muutoskerroin on 1,032, ja se korotetaan kymmenenteen potenssiin.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">K = 2 500 · 1,032¹⁰ = 3 425,60 €
+r = 3 425,60 − 2 500 =   925,60 €</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="week" id="t6">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 6</b></span><span>Tasalyhennys · tasaerä</span></div>
+    <h2>Lainan lyhentäminen</h2>
+    <p class="tldr">Tasalyhennyksessä lyhennys pysyy samana ja erä pienenee. Tasaerässä erä pysyy samana, ja sen sisällä koron osuus pienenee ja lyhennyksen osuus kasvaa.</p>
+  </div>
+  <p>Esimerkki: 12 000 € laina, 6 % vuosikorko, maksetaan kuukausittain vuoden aikana (12 erää). Kuukauden korko on 0,06 / 12 = 0,005.</p>
+
+  <h3>Tasalyhennys</h3>
+  <div class="code"><pre><code class="language-none">Lyhennys L = PV / n = 12 000 / 12 = 1 000 € joka kuukausi
+Korko      = jäljellä oleva pääoma · 0,06 · 1/12</code></pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Kk</th><th>Jäljellä</th><th>Korko</th><th>Lyhennys</th><th>Erä</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>12 000,00</td><td>60,00</td><td>1 000,00</td><td>1 060,00</td></tr>
+      <tr><td>2</td><td>11 000,00</td><td>55,00</td><td>1 000,00</td><td>1 055,00</td></tr>
+      <tr><td>3</td><td>10 000,00</td><td>50,00</td><td>1 000,00</td><td>1 050,00</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Tasaerä (annuiteetti)</h3>
+  <div class="code"><pre><code class="language-none">PMT = PV · i · (1 + i)ⁿ / ((1 + i)ⁿ − 1)
+    = 12 000 · 0,005 · 1,005¹² / (1,005¹² − 1) = 1 032,80 €
+
+Koron osuus    IPMT = jäljellä oleva pääoma · i
+Lyhennys       PPMT = PMT − IPMT</code></pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Kk</th><th>Jäljellä</th><th>Korko</th><th>Lyhennys</th><th>Erä</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>12 000,00</td><td>60,00</td><td>972,80</td><td>1 032,80</td></tr>
+      <tr><td>2</td><td>11 027,20</td><td>55,14</td><td>977,66</td><td>1 032,80</td></tr>
+      <tr><td>3</td><td>10 049,54</td><td>50,25</td><td>982,55</td><td>1 032,80</td></tr>
+    </tbody>
+  </table></div>
+  <p>Koko vuoden aikana korkoa kertyy tasalyhennyksellä 390,00 € ja tasaerällä 393,57 €. Tasaerässä pääomaa lyhennetään alussa hitaammin, joten korkoa ehtii kertyä hieman enemmän.</p>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">PV, i, n = 12000, 0.06 / 12, 12
+PMT = PV * i * (1 + i) ** n / ((1 + i) ** n - 1)
+round(PMT, 2)   # 1032.8</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Tasaerän kaavassa i on <em>yhden maksukauden</em> korko ja n <em>maksuerien</em> määrä. Kuukausimaksuissa vuosikorko jaetaan 12:lla, ja kahden vuoden lainassa n on 24, ei 2.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 6</span>
+    <p>6 000 € laina, 4,8 % vuosikorko, 24 kuukausierää. Laske tasaerän suuruus sekä ensimmäisen erän korko ja lyhennys. Laske vertailuksi ensimmäinen erä tasalyhennyksellä.</p>
+    <details><summary>Näytä vihje</summary><p>i = 0,048 / 12 = 0,004 ja n = 24. Ensimmäisen kuukauden korko lasketaan koko lainasummalle.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">Tasaerä:  PMT = 6 000 · 0,004 · 1,004²⁴ / (1,004²⁴ − 1) = 262,69 €
+          1. erän korko     6 000 · 0,004 = 24,00 €
+          1. erän lyhennys  262,69 − 24,00 = 238,69 €
+
+Tasalyhennys: 6 000 / 24 + 24,00 = 250,00 + 24,00 = 274,00 €</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="week" id="t7">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 7</b></span><span>Katetuotto · kriittinen piste · tunnusluvut</span></div>
+    <h2>Katetuotto ja kannattavuus</h2>
+    <p class="tldr">Katetuotto on se, mitä myynnistä jää, kun muuttuvat kustannukset on maksettu. Sillä katetaan kiinteät kustannukset, ja loput on voittoa.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Lyhenne</th><th>Tarkoittaa</th></tr></thead>
+    <tbody>
+      <tr><td>muku</td><td>muuttuvat kustannukset: kasvavat myynnin mukana (materiaalit, komissiot)</td></tr>
+      <tr><td>kiku</td><td>kiinteät kustannukset: samat myynnistä riippumatta (vuokra, palkat)</td></tr>
+      <tr><td>ctu</td><td>katetuotto yhtä kappaletta kohti = hinta − muuttuva kustannus / kpl</td></tr>
+      <tr><td>ct%</td><td>ctu / hinta · 100 %</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Katetuottolaskelma</h3>
+  <p>Tuote maksaa 45 € (ilman arvonlisäveroa), muuttuva kustannus on 27 €/kpl ja kiinteät kustannukset 21 600 €. Myydään 1 500 kappaletta.</p>
+  <div class="code"><pre><code class="language-none">  Myyntituotot           1 500 · 45 €   67 500 €
+− Muuttuvat kustannukset 1 500 · 27 €   40 500 €
+= Katetuotto                            27 000 €
+− Kiinteät kustannukset                 21 600 €
+= Tulos                                  5 400 €
+
+ctu = 45 − 27 = 18 €       ct% = 18 / 45 · 100 % = 40 %</code></pre></div>
+
+  <h3>Kriittinen piste</h3>
+  <p>Kriittisessä pisteessä katetuotto riittää juuri ja juuri kiinteisiin kustannuksiin, eli tulos on nolla.</p>
+  <div class="code"><pre><code class="language-none">N = kiinteät kustannukset / ctu = 21 600 / 18 = 1 200 kpl
+
+yli 1 200 kpl → voittoa      tasan 1 200 → nollatulos      alle → tappiota</code></pre></div>
+
+  <h3>Tunnusluvut</h3>
+  <div class="code"><pre><code class="language-none">Myyntikate-%   (myynti − muuttuvat kust.) / myynti · 100 %   = 27 000 / 67 500 · 100 % = 40 %
+ROI            liikevoitto / sijoitettu pääoma · 100 %       =  5 400 / 60 000 · 100 % =  9 %
+
+Molemmat ovat kurssin yksinkertaistettuja kaavoja. Näin laskettuna myyntikate-%
+on sama luku kuin ct%. Tilinpäätösanalyysissä myyntikate ja ROI lasketaan
+tarkemmin tilinpäätöksen eristä.
+               (sijoitettu pääoma 60 000 € on esimerkkiluku)</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Katetuotto ei ole voittoa. Tuote voi näyttää hyvältä, koska ctu on positiivinen, mutta jos myynti jää kriittisen pisteen alle, kiinteät kustannukset tekevät tuloksesta tappiollisen.</p>
+    <p>Katetuottolaskelmassa hinnat ovat ilman arvonlisäveroa, koska arvonlisävero tilitetään valtiolle eikä se ole yrityksen tuloa.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 7</span>
+    <p>Tuotteen hinta on 80 € ja muuttuva kustannus 52 €/kpl. Kiinteät kustannukset ovat 35 000 €. Laske ctu, ct% ja kriittinen piste. Paljonko tulos on, jos myydään 1 400 kappaletta?</p>
+    <details><summary>Näytä vihje</summary><p>Kriittisen pisteen jälkeen jokainen myyty kappale tuo tulokseen ctu:n verran.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">ctu = 80 − 52 = 28 €
+ct% = 28 / 80 · 100 % = 35 %
+N   = 35 000 / 28 = 1 250 kpl
+Tulos 1 400 kpl:  1 400 · 28 − 35 000 = 4 200 €</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="week" id="t8">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 8</b></span><span>Valtion tulovero 2024 · porrastus</span></div>
+    <h2>Progressiivinen tuloveroasteikko</h2>
+    <p class="tldr">Veroprosentti koskee vain sitä osaa tulosta, joka ylittää portaan alarajan. Alarajaan asti kertynyt vero on valmiina taulukossa.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Verotettava ansiotulo</th><th>Vero alarajan kohdalla</th><th>Vero ylittävästä osasta</th></tr></thead>
+    <tbody>
+      <tr><td>0 €</td><td>0,00 €</td><td>12,64 %</td></tr>
+      <tr><td>20 500 €</td><td>2 591,20 €</td><td>19,00 %</td></tr>
+      <tr><td>30 500 €</td><td>4 491,20 €</td><td>30,25 %</td></tr>
+      <tr><td>50 400 €</td><td>10 510,95 €</td><td>34,00 %</td></tr>
+      <tr><td>88 200 €</td><td>23 362,95 €</td><td>42,00 %</td></tr>
+      <tr><td>150 000 €</td><td>49 318,95 €</td><td>44,00 %</td></tr>
+    </tbody>
+  </table></div>
+  <p>Lähde: <a href="https://www.veronmaksajat.fi/tutkimus-ja-tilastot/tuloverot/tuloveroasteikot-valtio/valtion-tuloveroasteikko-2024/" target="_blank" rel="noopener">Veronmaksajain Keskusliitto, valtion tuloveroasteikko 2024</a>. Asteikko koskee vain valtion tuloveroa. Palkasta maksetaan lisäksi esimerkiksi kunnallisveroa, joten todellinen veroprosentti on eri.</p>
+  <div class="code"><pre><code class="language-none">Tulo 42 000 €  → porras 30 500 €
+
+vero = 4 491,20 + (42 000 − 30 500) · 0,3025
+     = 4 491,20 + 3 478,75
+     = 7 969,95 €
+
+Keskimääräinen veroprosentti: 7 969,95 / 42 000 · 100 % = 18,98 %</code></pre></div>
+
+  <h3>Takaperin: mikä tulo tuottaa tietyn veron?</h3>
+  <div class="code"><pre><code class="language-none">Vero 3 000 €  → välillä 2 591,20 – 4 491,20, eli porras 20 500 €
+
+ylittävä vero  3 000 − 2 591,20 = 408,80 €
+ylittävä tulo  408,80 / 0,19    = 2 151,58 €
+tulo           20 500 + 2 151,58 = 22 651,58 €</code></pre></div>
+
+  <h3>Tarkista Pythonilla</h3>
+  <div class="code"><pre><code class="language-python">round(4491.20 + (42000 - 30500) * 0.3025, 2)   # 7969.95</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Korkeampi porras ei nosta veroa koko tulosta, vaan vain portaan ylittävästä osasta. Siksi valtion tuloveron takia palkankorotus ei voi koskaan pienentää käteen jäävää summaa.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 8</span>
+    <p>a) Paljonko valtion tuloveroa maksetaan 55 000 euron tulosta? b) Valtion tuloveroa maksettiin 12 000 €. Mikä oli tulo?</p>
+    <details><summary>Näytä vihje</summary><p>a) 55 000 € on portaassa 50 400 €. b) 12 000 € on välillä 10 510,95 – 23 362,95, joten veroprosentti on 34.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">a) 10 510,95 + (55 000 − 50 400) · 0,34 = 10 510,95 + 1 564,00 = 12 074,95 €
+
+b) (12 000 − 10 510,95) / 0,34 = 1 489,05 / 0,34 = 4 379,56 €
+   tulo = 50 400 + 4 379,56 = 54 779,56 €</code></pre></div></details>
+  </div>
+</section>
+
+
+    </div>
+  </main>
+
+  <main class="sheet" id="sheet-verkot" data-slip="verkot" hidden>
+    <div class="sheet-head">
+      <span class="label">// tietoverkot · kyberturva</span>
+      <h2>Verkkojen <em>lunttilappu</em></h2>
+      <p>Lähiverkko, laitteet, OSI-malli, protokollat ja kyberturvan perusteet. Termit ja komennot ovat samat kuin Ciscon Networking Academyn kursseilla.</p>
+    </div>
+    <nav class="strip" aria-label="Osat">
+      <ol class="weeks"></ol>
+      <span class="tally"></span>
+    </nav>
+    <div class="course">
+
+
+<!-- 1 -->
+<section class="week" id="v1">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 1</b></span><span>LAN · WAN · topologiat · siirtomedia</span></div>
+    <h2>Tietoverkon perusrakenne</h2>
+    <p class="tldr">Verkko on joukko laitteita, jotka voivat lähettää toisilleen dataa. Verkot jaetaan niiden koon mukaan, ja laitteiden kytkentätapaa kutsutaan topologiaksi.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Verkko</th><th>Mikä se on</th><th>Esimerkki</th></tr></thead>
+    <tbody>
+      <tr><td>LAN</td><td>Lähiverkko yhden organisaation hallinnassa, rajatulla alueella</td><td>kodin tai toimiston verkko</td></tr>
+      <tr><td>WLAN</td><td>Langaton lähiverkko</td><td>Wi-Fi</td></tr>
+      <tr><td>WAN</td><td>Laajaverkko, joka yhdistää lähiverkkoja pitkien matkojen yli. Usein operaattorin ylläpitämä.</td><td>yrityksen toimipisteiden välinen yhteys</td></tr>
+      <tr><td>Internet</td><td>Maailmanlaajuinen verkkojen verkko</td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Topologiat</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Topologia</th><th>Rakenne</th><th>Huomio</th></tr></thead>
+    <tbody>
+      <tr><td>Tähti</td><td>Kaikki laitteet kytketty yhteen keskuslaitteeseen, yleensä kytkimeen</td><td>Nykyisten lähiverkkojen tavallisin muoto. Keskuslaitteen vika kaataa koko verkon.</td></tr>
+      <tr><td>Laajennettu tähti</td><td>Useita tähtiä, joiden keskuslaitteet on kytketty toisiinsa</td><td>Isommat lähiverkot</td></tr>
+      <tr><td>Väylä</td><td>Kaikki laitteet samassa kaapelissa</td><td>Vanha tekniikka</td></tr>
+      <tr><td>Rengas</td><td>Jokainen laite kytketty kahteen naapuriin</td><td>Vanha tekniikka lähiverkoissa</td></tr>
+      <tr><td>Mesh</td><td>Laitteiden välillä useita reittejä</td><td>Vikasietoinen. Käytetään esimerkiksi WAN-verkoissa.</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Fyysinen topologia</strong> kertoo, miten kaapelit ja laitteet oikeasti sijaitsevat. <strong>Looginen topologia</strong> kertoo, miten data kulkee ja miten osoitteet jakautuvat.</p>
+
+  <h3>Siirtomedia</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Media</th><th>Signaali</th><th>Huomio</th></tr></thead>
+    <tbody>
+      <tr><td>Kupari (UTP)</td><td>sähkö</td><td>Ethernet-kaapelin enimmäispituus on 100 metriä. Altis sähkömagneettisille häiriöille.</td></tr>
+      <tr><td>Valokuitu</td><td>valo</td><td>Pitkät matkat ja suuret nopeudet. Ei häiriinny sähkömagneettisesti.</td></tr>
+      <tr><td>Langaton</td><td>radioaallot</td><td>Helppo, mutta kuuluvuus, häiriöt ja tietoturva on mietittävä erikseen.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Kaistanleveys ja läpäisy eivät ole sama asia. Kaistanleveys on verkon teoreettinen kapasiteetti, esimerkiksi 1 Gbit/s. Läpäisy on se, mitä oikeasti siirtyy, ja se on yleensä pienempi.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 1</span>
+    <p>Kahvilassa on langaton verkko asiakkaille ja kassakoneet kytketty kaapelilla samaan kytkimeen. Kahvila kuuluu ketjuun, jonka pääkonttori on toisessa kaupungissa. Mitkä verkkotyypit ja topologia tästä löytyvät?</p>
+    <details><summary>Näytä vihje</summary><p>Mieti erikseen kahvilan sisäinen verkko ja yhteys pääkonttoriin. Mikä on kytkimen rooli kassakoneiden kannalta?</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">Asiakkaiden Wi-Fi          → WLAN
+Kassakoneet ja kytkin      → LAN, tähtitopologia (kytkin keskellä)
+Yhteys pääkonttoriin       → WAN (tai internetin yli kulkeva yhteys)</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="week" id="v2">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 2</b></span><span>Kytkin · reititin · tukiasema · dokumentointi</span></div>
+    <h2>Aktiivilaitteet ja verkon dokumentointi</h2>
+    <p class="tldr">Kytkin yhdistää laitteita saman lähiverkon sisällä MAC-osoitteiden avulla. Reititin välittää liikennettä eri verkkojen välillä IP-osoitteiden avulla.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Laite</th><th>OSI-kerros</th><th>Tehtävä</th></tr></thead>
+    <tbody>
+      <tr><td>Keskitin (hub)</td><td>1</td><td>Toistaa saapuvan signaalin kaikkiin portteihin. Vanhentunut.</td></tr>
+      <tr><td>Kytkin (switch)</td><td>2</td><td>Oppii, mikä MAC-osoite on missäkin portissa, ja lähettää kehyksen vain oikeaan porttiin.</td></tr>
+      <tr><td>Tukiasema (AP)</td><td>2</td><td>Liittää langattomat laitteet lähiverkkoon.</td></tr>
+      <tr><td>Reititin (router)</td><td>3</td><td>Valitsee paketille reitin verkosta toiseen. Toimii lähiverkon oletusyhdyskäytävänä.</td></tr>
+      <tr><td>Palomuuri</td><td>3–7</td><td>Päästää läpi tai estää liikennettä sääntöjen perusteella.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Kodin "reititin" on yleensä monta laitetta yhdessä: reititin, kytkin, tukiasema, palomuuri ja usein myös DHCP-palvelin.</p>
+
+  <h3>Dokumentointi</h3>
+  <p>Hyvin dokumentoitu verkko on helppo korjata ja laajentaa. Ciscon tehtävissä toistuvat kaksi asiakirjaa:</p>
+  <ul>
+    <li><strong>Topologiakaavio</strong>: laitteet, niiden nimet ja mitkä liitännät on kytketty mihinkin.</li>
+    <li><strong>Osoitetaulukko</strong>: jokaisen laitteen jokaiselle liitännälle IP-osoite, aliverkon peite ja oletusyhdyskäytävä.</li>
+  </ul>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Laite</th><th>Liitäntä</th><th>IP-osoite</th><th>Peite</th><th>Oletusyhdyskäytävä</th></tr></thead>
+    <tbody>
+      <tr><td>R1</td><td>G0/0/0</td><td>192.168.10.1</td><td>255.255.255.0</td><td>–</td></tr>
+      <tr><td>S1</td><td>VLAN 1</td><td>192.168.10.2</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+      <tr><td>PC1</td><td>NIC</td><td>192.168.10.10</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Cisco IOS: perusteet</h3>
+  <div class="code"><pre><code class="language-none">enable                                 käyttäjätilasta etuoikeutettuun tilaan (R1&gt; → R1#)
+configure terminal                     globaaliin konfigurointitilaan (R1(config)#)
+hostname R1                            laitteen nimi
+interface g0/0/0                       liitännän asetuksiin
+ ip address 192.168.10.1 255.255.255.0 osoite ja peite liitännälle
+ no shutdown                           liitäntä päälle (reitittimen liitännät ovat oletuksena pois päältä)
+end                                    takaisin etuoikeutettuun tilaan
+show ip interface brief                kaikkien liitäntöjen osoitteet ja tila
+show running-config                    käytössä olevat asetukset
+copy running-config startup-config     tallentaa asetukset, jotta ne säilyvät uudelleenkäynnistyksessä</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Asetukset tallentuvat ensin vain running-configiin eli käyttömuistiin. Jos laite käynnistetään uudelleen ennen komentoa <code>copy running-config startup-config</code>, muutokset katoavat.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 2</span>
+    <p>PC1 saa yhteyden saman lähiverkon tulostimeen mutta ei internetiin. Kaapelit ovat kunnossa. Mitä PC1:n osoitetaulukon tiedoista tarkistaisit ensimmäisenä, ja miksi?</p>
+    <details><summary>Näytä vihje</summary><p>Lähiverkon sisällä liikenne kulkee kytkimen kautta. Mikä laite tarvitaan, kun liikenne lähtee lähiverkon ulkopuolelle?</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">Oletusyhdyskäytävä. Saman verkon laitteet löytyvät ilman reititintä,
+mutta verkon ulkopuolelle liikenne lähtee oletusyhdyskäytävän eli
+reitittimen kautta. Jos se puuttuu tai on väärä, internet ei toimi.
+Tarkistus Windowsissa: ipconfig</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="week" id="v3">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 3</b></span><span>OSI · TCP/IP · kapselointi</span></div>
+    <h2>OSI-malli</h2>
+    <p class="tldr">OSI-malli jakaa verkkoliikenteen seitsemään kerrokseen. Jokainen kerros hoitaa oman tehtävänsä ja palvelee yläpuolista kerrosta.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Kerros</th><th>Tehtävä</th><th>PDU</th><th>Esimerkkejä</th></tr></thead>
+    <tbody>
+      <tr><td>7</td><td>Sovelluskerros</td><td>Rajapinta sovelluksille</td><td>data</td><td>HTTP, DNS, SMTP</td></tr>
+      <tr><td>6</td><td>Esitystapakerros</td><td>Muoto, salaus, pakkaus</td><td>data</td><td>TLS-salaus, JPEG</td></tr>
+      <tr><td>5</td><td>Istuntokerros</td><td>Yhteysistuntojen hallinta</td><td>data</td><td></td></tr>
+      <tr><td>4</td><td>Kuljetuskerros</td><td>Päästä päähän -siirto, portit</td><td>segmentti</td><td>TCP, UDP</td></tr>
+      <tr><td>3</td><td>Verkkokerros</td><td>Loogiset osoitteet ja reititys</td><td>paketti</td><td>IP, ICMP, reititin</td></tr>
+      <tr><td>2</td><td>Siirtoyhteyskerros</td><td>Siirto saman verkon sisällä, MAC-osoitteet</td><td>kehys</td><td>Ethernet, Wi-Fi, kytkin</td></tr>
+      <tr><td>1</td><td>Fyysinen kerros</td><td>Bitit sähkönä, valona tai radioaaltoina</td><td>bitit</td><td>kaapelit, liittimet</td></tr>
+    </tbody>
+  </table></div>
+  <p>Muistisääntö alhaalta ylös englanniksi: <em>Please Do Not Throw Sausage Pizza Away</em> (Physical, Data link, Network, Transport, Session, Presentation, Application).</p>
+
+  <h3>TCP/IP-malli</h3>
+  <p>Internet toimii käytännössä TCP/IP-mallin mukaan. Siinä on neljä kerrosta, jotka vastaavat OSI-mallia näin:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>TCP/IP</th><th>OSI</th></tr></thead>
+    <tbody>
+      <tr><td>Sovelluskerros</td><td>7, 6 ja 5</td></tr>
+      <tr><td>Kuljetuskerros</td><td>4</td></tr>
+      <tr><td>Internet-kerros</td><td>3</td></tr>
+      <tr><td>Verkkoyhteyskerros</td><td>2 ja 1</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Kapselointi</h3>
+  <p>Lähettäessä jokainen kerros lisää datan ympärille oman otsikkonsa: kuljetuskerros porttinumerot, verkkokerros IP-osoitteet ja siirtoyhteyskerros MAC-osoitteet. Vastaanottaja purkaa kerrokset päinvastaisessa järjestyksessä.</p>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>MAC-osoite ja IP-osoite ovat eri kerroksilla. Kun paketti kulkee reitittimen läpi, MAC-osoitteet vaihtuvat jokaisella välillä, mutta lähettäjän ja vastaanottajan IP-osoitteet pysyvät samoina. Poikkeus on osoitteenmuunnos (NAT), jota esimerkiksi kotireititin käyttää.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 3</span>
+    <p>Millä OSI-kerroksella kukin toimii: a) porttinumero 443, b) kytkin, c) katkennut kaapeli, d) IP-osoite, e) HTTP?</p>
+    <details><summary>Näytä vihje</summary><p>Portit kuuluvat kuljetukseen, MAC-osoitteet siirtoyhteyteen ja IP-osoitteet verkkoon.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">a) porttinumero      → 4 kuljetuskerros
+b) kytkin            → 2 siirtoyhteyskerros
+c) katkennut kaapeli → 1 fyysinen kerros
+d) IP-osoite         → 3 verkkokerros
+e) HTTP              → 7 sovelluskerros</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="week" id="v4">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 4</b></span><span>TCP · UDP · portit · DHCP · DNS · ARP</span></div>
+    <h2>Tietoliikenteen protokollat</h2>
+    <p class="tldr">Protokolla on sovittu tapa viestiä. IP-osoite vie liikenteen oikealle laitteelle ja porttinumero laitteen sisällä oikealle palvelulle.</p>
+  </div>
+  <h3>TCP vai UDP</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>TCP</th><th>UDP</th></tr></thead>
+    <tbody>
+      <tr><td>Yhteys</td><td>Muodostetaan ennen siirtoa kolmivaiheisella kättelyllä: SYN, SYN-ACK, ACK</td><td>Ei yhteyden muodostusta</td></tr>
+      <tr><td>Luotettavuus</td><td>Kuittaa vastaanotetut segmentit ja lähettää kadonneet uudelleen</td><td>Ei kuittauksia eikä uudelleenlähetyksiä</td></tr>
+      <tr><td>Järjestys</td><td>Kokoaa segmentit oikeaan järjestykseen</td><td>Ei takuuta järjestyksestä</td></tr>
+      <tr><td>Käyttö</td><td>Verkkosivut, sähköposti, tiedostonsiirto</td><td>Puhelut, videot, pelit, DNS-kyselyt</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Tavallisimmat portit</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Portti</th><th>Protokolla</th><th>Käyttö</th></tr></thead>
+    <tbody>
+      <tr><td>20, 21</td><td>FTP (TCP)</td><td>tiedostonsiirto</td></tr>
+      <tr><td>22</td><td>SSH (TCP)</td><td>salattu etäyhteys</td></tr>
+      <tr><td>23</td><td>Telnet (TCP)</td><td>salaamaton etäyhteys, vältä</td></tr>
+      <tr><td>25</td><td>SMTP (TCP)</td><td>sähköpostin lähetys</td></tr>
+      <tr><td>53</td><td>DNS (UDP ja TCP)</td><td>nimestä IP-osoitteeksi</td></tr>
+      <tr><td>67, 68</td><td>DHCP (UDP)</td><td>osoitteen jako, palvelin 67 ja asiakas 68</td></tr>
+      <tr><td>80</td><td>HTTP (TCP)</td><td>verkkosivut ilman salausta</td></tr>
+      <tr><td>110</td><td>POP3 (TCP)</td><td>sähköpostin nouto</td></tr>
+      <tr><td>143</td><td>IMAP (TCP)</td><td>sähköpostin käyttö palvelimella</td></tr>
+      <tr><td>443</td><td>HTTPS (TCP)</td><td>salatut verkkosivut</td></tr>
+      <tr><td>3389</td><td>RDP (TCP)</td><td>Windowsin etätyöpöytä</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Kolme apulaista</h3>
+  <ul>
+    <li><strong>DHCP</strong> antaa laitteelle IP-osoitteen, peitteen, oletusyhdyskäytävän ja DNS-palvelimen. Vaiheet muistaa sanalla DORA: Discover, Offer, Request, Acknowledge.</li>
+    <li><strong>DNS</strong> muuttaa nimen, kuten tamk.fi, IP-osoitteeksi.</li>
+    <li><strong>ARP</strong> selvittää lähiverkossa, mikä MAC-osoite kuuluu tietylle IPv4-osoitteelle.</li>
+  </ul>
+  <p>Lisäksi <strong>ICMP</strong> välittää virhe- ja tilaviestejä. <code>ping</code> ja <code>tracert</code> käyttävät sitä.</p>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Jos laitteen IP-osoite alkaa 169.254, se ei saanut osoitetta DHCP-palvelimelta ja antoi itselleen varaosoitteen (APIPA). Tarkista silloin ensin yhteys: kaapeli tai Wi-Fi, ja toimiiko DHCP-palvelin.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 4</span>
+    <p>Selaimeen kirjoitetaan https://tamk.fi. Luettele järjestyksessä, mitkä protokollat tarvitaan ennen kuin sivu näkyy, jos kone on juuri käynnistetty verkkoon.</p>
+    <details><summary>Näytä vihje</summary><p>Kone tarvitsee ensin oman osoitteen, sitten palvelimen osoitteen ja vasta sitten itse sivun.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">1. DHCP   kone saa IP-osoitteen, oletusyhdyskäytävän ja DNS-palvelimen
+2. ARP    kone selvittää oletusyhdyskäytävän MAC-osoitteen
+3. DNS    tamk.fi muutetaan IP-osoitteeksi (UDP, portti 53)
+4. TCP    kolmivaiheinen kättely palvelimen porttiin 443
+5. HTTPS  sivu haetaan salattuna (TLS + HTTP)</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="week" id="v5">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 5</b></span><span>CIA · riski · liiketoiminta</span></div>
+    <h2>Miksi kyberturva kuuluu liiketoimintaan</h2>
+    <p class="tldr">Kyberturvassa suojataan tietoa ja palveluita, joiden varassa yritys toimii. Kun järjestelmät pysähtyvät, myös myynti, tuotanto ja asiakaspalvelu pysähtyvät.</p>
+  </div>
+  <h3>CIA-kolmio</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tavoite</th><th>Tarkoittaa</th><th>Esimerkki</th></tr></thead>
+    <tbody>
+      <tr><td>Luottamuksellisuus (Confidentiality)</td><td>Tieto on vain niiden käytössä, joilla on siihen oikeus.</td><td>salaus, käyttöoikeudet</td></tr>
+      <tr><td>Eheys (Integrity)</td><td>Tieto on oikeaa, eikä sitä ole muutettu luvatta.</td><td>tiivisteet, digitaaliset allekirjoitukset</td></tr>
+      <tr><td>Saatavuus (Availability)</td><td>Tieto ja palvelut ovat käytettävissä silloin, kun niitä tarvitaan.</td><td>varmuuskopiot, varajärjestelmät</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Riski</h3>
+  <p>Riskiä arvioidaan kahdella kysymyksellä: kuinka todennäköisesti jokin tapahtuu ja kuinka pahat seuraukset sillä on. Kaikkea ei voi suojata yhtä paljon, joten suojaukset kohdistetaan suurimpiin riskeihin.</p>
+
+  <h3>Mitä huono kyberturva maksaa</h3>
+  <ul>
+    <li><strong>Käyttökatko:</strong> myynti ja tuotanto pysähtyvät.</li>
+    <li><strong>Maine:</strong> asiakkaat ja kumppanit menettävät luottamuksensa.</li>
+    <li><strong>Sakot:</strong> EU:n tietosuoja-asetuksen (GDPR) rikkomisesta voi seurata enintään 20 miljoonan euron tai 4 prosentin maailmanlaajuisen vuosiliikevaihdon sakko, sen mukaan kumpi on suurempi.</li>
+    <li><strong>Johdon vastuu:</strong> NIS2-direktiivin mukaan organisaation johto hyväksyy kyberturvatoimet ja vastaa niistä.</li>
+  </ul>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Tietoturva ei ole pelkästään IT-osaston asia. Suuri osa onnistuneista hyökkäyksistä hyödyntää ihmistä, esimerkiksi huijausviestillä, joten koulutus kuuluu jokaiselle.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 5</span>
+    <p>Mihin CIA-kolmion kohtaan kukin tapaus osuu? a) Verkkokauppa on palvelunestohyökkäyksen takia poissa käytöstä. b) Asiakasrekisteri vuotaa internetiin. c) Hyökkääjä muuttaa laskun tilinumeron.</p>
+    <details><summary>Näytä vihje</summary><p>Kysy jokaisesta: katosiko pääsy, näkikö väärä ihminen, vai muuttuiko tieto?</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">a) saatavuus
+b) luottamuksellisuus
+c) eheys</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="week" id="v6">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 6</b></span><span>Uhat · varautuminen</span></div>
+    <h2>Kyberuhat ja niihin varautuminen</h2>
+    <p class="tldr">Useimmat hyökkäykset eivät ole teknisesti nokkelia. Ne hyödyntävät kiirettä, heikkoja salasanoja ja päivittämättömiä järjestelmiä.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Uhka</th><th>Mitä tapahtuu</th></tr></thead>
+    <tbody>
+      <tr><td>Tietojenkalastelu</td><td>Huijausviesti houkuttelee klikkaamaan linkkiä tai antamaan tunnukset.</td></tr>
+      <tr><td>Kiristyshaittaohjelma</td><td>Salaa tiedostot ja vaatii lunnaita. Usein tietoja myös varastetaan ja uhataan julkaista.</td></tr>
+      <tr><td>Virus</td><td>Kiinnittyy toiseen tiedostoon ja leviää, kun tiedosto avataan.</td></tr>
+      <tr><td>Mato</td><td>Leviää itsestään verkon yli ilman käyttäjän toimia.</td></tr>
+      <tr><td>Troijalainen</td><td>Näyttää hyödylliseltä ohjelmalta, mutta sisältää haitallisen osan.</td></tr>
+      <tr><td>DoS / DDoS</td><td>Palvelu kaadetaan liialla liikenteellä. DDoS-hyökkäyksessä liikenne tulee monesta lähteestä yhtä aikaa.</td></tr>
+      <tr><td>Väliintulohyökkäys (MitM)</td><td>Hyökkääjä asettuu kahden osapuolen väliin ja kuuntelee tai muuttaa liikennettä.</td></tr>
+      <tr><td>Sosiaalinen manipulointi</td><td>Ihminen huijataan antamaan tietoja tai pääsy, esimerkiksi esiintymällä toimitusjohtajana.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Varautuminen</h3>
+  <ul>
+    <li><strong>Monivaiheinen tunnistautuminen (MFA):</strong> pelkkä varastettu salasana ei riitä.</li>
+    <li><strong>Päivitykset:</strong> tunnetut haavoittuvuudet paikataan ennen kuin niitä käytetään hyväksi.</li>
+    <li><strong>Varmuuskopiot 3-2-1-säännöllä:</strong> kolme kopiota, kahdella eri tallennusmedialla, joista yksi eri paikassa. Palautusta pitää myös testata.</li>
+    <li><strong>Vähimmät oikeudet:</strong> jokaisella on vain ne oikeudet, joita työ vaatii.</li>
+    <li><strong>Verkon segmentointi:</strong> verkko jaetaan osiin, ettei yksi murto avaa koko verkkoa.</li>
+    <li><strong>Koulutus ja ilmoituskanava:</strong> epäilyttävästä viestistä on helppo ilmoittaa, eikä ketään syyllistetä.</li>
+  </ul>
+  <p>Suomessa tietoturvaloukkauksista voi ilmoittaa Traficomin Kyberturvallisuuskeskukselle.</p>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Varmuuskopio, joka on koko ajan kiinni samassa verkossa, voi salautua kiristyshaittaohjelman mukana. Ainakin yhden kopion pitää olla erillään verkosta tai muuttumattomana tallennettuna.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 6</span>
+    <p>Kirjanpitäjä saa sähköpostin, joka näyttää tulevan toimitusjohtajalta: "Maksa tämä lasku heti, olen palaverissa enkä vastaa puhelimeen." Mikä uhka on kyseessä, ja mitkä kaksi toimintatapaa estäisivät vahingon?</p>
+    <details><summary>Näytä vihje</summary><p>Viesti ei sisällä haittaohjelmaa. Huomaa kiire ja se, että varmistaminen tehdään tahallaan vaikeaksi.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">Uhka: sosiaalinen manipulointi, kohdennettu tietojenkalastelu
+(toimitusjohtajahuijaus).
+
+Estää:
+1. Maksut varmistetaan aina toista kanavaa pitkin, esim. soittamalla
+   tunnettuun numeroon.
+2. Isommat maksut vaativat kahden ihmisen hyväksynnän.</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="week" id="v7">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 7</b></span><span>ISO/IEC 27001 · NIS2 · Kybermittari · NIST CSF</span></div>
+    <h2>Kyberturvan keskeiset standardit</h2>
+    <p class="tldr">Standardit ja säädökset kertovat, mitä kyberturvassa pitää vähintään hoitaa ja miten sen voi osoittaa muille.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Nimi</th><th>Mikä se on</th></tr></thead>
+    <tbody>
+      <tr><td>ISO/IEC 27001</td><td>Kansainvälinen standardi tietoturvan hallintajärjestelmälle (ISMS). Organisaatio voi hakea sille sertifikaatin. Uusin versio on vuodelta 2022.</td></tr>
+      <tr><td>ISO/IEC 27002</td><td>Ohjeet 27001:n hallintakeinojen toteuttamiseen.</td></tr>
+      <tr><td>NIS2</td><td>EU:n kyberturvallisuusdirektiivi (EU) 2022/2555. Suomessa se pannaan täytäntöön kyberturvallisuuslailla (124/2025), joka tuli voimaan 8.4.2025.</td></tr>
+      <tr><td>GDPR</td><td>EU:n tietosuoja-asetus (EU) 2016/679, jota on sovellettu 25.5.2018 alkaen. Koskee henkilötietoja.</td></tr>
+      <tr><td>Kybermittari</td><td>Kyberturvallisuuskeskuksen maksuton työkalu, jolla organisaatio arvioi oman kyberturvansa tasoa.</td></tr>
+      <tr><td>NIST CSF 2.0</td><td>Yhdysvaltalainen, laajasti käytetty kehys. Kuusi toimintoa: Govern, Identify, Protect, Detect, Respond ja Recover.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>NIS2 lyhyesti</h3>
+  <ul>
+    <li>Koskee keskisuuria ja suuria organisaatioita, jotka toimivat direktiivissä luetelluilla aloilla, kuten energia, liikenne, terveydenhuolto ja digitaalinen infrastruktuuri. Osa toimijoista, esimerkiksi DNS-palveluiden tarjoajat, kuuluu piiriin koosta riippumatta.</li>
+    <li>Johdon on hyväksyttävä riskienhallintatoimet ja osallistuttava koulutukseen.</li>
+    <li>Merkittävästä poikkeamasta annetaan varhainen varoitus 24 tunnin kuluessa, ilmoitus 72 tunnin kuluessa ja loppuraportti kuukauden kuluessa.</li>
+  </ul>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>ISO/IEC 27001 on vapaaehtoinen standardi. GDPR on suoraan sovellettava EU-asetus, ja NIS2 velvoittaa Suomessa kyberturvallisuuslain kautta. Sertifikaatti ei yksinään tarkoita, että lakisääteiset velvoitteet on täytetty, vaikka se auttaa niissä paljon.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 7</span>
+    <p>Pieni ohjelmistoyritys haluaa ensin selvittää, missä kunnossa sen kyberturva on, ja myöhemmin osoittaa isolle asiakkaalle, että tietoturvaa hallitaan järjestelmällisesti. Mitä työkalua tai standardia se käyttäisi kumpaankin?</p>
+    <details><summary>Näytä vihje</summary><p>Toinen on maksuton itsearviointi, toinen sertifioitava hallintajärjestelmä.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">Nykytilan arviointi   → Kybermittari
+Osoitus asiakkaalle   → ISO/IEC 27001 -sertifikaatti</code></pre></div></details>
   </div>
 </section>
 
