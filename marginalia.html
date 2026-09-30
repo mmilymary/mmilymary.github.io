@@ -167,7 +167,10 @@ h1 em { color: var(--neon); }
 .saved { font: 400 1rem var(--font-ui); color: var(--muted); }
 .actions { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
 .actions .src { margin-left: auto; font: 400 1.1rem var(--font-ui); }
-@media (max-width: 520px) { .actions .src { margin-left: 0; width: 100%; } }
+.actions .src.extra + .src { margin-left: var(--s3); }
+.card-body p.credit { margin-top: var(--s3); font-size: .92rem; color: var(--muted); border-left: 2px solid var(--line); padding-left: var(--s3); }
+.card-body p.credit .label { display: block; margin-bottom: 2px; }
+@media (max-width: 520px) { .actions .src, .actions .src.extra + .src { margin-left: 0; width: 100%; } }
 .empty { border: 1px dashed var(--line); border-radius: var(--radius); padding: var(--s6) var(--s5); }
 .empty h3 { font: 400 var(--step-1) var(--font-display); margin: 0 0 var(--s2); }
 .empty p { margin: 0; color: var(--muted); max-width: 44ch; }
@@ -311,7 +314,8 @@ td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(
   const PATHS = [
     { id: "ux",   name: "Käyttöliittymät", code: "QA76.9.H85" },
     { id: "data", name: "Data",       code: "QA276" },
-    { id: "sec",  name: "Tietoturva",      code: "QA76.9.A25" }
+    { id: "sec",  name: "Tietoturva",      code: "QA76.9.A25" },
+    { id: "code", name: "Ohjelmointi",     code: "QA76.73.P98" }
   ];
   const ITEMS = [
     { id: "ux1", path: "ux", kind: "Työkalu", time: "20 min", title: "Laws of UX", by: "Jon Yablonski", url: "https://lawsofux.com", desc: "Psykologian periaatteet kortteina: Hickin laki, Fittsin laki, Jakobin laki. Valitse kolme sinulle uutta ja etsi jokaiselle esimerkki omasta puhelimestasi." },
@@ -325,6 +329,8 @@ td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(
     { id: "se1", path: "sec", kind: "Kirja", time: "8 h", title: "The Cuckoo's Egg", by: "Clifford Stoll", url: "https://en.wikipedia.org/wiki/The_Cuckoo%27s_Egg_(book)", desc: "Tähtitieteilijä jäljittää 75 sentin kirjanpitovirheestä vakoojan asti. Vanha tietoturvaklassikko, joka on jännittävä kuin dekkari." },
     { id: "se2", path: "sec", kind: "Harjoitus", time: "3 h", title: "Bandit", by: "OverTheWire", url: "https://overthewire.org/wargames/bandit/", desc: "Komentorivipeli, jossa jokainen taso on lukittu ovi ja avain löytyy edellisestä huoneesta. Sopii Tietoverkot ja kyberturvallisuus -kurssin rinnalle." },
     { id: "se3", path: "sec", kind: "Opas", time: "45 min", title: "OWASP Top 10", by: "OWASP Foundation", url: "https://owasp.org/www-project-top-ten/", desc: "Kymmenen yleisintä verkkosovellusten haavoittuvuutta. Yksi päivässä riittää." },
+    { id: "co1", path: "code", kind: "Kirja", time: "luku kerrallaan", title: "Selkeästi Python", by: "Jere Käpyaho, 2024", url: "https://coniferproductions.com/books/selpy/", desc: "Suomenkielinen Python-kirja aloittelijoille ja muista kielistä tuleville: perusteet, ohjelman kulku, tietorakenteet ja tiedostot. Kulkee hyvin Python-kurssin rinnalla. Kirjoitan tähän merkinnän aina, kun saan luvun luettua.", links: [{ label: "esimerkkiohjelmat ↗", url: "https://github.com/coniferprod/selpy-esim" }] },
+    { id: "co2", path: "code", kind: "Koodi", time: "lukujen rinnalla", title: "Selkeästi Python – esimerkit", by: "Conifer Productions", url: "https://github.com/coniferprod/selpy-esim", desc: "Kirjan esimerkkiohjelmat GitHubissa lukujen mukaan kansioihin jaettuina. Ne ovat vapaasti käytettävissä myös ilman kirjaa. Kokeile ajaa ja muokata jokaista esimerkkiä itse ennen kuin luet selityksen.", credit: "Copyright (c) 2024 Conifer Productions. MIT-lisenssi: esimerkkejä saa käyttää, muokata ja jakaa, kunhan tämä tekijänoikeusmerkintä ja lisenssiteksti kulkevat mukana." },
     { id: "se4", path: "sec", kind: "Työkalu", time: "10 min", title: "Have I Been Pwned", by: "Troy Hunt", url: "https://haveibeenpwned.com", desc: "Tarkista oma sähköpostiosoitteesi. Kannattaa katsoa, onko oma osoite päätynyt johonkin tietovuotoon." }
   ];
 
@@ -428,7 +434,7 @@ td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(
     return { total: list.length, read: list.filter(i => data.read[i.id]).length };
   }
   function renderRail() {
-    const shelves = [{ id: "all", name: "Koko kokoelma" }, ...PATHS, { id: "desk", name: "Pöydälläni" }];
+    const shelves = [...PATHS, { id: "desk", name: "Pöydälläni" }, { id: "all", name: "Koko kokoelma" }];
     $("shelves").innerHTML = shelves.map(s => {
       const st = shelfStats(s.id);
       return `<li><button class="shelf" type="button" data-shelf="${s.id}" aria-current="${ui.shelf === s.id}">
@@ -462,6 +468,7 @@ td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(
       ${read ? `<span class="stamp" aria-hidden="true">luettu</span>` : ""}
       <div class="card-body" id="body-${item.id}" ${open ? "" : "hidden"}>
         <p>${esc(item.desc)}</p>
+        ${item.credit ? `<p class="credit"><span class="label">// lisenssi</span> ${esc(item.credit)} <a href="${item.url}/blob/main/LICENSE" target="_blank" rel="noopener">lue lisenssi ↗</a></p>` : ""}
         <div class="note-field">
           <div class="note-row"><label class="label" for="note-${item.id}">// marginaalimerkintä</label><span class="saved" id="saved-${item.id}" aria-live="polite"></span></div>
           <textarea id="note-${item.id}" data-note="${item.id}" placeholder="Mitä tästä jäi käteen? Mikä ärsytti?">${esc(data.notes[item.id] || "")}</textarea>
@@ -469,7 +476,7 @@ td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(
         <div class="actions">
           <button class="btn ${read ? "" : "btn-primary"}" type="button" data-act="read">${read ? "palauta lukemattomaksi" : "merkitse luetuksi"}</button>
           <button class="btn" type="button" data-act="desk" aria-pressed="${desk}">${desk ? "poista pöydältä" : "nosta pöydälle"}</button>
-          <a class="src" href="${item.url}" target="_blank" rel="noopener">avaa lähde ↗</a>
+          ${(item.links || []).map(l => `<a class="src extra" href="${l.url}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}<a class="src" href="${item.url}" target="_blank" rel="noopener">avaa lähde ↗</a>
         </div>
       </div></li>`;
   }
@@ -491,6 +498,14 @@ td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(
   function render(stampId) {
     renderRail();
     renderCatalogue(stampId);
+    revealShelf();
+  }
+  /* On phones the shelf row scrolls sideways: keep the chosen shelf in view */
+  function revealShelf() {
+    const sc = document.querySelector(".rail-scroll"), cur = sc && sc.querySelector('.shelf[aria-current="true"]');
+    if (!sc || !cur || sc.scrollWidth <= sc.clientWidth) return;
+    const r = cur.getBoundingClientRect(), b = sc.getBoundingClientRect();
+    if (r.left < b.left || r.right > b.right) sc.scrollLeft += r.left - b.left - 16;
   }
 
   /* ---------- Events ---------- */
