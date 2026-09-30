@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="fi">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Diiva's Juurileipä – case study · Mila Palviainen</title>
-<meta name="description" content="UX/UI case study: simplifying bread pre-orders and table booking for Diiva's Juurileipä, a café & bakery in Mänttä.">
+<title>Diiva's Juurileipä – UX/UI-projekti · Mila Palviainen</title>
+<meta name="description" content="UX/UI-projekti: leivän ennakkotilausten ja pöytävarausten yksinkertaistaminen Diiva&#x27;s Juurileivälle, kahvila-leipomolle Mäntässä.">
 <meta name="theme-color" content="#2e0f17">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="Diiva's Juurileipä – UX/UI case study · Mila Palviainen">
-<meta property="og:description" content="Simplifying bread pre-orders and table booking for a café & bakery in Mänttä.">
+<meta property="og:title" content="Diiva&#x27;s Juurileipä – UX/UI-projekti · Mila Palviainen">
+<meta property="og:description" content="Leivän ennakkotilausten ja pöytävarausten yksinkertaistaminen kahvila-leipomolle Mäntässä.">
 <meta property="og:image" content="https://mmilymary.github.io/img/diiva/d_new_home.webp">
 <meta property="og:url" content="https://mmilymary.github.io/diiva.html">
 <meta property="og:type" content="article">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Courier+Prime:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Courier+Prime:wght@400;700&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: dark;
@@ -44,7 +44,7 @@
   .intro { padding: clamp(60px, 10vw, 120px) 0 clamp(40px, 6vw, 70px);
     background: radial-gradient(ellipse 70% 70% at 50% 0%, #4a1a26 0%, #2e0f17 45%, var(--bg) 100%); }
   .intro .kicker { font-family: "VT323", monospace; font-size: 22px; color: var(--dusty); letter-spacing: .08em; }
-  .intro h1 { font-family: "Bodoni Moda", serif; font-weight: 400; font-size: clamp(46px, 8vw, 104px); line-height: .95; letter-spacing: -.02em; margin: 12px 0 22px; }
+  .intro h1 { font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-size: clamp(46px, 8vw, 104px); line-height: .95; letter-spacing: -.02em; margin: 12px 0 22px; }
   .intro h1 em { font-style: italic; }
   .note-concept { display: flex; gap: 12px; align-items: flex-start; max-width: 760px; margin: -18px 0 36px; padding: 14px 18px; border: 1px dashed rgba(201,163,166,.45); border-radius: 12px; font-size: 14px; line-height: 1.6; color: var(--muted); }
   .note-concept span { font-family: "VT323", monospace; font-size: 18px; color: var(--dusty); letter-spacing: .08em; white-space: nowrap; }
@@ -74,7 +74,7 @@
   .principles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 12px; }
   .principle { border: 1px solid var(--line); border-radius: 14px; padding: 26px; background: rgba(42,20,25,.55); }
   .principle .n { font-family: "VT323", monospace; font-size: 22px; color: var(--rose); }
-  .principle h3 { font-family: "Bodoni Moda", serif; font-weight: 400; font-size: 26px; margin: 8px 0 12px; line-height: 1.1; }
+  .principle h3 { font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-size: 26px; margin: 8px 0 12px; line-height: 1.1; }
   .principle p { font-size: 15px; margin: 0; }
 
   .quote { text-align: center; }
@@ -91,7 +91,7 @@
   .phone .soon, .desk .soon { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; padding: 16px;
     background: repeating-linear-gradient(135deg, rgba(46,15,23,.05) 0 10px, transparent 10px 20px), var(--paper); color: #2e0f17; }
   .soon span { font-family: "VT323", monospace; font-size: 18px; color: var(--rose); }
-  .soon b { font-family: "Bodoni Moda", serif; font-weight: 400; font-style: italic; font-size: 20px; line-height: 1.1; }
+  .soon b { font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-style: italic; font-size: 20px; line-height: 1.1; }
   .soon i { font-style: normal; font-size: 12px; color: #6d4b50; }
   .screen figcaption { margin-top: 14px; font-size: 14px; line-height: 1.55; color: var(--muted); }
   .screen figcaption b { display: block; color: var(--cream); font-weight: 700; margin-bottom: 2px; }
@@ -110,7 +110,7 @@
   .desks > *, .screens > *, .staff-phones > * { min-width: 0; }
   .staff-phones { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin-top: 40px; align-items: start; }
   .staff-phones .note { grid-column: span 2; align-self: center; color: var(--muted); font-size: 15px; line-height: 1.6; margin: 0; }
-  .staff-phones .note b { display: block; color: var(--cream); font-family: "Bodoni Moda", serif; font-weight: 400; font-style: italic; font-size: 24px; margin-bottom: 6px; }
+  .staff-phones .note b { display: block; color: var(--cream); font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-style: italic; font-size: 24px; margin-bottom: 6px; }
 
   .learned { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
   .learned li { color: var(--cream); font-size: 17px; line-height: 1.6; padding-left: 28px; position: relative; }
@@ -137,29 +137,29 @@
 </style>
 </head>
 <body>
-<nav class="nav" aria-label="Main">
+<nav class="nav" aria-label="Päävalikko">
   <a class="logo" href="index.html">&gt; mila.palviainen</a>
-  <a class="back" href="index.html#work">← all work</a>
+  <a class="back" href="index.html#work">← kaikki työt</a>
 </nav>
 
 <main>
   <header class="intro">
     <div class="wrap">
-      <span class="kicker">case_study / 03</span>
+      <span class="kicker">projekti / 03</span>
       <h1>Diiva's <em>Juurileipä</em></h1>
       <div class="intro-grid">
         <div>
-      <p class="lead">Ordering sourdough or booking a table should feel as easy as walking in. A redesign concept for a lovely, one-of-a-kind café, bakery and restaurant in Mänttä.</p>
-      <p class="note-concept"><span>// NOTE</span>This is my own view – a concept of how Diiva's website could be developed to fit their brand even better. It's not the live site.</p>
+      <p class="lead">Juurileivän tilaamisen tai pöydän varaamisen pitäisi tuntua yhtä helpolta kuin sisään astuminen. Uudistuskonsepti ihanalle ja ainutlaatuiselle kahvila-leipomo-ravintolalle Mäntässä.</p>
+      <p class="note-concept"><span>// HUOM</span>Tämä on oma konseptini siitä, miten Diivan verkkosivuja voisi kehittää vielä paremmin brändin näköisiksi. Kyseessä ei ole käytössä oleva sivusto.</p>
       <dl class="meta">
-        <div><dt>role</dt><dd>UX research, concept &amp; UI design</dd></div>
-        <div><dt>client</dt><dd>Diiva's Juurileipä, Mänttä (real business)</dd></div>
-        <div><dt>scope</dt><dd>Mobile ordering &amp; booking + staff dashboard</dd></div>
-        <div><dt>tools</dt><dd>Figma</dd></div>
+        <div><dt>rooli</dt><dd>UX-tutkimus, konsepti &amp; UI-suunnittelu</dd></div>
+        <div><dt>asiakas</dt><dd>Diiva's Juurileipä, Mänttä (oikea yritys)</dd></div>
+        <div><dt>laajuus</dt><dd>Mobiilitilaus &amp; -varaus + henkilökunnan hallintanäkymä</dd></div>
+        <div><dt>työkalut</dt><dd>Figma</dd></div>
       </dl>
         </div>
-        <figure class="hero-phone"><div class="phone"><img src="img/diiva/home.webp" alt="The redesigned Diiva's Juurileipä homepage on a phone: chef's hat logo with red lips, 'Kahvila | Ravintola | Leipomo', a short tagline and a big red 'Tilaa leipää noudettavaksi' button"></div>
-          <figcaption>The new homepage – one clear main action.</figcaption></figure>
+        <figure class="hero-phone"><div class="phone"><img src="img/diiva/home.webp" alt="Uudistettu Diiva&#x27;s Juurileivän etusivu puhelimella: kokinhattulogo punaisin huulin, &#x27;Kahvila | Ravintola | Leipomo&#x27;, lyhyt iskulause ja iso punainen &#x27;Tilaa leipää noudettavaksi&#x27; -painike"></div>
+          <figcaption>Uusi etusivu – yksi selkeä päätoiminto.</figcaption></figure>
       </div>
     </div>
   </header>
@@ -167,15 +167,15 @@
   <section>
     <div class="wrap cols">
       <div class="reveal">
-        <p class="label">// THE STARTING POINT</p>
-        <h2>A lovely place, a heavy website.</h2>
+        <p class="label">// LÄHTÖTILANNE</p>
+        <h2>Ihana paikka, raskas verkkosivu.</h2>
       </div>
       <div class="reveal">
-        <p class="big">Diiva is a warm café, bakery and restaurant where everything is baked by hand. The old website had all the information – but customers had to work to find it.</p>
+        <p class="big">Diiva on lämmin kahvila, leipomo ja ravintola, jossa kaikki leivotaan käsin. Vanhoilla sivuilla oli kaikki tieto, mutta sen löytäminen vaati asiakkaalta vaivaa.</p>
         <ul class="problems">
-          <li><b>01</b>Ordering bread ahead and booking a table weren't clear, simple flows.</li>
-          <li><b>02</b>The look didn't match the rest of the brand.</li>
-          <li><b>03</b>Long texts. On the web, people skim – they don't read paragraphs.</li>
+          <li><b>01</b>Leivän ennakkotilaus ja pöydän varaus eivät olleet selkeitä ja yksinkertaisia polkuja.</li>
+          <li><b>02</b>Ilme ei vastannut muuta brändiä.</li>
+          <li><b>03</b>Tekstit olivat pitkiä, ja verkossa niitä lähinnä silmäillään.</li>
         </ul>
       </div>
     </div>
@@ -183,23 +183,23 @@
 
   <section>
     <div class="wrap">
-      <p class="label reveal">// WHAT I DID</p>
-      <h2 class="reveal">Three principles.</h2>
+      <p class="label reveal">// MITÄ TEIN</p>
+      <h2 class="reveal">Kolme periaatetta.</h2>
       <div class="principles">
         <article class="principle reveal">
           <span class="n">01</span>
-          <h3>Simplify the two main tasks</h3>
-          <p>Ordering bread and booking a table became short, step-by-step flows: pick, fill in, done – with a clear confirmation and a pickup code.</p>
+          <h3>Yksinkertaista kaksi päätehtävää</h3>
+          <p>Leivän tilaamisesta ja pöydän varaamisesta tuli lyhyitä, vaiheittaisia polkuja: valitse, täytä, valmis – selkeällä vahvistuksella ja noutokoodilla.</p>
         </article>
         <article class="principle reveal">
           <span class="n">02</span>
-          <h3>Look like the brand</h3>
-          <p>A refreshed visual style that matches the café's own identity, so the website feels like the same place you walk into.</p>
+          <h3>Näytä brändiltä</h3>
+          <p>Raikastettu ilme, joka vastaa kahvilan omaa identiteettiä, jotta sivusto tuntuu samalta paikalta, johon astut sisään.</p>
         </article>
         <article class="principle reveal">
           <span class="n">03</span>
-          <h3>Write for skimming</h3>
-          <p>I cut the copy down to what customers actually scan: short headings, key facts first, no jargon.</p>
+          <h3>Kirjoita silmäilijälle</h3>
+          <p>Karsin tekstit siihen, mitä asiakkaat oikeasti silmäilevät: lyhyet otsikot ja tärkeimmät asiat ensin.</p>
         </article>
       </div>
     </div>
@@ -207,55 +207,55 @@
 
   <section>
     <div class="wrap">
-      <p class="label reveal">// BEFORE → AFTER</p>
-      <h2 class="reveal">Same café, a new first impression.</h2>
+      <p class="label reveal">// ENNEN → JÄLKEEN</p>
+      <h2 class="reveal">Sama kahvila, uusi ensivaikutelma.</h2>
       <div class="desks ba">
         <figure class="screen reveal">
-          <div class="window before"><div class="bar"><i></i><i></i><i></i><span>diivasjuurileipa.fi</span><em>before</em></div><img src="img/diiva/d_old_home.webp" alt="The old homepage: a dark chalkboard background, the name in a slab font and a long italic tagline" loading="lazy"></div>
-          <figcaption><b>A name and a long sentence</b>The old homepage told you what the place is – but not what to do next.</figcaption>
+          <div class="window before"><div class="bar"><i></i><i></i><i></i><span>diivasjuurileipa.fi</span><em>ennen</em></div><img src="img/diiva/d_old_home.webp" alt="Vanha etusivu: tumma liitutaulutausta, nimi slab-fontilla ja pitkä kursivoitu iskulause" loading="lazy"></div>
+          <figcaption><b>Nimi ja pitkä lause</b>Vanha etusivu kertoi, mikä paikka on, mutta ei sitä, mitä seuraavaksi pitäisi tehdä.</figcaption>
         </figure>
         <figure class="screen reveal">
-          <div class="window after"><div class="bar"><i></i><i></i><i></i><span>diiva's juurileipä · concept</span><em>after</em></div><img src="img/diiva/d_new_home.webp" alt="The new homepage: the chef's hat logo, Kahvila | Ravintola | Leipomo, a short tagline, a big red Order bread button and a round Book a table badge" loading="lazy"></div>
-          <figcaption><b>One clear main action</b>Order bread or book a table – visible the moment the page opens, with today's opening status underneath.</figcaption>
+          <div class="window after"><div class="bar"><i></i><i></i><i></i><span>diiva's juurileipä · konsepti</span><em>jälkeen</em></div><img src="img/diiva/d_new_home.webp" alt="Uusi etusivu: kokinhattulogo, Kahvila | Ravintola | Leipomo, lyhyt iskulause, iso punainen Tilaa leipää -painike ja pyöreä Varaa pöytä -merkki" loading="lazy"></div>
+          <figcaption><b>Yksi selkeä päätoiminto</b>Tilaa leipää tai varaa pöytä – näkyvissä heti kun sivu aukeaa, ja alla tämän päivän aukiolotilanne.</figcaption>
         </figure>
       </div>
       <div class="desks ba">
         <figure class="screen reveal">
-          <div class="window before"><div class="bar"><i></i><i></i><i></i><span>diivasjuurileipa.fi / tuotteet</span><em>before</em></div><img src="img/diiva/d_old_products.webp" alt="The old shop: four bread photos in a grid on a dark background with prices" loading="lazy"></div>
-          <figcaption><b>A generic web shop</b>Nice bread photos, but a standard shop template with a cart and variations – not how people actually buy from a local bakery.</figcaption>
+          <div class="window before"><div class="bar"><i></i><i></i><i></i><span>diivasjuurileipa.fi / tuotteet</span><em>ennen</em></div><img src="img/diiva/d_old_products.webp" alt="Vanha verkkokauppa: neljä leipäkuvaa ruudukossa tummalla taustalla hintoineen" loading="lazy"></div>
+          <figcaption><b>Tavallinen verkkokauppa</b>Kauniit leipäkuvat, mutta tavallinen kauppapohja ostoskoreineen ja variaatioineen. Paikallisesta leipomosta ostetaan eri tavalla.</figcaption>
         </figure>
         <figure class="screen reveal">
-          <div class="window after"><div class="bar"><i></i><i></i><i></i><span>diiva's juurileipä · illat</span><em>after</em></div><img src="img/diiva/d_new_evenings.webp" alt="The new theme evenings section: dark background, large condensed headline Illat Diivalla, the next event highlighted and example menus in tabs" loading="lazy"></div>
-          <figcaption><b>A site with its own voice</b>Bold headlines, a script accent and warm neutrals – the same feeling as walking in, from the bakery to the theme nights.</figcaption>
+          <div class="window after"><div class="bar"><i></i><i></i><i></i><span>diiva's juurileipä · illat</span><em>jälkeen</em></div><img src="img/diiva/d_new_evenings.webp" alt="Uusi teemailtaosio: tumma tausta, suuri tiivis otsikko Illat Diivalla, seuraava tapahtuma korostettuna ja esimerkkimenut välilehdillä" loading="lazy"></div>
+          <figcaption><b>Sivusto, jolla on oma ääni</b>Rohkeat otsikot, käsialafontti korosteena ja lämpimät neutraalit – sama tunne kuin sisään astuessa, leipomosta teemailtoihin.</figcaption>
         </figure>
       </div>
     </div>
   </section>
 
   <section class="quote">
-    <blockquote class="reveal">“Let's sell a feeling.”</blockquote>
+    <blockquote class="reveal">”Myydään tunnetta.”</blockquote>
   </section>
 
   <section>
     <div class="wrap">
-      <p class="label reveal">// FOR CUSTOMERS · MOBILE</p>
-      <h2 class="reveal">Order, book, done.</h2>
+      <p class="label reveal">// ASIAKKAILLE · MOBIILI</p>
+      <h2 class="reveal">Tilaa, varaa, valmis.</h2>
       <div class="screens">
         <figure class="screen reveal">
-          <div class="phone"><img src="img/diiva/order.webp" alt="Bread order view: pick a pickup day, then breads with photo, price, stock left and a +/– counter; running total and a red Continue button stick to the bottom" loading="lazy"></div>
-          <figcaption><b>Choose bread &amp; pickup day</b>Pickup days with opening hours right under the date, the basket always visible.</figcaption>
+          <div class="phone"><img src="img/diiva/order.webp" alt="Leipätilausnäkymä: valitse noutopäivä, sitten leivät kuvineen, hintoineen, jäljellä olevine määrineen ja +/– -laskurein; välisumma ja punainen Jatka-painike pysyvät alareunassa" loading="lazy"></div>
+          <figcaption><b>Valitse leipä &amp; noutopäivä</b>Noutopäivät ja aukioloajat heti päivämäärän alla, ostoskori aina näkyvissä.</figcaption>
         </figure>
         <figure class="screen reveal">
-          <div class="phone"><img src="img/diiva/steps.webp" alt="Dark homepage section: what is on the shelf today, then pre-ordering explained in three numbered steps with Order bread and Book a table buttons" loading="lazy"></div>
-          <figcaption><b>Three steps, no jargon</b>How pre-ordering works, in lines you can skim: choose, we bake, pick up and pay.</figcaption>
+          <div class="phone"><img src="img/diiva/steps.webp" alt="Tumma etusivun osio: mitä hyllyssä on tänään, sitten ennakkotilaus selitettynä kolmena numeroituna vaiheena sekä Tilaa leipää- ja Varaa pöytä -painikkeet" loading="lazy"></div>
+          <figcaption><b>Kolme vaihetta selkokielellä</b>Miten ennakkotilaus toimii, silmäiltävinä riveinä: valitse, me leivomme, nouda ja maksa.</figcaption>
         </figure>
         <figure class="screen reveal">
-          <div class="phone"><img src="img/diiva/confirm.webp" alt="Order confirmation: Kiitos, Mila! with a large order code D-0415, the order summary, pickup time and address, and an Add to calendar button" loading="lazy"></div>
-          <figcaption><b>A code to show at the counter</b>A friendly thank-you, a short order code and everything you need for pickup – no long receipt.</figcaption>
+          <div class="phone"><img src="img/diiva/confirm.webp" alt="Tilausvahvistus: Kiitos, Mila! isolla tilauskoodilla D-0415, tilauksen yhteenveto, noutoaika ja osoite sekä Lisää kalenteriin -painike" loading="lazy"></div>
+          <figcaption><b>Koodi, jonka näytät tiskillä</b>Ystävällinen kiitos, lyhyt tilauskoodi ja kaikki noutoon tarvittava ilman pitkää kuittia.</figcaption>
         </figure>
         <figure class="screen reveal">
-          <div class="phone"><img src="img/diiva/booking.webp" alt="Table booking view: day chips with closed days greyed out, a guest counter and a grid of free time slots" loading="lazy"></div>
-          <figcaption><b>Table booking on one screen</b>Day, number of people and a time slot – for lunch, coffee or Saturday pizza night.</figcaption>
+          <div class="phone"><img src="img/diiva/booking.webp" alt="Pöytävarausnäkymä: päivävalinnat, joissa suljetut päivät harmaina, vierasmäärän laskuri ja ruudukko vapaista ajoista" loading="lazy"></div>
+          <figcaption><b>Pöytävaraus yhdellä näkymällä</b>Päivä, henkilömäärä ja aika – lounaalle, kahville tai lauantain pizzailtaan.</figcaption>
         </figure>
       </div>
     </div>
@@ -263,28 +263,28 @@
 
   <section>
     <div class="wrap">
-      <p class="label reveal">// FOR THE STAFF · DASHBOARD</p>
-      <h2 class="reveal">The other side of the counter.</h2>
-      <p class="reveal" style="max-width:760px">A good ordering flow only works if the bakery can keep up. I designed a simple dashboard where the owner sees today's orders and tables at a glance, sets how many loaves are available each day, and manages lunch, evenings, seasonal menus and catering requests.</p>
+      <p class="label reveal">// HENKILÖKUNNALLE · HALLINTANÄKYMÄ</p>
+      <h2 class="reveal">Tiskin toinen puoli.</h2>
+      <p class="reveal" style="max-width:760px">Hyvä tilauspolku toimii vain, jos leipomo pysyy perässä. Suunnittelin selkeän hallintanäkymän, josta omistaja näkee päivän tilaukset ja pöydät yhdellä silmäyksellä, asettaa päivittäisen leipämäärän ja hallinnoi lounaita, iltoja, kausimenuja ja pitopalvelupyyntöjä.</p>
       <div class="desks">
         <figure class="screen reveal">
-          <div class="window after"><div class="bar"><i></i><i></i><i></i><span>diiva · hallinta / tilaukset</span><em>staff</em></div><img src="img/diiva/d_staff_orders.webp" alt="Staff dashboard on desktop: Orders and bookings with tabs, date and status filters, search by name or code, and a confirmed order row" loading="lazy"></div>
-          <figcaption><b>Find any order fast</b>Filter by date and status, or search by the customer's name or the code they say at the counter.</figcaption>
+          <div class="window after"><div class="bar"><i></i><i></i><i></i><span>diiva · hallinta / tilaukset</span><em>henkilökunta</em></div><img src="img/diiva/d_staff_orders.webp" alt="Henkilökunnan hallintanäkymä tietokoneella: tilaukset ja varaukset välilehdillä, päivä- ja tilasuodattimet, haku nimellä tai koodilla ja vahvistettu tilausrivi" loading="lazy"></div>
+          <figcaption><b>Löydä mikä tahansa tilaus nopeasti</b>Suodata päivän ja tilan mukaan, tai hae asiakkaan nimellä tai koodilla, jonka hän sanoo tiskillä.</figcaption>
         </figure>
         <figure class="screen reveal">
-          <div class="window after"><div class="bar"><i></i><i></i><i></i><span>diiva · hallinta / pyynnöt</span><em>staff</em></div><img src="img/diiva/d_staff_requests.webp" alt="Staff dashboard on desktop: quote requests list with two new requests and the details of a layer cake order beside it" loading="lazy"></div>
-          <figcaption><b>Cake &amp; catering requests</b>New requests flagged on the left, every detail – date, guests, diets, wishes – on the right.</figcaption>
+          <div class="window after"><div class="bar"><i></i><i></i><i></i><span>diiva · hallinta / pyynnöt</span><em>henkilökunta</em></div><img src="img/diiva/d_staff_requests.webp" alt="Henkilökunnan hallintanäkymä tietokoneella: tarjouspyyntölista, jossa kaksi uutta pyyntöä, ja vieressä kerroskakkutilauksen tiedot" loading="lazy"></div>
+          <figcaption><b>Kakku- ja pitopalvelupyynnöt</b>Uudet pyynnöt merkittyinä vasemmalla, kaikki tiedot – päivä, vieraat, ruokavaliot, toiveet – oikealla.</figcaption>
         </figure>
       </div>
       <div class="staff-phones">
-        <p class="note reveal"><b>…and in your pocket.</b>The same dashboard works on the phone, so the owner can check today's pickups or update the seasonal menu between batches.</p>
+        <p class="note reveal"><b>…ja taskussa.</b>Sama hallintanäkymä toimii puhelimessa, joten omistaja voi tarkistaa päivän noudot tai päivittää kausimenun taikinaerien välissä.</p>
         <figure class="screen reveal">
-          <div class="phone"><img src="img/diiva/staff_today.webp" alt="Staff view Today on a phone: pickups, tables and breads ordered as three counters, then the baking list" loading="lazy"></div>
-          <figcaption><b>Today at a glance</b></figcaption>
+          <div class="phone"><img src="img/diiva/staff_today.webp" alt="Henkilökunnan Tänään-näkymä puhelimella: noudot, pöydät ja tilatut leivät kolmena laskurina, sitten leivontalista" loading="lazy"></div>
+          <figcaption><b>Päivä yhdellä silmäyksellä</b></figcaption>
         </figure>
         <figure class="screen reveal">
-          <div class="phone"><img src="img/diiva/staff_season.webp" alt="Staff view Seasonal menu on a phone: a show-on-homepage checkbox and fields for tab name, title and intro" loading="lazy"></div>
-          <figcaption><b>Seasonal menu, no developer needed</b></figcaption>
+          <div class="phone"><img src="img/diiva/staff_season.webp" alt="Henkilökunnan kausimenunäkymä puhelimella: näytä etusivulla -valintaruutu sekä kentät välilehden nimelle, otsikolle ja johdannolle" loading="lazy"></div>
+          <figcaption><b>Kausimenu ilman koodaria</b></figcaption>
         </figure>
       </div>
     </div>
@@ -293,30 +293,30 @@
   <section>
     <div class="wrap cols">
       <div class="reveal">
-        <p class="label">// WHAT I LEARNED</p>
-        <h2>Design for both sides.</h2>
+        <p class="label">// MITÄ OPIN</p>
+        <h2>Suunnittele molemmille puolille.</h2>
       </div>
       <ul class="learned reveal">
-        <li>A service has more than one user. Every customer feature needed a matching tool for the staff.</li>
-        <li>Less text makes a stronger brand. Cutting copy was harder – and more valuable – than adding it.</li>
-        <li>Designing for a real business means real constraints: opening hours, baking capacity, a small team.</li>
+        <li>Palvelulla on useampi kuin yksi käyttäjä. Jokainen asiakasominaisuus tarvitsi vastinparin henkilökunnalle.</li>
+        <li>Vähemmän tekstiä tekee brändistä vahvemman. Tekstin karsiminen oli vaikeampaa kuin lisääminen, mutta se kannatti.</li>
+        <li>Oikealle yritykselle suunnitteleminen tarkoittaa oikeita rajoitteita: aukioloajat, leivontakapasiteetti, pieni tiimi.</li>
       </ul>
     </div>
   </section>
 
   <section class="end">
     <div class="wrap reveal">
-      <p class="label">// STATUS</p>
-      <h2>Concept, in progress.</h2>
-      <p>My own view and concept of how Diiva's website could grow to fit the brand even better – not the live site.<br>Shared with permission from Diiva's Juurileipä.</p>
+      <p class="label">// TILANNE</p>
+      <h2>Konsepti, työn alla.</h2>
+      <p>Oma konseptini siitä, miten Diivan sivustosta saisi vielä enemmän brändin näköisen. Sivusto ei ole käytössä.<br>Jaettu Diiva's Juurileivän luvalla.</p>
       <div class="btns">
-        <a class="btn primary" href="index.html#work">← back to all work</a>
-        <a class="btn" href="index.html#contact">let's talk</a>
+        <a class="btn primary" href="index.html#work">← takaisin kaikkiin töihin</a>
+        <a class="btn" href="index.html#contact">hei, jutellaanko!</a>
       </div>
     </div>
   </section>
 </main>
-<footer>© 2026 Mila Palviainen · made with care in Tampere</footer>
+<footer>© 2026 Mila Palviainen · Tampere</footer>
 
 <script>
   // always open the case study from the top

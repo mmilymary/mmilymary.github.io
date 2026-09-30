@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Marginalia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&family=IM+Fell+English:ital@0;1&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* Layout: learning diary. Left rail = shelves + courses + ledger; right = the open shelf (catalogue cards) or the open course book (Käärmeen lunttilappu, week by week). Colours from mila.palviainen; frame in VT323; book interiors in IM Fell + Newsreader. */
+:root {
+  --bg: #1c0b10;
+  --surface: #2a1419;
+  --surface-2: #33191f;
+  --line: #4a2a31;
+  --text: #eee6e2;
+  --muted: #b39a97;
+  --dusty: #c9a3a6;
+  --rose: #b5475a;
+  --on-rose: #ffffff;
+  --neon: #ff7aa2;
+  --code-bg: #16070b;
+  --tk-str: #e8c39a;
+  --tk-num: #c9b3e0;
+  --shadow: 0 1px 0 rgba(0,0,0,.35), 0 10px 24px -14px rgba(0,0,0,.8);
+
+  --font-display: "IM Fell English", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-ui: "VT323", "Courier Prime", ui-monospace, monospace;
+  --font-mono: "Courier Prime", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --step--1: .8125rem; --step-0: 1.0625rem; --step-1: 1.3rem; --step-2: 1.8rem; --step-3: clamp(2.4rem, 7vw, 3.8rem);
+  --s1: .25rem; --s2: .5rem; --s3: .75rem; --s4: 1rem; --s5: 1.5rem; --s6: 2.25rem; --s7: 3.5rem;
+  --radius: 3px;
+  --ease: cubic-bezier(.2,.7,.2,1);
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #f6ecea; --surface: #fff8f6; --surface-2: #f0e0dd; --line: #e0c8c9;
+  --text: #2a1117; --muted: #6e4f55; --dusty: #7d5a60;
+  --rose: #9e3348; --on-rose: #ffffff; --neon: #9e3348;
+  --code-bg: #fffdfc; --tk-str: #7a5410; --tk-num: #5b3a86;
+  --shadow: 0 1px 0 rgba(90,30,40,.08), 0 10px 24px -16px rgba(90,30,40,.35);
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: var(--step-0); line-height: 1.55; padding-inline: 16px; padding-block: 0 var(--s7); }
+a { color: var(--neon); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; border-radius: var(--radius); }
+.wrap { max-width: 74rem; margin-inline: auto; }
+code:not([class]) { font-family: var(--font-mono); font-size: .9em; background: var(--surface-2); padding: .05em .35em; border-radius: 2px; }
+
+/* Masthead */
+.mast { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s4); padding-block: var(--s6) var(--s5); border-bottom: 1px solid var(--line); }
+.brand { min-width: 0; display: grid; gap: var(--s2); }
+.back { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: .25rem; font: 400 1.2rem/1 var(--font-ui); color: var(--muted); text-decoration: none; }
+.back:hover, .back:focus-visible { color: var(--neon); }
+.prompt { margin: 0; font: 400 1.25rem/1 var(--font-ui); color: var(--muted); }
+.prompt b { color: var(--neon); font-weight: 400; }
+h1 { font: 400 var(--step-3)/1 var(--font-display); margin: 0; }
+h1 em { color: var(--neon); }
+.lede { margin: 0; max-width: 36rem; color: var(--muted); font-style: italic; }
+.mast-side { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.sync { font: 400 1.1rem/1 var(--font-ui); color: var(--muted); }
+.sync[data-state="ok"]::before { content: "● "; color: var(--neon); }
+.sync[data-state="local"]::before { content: "○ "; }
+.btn {
+  font: 400 1.15rem/1 var(--font-ui); letter-spacing: .02em;
+  display: inline-flex; align-items: center; gap: var(--s2); padding: .5rem .85rem; min-height: 44px;
+  border-radius: 2px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--text);
+  transition: background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease);
+}
+.btn:hover { background: var(--surface-2); border-color: var(--muted); }
+.btn-primary { background: var(--rose); border-color: var(--rose); color: var(--on-rose); }
+.btn-primary:hover { background: transparent; color: var(--neon); border-color: var(--neon); }
+.btn[aria-pressed="true"].toggle-on { background: var(--rose); border-color: var(--rose); color: var(--on-rose); }
+
+/* Layout */
+.layout { display: grid; gap: var(--s6); grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); padding-top: var(--s6); }
+@media (max-width: 800px) { .layout { grid-template-columns: minmax(0, 1fr); gap: var(--s5); padding-top: var(--s5); } }
+
+/* Rail */
+.rail { display: flex; flex-direction: column; gap: var(--s5); min-width: 0; }
+@media (min-width: 801px) { .rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--s4)); align-self: start; max-height: calc(100vh - 2rem); overflow-y: auto; } }
+.label { font: 400 1.1rem/1 var(--font-ui); color: var(--muted); display: block; margin-bottom: var(--s2); }
+.search { width: 100%; min-height: 44px; padding: .55rem .8rem; font: 400 var(--step-0) var(--font-body); color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.search::placeholder { color: var(--muted); font-style: italic; }
+.search:focus { border-color: var(--neon); outline: none; }
+.shelves { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.shelf {
+  width: 100%; text-align: left; cursor: pointer; font: inherit; color: var(--text);
+  display: grid; grid-template-columns: 1fr auto; gap: var(--s1) var(--s3); align-items: baseline;
+  padding: var(--s3); border-radius: var(--radius); background: transparent; border: 1px solid transparent;
+  transition: background .18s var(--ease), border-color .18s var(--ease);
+}
+.shelf:hover { background: var(--surface); }
+.shelf[aria-current="true"] { background: var(--surface); border-color: var(--line); }
+.shelf[aria-current="true"] .shelf-name { color: var(--neon); }
+.shelf-name { font-family: var(--font-display); font-size: var(--step-1); line-height: 1.15; }
+.shelf-kind { grid-column: 1 / -1; font: 400 1rem/1 var(--font-ui); color: var(--muted); margin-top: -2px; }
+.shelf-count { font: 400 1.1rem var(--font-ui); color: var(--muted); font-variant-numeric: tabular-nums; }
+.meter { grid-column: 1 / -1; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--neon); transform-origin: left; transition: transform .5s var(--ease); }
+@media (max-width: 800px) {
+  .rail-scroll { overflow-x: auto; margin-inline: -16px; padding-inline: 16px; scrollbar-width: none; }
+  .rail-groups { display: flex; gap: var(--s2); width: max-content; }
+  .rail-groups .label { display: none; }
+  .shelves { flex-direction: row; gap: var(--s2); }
+  .shelf { width: auto; min-width: 9.5rem; border-color: var(--line); }
+  .shelf-name { font-size: var(--step-0); white-space: nowrap; }
+}
+.elsewhere { display: grid; gap: 2px; padding: var(--s3); border: 1px dashed var(--line); border-radius: var(--radius); text-decoration: none; color: var(--text); transition: border-color .2s var(--ease); }
+.elsewhere:hover { border-color: var(--neon); }
+.elsewhere .label { margin: 0 0 4px; }
+.elsewhere-name { font: 400 var(--step-1) var(--font-display); color: var(--neon); }
+.elsewhere-kind { font: 400 1rem var(--font-ui); color: var(--muted); }
+@media (max-width: 800px) { .elsewhere { display: none; } }
+.ledger { border-top: 1px solid var(--line); padding-top: var(--s4); }
+.ledger dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: var(--s2) var(--s4); }
+.ledger dt { color: var(--muted); font-style: italic; }
+.ledger dd { margin: 0; font: 400 1.2rem var(--font-ui); text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 800px) { .ledger { display: none; } }
+
+/* Catalogue */
+.main { min-width: 0; }
+.cat-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s2) var(--s4); margin-bottom: var(--s4); }
+.cat-head h2 { font: 400 var(--step-2)/1.1 var(--font-display); margin: 0; text-wrap: balance; }
+.cat-head p { margin: 0; font: 400 1.1rem var(--font-ui); color: var(--muted); }
+.drawer { display: flex; flex-direction: column; gap: var(--s3); margin: 0; padding: 0; list-style: none; }
+.card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); transition: border-color .2s var(--ease); }
+.card:hover { border-color: color-mix(in srgb, var(--neon) 35%, var(--line)); }
+.card[data-open="true"] { border-color: var(--neon); }
+.card-head { width: 100%; text-align: left; cursor: pointer; background: none; border: 0; color: inherit; font: inherit; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: var(--s1) var(--s4); padding: var(--s4) var(--s5); }
+.call { font: 400 1.05rem var(--font-ui); color: var(--neon); padding-bottom: var(--s2); margin-bottom: var(--s1); border-bottom: 1px dashed var(--line); grid-column: 1 / -1; display: flex; justify-content: space-between; gap: var(--s3); flex-wrap: wrap; }
+.call .meta { color: var(--muted); }
+.card-title { font: 400 var(--step-1)/1.2 var(--font-display); margin: var(--s1) 0 0; text-wrap: balance; }
+.by { color: var(--muted); font-style: italic; font-size: var(--step--1); }
+.flags { display: flex; gap: var(--s2); align-items: center; align-self: center; grid-row: 2 / span 2; grid-column: 2; }
+.pill { font: 400 .95rem/1 var(--font-ui); padding: .25rem .5rem; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.pill.desk { border-color: var(--rose); background: var(--rose); color: var(--on-rose); }
+.pill.note { border-style: dashed; }
+.chev { width: 14px; height: 14px; color: var(--muted); transition: transform .25s var(--ease); flex: none; }
+.card[data-open="true"] .chev { transform: rotate(180deg); }
+.stamp { position: absolute; right: var(--s5); top: 2.3rem; pointer-events: none; font: 400 1rem/1 var(--font-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--neon); border: 1.5px solid var(--neon); border-radius: 2px; padding: .2rem .45rem; transform: rotate(-7deg); opacity: .9; }
+.card.stamped .stamp { animation: press .42s var(--ease) both; }
+@keyframes press { 0% { transform: rotate(-16deg) scale(1.9); opacity: 0; } 60% { opacity: 1; } 100% { transform: rotate(-7deg) scale(1); opacity: .9; } }
+.card[data-read="true"] .card-title { color: var(--muted); }
+@media (max-width: 520px) {
+  .card-head { grid-template-columns: minmax(0,1fr); padding: var(--s4); }
+  .flags { grid-row: auto; grid-column: 1; margin-top: var(--s2); }
+  .stamp { top: auto; bottom: var(--s4); right: var(--s4); }
+}
+.card-body { padding: 0 var(--s5) var(--s5); display: grid; gap: var(--s4); }
+@media (max-width: 520px) { .card-body { padding: 0 var(--s4) var(--s4); } }
+.card-body p { margin: 0; max-width: 62ch; }
+.note-field textarea {
+  width: 100%; min-height: 6rem; resize: vertical; padding: var(--s3) var(--s4);
+  font: italic 400 var(--step-0)/1.6 var(--font-body); color: var(--text);
+  background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(1.6em - 1px), color-mix(in srgb, var(--line) 70%, transparent) calc(1.6em - 1px), color-mix(in srgb, var(--line) 70%, transparent) 1.6em);
+  background-position: 0 calc(var(--s3) - 1px); background-attachment: local;
+}
+.note-field textarea:focus { border-color: var(--neon); outline: none; }
+.note-row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); }
+.saved { font: 400 1rem var(--font-ui); color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
+.actions .src { margin-left: auto; font: 400 1.1rem var(--font-ui); }
+@media (max-width: 520px) { .actions .src { margin-left: 0; width: 100%; } }
+.empty { border: 1px dashed var(--line); border-radius: var(--radius); padding: var(--s6) var(--s5); }
+.empty h3 { font: 400 var(--step-1) var(--font-display); margin: 0 0 var(--s2); }
+.empty p { margin: 0; color: var(--muted); max-width: 44ch; }
+
+/* Course book: Käärmeen lunttilappu */
+.book-head { display: grid; gap: var(--s2); padding-bottom: var(--s4); }
+.book-head h2 { font: 400 var(--step-3)/1.02 var(--font-display); margin: 0; }
+.book-head h2 em { color: var(--neon); }
+.book-head p { margin: 0; color: var(--muted); font-style: italic; max-width: 38rem; }
+.strip { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-block: 1px solid var(--line); padding: var(--s2) 0; display: flex; align-items: center; gap: var(--s4); }
+.weeks { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; flex: 1; min-width: 0; margin: 0; padding: 2px; list-style: none; }
+.weeks a { display: grid; place-items: center; width: 2.35rem; height: 2.35rem; flex: none; font: 400 1.2rem var(--font-ui); text-decoration: none; color: var(--muted); border: 1px solid var(--line); border-radius: 50%; transition: background .18s var(--ease), color .18s var(--ease), border-color .18s var(--ease); }
+.weeks a:hover { color: var(--text); border-color: var(--muted); }
+.weeks a[data-done="true"] { background: var(--rose); border-color: var(--rose); color: var(--on-rose); }
+.weeks a[data-now="true"] { border-color: var(--neon); color: var(--neon); box-shadow: 0 0 0 2px color-mix(in srgb, var(--neon) 25%, transparent); }
+.weeks a[data-done="true"][data-now="true"] { color: var(--on-rose); }
+.tally { font: 400 1.15rem var(--font-ui); color: var(--muted); white-space: nowrap; }
+.course { max-width: 46rem; }
+.week { padding-block: var(--s7) 0; scroll-margin-top: 4.5rem; }
+.week-head { display: grid; gap: var(--s2); margin-bottom: var(--s4); }
+.week-meta { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); flex-wrap: wrap; font: 400 1.1rem var(--font-ui); color: var(--muted); border-bottom: 1px dashed var(--line); padding-bottom: var(--s2); }
+.week-meta b { color: var(--neon); font-weight: 400; }
+.now-badge { font: 400 .95rem/1 var(--font-ui); color: var(--on-rose); background: var(--rose); padding: .2rem .45rem; border-radius: 999px; margin-left: var(--s2); }
+.week h2 { font: 400 var(--step-2)/1.1 var(--font-display); margin: var(--s2) 0 0; text-wrap: balance; }
+.tldr { margin: 0; font-size: var(--step-1); line-height: 1.4; font-style: italic; text-wrap: pretty; }
+.week p { max-width: 62ch; text-wrap: pretty; }
+.week h3 { font: 400 1.15rem var(--font-ui); color: var(--muted); margin: var(--s5) 0 var(--s2); }
+.code { position: relative; margin: var(--s3) 0; }
+.code pre { margin: 0; overflow-x: auto; background: var(--code-bg); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s4); font: 400 .9rem/1.65 var(--font-mono); tab-size: 4; }
+.code pre code { font: inherit; color: var(--text); white-space: pre; }
+.copy { position: absolute; top: 6px; right: 6px; font: 400 1rem/1 var(--font-ui); padding: .35rem .55rem; min-height: 30px; background: var(--surface); color: var(--muted); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; opacity: .9; }
+.copy:hover { color: var(--text); }
+.copy[data-state="ok"] { color: var(--neon); border-color: var(--neon); }
+.token.keyword, .token.boolean, .token.builtin { color: var(--neon); }
+.token.string, .token.triple-quoted-string { color: var(--tk-str); }
+.token.number { color: var(--tk-num); }
+.token.comment { color: var(--muted); font-style: italic; }
+.token.decorator, .token.function { color: var(--text); font-weight: 700; }
+.token.operator, .token.punctuation { color: var(--muted); }
+.pit { margin-top: var(--s5); border: 1px dashed var(--rose); border-radius: var(--radius); padding: var(--s4) var(--s4) var(--s3); background: color-mix(in srgb, var(--rose) 7%, transparent); }
+.pit-label, .task-label { font: 400 1.05rem var(--font-ui); color: var(--neon); display: block; margin-bottom: var(--s1); }
+.pit p { margin: 0 0 var(--s2); }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: var(--step--1); }
+th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 400 1.05rem var(--font-ui); color: var(--muted); }
+td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(--neon); }
+.task { margin-top: var(--s5); padding: var(--s4); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.task > p { margin: 0 0 var(--s3); }
+.task details { border-top: 1px dashed var(--line); }
+.task summary { cursor: pointer; list-style: none; padding: .65rem 0; min-height: 44px; display: flex; align-items: center; gap: var(--s2); font: 400 1.15rem var(--font-ui); color: var(--muted); }
+.task summary::-webkit-details-marker { display: none; }
+.task summary::before { content: "+"; width: 1ch; color: var(--neon); }
+.task details[open] summary::before { content: "−"; }
+.task summary:hover { color: var(--text); }
+.task details p { margin: 0 0 var(--s3); }
+.week-diary { margin-top: var(--s5); display: grid; gap: var(--s3); }
+.week-diary .row { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.week-diary .row span { font: 400 1rem var(--font-ui); color: var(--muted); }
+.break { margin-top: var(--s7); padding: var(--s4); border: 1px solid var(--line); border-radius: var(--radius); color: var(--muted); font-style: italic; text-align: center; }
+
+/* Toast */
+.toast { position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); transform: translate(-50%, 160%); transition: transform .3s var(--ease); display: flex; align-items: center; gap: var(--s4); max-width: calc(100% - 32px); padding: .6rem .6rem .6rem 1rem; background: var(--text); color: var(--bg); border-radius: var(--radius); font: 400 1.15rem var(--font-ui); box-shadow: 0 12px 30px -10px rgba(0,0,0,.5); z-index: 10; }
+.toast.show { transform: translate(-50%, 0); }
+.toast button { font: 400 1.1rem var(--font-ui); background: none; border: 1px solid currentColor; color: inherit; border-radius: var(--radius); padding: .3rem .6rem; cursor: pointer; min-height: 36px; }
+.colophon { margin-top: var(--s7); padding-top: var(--s4); border-top: 1px solid var(--line); color: var(--muted); font: 400 1.05rem var(--font-ui); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+
+/* Book opening: a cover swings open on arrival, the preface is the first page */
+.bookcover { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; pointer-events: none;
+  background: linear-gradient(90deg, rgba(0,0,0,.5), rgba(0,0,0,0) 7%, rgba(255,255,255,.04) 9%, rgba(0,0,0,0) 12%), var(--cv);
+  transform-origin: left center; animation: coverOpen 1.15s .2s cubic-bezier(.6,.05,.3,1) forwards; }
+.bookcover span { font: var(--cf); color: var(--ci); letter-spacing: -.01em; padding: 1rem; text-align: center; }
+@keyframes coverOpen { 0% { transform: perspective(1800px) rotateY(0); opacity: 1; } 75% { opacity: 1; } 100% { transform: perspective(1800px) rotateY(-105deg); opacity: 0; visibility: hidden; } }
+.preface { margin: 1.1rem 0 .4rem; max-width: 38rem; }
+.preface .pf-label { display: block; font: 400 1.1rem/1 "VT323", "Courier Prime", monospace; color: #ff7aa2; margin-bottom: .4rem; }
+.preface p { margin: 0; font: italic 400 1.2rem/1.5 "Cormorant Garamond", "IM Fell English", Georgia, serif; color: #c9a3a6; text-wrap: pretty; }
+:root[data-theme="light"] .preface p { color: #7d5a60; }
+:root[data-theme="light"] .preface .pf-label { color: #9e3348; }
+@media (prefers-reduced-motion: reduce) { .bookcover { display: none; } }
+</style>
+</head>
+<body>
+<div class="bookcover" id="bookcover" aria-hidden="true" style="--cv:#4a1a26;--ci:#eee6e2;--cf:italic 500 clamp(2.6rem,9vw,4.4rem) 'Cormorant Garamond', Georgia, serif"><span>Marginalia</span></div>
+
+<div class="wrap">
+  <header class="mast">
+    <div class="brand">
+      <a class="back" href="exlibris.html">← takaisin hyllyyn</a>
+      <p class="prompt">&gt; cd ~/kirjasto/marginalia <b>_</b></p>
+      <h1>Margin<em>alia</em></h1>
+      <p class="lede">Oppimispäiväkirja siitä, mitä olen lukenut ja kokeillut ja mitä siitä jäi käteen.</p>
+    </div>
+    <div class="mast-side">
+      <span class="sync" id="sync" data-state="local">tallennetaan tähän selaimeen</span>
+      <button class="btn" id="theme-toggle" type="button" aria-pressed="false">vaalea teema</button>
+    </div>
+  </header>
+  <section class="preface" aria-label="Esipuhe"><span class="pf-label">// esipuhe</span><p>Kurssit, videot ja omat kokeilut leviävät helposti joka suuntaan. Tähän kirjaan kerään, mitä olen oppinut ja mikä on vielä kesken.</p></section>
+
+  <div class="layout">
+    <aside class="rail" aria-label="Hyllyt">
+      <div>
+        <label class="label" for="q">// etsi</label>
+        <input class="search" id="q" type="search" placeholder="lähteet ja omat merkinnät" autocomplete="off">
+      </div>
+      <nav class="rail-scroll" aria-label="Hyllyt">
+        <div class="rail-groups">
+          <div><span class="label">// hyllyt</span><ul class="shelves" id="shelves"></ul></div>
+        </div>
+      </nav>
+      <a class="elsewhere" href="lunttilaput.html"><span class="label">// muualla kirjastossa</span><span class="elsewhere-name">Lunttilaput ↗</span><span class="elsewhere-kind">lunttilaput ja pienet tehtävät</span></a>
+      <section class="ledger" aria-label="Pöytäkirja">
+        <span class="label">// pöytäkirja</span>
+        <dl id="ledger"></dl>
+      </section>
+    </aside>
+
+    <main class="main">
+      <section id="view-catalogue" aria-labelledby="cat-title">
+        <div class="cat-head">
+          <h2 id="cat-title">Koko kokoelma</h2>
+          <p id="cat-count" aria-live="polite"></p>
+        </div>
+        <ul class="drawer" id="drawer"></ul>
+      </section>
+
+    </main>
+  </div>
+
+  <p class="colophon">marginalia · ex libris · mila.palviainen</p>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span id="toast-msg"></span>
+  <button type="button" id="toast-undo" hidden>kumoa</button>
+</div>
+
+<script>
+(function () {
+  const PATHS = [
+    { id: "ux",   name: "Käyttöliittymät", code: "QA76.9.H85" },
+    { id: "data", name: "Data",       code: "QA276" },
+    { id: "sec",  name: "Tietoturva",      code: "QA76.9.A25" }
+  ];
+  const ITEMS = [
+    { id: "ux1", path: "ux", kind: "Työkalu", time: "20 min", title: "Laws of UX", by: "Jon Yablonski", url: "https://lawsofux.com", desc: "Psykologian periaatteet kortteina: Hickin laki, Fittsin laki, Jakobin laki. Valitse kolme sinulle uutta ja etsi jokaiselle esimerkki omasta puhelimestasi." },
+    { id: "ux2", path: "ux", kind: "Esseesarja", time: "40 min", title: "Inclusive Components", by: "Heydon Pickering", url: "https://inclusive-components.design", desc: "Miten välilehdet, kytkimet ja valikot rakennetaan niin, että ne toimivat myös ruudunlukijalla ja näppäimistöllä." },
+    { id: "ux3", path: "ux", kind: "Harjoitus", time: "30 min", title: "Flexbox Froggy", by: "Codepip", url: "https://flexboxfroggy.com", desc: "24 tasoa sammakoita ja lumpeenlehtiä. Flexbox jää parhaiten mieleen, kun sitä tekee itse." },
+    { id: "ux4", path: "ux", kind: "Opas", time: "1 h", title: "Saavutettavuuden perusteet", by: "MDN Web Docs", url: "https://developer.mozilla.org/en-US/docs/Learn/Accessibility", desc: "Semanttinen HTML, ARIA ja kontrastit samassa paketissa. Lue ensin tämä, sitten Pickering." },
+    { id: "da1", path: "data", kind: "Kirja", time: "6 h", title: "Data Feminism", by: "Catherine D'Ignazio & Lauren Klein", url: "https://data-feminism.mitpress.mit.edu", desc: "Kirja siitä, kuka dataa kerää ja keitä siitä puuttuu. Luettavissa ilmaiseksi netissä." },
+    { id: "da2", path: "data", kind: "Luentosarja", time: "50 min", title: "Calling Bullshit", by: "Carl Bergstrom & Jevin West", url: "https://callingbullshit.org", desc: "Yliopistokurssi harhaanjohtavien kaavioiden, tilastojen ja päätelmien tunnistamiseen." },
+    { id: "da3", path: "data", kind: "Harjoitus", time: "4 h", title: "Pandas-kurssi", by: "Kaggle Learn", url: "https://www.kaggle.com/learn/pandas", desc: "Lyhyitä tehtäviä selaimessa. Hyvä jatko Python-kurssille, kun sanakirjat ja listat on hallussa." },
+    { id: "da4", path: "data", kind: "Lähde", time: "30 min", title: "Our World in Data", by: "Global Change Data Lab", url: "https://ourworldindata.org", desc: "Valitse yksi kaavio ja kirjoita marginaaliin, mitä se jättää kertomatta." },
+    { id: "se1", path: "sec", kind: "Kirja", time: "8 h", title: "The Cuckoo's Egg", by: "Clifford Stoll", url: "https://en.wikipedia.org/wiki/The_Cuckoo%27s_Egg_(book)", desc: "Tähtitieteilijä jäljittää 75 sentin kirjanpitovirheestä vakoojan asti. Vanha tietoturvaklassikko, joka on jännittävä kuin dekkari." },
+    { id: "se2", path: "sec", kind: "Harjoitus", time: "3 h", title: "Bandit", by: "OverTheWire", url: "https://overthewire.org/wargames/bandit/", desc: "Komentorivipeli, jossa jokainen taso on lukittu ovi ja avain löytyy edellisestä huoneesta. Sopii Tietoverkot ja kyberturvallisuus -kurssin rinnalle." },
+    { id: "se3", path: "sec", kind: "Opas", time: "45 min", title: "OWASP Top 10", by: "OWASP Foundation", url: "https://owasp.org/www-project-top-ten/", desc: "Kymmenen yleisintä verkkosovellusten haavoittuvuutta. Yksi päivässä riittää." },
+    { id: "se4", path: "sec", kind: "Työkalu", time: "10 min", title: "Have I Been Pwned", by: "Troy Hunt", url: "https://haveibeenpwned.com", desc: "Tarkista oma sähköpostiosoitteesi. Kannattaa katsoa, onko oma osoite päätynyt johonkin tietovuotoon." }
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const pathOf = (id) => PATHS.find(p => p.id === id);
+
+  /* ---------- State ---------- */
+  const EMPTY = () => ({ read: {}, desk: {}, notes: {} });
+  let data = EMPTY();
+  const ui = { shelf: "all", open: null, query: "" };
+  try {
+    const cached = JSON.parse(localStorage.getItem("marginalia.v2") || "null");
+    if (cached) data = Object.assign(EMPTY(), cached);
+    const u = JSON.parse(localStorage.getItem("marginalia.ui") || "null");
+    if (u) { ui.shelf = u.shelf || ui.shelf; }
+  } catch (e) {}
+  const saveUi = () => { try { localStorage.setItem("marginalia.ui", JSON.stringify({ shelf: ui.shelf })); } catch (e) {} };
+
+  /* ---------- Persistence: private db doc when available, browser as cache ---------- */
+  let docRef = null, writing = false, dirty = false, saveTimer = null;
+  function setSync(state, text) { const s = $("sync"); s.dataset.state = state; s.textContent = text; }
+  function persist() {
+    try { localStorage.setItem("marginalia.v2", JSON.stringify(data)); } catch (e) {}
+    if (!docRef) return;
+    dirty = true;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(flush, 700);
+  }
+  async function flush() {
+    if (!docRef || writing || !dirty) return;
+    writing = true; dirty = false;
+    setSync("ok", "tallennetaan…");
+    try {
+      await docRef.set(JSON.parse(JSON.stringify(data)));
+      setSync("ok", "tallessa");
+    } catch (e) {
+      if (e && e.code === "unavailable") { dirty = true; setTimeout(flush, 1500 + Math.random() * 1000); }
+      else { docRef = null; setSync("local", "tallennetaan vain tähän selaimeen"); }
+    } finally {
+      writing = false;
+      if (dirty) flush();
+    }
+  }
+  async function connect() {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    try {
+      const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+      if (!db || !user) return;
+      const uid = await user.id();
+      if (!uid) return;
+      const ref = db.doc("data/users/" + uid + "/marginalia");
+      let first = true;
+      ref.onSnapshot((snap) => {
+        if (first) {
+          first = false;
+          docRef = ref;
+          setSync("ok", "tallessa");
+          if (!snap.exists) {
+            const hasLocal = Object.values(data).some(o => Object.keys(o).length);
+            if (hasLocal) { dirty = true; flush(); }
+            return;
+          }
+        }
+        if (!snap.exists || snap.metadata.hasPendingWrites || writing || dirty) return;
+        const incoming = Object.assign(EMPTY(), snap.data());
+        data = incoming;
+        try { localStorage.setItem("marginalia.v2", JSON.stringify(data)); } catch (e) {}
+        const active = document.activeElement;
+        if (active && active.tagName === "TEXTAREA") { renderRail(); return; }
+        render();
+      }, () => { docRef = null; setSync("local", "tallennetaan vain tähän selaimeen"); });
+    } catch (e) { /* stays local */ }
+  }
+
+  /* ---------- Theme ---------- */
+  const themeBtn = $("theme-toggle");
+  let theme = "dark";
+  try { theme = localStorage.getItem("marginalia.theme") || theme; } catch (e) {}
+  if (document.documentElement.getAttribute("data-theme") === "light") theme = "light";
+  function applyTheme(t) {
+    if (t === "light") document.documentElement.setAttribute("data-theme", "light"); else document.documentElement.removeAttribute("data-theme");
+    themeBtn.textContent = t === "light" ? "tumma teema" : "vaalea teema";
+    themeBtn.setAttribute("aria-pressed", String(t === "light"));
+  }
+  applyTheme(theme);
+  themeBtn.addEventListener("click", () => { theme = theme === "light" ? "dark" : "light"; applyTheme(theme); try { localStorage.setItem("marginalia.theme", theme); } catch (e) {} });
+
+  /* ---------- Toast ---------- */
+  let toastTimer, undoFn = null;
+  function toast(msg, undo) {
+    $("toast-msg").textContent = msg; undoFn = undo || null; $("toast-undo").hidden = !undo;
+    $("toast").classList.add("show"); clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => $("toast").classList.remove("show"), 4200);
+  }
+  $("toast-undo").addEventListener("click", () => { if (undoFn) { undoFn(); undoFn = null; } $("toast").classList.remove("show"); });
+
+  /* ---------- Rail ---------- */
+  function shelfStats(pid) {
+    const list = pid === "all" ? ITEMS : pid === "desk" ? ITEMS.filter(i => data.desk[i.id]) : ITEMS.filter(i => i.path === pid);
+    return { total: list.length, read: list.filter(i => data.read[i.id]).length };
+  }
+  function renderRail() {
+    const shelves = [{ id: "all", name: "Koko kokoelma" }, ...PATHS, { id: "desk", name: "Pöydälläni" }];
+    $("shelves").innerHTML = shelves.map(s => {
+      const st = shelfStats(s.id);
+      return `<li><button class="shelf" type="button" data-shelf="${s.id}" aria-current="${ui.shelf === s.id}">
+        <span class="shelf-name">${esc(s.name)}</span><span class="shelf-count">${st.read}/${st.total}</span>
+        <span class="meter" aria-hidden="true"><i style="transform:scaleX(${st.total ? st.read / st.total : 0})"></i></span></button></li>`;
+    }).join("");
+    const notes = Object.values(data.notes).filter(n => n && n.trim()).length;
+    $("ledger").innerHTML = `<dt>Lähteitä luettu</dt><dd>${shelfStats("all").read} / ${ITEMS.length}</dd>
+      <dt>Pöydällä odottaa</dt><dd>${ITEMS.filter(i => data.desk[i.id] && !data.read[i.id]).length}</dd>
+      <dt>Merkintöjä</dt><dd>${notes}</dd>`;
+  }
+
+  /* ---------- Catalogue ---------- */
+  const chev = `<svg class="chev" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`;
+  function visibleItems() {
+    let list = ITEMS;
+    if (ui.shelf === "desk") list = list.filter(i => data.desk[i.id]);
+    else if (ui.shelf !== "all") list = list.filter(i => i.path === ui.shelf);
+    if (ui.query) { const q = ui.query.toLowerCase(); list = list.filter(i => [i.title, i.by, i.desc, i.kind, data.notes[i.id] || ""].join(" ").toLowerCase().includes(q)); }
+    return list;
+  }
+  function cardHTML(item) {
+    const p = pathOf(item.path), idx = ITEMS.filter(i => i.path === item.path).indexOf(item);
+    const open = ui.open === item.id, read = !!data.read[item.id], desk = !!data.desk[item.id], hasNote = !!(data.notes[item.id] || "").trim();
+    return `<li class="card" data-id="${item.id}" data-open="${open}" data-read="${read}">
+      <button class="card-head" type="button" aria-expanded="${open}" aria-controls="body-${item.id}">
+        <span class="call"><span>${p.code} · ${String(idx + 1).padStart(2, "0")}</span><span class="meta">${esc(item.kind)} · ${esc(item.time)}</span></span>
+        <h3 class="card-title">${esc(item.title)}</h3><span class="by">${esc(item.by)}</span>
+        <span class="flags">${desk ? `<span class="pill desk">pöydällä</span>` : ""}${hasNote ? `<span class="pill note" data-note-flag>merkintä</span>` : ""}${chev}</span>
+      </button>
+      ${read ? `<span class="stamp" aria-hidden="true">luettu</span>` : ""}
+      <div class="card-body" id="body-${item.id}" ${open ? "" : "hidden"}>
+        <p>${esc(item.desc)}</p>
+        <div class="note-field">
+          <div class="note-row"><label class="label" for="note-${item.id}">// marginaalimerkintä</label><span class="saved" id="saved-${item.id}" aria-live="polite"></span></div>
+          <textarea id="note-${item.id}" data-note="${item.id}" placeholder="Mitä tästä jäi käteen? Mikä ärsytti?">${esc(data.notes[item.id] || "")}</textarea>
+        </div>
+        <div class="actions">
+          <button class="btn ${read ? "" : "btn-primary"}" type="button" data-act="read">${read ? "palauta lukemattomaksi" : "merkitse luetuksi"}</button>
+          <button class="btn" type="button" data-act="desk" aria-pressed="${desk}">${desk ? "poista pöydältä" : "nosta pöydälle"}</button>
+          <a class="src" href="${item.url}" target="_blank" rel="noopener">avaa lähde ↗</a>
+        </div>
+      </div></li>`;
+  }
+  function renderCatalogue(stampId) {
+    const list = visibleItems();
+    $("cat-title").textContent = ui.shelf === "all" ? "Koko kokoelma" : ui.shelf === "desk" ? "Pöydälläni" : pathOf(ui.shelf).name;
+    $("cat-count").textContent = `${list.length} korttia · ${list.filter(i => data.read[i.id]).length} luettu`;
+    if (!list.length) {
+      $("drawer").innerHTML = ui.shelf === "desk" && !ui.query
+        ? `<li class="empty"><h3>Pöytä on tyhjä</h3><p>Avaa mikä tahansa kortti ja valitse "nosta pöydälle". Se odottaa täällä, kunnes ehdit.</p></li>`
+        : `<li class="empty"><h3>Ei osumia haulle "${esc(ui.query)}"</h3><p>Kokeile lyhyempää sanaa tai vaihda hyllyä. Haku käy läpi myös omat merkintäsi.</p></li>`;
+      return;
+    }
+    $("drawer").innerHTML = list.map(cardHTML).join("");
+    if (stampId) { const c = document.querySelector(`.card[data-id="${stampId}"]`); if (c) c.classList.add("stamped"); }
+  }
+
+  /* ---------- Render ---------- */
+  function render(stampId) {
+    renderRail();
+    renderCatalogue(stampId);
+  }
+
+  /* ---------- Events ---------- */
+  document.querySelector(".rail").addEventListener("click", (e) => {
+    const s = e.target.closest("[data-shelf]"); if (!s) return;
+    ui.shelf = s.dataset.shelf; ui.open = null;
+    saveUi(); render();
+    if (window.innerWidth <= 800) document.querySelector(".main").scrollIntoView({ block: "start" });
+  });
+  $("q").addEventListener("input", (e) => {
+    ui.query = e.target.value.trim();
+    render();
+  });
+  $("drawer").addEventListener("click", (e) => {
+    const card = e.target.closest(".card"); if (!card) return;
+    const id = card.dataset.id, item = ITEMS.find(i => i.id === id);
+    if (e.target.closest(".card-head")) {
+      ui.open = ui.open === id ? null : id; renderCatalogue();
+      const h = document.querySelector(`.card[data-id="${id}"] .card-head`); if (h) h.focus({ preventScroll: true });
+      return;
+    }
+    const act = e.target.closest("[data-act]"); if (!act) return;
+    const key = act.dataset.act, was = !!data[key][id];
+    const apply = (val) => { if (val) data[key][id] = true; else delete data[key][id]; persist(); };
+    apply(!was); render(key === "read" && !was ? id : null);
+    const msg = key === "read" ? (was ? `"${item.title}" palautettu lukemattomaksi` : `"${item.title}" merkitty luetuksi`) : (was ? "poistettu pöydältä" : "nostettu pöydälle");
+    toast(msg, () => { apply(was); render(); });
+    const again = document.querySelector(`.card[data-id="${id}"] [data-act="${key}"]`); if (again) again.focus({ preventScroll: true });
+  });
+  let noteTimers = {};
+  document.addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.dataset.note) {
+      const id = t.dataset.note; data.notes[id] = t.value;
+      const s = $("saved-" + id); if (s) s.textContent = "kirjoitetaan…";
+      clearTimeout(noteTimers[id]);
+      noteTimers[id] = setTimeout(() => {
+        persist(); renderRail(); if (s) s.textContent = "tallennettu";
+        const flags = document.querySelector(`.card[data-id="${id}"] .flags`), flag = flags && flags.querySelector("[data-note-flag]"), has = !!t.value.trim();
+        if (flags && has && !flag) flags.insertAdjacentHTML("afterbegin", `<span class="pill note" data-note-flag>merkintä</span>`);
+        if (flag && !has) flag.remove();
+      }, 500);
+    }
+  });
+  render();
+  connect();
+})();
+</script>
+<script>(function(){var c=document.getElementById("bookcover");if(!c)return;try{if(sessionStorage.getItem("opened-marginalia")){c.remove();return;}sessionStorage.setItem("opened-marginalia","1");}catch(e){}c.addEventListener("animationend",function(){c.remove();});setTimeout(function(){if(c.parentNode)c.remove();},2500);})();</script>
+
+</body>
+</html>

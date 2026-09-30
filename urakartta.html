@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Urakartta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&display=swap">
+<style>
+/* Layout: one narrow column — compass as the filter on top, direction chips under it, then the role list; each role opens in place. Single dark theme from mila.palviainen. */
+:root {
+  --bg: #1c0b10; --surface: #2a1419; --line: #4a2a31; --text: #eee6e2; --muted: #b39a97; --dusty: #c9a3a6;
+  --rose: #b5475a; --neon: #ff7aa2; --chrome-dark: #4b535d; --chrome: #c3c9d1; --steel: #5f6873;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-mono: "Courier Prime", ui-monospace, Menlo, monospace;
+  --font-ui: "VT323", "Courier Prime", monospace;
+  --ease: cubic-bezier(.2,.7,.2,1);
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: radial-gradient(120% 60% at 50% 0%, #2e0f17, var(--bg) 70%) var(--bg); color: var(--text); font-family: var(--font-mono); padding-inline: 16px; padding-block: 0 3.5rem; }
+a { color: var(--neon); }
+:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; border-radius: 3px; }
+.wrap { max-width: 34rem; margin-inline: auto; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 1.25rem .5rem; flex-wrap: wrap; }
+.back { font: 400 1.15rem/1 var(--font-ui); color: var(--muted); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+.back:hover { color: var(--neon); }
+.prompt { font: 400 1.15rem/1 var(--font-ui); color: var(--muted); margin: 0; }
+.cur { animation: bl 1s steps(1) infinite; color: var(--neon); }
+@keyframes bl { 50% { opacity: 0; } }
+h1 { font: 500 clamp(2.6rem, 9vw, 3.6rem)/1 var(--font-display); margin: .5rem 0 .35rem; letter-spacing: -.01em; }
+.lede { margin: 0; color: var(--muted); font-size: .95rem; line-height: 1.6; max-width: 32rem; }
+
+.compass { display: flex; justify-content: center; margin: 1.25rem 0 .75rem; }
+.compass svg { width: min(300px, 100%); height: auto; }
+.lbl { font-family: var(--font-mono); font-size: 12px; fill: var(--muted); cursor: pointer; letter-spacing: 1px; }
+.lbl.on { fill: var(--neon); }
+.num { font-family: var(--font-display); font-style: italic; font-size: 12px; fill: var(--dusty); }
+
+.chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 8px; }
+.chip { font: 400 .85rem var(--font-mono); background: transparent; color: var(--dusty); border: 1px solid var(--steel); border-radius: 999px; padding: 6px 12px; min-height: 40px; cursor: pointer; transition: border-color .2s var(--ease), color .2s var(--ease); }
+.chip:hover { border-color: var(--dusty); }
+.chip.on { border-color: var(--neon); color: var(--text); }
+#all { width: 100%; margin: 0 0 1rem; }
+.status { font: 400 1.1rem var(--font-ui); color: var(--dusty); margin: 0 0 .4rem; }
+
+.role { border-top: 1px solid var(--line); }
+.role:last-child { border-bottom: 1px solid var(--line); }
+.role-head { width: 100%; text-align: left; background: none; border: 0; color: inherit; cursor: pointer; padding: .8rem 0; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .15rem 1rem; align-items: center; font: inherit; }
+.rn { font: 500 1.3rem/1.2 var(--font-display); margin: 0; }
+.rd { font-size: .85rem; color: var(--muted); margin: 0; line-height: 1.5; grid-column: 1; }
+.dirs { grid-column: 2; grid-row: 1 / span 2; font: 400 1rem var(--font-ui); color: var(--muted); text-align: right; line-height: 1.1; }
+.role-head:hover .rn { color: var(--neon); }
+.role[data-open="true"] .rn { color: var(--neon); }
+.role-body { padding: 0 0 1rem; display: grid; gap: .55rem; font-size: .88rem; line-height: 1.6; }
+.role-body p { margin: 0; }
+.role-body[hidden] { display: none; }
+.role-body b { font: italic 500 1.05rem var(--font-display); color: var(--dusty); margin-right: .35rem; }
+.role-body .en { color: var(--text); }
+.colophon { margin-top: 2.5rem; font: 400 1rem var(--font-ui); color: var(--muted); }
+@media (max-width: 420px) { .dirs { display: none; } .role-head { grid-template-columns: minmax(0,1fr); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* Book opening: a cover swings open on arrival, the preface is the first page */
+.bookcover { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; pointer-events: none;
+  background: linear-gradient(90deg, rgba(0,0,0,.5), rgba(0,0,0,0) 7%, rgba(255,255,255,.04) 9%, rgba(0,0,0,0) 12%), var(--cv);
+  transform-origin: left center; animation: coverOpen 1.15s .2s cubic-bezier(.6,.05,.3,1) forwards; }
+.bookcover span { font: var(--cf); color: var(--ci); letter-spacing: -.01em; padding: 1rem; text-align: center; }
+@keyframes coverOpen { 0% { transform: perspective(1800px) rotateY(0); opacity: 1; } 75% { opacity: 1; } 100% { transform: perspective(1800px) rotateY(-105deg); opacity: 0; visibility: hidden; } }
+.preface { margin: 1.1rem 0 .4rem; max-width: 38rem; }
+.preface .pf-label { display: block; font: 400 1.1rem/1 "VT323", "Courier Prime", monospace; color: #ff7aa2; margin-bottom: .4rem; }
+.preface p { margin: 0; font: italic 400 1.2rem/1.5 "Cormorant Garamond", "IM Fell English", Georgia, serif; color: #c9a3a6; text-wrap: pretty; }
+:root[data-theme="light"] .preface p { color: #7d5a60; }
+:root[data-theme="light"] .preface .pf-label { color: #9e3348; }
+@media (prefers-reduced-motion: reduce) { .bookcover { display: none; } }
+</style>
+</head>
+<body>
+<div class="bookcover" id="bookcover" aria-hidden="true" style="--cv:#cdb994;--ci:#3b2226;--cf:400 clamp(2.8rem,10vw,4.6rem) 'VT323', monospace"><span>Urakartta</span></div>
+
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="exlibris.html">← takaisin hyllyyn</a>
+    <p class="prompt">&gt; urakartta --suodata<span class="cur">_</span></p>
+  </div>
+  <h1>Urakartta</h1>
+  <section class="preface" aria-label="Esipuhe"><span class="pf-label">// esipuhe</span><p>IT-alalla on paljon muutakin kuin koodausta. Kartalla on rooleja, joista harva on kuullut, ja pari kysymystä oman suunnan etsimiseen.</p></section>
+  <p class="lede">Valitse suunta kompassista, niin listaan jäävät siihen sopivat roolit. Rooli aukeaa klikkaamalla.</p>
+
+  <div class="compass">
+    <svg viewBox="14 14 312 312" role="img" aria-label="Kompassi, joka kääntyy valittuun suuntaan">
+      <circle cx="170" cy="170" r="124" fill="#2a1419" stroke="#4b535d" stroke-width="12"/>
+      <circle cx="170" cy="170" r="124" fill="none" stroke="#c3c9d1" stroke-width="5"/>
+      <circle cx="170" cy="170" r="124" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="90 700" transform="rotate(195 170 170)"/>
+      <circle cx="170" cy="170" r="124" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="30 750" transform="rotate(20 170 170)"/>
+      <circle cx="170" cy="170" r="117" fill="none" stroke="#5f6873" stroke-width="0.8"/>
+      <g id="ticks" stroke="#c3c9d1"></g>
+      <g id="nums"></g>
+      <circle cx="170" cy="170" r="90" fill="none" stroke="#4a2a31" stroke-width="0.6" stroke-dasharray="1 4"/>
+      <g id="card" transform="rotate(0 170 170)">
+        <circle cx="170" cy="170" r="48" fill="none" stroke="#c3c9d1" stroke-width="0.8"/>
+        <g id="rose"></g>
+        <circle cx="170" cy="170" r="9" fill="#4b535d" stroke="#ffffff" stroke-width="1.5"/>
+        <circle cx="170" cy="170" r="4" fill="#ff7aa2"/>
+        <circle cx="170" cy="86" r="4" fill="#ff7aa2" stroke="#ffffff" stroke-width="1"/>
+      </g>
+      <text class="lbl" data-d="tekniikka" x="170" y="31" text-anchor="middle">tekniikka</text>
+      <text class="lbl" data-d="ihmiset" x="170" y="318" text-anchor="middle">ihmiset</text>
+      <text class="lbl" data-d="rakentaminen" x="27" y="174" text-anchor="middle" transform="rotate(-90 27 170)">rakentaminen</text>
+      <text class="lbl" data-d="tulkinta" x="313" y="174" text-anchor="middle" transform="rotate(90 313 170)">tulkinta</text>
+    </svg>
+  </div>
+
+  <div class="chips">
+    <button class="chip" type="button" data-d="tekniikka">tekniikka</button>
+    <button class="chip" type="button" data-d="tulkinta">tulkinta</button>
+    <button class="chip" type="button" data-d="rakentaminen">rakentaminen</button>
+    <button class="chip" type="button" data-d="ihmiset">ihmiset</button>
+  </div>
+  <button class="chip on" id="all" type="button">kaikki roolit</button>
+  <p class="status" id="status" aria-live="polite">// suunta: kaikki · 10 roolia</p>
+  <div id="list"></div>
+
+  <p class="colophon">urakartta · ex libris · mila.palviainen</p>
+</div>
+
+<script>
+(function () {
+  const NS = "http://www.w3.org/2000/svg", C = 170, S = Math.sin, Co = Math.cos, rad = d => d * Math.PI / 180;
+  const P = (a, r) => [C + S(rad(a)) * r, C - Co(rad(a)) * r];
+  function el(t, at, p) { const e = document.createElementNS(NS, t); for (const k in at) e.setAttribute(k, at[k]); (p || document.getElementById("rose")).appendChild(e); return e; }
+  const tk = document.getElementById("ticks");
+  for (let i = 0; i < 72; i++) { const a = i * 5, l = i % 18 === 0 ? 9 : (i % 2 === 0 ? 5 : 3), p1 = P(a, 117), p2 = P(a, 117 - l); el("line", { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], "stroke-width": i % 18 === 0 ? 1.4 : 0.6 }, tk); }
+  const rn = ["XII","I","II","III","IV","V","VI","VII","VIII","IX","X","XI"], ng = document.getElementById("nums");
+  rn.forEach((n, i) => { const p = P(i * 30, 101); const t = el("text", { x: p[0], y: p[1] + 4, "text-anchor": "middle", class: "num" }, ng); t.textContent = n; });
+  function pt(a, len, w, cl, cr) { const tip = P(a, len), px = Co(rad(a)) * w, py = S(rad(a)) * w; el("path", { d: "M" + C + " " + C + " L" + tip.join(" ") + " L" + (C - px) + " " + (C - py) + "Z", fill: cl }); el("path", { d: "M" + C + " " + C + " L" + tip.join(" ") + " L" + (C + px) + " " + (C + py) + "Z", fill: cr }); }
+  for (let i = 0; i < 8; i++) pt(22.5 + i * 45, 38, 5, "#c9a3a6", "#b5475a");
+  for (let i = 0; i < 4; i++) pt(45 + i * 90, 58, 8, "#c3c9d1", "#5f6873");
+  for (let i = 0; i < 4; i++) pt(i * 90, 84, 11, "#ffffff", "#c3c9d1");
+
+  const ROLES = [
+    { n: "Frontend-kehittäjä", d: ["tekniikka","rakentaminen"], s: "Rakentaa sen osan palvelusta, jonka käyttäjä näkee.",
+      long: "Rakentaa sen osan palvelusta, jonka käyttäjä näkee ja jota hän klikkaa.", arki: "komponentteja, selainten välisiä eroja, keskustelua suunnittelijan kanssa.", taidot: "HTML, CSS, JavaScript ja jokin kehys, esim. React.", en: "Frontend developer, Web developer", eka: "yksi oma sivu alusta loppuun ja julki." },
+    { n: "Fullstack-kehittäjä", d: ["tekniikka","rakentaminen"], s: "Tekee näkyvän osan ja kaiken sen takana.",
+      long: "Tekee sekä näkyvän osan että palvelimen, tietokannan ja rajapinnat sen takana.", arki: "ominaisuuksia alusta loppuun, rajapintoja ja tietokantakyselyitä.", taidot: "JavaScript tai Python, jokin palvelinpuolen kehys (esim. Node.js tai Django) ja SQL.", en: "Full stack developer, Software developer", eka: "pieni sovellus, jossa on oma tietokanta ja kirjautuminen." },
+    { n: "Mobiilikehittäjä", d: ["tekniikka","rakentaminen"], s: "Tekee sovelluksia puhelimeen.",
+      long: "Tekee sovelluksia Androidille, iOS:lle tai molemmille.", arki: "näkymiä eri näyttöko'oille, testausta oikeilla laitteilla ja julkaisuja sovelluskauppoihin.", taidot: "Kotlin (Android), Swift (iOS) tai React Native / Flutter molempiin.", en: "Mobile developer, Android developer, iOS developer", eka: "yksinkertainen sovellus omaan puhelimeen." },
+    { n: "AI-kehittäjä", d: ["tekniikka","rakentaminen"], s: "Rakentaa tekoälyratkaisuja oikeaan käyttöön.",
+      long: "Rakentaa tekoälyratkaisuja, jotka toimivat osana oikeita palveluita.", arki: "datan valmistelua, mallien kokeilua ja arviointia sekä kielimallien liittämistä sovelluksiin.", taidot: "Python, datankäsittely, koneoppimisen perusteet ja rajapinnat.", en: "AI engineer, Machine learning engineer", eka: "Python sujuvaksi ja pieni projekti, joka käyttää kielimallin rajapintaa." },
+    { n: "Tietoturva-analyytikko", d: ["tekniikka","tulkinta"], s: "Valvoo järjestelmiä ja selvittää poikkeamat.",
+      long: "Valvoo järjestelmiä ja selvittää poikkeamat.", arki: "hälytyksiä, lokeja ja raportointia, usein myös vuorotyötä.", taidot: "tietoverkot, Linux ja lokien lukeminen.", en: "SOC Analyst, Cyber Security Analyst", eka: "tietoverkkojen perusteet ja jokin aloitustason sertifikaatti." },
+    { n: "Data-analyytikko", d: ["tekniikka","tulkinta"], s: "Etsii datasta vastauksia ja kertoo ne muille.",
+      long: "Etsii datasta vastauksia kysymyksiin ja kertoo ne niin, että muutkin ymmärtävät.", arki: "datan siivoamista, kyselyitä, raportteja ja kaavioita päätöksenteon tueksi.", taidot: "SQL, Excel, Python tai R ja jokin raportointityökalu, esim. Power BI.", en: "Data analyst, BI analyst", eka: "avoin data-aineisto, muutama kysymys ja vastaukset kaavioina." },
+    { n: "UX/UI-suunnittelija", d: ["ihmiset","rakentaminen"], s: "Suunnittelee, miltä palvelu näyttää ja miten sitä käytetään.",
+      long: "Suunnittelee, miltä palvelu näyttää ja miten sitä käytetään.", arki: "käyttäjähaastatteluja, luonnoksia, prototyyppejä ja käytettävyystestejä.", taidot: "Figma, käytettävyyden ja saavutettavuuden perusteet sekä visuaalinen suunnittelu.", en: "UX designer, UI designer, Product designer", eka: "suunnittele yksi olemassa oleva palvelu uudelleen ja kirjoita siitä tapauskuvaus." },
+    { n: "Automaatioasiantuntija", d: ["ihmiset","rakentaminen"], s: "Etsii toistuvaa työtä ja siirtää sen koneelle.",
+      long: "Etsii organisaatiosta toistuvaa käsityötä ja rakentaa siihen automaation.", arki: "prosessien kartoitusta, työnkulkujen rakentamista ja integraatioita järjestelmien välille.", taidot: "Power Automate tai vastaava, perusskriptaus (esim. Python) ja prosessiajattelu.", en: "Automation specialist, RPA developer, Integration specialist", eka: "automatisoi yksi oma toistuva tehtävä." },
+    { n: "IT-projektipäällikkö", d: ["ihmiset","tulkinta"], s: "Pitää huolen, että projekti valmistuu ajallaan.",
+      long: "Pitää huolen, että projekti valmistuu ajallaan, budjetissa ja sovitussa laajuudessa.", arki: "aikatauluja, palavereja, riskien seurantaa ja viestintää tiimin ja asiakkaan välillä.", taidot: "projektinhallinta, ketterät menetelmät (esim. Scrum), viestintä ja jokin projektityökalu, esim. Jira.", en: "IT project manager, Scrum master, Project coordinator", eka: "vedä yksi opiskeluprojekti ja käytä siinä oikeaa projektityökalua." },
+    { n: "IT-myynti / presales", d: ["ihmiset","tulkinta"], s: "Selvittää asiakkaan tarpeen ja sopivan ratkaisun.",
+      long: "Selvittää, mitä asiakas oikeasti tarvitsee, ja mikä ratkaisu siihen sopii.", arki: "asiakastapaamisia, demoja ja tarjouksia yhdessä teknisten asiantuntijoiden kanssa.", taidot: "myynti ja neuvottelu, tuotteen tekninen ymmärrys ja esiintyminen.", en: "Presales consultant, Solution sales, Account manager", eka: "harjoittele selittämään yksi tekninen ratkaisu kahdessa minuutissa ei-tekniselle kuulijalle." }
+  ];
+
+  const ang = { tekniikka: 0, tulkinta: 90, ihmiset: 180, rakentaminen: 270 };
+  const card = document.getElementById("card");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let cur = 0, raf, openName = null, dir = null;
+  function spin(to, dur) {
+    cancelAnimationFrame(raf);
+    const from = cur; let dd = ((to - from) % 360 + 540) % 360 - 180;
+    if (reduce) { cur = from + dd; card.setAttribute("transform", "rotate(" + cur + " 170 170)"); return; }
+    if (dur > 1200) dd += 720;
+    const t0 = performance.now(), ease = t => 1 - Math.pow(1 - t, 4) + Math.sin(t * Math.PI * 3) * 0.04 * (1 - t);
+    function step(n) { const t = Math.min((n - t0) / dur, 1); cur = from + dd * ease(t); card.setAttribute("transform", "rotate(" + cur + " 170 170)"); if (t < 1) raf = requestAnimationFrame(step); else cur = from + dd; }
+    raf = requestAnimationFrame(step);
+  }
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  function render() {
+    const sel = dir ? ROLES.filter(r => r.d.includes(dir)) : ROLES;
+    document.getElementById("list").innerHTML = sel.map((r, i) => {
+      const open = openName === r.n, id = "r" + ROLES.indexOf(r);
+      return `<div class="role" data-open="${open}">
+        <button class="role-head" type="button" data-role="${esc(r.n)}" aria-expanded="${open}" aria-controls="${id}">
+          <span class="rn">${esc(r.n)}</span><span class="dirs">${r.d.join("<br>")}</span>
+          <span class="rd">${esc(r.s)}</span>
+        </button>
+        <div class="role-body" id="${id}" ${open ? "" : "hidden"}>
+          <p>${esc(r.long)}</p>
+          <p><b>Arki</b>${esc(r.arki)}</p>
+          <p><b>Taidot</b>${esc(r.taidot)}</p>
+          <p><b>Ilmoituksissa</b><span class="en">${esc(r.en)}</span></p>
+          <p><b>Ensimmäinen askel</b>${esc(r.eka)}</p>
+        </div></div>`;
+    }).join("");
+    document.getElementById("status").textContent = "// suunta: " + (dir || "kaikki") + " · " + sel.length + " roolia";
+    document.querySelectorAll("[data-d]").forEach(e => e.classList.toggle("on", e.dataset.d === dir));
+    document.getElementById("all").classList.toggle("on", !dir);
+  }
+  document.querySelectorAll("[data-d]").forEach(e => e.addEventListener("click", () => { dir = e.dataset.d; openName = null; render(); spin(ang[dir], 1000); }));
+  document.getElementById("all").addEventListener("click", () => { dir = null; openName = null; render(); spin(0, 1600); });
+  document.getElementById("list").addEventListener("click", (e) => {
+    const h = e.target.closest("[data-role]"); if (!h) return;
+    const name = h.dataset.role; openName = openName === name ? null : name; render();
+    const again = document.querySelector(`[data-role="${CSS.escape(name)}"]`); if (again) again.focus({ preventScroll: true });
+  });
+  render(); spin(0, 1800);
+})();
+</script>
+<script>(function(){var c=document.getElementById("bookcover");if(!c)return;try{if(sessionStorage.getItem("opened-urakartta")){c.remove();return;}sessionStorage.setItem("opened-urakartta","1");}catch(e){}c.addEventListener("animationend",function(){c.remove();});setTimeout(function(){if(c.parentNode)c.remove();},2500);})();</script>
+
+</body>
+</html>

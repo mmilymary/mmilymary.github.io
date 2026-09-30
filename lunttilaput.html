@@ -1,0 +1,1431 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Lunttilaput</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&family=IM+Fell+English:ital@0;1&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* Layout: a drawer of paper slips across the top (each slip = one cheat sheet; empty slot = the next one), and the chosen slip unfolds below as a week-by-week sheet. Exercises are themselves little paper slips. Colours from mila.palviainen. */
+:root {
+  --bg: #1c0b10; --surface: #2a1419; --surface-2: #33191f; --line: #4a2a31;
+  --text: #eee6e2; --muted: #b39a97; --dusty: #c9a3a6; --rose: #b5475a; --on-rose: #ffffff; --neon: #ff7aa2;
+  --code-bg: #16070b; --tk-str: #e8c39a; --tk-num: #c9b3e0;
+  --font-display: "IM Fell English", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-body: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-ui: "VT323", "Courier Prime", ui-monospace, monospace;
+  --font-mono: "Courier Prime", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --step--1: .8125rem; --step-0: 1.0625rem; --step-1: 1.3rem; --step-2: 1.8rem; --step-3: clamp(2.4rem, 7vw, 3.8rem);
+  --s1: .25rem; --s2: .5rem; --s3: .75rem; --s4: 1rem; --s5: 1.5rem; --s6: 2.25rem; --s7: 3.5rem;
+  --radius: 3px; --ease: cubic-bezier(.2,.7,.2,1);
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #f6ecea; --surface: #fff8f6; --surface-2: #f0e0dd; --line: #e0c8c9;
+  --text: #2a1117; --muted: #6e4f55; --dusty: #7d5a60; --rose: #9e3348; --neon: #9e3348;
+  --code-bg: #fffdfc; --tk-str: #7a5410; --tk-num: #5b3a86;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: var(--step-0); line-height: 1.55; padding-inline: 16px; padding-block: 0 var(--s7); margin: 0; }
+a { color: var(--neon); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; border-radius: var(--radius); }
+.wrap { max-width: 50rem; margin-inline: auto; }
+code:not([class]) { font-family: var(--font-mono); font-size: .9em; background: var(--surface-2); padding: .05em .35em; border-radius: 2px; white-space: nowrap; }
+
+/* Masthead */
+.mast { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s4); padding-block: var(--s6) var(--s4); }
+.brand { min-width: 0; display: grid; gap: var(--s2); }
+.back { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: .25rem; font: 400 1.2rem/1 var(--font-ui); color: var(--muted); text-decoration: none; }
+.back:hover, .back:focus-visible { color: var(--neon); }
+.prompt { margin: 0; font: 400 1.25rem/1 var(--font-ui); color: var(--muted); }
+.prompt b { color: var(--neon); font-weight: 400; }
+h1 { font: 400 var(--step-3)/1 var(--font-display); margin: 0; }
+h1 em { color: var(--neon); }
+.lede { margin: 0; max-width: 34rem; color: var(--muted); font-style: italic; }
+.btn { font: 400 1.15rem/1 var(--font-ui); display: inline-flex; align-items: center; gap: var(--s2); padding: .5rem .85rem; min-height: 44px; border-radius: 2px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--text); transition: background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease); text-decoration: none; }
+.btn:hover { background: var(--surface-2); border-color: var(--muted); }
+.btn[aria-pressed="true"].toggle-on { background: var(--rose); border-color: var(--rose); color: var(--on-rose); }
+.side { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.sync { font: 400 1.1rem/1 var(--font-ui); color: var(--muted); }
+.sync[data-state="ok"]::before { content: "● "; color: var(--neon); }
+.sync[data-state="local"]::before { content: "○ "; }
+
+/* Drawer of slips */
+.drawer { display: flex; gap: var(--s3); align-items: flex-end; padding: var(--s5) 0 0; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; margin-inline: -16px; padding-inline: 16px; }
+.slip {
+  position: relative; flex: none; width: 14rem; min-height: 7.6rem; text-align: left; cursor: pointer; font: inherit;
+  padding: .95rem 1rem .85rem; color: var(--text);
+  background: var(--surface); border: 1px solid var(--line); border-bottom: 0; border-radius: 4px 4px 0 0;
+  transition: border-color .25s var(--ease), transform .3s var(--ease);
+}
+.slip::before { content: ""; position: absolute; left: -1px; right: -1px; top: -1px; height: 3px; border-radius: 4px 4px 0 0; background: var(--line); transition: background .25s var(--ease); }
+.slip:hover { border-color: var(--muted); transform: translateY(-3px); }
+.slip[aria-pressed="true"] { border-color: var(--rose); }
+.slip[aria-pressed="true"]::before { background: var(--neon); }
+.slip .k { display: block; font: 400 1.05rem/1 var(--font-ui); color: var(--neon); }
+.slip .t { display: block; font: 400 1.5rem/1.1 var(--font-display); margin: .4rem 0 .45rem; }
+.slip .m { display: block; font: 400 1rem/1.3 var(--font-ui); color: var(--muted); }
+.slip .bar { display: block; height: 3px; background: var(--line); margin-top: .65rem; border-radius: 2px; overflow: hidden; }
+.slip .bar i { display: block; height: 100%; background: var(--neon); transform-origin: left; transition: transform .5s var(--ease); }
+.slot { flex: none; width: 11rem; min-height: 7rem; border: 1px dashed var(--line); border-bottom: 0; border-radius: 3px 3px 0 0; display: grid; place-items: center; padding: var(--s3); text-align: center; color: var(--muted); font: 400 1.05rem/1.3 var(--font-ui); }
+
+/* Sheet */
+.sheet-head { display: grid; gap: var(--s2); padding-block: var(--s6) var(--s4); }
+.sheet-head .label { font: 400 1.1rem/1 var(--font-ui); color: var(--muted); }
+.sheet-head h2 { font: 400 var(--step-3)/1.02 var(--font-display); margin: 0; }
+.sheet-head h2 em { color: var(--neon); }
+.sheet-head p { margin: 0; color: var(--muted); font-style: italic; max-width: 38rem; }
+.strip { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-block: 1px solid var(--line); padding: var(--s2) 0; display: flex; align-items: center; gap: var(--s4); }
+.weeks { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; flex: 1; min-width: 0; margin: 0; padding: 2px; list-style: none; }
+.weeks a { display: grid; place-items: center; width: 2.35rem; height: 2.35rem; flex: none; font: 400 1.2rem var(--font-ui); text-decoration: none; color: var(--muted); border: 1px solid var(--line); border-radius: 50%; transition: background .18s var(--ease), color .18s var(--ease), border-color .18s var(--ease); }
+.weeks a:hover { color: var(--text); border-color: var(--muted); }
+.weeks a[data-done="true"] { background: var(--rose); border-color: var(--rose); color: var(--on-rose); }
+.weeks a[data-now="true"] { border-color: var(--neon); color: var(--neon); box-shadow: 0 0 0 2px color-mix(in srgb, var(--neon) 25%, transparent); }
+.weeks a[data-done="true"][data-now="true"] { color: var(--on-rose); }
+.tally { font: 400 1.15rem var(--font-ui); color: var(--muted); white-space: nowrap; text-align: right; line-height: 1.1; }
+.week { padding-block: var(--s7) 0; scroll-margin-top: 4.5rem; }
+.week-head { display: grid; gap: var(--s2); margin-bottom: var(--s4); }
+.week-meta { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); flex-wrap: wrap; font: 400 1.1rem var(--font-ui); color: var(--muted); border-bottom: 1px dashed var(--line); padding-bottom: var(--s2); }
+.week-meta b { color: var(--neon); font-weight: 400; }
+.now-badge { font: 400 .95rem/1 var(--font-ui); color: var(--on-rose); background: var(--rose); padding: .2rem .45rem; border-radius: 999px; margin-left: var(--s2); }
+.week h2 { font: 400 var(--step-2)/1.1 var(--font-display); margin: var(--s2) 0 0; text-wrap: balance; }
+.tldr { margin: 0; font-size: var(--step-1); line-height: 1.4; font-style: italic; text-wrap: pretty; }
+.week p { max-width: 62ch; text-wrap: pretty; }
+.week h3 { font: 400 1.15rem var(--font-ui); color: var(--muted); margin: var(--s5) 0 var(--s2); }
+.code { position: relative; margin: var(--s3) 0; }
+.code pre { margin: 0; overflow-x: auto; background: var(--code-bg); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s4); font: 400 .9rem/1.65 var(--font-mono); tab-size: 4; }
+.code pre code { font: inherit; color: var(--text); white-space: pre; }
+.copy { position: absolute; top: 6px; right: 6px; font: 400 1rem/1 var(--font-ui); padding: .35rem .55rem; min-height: 30px; background: var(--surface); color: var(--muted); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; }
+.copy:hover { color: var(--text); }
+.copy[data-state="ok"] { color: var(--neon); border-color: var(--neon); }
+.token.keyword, .token.boolean, .token.builtin { color: var(--neon); }
+.token.string, .token.triple-quoted-string { color: var(--tk-str); }
+.token.number { color: var(--tk-num); }
+.token.comment { color: var(--muted); font-style: italic; }
+.token.decorator, .token.function { color: var(--text); font-weight: 700; }
+.token.operator, .token.punctuation { color: var(--muted); }
+.pit { margin-top: var(--s5); border: 1px dashed var(--rose); border-radius: var(--radius); padding: var(--s4) var(--s4) var(--s3); background: color-mix(in srgb, var(--rose) 7%, transparent); }
+.pit-label { font: 400 1.05rem var(--font-ui); color: var(--neon); display: block; margin-bottom: var(--s1); }
+.pit p { margin: 0 0 var(--s2); }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: var(--step--1); }
+th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 400 1.05rem var(--font-ui); color: var(--muted); }
+td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(--neon); }
+.break { margin-top: var(--s7); padding: var(--s4); border: 1px solid var(--line); border-radius: var(--radius); color: var(--muted); font-style: italic; text-align: center; }
+
+/* Exercise card */
+.task { margin-top: var(--s6); padding: 1.2rem 1.25rem .5rem; position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; }
+.task-label { font: 400 1.15rem/1 var(--font-ui); color: var(--neon); display: flex; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+.task > p { margin: 0 0 var(--s3); font-size: 1.1rem; }
+.task code:not([class]) { background: var(--surface-2); color: var(--text); }
+.task details { border-top: 1px dashed var(--line); }
+.task summary { cursor: pointer; list-style: none; padding: .65rem 0; min-height: 44px; display: flex; align-items: center; gap: var(--s2); font: 400 1.15rem var(--font-ui); color: var(--muted); }
+.task summary::-webkit-details-marker { display: none; }
+.task summary::before { content: "+"; width: 1ch; color: var(--rose); }
+.task details[open] summary::before { content: "−"; }
+.task summary:hover { color: var(--text); }
+.task details p { margin: 0 0 var(--s3); }
+.task-done { display: flex; align-items: center; gap: var(--s3); border-top: 1px dashed var(--line); padding: .7rem 0 .5rem; }
+.task-done button { font: 400 1.15rem/1 var(--font-ui); min-height: 40px; padding: .45rem .8rem; border: 1px solid var(--line); background: transparent; color: var(--text); border-radius: 2px; cursor: pointer; }
+.task-done button:hover { border-color: var(--neon); color: var(--neon); }
+.task-done button[aria-pressed="true"] { background: var(--rose); border-color: var(--rose); color: #fff; }
+.stamp { position: absolute; right: 1.1rem; top: 1rem; font: 400 1.05rem/1 var(--font-ui); letter-spacing: .12em; text-transform: uppercase; color: var(--neon); border: 1.5px solid var(--neon); border-radius: 2px; padding: .2rem .45rem; transform: rotate(-8deg); opacity: 0; transition: opacity .3s; pointer-events: none; }
+.task[data-done="true"] .stamp { opacity: .9; }
+.know { margin-top: var(--s4); display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.know span { font: 400 1rem var(--font-ui); color: var(--muted); }
+
+.colophon { margin-top: var(--s7); padding-top: var(--s4); border-top: 1px solid var(--line); color: var(--muted); font: 400 1.05rem var(--font-ui); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+
+/* Book opening: a cover swings open on arrival, the preface is the first page */
+.bookcover { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; pointer-events: none;
+  background: linear-gradient(90deg, rgba(0,0,0,.5), rgba(0,0,0,0) 7%, rgba(255,255,255,.04) 9%, rgba(0,0,0,0) 12%), var(--cv);
+  transform-origin: left center; animation: coverOpen 1.15s .2s cubic-bezier(.6,.05,.3,1) forwards; }
+.bookcover span { font: var(--cf); color: var(--ci); letter-spacing: -.01em; padding: 1rem; text-align: center; }
+@keyframes coverOpen { 0% { transform: perspective(1800px) rotateY(0); opacity: 1; } 75% { opacity: 1; } 100% { transform: perspective(1800px) rotateY(-105deg); opacity: 0; visibility: hidden; } }
+.preface { margin: 1.1rem 0 .4rem; max-width: 38rem; }
+.preface .pf-label { display: block; font: 400 1.1rem/1 "VT323", "Courier Prime", monospace; color: #ff7aa2; margin-bottom: .4rem; }
+.preface p { margin: 0; font: italic 400 1.2rem/1.5 "Cormorant Garamond", "IM Fell English", Georgia, serif; color: #c9a3a6; text-wrap: pretty; }
+:root[data-theme="light"] .preface p { color: #7d5a60; }
+:root[data-theme="light"] .preface .pf-label { color: #9e3348; }
+@media (prefers-reduced-motion: reduce) { .bookcover { display: none; } }
+</style>
+</head>
+<body>
+<div class="bookcover" id="bookcover" aria-hidden="true" style="--cv:#2a1419;--ci:#ff7aa2;--cf:400 clamp(2.6rem,9vw,4.4rem) 'Courier Prime', monospace"><span>Lunttilaput</span></div>
+
+<div class="wrap">
+  <header class="mast">
+    <div class="brand">
+      <a class="back" href="exlibris.html">← takaisin hyllyyn</a>
+      <p class="prompt">&gt; cd ~/kirjasto/lunttilaput <b>_</b></p>
+      <h1>Luntti<em>laput</em></h1>
+      <p class="lede">Lyhyitä lunttilappuja ja pieniä tehtäviä. Yksi lappu per aihe, ja jokainen esimerkki on oikeasti ajettu.</p>
+    </div>
+    <div class="side">
+      <span class="sync" id="sync" data-state="local">tallennetaan tähän selaimeen</span>
+      <button class="btn" id="theme-toggle" type="button" aria-pressed="false">vaalea teema</button>
+    </div>
+  </header>
+  <section class="preface" aria-label="Esipuhe"><span class="pf-label">// esipuhe</span><p>Kurssien asiat olivat hajallaan Moodlessa, dioissa ja omissa muistiinpanoissa. Kokosin ne yhteen paikkaan lyhyesti ja tarkistettuna, ja lisäsin pieniä tehtäviä, joilla voi testata itseään.</p></section>
+
+  <nav class="drawer" aria-label="Laput">
+    <button class="slip" type="button" aria-pressed="true" aria-controls="sheet-python" data-sheet="python">
+      <span class="k">// python</span>
+      <span class="t">Käärmeen lunttilappu</span>
+      <span class="m">9 viikkoa · 9 harjoitusta</span>
+      <span class="bar" aria-hidden="true"><i style="transform:scaleX(0)"></i></span>
+    </button>
+    <button class="slip" type="button" aria-pressed="false" aria-controls="sheet-sql" data-sheet="sql">
+      <span class="k">// sql</span>
+      <span class="t">Kyselyjen lunttilappu</span>
+      <span class="m">9 osaa · 9 harjoitusta</span>
+      <span class="bar" aria-hidden="true"><i style="transform:scaleX(0)"></i></span>
+    </button>
+    <div class="slot">seuraava lappu<br>tulee tähän</div>
+  </nav>
+
+  <main class="sheet" id="sheet-python" data-slip="python">
+    <div class="sheet-head">
+      <span class="label">// kurssi · syksy 2026</span>
+      <h2>Käärmeen <em>lunttilappu</em></h2>
+      <p>Python kurssin tahdissa. Lyhyet selitykset, ajetut esimerkit, sudenkuopat ja jokaisen viikon lopussa pieni tehtävä.</p>
+    </div>
+    <nav class="strip" aria-label="Viikot">
+      <ol class="weeks"></ol>
+      <span class="tally"></span>
+    </nav>
+    <div class="course">
+
+
+<!-- 1 -->
+<section class="week" id="w1" data-date="2026-09-29">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Viikko 1</b> · ti 29.9.</span><span>Tietotyypit · I/O · merkkijonot</span></div>
+    <h2>Muuttujat, tyypit ja teksti</h2>
+    <p class="tldr">Muuttuja on nimilappu arvolle. Pythonissa ei kerrota tyyppiä etukäteen, se päättelee sen itse.</p>
+  </div>
+  <p>Neljä perustyyppiä riittää pitkälle: kokonaisluku, desimaaliluku, teksti ja totuusarvo. <code>type()</code> kertoo, mikä on mitäkin. F-merkkijonolla saat muuttujat suoraan tekstin sisään.</p>
+  <div class="code"><pre><code class="language-python">nimi = "Ada"          # str  (teksti)
+ika = 20              # int  (kokonaisluku)
+pituus = 1.68         # float (desimaali, piste eikä pilkku!)
+opiskelee = True      # bool (True / False)
+
+print(type(ika))                   # &lt;class 'int'&gt;
+print(f"Moi {nimi}, olet {ika}!")  # Moi Ada, olet 20!
+print("a", "b", sep="-")           # a-b</code></pre></div>
+
+  <h3>Laskut</h3>
+  <div class="code"><pre><code class="language-python">7 / 2     # 3.5  tavallinen jako, tulos aina float
+7 // 2    # 3    kokonaisjako (pyöristää alaspäin)
+7 % 2     # 1    jakojäännös, kätevä parillisuuteen
+2 ** 3    # 8    potenssi</code></pre></div>
+
+  <h3>Merkkijonot</h3>
+  <p>Indeksit alkaa nollasta. Negatiivinen indeksi laskee lopusta. Viipale <code>[1:4]</code> ottaa kohdat 1, 2 ja 3, eli loppupää jää pois.</p>
+  <div class="code"><pre><code class="language-python">sana = "käärme"
+sana[0]       # 'k'
+sana[-1]      # 'e'
+sana[1:4]     # 'äär'
+len(sana)     # 6
+
+s = "  Python on kiva  "
+s.strip()             # 'Python on kiva'   (tyhjät pois reunoilta)
+s.strip().upper()     # 'PYTHON ON KIVA'
+"kiva" in s           # True
+"a,b,c".split(",")    # ['a', 'b', 'c']
+"-".join(["a", "b"])  # 'a-b'</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p><code>input()</code> palauttaa <em>aina</em> tekstiä. Vaikka käyttäjä kirjoittaa numeron.</p>
+    <div class="code"><pre><code class="language-python">syote = input("Anna luku: ")   # käyttäjä kirjoittaa 5
+print(syote + syote)           # 55  ← tekstit liimautui yhteen
+luku = int(syote)
+print(luku + luku)             # 10</code></pre></div>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 1</span>
+    <p>Kysy käyttäjältä nimi ja syntymävuosi. Tulosta: <em>Moi Ada, täytät tänä vuonna 20.</em></p>
+    <details><summary>Näytä vihje</summary><p>Muista, että <code>input</code> antaa tekstiä. Vuodesta pitää tehdä <code>int</code> ennen kuin sillä voi laskea.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-python">nimi = input("Nimi: ")
+vuosi = int(input("Syntymävuosi: "))
+print(f"Moi {nimi}, täytät tänä vuonna {2026 - vuosi}.")</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="week" id="w2" data-date="2026-10-06">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Viikko 2</b> · ti 6.10.</span><span>if · while · for · range</span></div>
+    <h2>Valinta ja toisto</h2>
+    <p class="tldr">If päättää, tehdäänkö jotain. While ja for päättää, kuinka monta kertaa.</p>
+  </div>
+  <p>Sisennys (neljä välilyöntiä) ei ole koristetta. Pythonissa se <em>on</em> lohkon raja. Ehtoja tarkistetaan ylhäältä alas ja ensimmäinen tosi voittaa.</p>
+  <div class="code"><pre><code class="language-python">pisteet = 72
+if pisteet &gt;= 90:
+    print("Kiitettävä")
+elif pisteet &gt;= 50:
+    print("Hyväksytty")    # ← tämä tulostuu
+else:
+    print("Hylätty")</code></pre></div>
+
+  <h3>range</h3>
+  <p>Muoto on <code>range(alku, loppu, askel)</code>. Loppu ei tule mukaan. Koskaan.</p>
+  <div class="code"><pre><code class="language-python">list(range(5))          # [0, 1, 2, 3, 4]
+list(range(2, 6))       # [2, 3, 4, 5]
+list(range(10, 0, -3))  # [10, 7, 4, 1]</code></pre></div>
+
+  <h3>for vs. while</h3>
+  <p>For, kun tiedät mitä käydään läpi. While, kun toistetaan niin kauan kuin joku ehto on voimassa.</p>
+  <div class="code"><pre><code class="language-python">for i in range(3):
+    print(i)        # 0, 1, 2
+
+n = 3
+while n &gt; 0:
+    print(n)        # 3, 2, 1
+    n -= 1          # unohda tämä, niin silmukka ei lopu ikinä
+
+for i in range(10):
+    if i == 2:
+        continue    # hyppää tämän kierroksen yli
+    if i == 5:
+        break       # lopettaa koko silmukan
+    print(i)        # 0, 1, 3, 4</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p><code>=</code> asettaa arvon, <code>==</code> vertaa. <code>if x = 5:</code> on syntaksivirhe, <code>if x == 5:</code> on se mitä tarkoitit.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 2</span>
+    <p>Tulosta luvut 1–20. Jos luku on jaollinen kolmella, tulosta sen tilalle <em>Sihis</em>.</p>
+    <details><summary>Näytä vihje</summary><p><code>range(1, 21)</code>, koska loppu ei tule mukaan. Jaollisuuden näet ehdosta <code>i % 3 == 0</code>.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-python">for i in range(1, 21):
+    if i % 3 == 0:
+        print("Sihis")
+    else:
+        print(i)</code></pre></div></details>
+  </div>
+</section>
+
+<p class="break">ti 13.10. ei opetusta, syysloma. Hyvä hetki kerrata viikot 1–2.</p>
+
+<!-- 3 -->
+<section class="week" id="w3" data-date="2026-10-20">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Viikko 3</b> · ti 20.10.</span><span>Aliohjelmat · parametrit · type hints</span></div>
+    <h2>Funktiot</h2>
+    <p class="tldr">Funktio on resepti: annat ainekset (parametrit), se antaa takaisin valmiin (return).</p>
+  </div>
+  <p>Tyyppivihjeet <code>: str</code> ja <code>-&gt; str</code> kertoo lukijalle ja editorille, mitä odotetaan. Python itse ei tarkista niitä ajon aikana, eli <code>tervehdi(123)</code> toimii silti.</p>
+  <div class="code"><pre><code class="language-python">def tervehdi(nimi: str, huuto: bool = False) -&gt; str:
+    viesti = f"Moi {nimi}"
+    if huuto:
+        viesti = viesti.upper() + "!"
+    return viesti
+
+tervehdi("Ada")               # 'Moi Ada'
+tervehdi("Ada", huuto=True)   # 'MOI ADA!'</code></pre></div>
+  <p><code>huuto: bool = False</code> on oletusarvo. Jos et anna sitä, käytetään <code>False</code>.</p>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p><code>print</code> näyttää, <code>return</code> antaa. Jos funktiossa ei ole returnia, se palauttaa <code>None</code>.</p>
+    <div class="code"><pre><code class="language-python">def tuplaa(x):
+    print(x * 2)
+
+tulos = tuplaa(4)   # tulostaa 8
+print(tulos)        # None  ← tulosta ei palautettu</code></pre></div>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 3</span>
+    <p>Kirjoita funktio <code>onko_parillinen(n)</code>, joka palauttaa <code>True</code> tai <code>False</code>.</p>
+    <details><summary>Näytä vihje</summary><p>Vertailu on itsessään jo <code>True</code> tai <code>False</code>. Et tarvitse if-lausetta ollenkaan.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-python">def onko_parillinen(n: int) -&gt; bool:
+    return n % 2 == 0
+
+print(onko_parillinen(4))   # True
+print(onko_parillinen(7))   # False</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="week" id="w4" data-date="2026-10-27">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Viikko 4</b> · ti 27.10.</span><span>Listat · monikot · listakeräelmät</span></div>
+    <h2>Listat ja monikot</h2>
+    <p class="tldr">Lista on muokattava jono. Monikko (tuple) on sama, mutta lukittu.</p>
+  </div>
+  <div class="code"><pre><code class="language-python">kurssit = ["Python", "Tietoverkot"]
+kurssit.append("Tietotekniikka")   # lisää loppuun
+kurssit.insert(0, "Johdatus")      # lisää kohtaan 0
+kurssit.remove("Tietoverkot")      # poistaa arvon perusteella
+viimeinen = kurssit.pop()          # ottaa viimeisen pois: 'Tietotekniikka'
+print(kurssit)                     # ['Johdatus', 'Python']
+
+for i, kurssi in enumerate(kurssit, start=1):
+    print(i, kurssi)               # 1 Johdatus / 2 Python</code></pre></div>
+
+  <h3>Listakeräelmä</h3>
+  <p>Uusi lista yhdellä rivillä. Lue se ääneen: "x kertaa kaksi jokaiselle x:lle luvuissa".</p>
+  <div class="code"><pre><code class="language-python">luvut = [3, 1, 4, 1, 5]
+[x * 2 for x in luvut]          # [6, 2, 8, 2, 10]
+[x for x in luvut if x &gt; 2]     # [3, 4, 5]
+
+sorted(luvut)    # [1, 1, 3, 4, 5]  uusi lista, alkuperäinen ennallaan
+luvut.sort()     # järjestää paikallaan ja palauttaa None</code></pre></div>
+
+  <h3>Monikko</h3>
+  <div class="code"><pre><code class="language-python">piste = (3, 4)
+x, y = piste     # purku: x = 3, y = 4
+piste[0] = 5     # TypeError, monikkoa ei voi muuttaa</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p><code>b = a</code> ei kopioi listaa. Molemmat nimet osoittaa samaan listaan.</p>
+    <div class="code"><pre><code class="language-python">a = [1, 2]
+b = a
+b.append(3)
+print(a)        # [1, 2, 3]  ← yllätys
+c = a.copy()    # tämä on oikea kopio</code></pre></div>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 4</span>
+    <p>Arvosanat ovat <code>[3, 5, 2, 4, 5]</code>. Laske keskiarvo ja vitosten määrä, ja tee lista arvosanoista, jotka on vähintään 4.</p>
+    <details><summary>Näytä vihje</summary><p><code>sum()</code>, <code>len()</code> ja <code>.count()</code> tekee suurimman työn. Viimeiseen sopii listakeräelmä.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-python">arvosanat = [3, 5, 2, 4, 5]
+keskiarvo = sum(arvosanat) / len(arvosanat)
+print(keskiarvo)                          # 3.8
+print(arvosanat.count(5))                 # 2
+print([a for a in arvosanat if a &gt;= 4])   # [5, 4, 5]</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="week" id="w5" data-date="2026-11-03">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Viikko 5</b> · ti 3.11.</span><span>Sanakirjat · keräelmät · joukot</span></div>
+    <h2>Sanakirjat ja joukot</h2>
+    <p class="tldr">Sanakirja hakee arvon avaimella, ei järjestysnumerolla. Joukko pitää huolen, ettei mikään ole kahdesti.</p>
+  </div>
+  <div class="code"><pre><code class="language-python">opiskelija = {"nimi": "Ada", "op": 15}
+opiskelija["op"] += 5              # 20
+opiskelija["kaupunki"] = "Tampere" # uusi avain syntyy asettamalla
+
+opiskelija.get("ika")        # None, ei virhettä
+opiskelija.get("ika", 0)     # 0, oma oletusarvo
+"nimi" in opiskelija         # True (in katsoo avaimia, ei arvoja)
+
+for avain, arvo in opiskelija.items():
+    print(avain, arvo)
+
+{x: x ** 2 for x in range(4)}   # {0: 0, 1: 1, 2: 4, 3: 9}</code></pre></div>
+
+  <h3>Joukot</h3>
+  <div class="code"><pre><code class="language-python">a = {1, 2, 3}
+b = {3, 4}
+a | b            # {1, 2, 3, 4}  yhdiste
+a &amp; b            # {3}           leikkaus
+a - b            # {1, 2}        erotus
+set([1, 1, 2])   # {1, 2}        tuplat pois</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p><code>{}</code> on tyhjä <em>sanakirja</em>. Tyhjä joukko tehdään <code>set()</code>. Ja <code>opiskelija["puuttuu"]</code> kaatuu <code>KeyError</code>iin, joten käytä <code>.get()</code>, jos et ole varma.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 5</span>
+    <p>Laske, montako kertaa kukin sana esiintyy lauseessa <em>kissa koira kissa hiiri kissa</em>.</p>
+    <details><summary>Näytä vihje</summary><p><code>.split()</code> pilkkoo sanoiksi. <code>.get(sana, 0)</code> antaa nollan, jos sanaa ei ole vielä sanakirjassa.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-python">lause = "kissa koira kissa hiiri kissa"
+laskuri = {}
+for sana in lause.split():
+    laskuri[sana] = laskuri.get(sana, 0) + 1
+print(laskuri)   # {'kissa': 3, 'koira': 1, 'hiiri': 1}</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="week" id="w6" data-date="2026-11-10">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Viikko 6</b> · ti 10.11.</span><span>Poikkeukset · tiedostot</span></div>
+    <h2>Virheet ja tiedostot</h2>
+    <p class="tldr">Try yrittää, except ottaa kiinni. Tiedostot avataan <code>with</code>-lohkossa, niin ne sulkeutuu itsestään.</p>
+  </div>
+  <div class="code"><pre><code class="language-python">try:
+    luku = int(input("Luku: "))
+    print(10 / luku)
+except ValueError:
+    print("Tuo ei ollut luku.")
+except ZeroDivisionError:
+    print("Nollalla ei voi jakaa.")
+else:
+    print("Kaikki meni hyvin.")    # vain jos virhettä ei tullut
+finally:
+    print("Tämä ajetaan aina.")</code></pre></div>
+
+  <h3>Tiedostot</h3>
+  <div class="code"><pre><code class="language-python">with open("muistiinpanot.txt", "w", encoding="utf-8") as f:
+    f.write("Rivi 1\n")
+
+with open("muistiinpanot.txt", "a", encoding="utf-8") as f:
+    f.write("Rivi 2\n")
+
+with open("muistiinpanot.txt", encoding="utf-8") as f:
+    for rivi in f:
+        print(rivi.strip())   # Rivi 1 / Rivi 2</code></pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tila</th><th>Mitä tekee</th></tr></thead>
+    <tbody>
+      <tr><td>"r"</td><td>Lukee. Oletus, jos et anna tilaa. Kaatuu <code>FileNotFoundError</code>iin, jos tiedostoa ei ole.</td></tr>
+      <tr><td>"w"</td><td>Kirjoittaa. Tyhjentää tiedoston ensin!</td></tr>
+      <tr><td>"a"</td><td>Lisää loppuun, vanha sisältö säilyy.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Kirjoita aina <code>encoding="utf-8"</code>. Ilman sitä ä ja ö voi mennä rikki, varsinkin Windowsilla.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 6</span>
+    <p>Kysy kokonaislukua niin kauan, että käyttäjä antaa kelvollisen.</p>
+    <details><summary>Näytä vihje</summary><p><code>while True</code> ja sen sisällä <code>try</code>/<code>except</code>. Kutsu <code>break</code> vasta, kun <code>int()</code> onnistui.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-python">while True:
+    try:
+        luku = int(input("Anna kokonaisluku: "))
+        break
+    except ValueError:
+        print("Ei kelpaa, yritä uudestaan.")
+print(f"Kiitos, sait {luku}.")</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="week" id="w7" data-date="2026-11-17">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Viikko 7</b> · ti 17.11.</span><span>Moduulit · pip · uv</span></div>
+    <h2>Moduulit ja paketit</h2>
+    <p class="tldr">Moduuli on vain toinen .py-tiedosto. Paketti on jonkun muun kirjoittama moduuli, jonka asennat netistä.</p>
+  </div>
+  <div class="code"><pre><code class="language-python">import math
+math.sqrt(16)       # 4.0
+math.pi             # 3.141592653589793
+
+from random import randint
+randint(1, 6)       # 1–6, molemmat päät mukana (toisin kuin range!)
+
+# oma moduuli: tiedosto apurit.py samassa kansiossa
+import apurit
+apurit.tuplaa(3)</code></pre></div>
+
+  <h3>__name__ == "__main__"</h3>
+  <p>Tämä ehto on tosi vain, kun ajat tiedoston suoraan. Kun toinen tiedosto importtaa sen, <code>main()</code> jää ajamatta. Siksi se on melkein jokaisen skriptin lopussa.</p>
+  <div class="code"><pre><code class="language-python">def main():
+    print("Ohjelma käynnistyi")
+
+if __name__ == "__main__":
+    main()</code></pre></div>
+
+  <h3>Paketin asennus (komentoriville, ei Pythoniin)</h3>
+  <div class="code"><pre><code class="language-bash">python -m pip install requests   # asentaa paketin (Windowsilla: py -m pip ...)
+uv add requests                  # uv-projektissa: lisää riippuvuudeksi
+uv run ohjelma.py                # ajaa ohjelman projektin ympäristössä</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Älä nimeä omaa tiedostoa samoin kuin moduulia, esim. <code>random.py</code> tai <code>math.py</code>. Silloin <code>import random</code> löytää sinun tiedostosi eikä oikeaa moduulia.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 7</span>
+    <p>Tee moduuli <code>noppa.py</code>, jossa funktio <code>heita(maara)</code> palauttaa listan nopanheittoja. Kun tiedosto ajetaan suoraan, heitä kolme noppaa ja tulosta summa.</p>
+    <details><summary>Näytä vihje</summary><p><code>randint(1, 6)</code> listakeräelmän sisään. Ajo-osa menee <code>__main__</code>-ehdon alle.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-python"># noppa.py
+from random import randint
+
+def heita(maara: int) -&gt; list[int]:
+    return [randint(1, 6) for _ in range(maara)]
+
+if __name__ == "__main__":
+    tulos = heita(3)
+    print(tulos, "summa:", sum(tulos))</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="week" id="w8" data-date="2026-11-24">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Viikko 8</b> · ti 24.11.</span><span>Luokat · oliot · metodit</span></div>
+    <h2>Olio-ohjelmointi</h2>
+    <p class="tldr">Luokka on muotti, olio on siitä valettu kappale. <code>self</code> tarkoittaa "tämä nimenomainen kappale".</p>
+  </div>
+  <div class="code"><pre><code class="language-python">class Kurssi:
+    def __init__(self, nimi: str, op: int):   # ajetaan kun olio luodaan
+        self.nimi = nimi                      # tietojäsenet
+        self.op = op
+        self.valmis = False
+
+    def suorita(self):                        # metodi
+        self.valmis = True
+
+    def __str__(self):                        # mitä print näyttää
+        tila = "valmis" if self.valmis else "kesken"
+        return f"{self.nimi} ({self.op} op, {tila})"
+
+    @classmethod
+    def tekstista(cls, rivi: str):            # luokkametodi: saa luokan, ei oliota
+        nimi, op = rivi.split(";")
+        return cls(nimi, int(op))
+
+python = Kurssi("Python", 5)
+python.suorita()
+print(python)                          # Python (5 op, valmis)
+print(Kurssi.tekstista("Tietoverkot;5"))  # Tietoverkot (5 op, kesken)</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Jokainen metodi tarvitsee <code>self</code>-parametrin ensimmäiseksi. Ja <code>self.nimi</code> on olion tieto, pelkkä <code>nimi</code> on vain paikallinen muuttuja, joka katoaa funktion lopussa.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 8</span>
+    <p>Tee luokka <code>Tili</code>, jolla on <code>talleta(summa)</code>, <code>nosta(summa)</code> ja <code>saldo</code>. Nosto ei saa viedä saldoa miinukselle, vaan palauttaa silloin <code>False</code>.</p>
+    <details><summary>Näytä vihje</summary><p>Tarkista ensin, riittääkö saldo. Vähennä vasta sen jälkeen.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-python">class Tili:
+    def __init__(self, omistaja: str):
+        self.omistaja = omistaja
+        self.saldo = 0
+
+    def talleta(self, summa: float):
+        self.saldo += summa
+
+    def nosta(self, summa: float) -&gt; bool:
+        if summa &gt; self.saldo:
+            return False
+        self.saldo -= summa
+        return True
+
+tili = Tili("Ada")
+tili.talleta(50)
+print(tili.nosta(80))   # False
+print(tili.nosta(20))   # True
+print(tili.saldo)       # 30</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="week" id="w9" data-date="2026-12-01">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Viikko 9</b> · ti 1.12.</span><span>HTTP · JSON · palvelin</span></div>
+    <h2>Verkko ja JSON</h2>
+    <p class="tldr">JSON on tekstiä, joka näyttää sanakirjalta. <code>json.loads</code> tekee siitä oikean sanakirjan, <code>json.dumps</code> takaisin tekstiksi.</p>
+  </div>
+  <div class="code"><pre><code class="language-python">import json
+
+data = json.loads('{"nimi": "Ada", "op": 20}')   # str → dict
+data["op"]                                         # 20
+json.dumps(data)                                   # dict → str
+json.dumps({"kieli": "ä"}, ensure_ascii=False)     # '{"kieli": "ä"}'</code></pre></div>
+
+  <h3>HTTP-pyyntö</h3>
+  <p><code>requests</code> pitää asentaa ensin (viikko 7). Octocat on GitHubin oma testitili, joten sillä voi kokeilla turvallisesti.</p>
+  <div class="code"><pre><code class="language-python">import requests
+
+r = requests.get("https://api.github.com/users/octocat", timeout=10)
+r.status_code        # 200 = kaikki ok
+tiedot = r.json()    # vastaus suoraan sanakirjaksi
+tiedot["login"]      # 'octocat'</code></pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Koodi</th><th>Tarkoittaa</th></tr></thead>
+    <tbody>
+      <tr><td>200</td><td>OK, sait mitä pyysit</td></tr>
+      <tr><td>404</td><td>Ei löydy, osoite väärin</td></tr>
+      <tr><td>500</td><td>Vika palvelimessa, ei sinussa</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Oma pieni palvelin</h3>
+  <p>Yleinen tapa on Flask (<code>pip install flask</code>). Kurssi voi käyttää jotain muuta, joten vertaa materiaaliin.</p>
+  <div class="code"><pre><code class="language-python"># palvelin.py
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.get("/api/moi")
+def moi():
+    return jsonify(viesti="Moi!")
+
+# käynnistys komentorivillä: flask --app palvelin run
+# selaimessa: http://127.0.0.1:5000/api/moi</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Laita aina <code>timeout=</code>. Ilman sitä ohjelma voi jäädä odottamaan vastausta ikuisesti.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 9</span>
+    <p>Tallenna sanakirja JSON-tiedostoon ja lue se takaisin. Tarkista, että sait saman sanakirjan.</p>
+    <details><summary>Näytä vihje</summary><p><code>json.dump</code> kirjoittaa tiedostoon ja <code>json.load</code> lukee tiedostosta. Ilman s-kirjainta = tiedosto, s:n kanssa = merkkijono.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-python">import json
+
+kurssi = {"nimi": "Python", "op": 5, "valmis": False}
+
+with open("kurssi.json", "w", encoding="utf-8") as f:
+    json.dump(kurssi, f, ensure_ascii=False, indent=2)
+
+with open("kurssi.json", encoding="utf-8") as f:
+    luettu = json.load(f)
+
+print(luettu == kurssi)   # True</code></pre></div></details>
+  </div>
+</section>
+
+
+    </div>
+  </main>
+
+  <main class="sheet" id="sheet-sql" data-slip="sql" hidden>
+    <div class="sheet-head">
+      <span class="label">// kurssi · syksy 2026</span>
+      <h2>Kyselyjen <em>lunttilappu</em></h2>
+      <p>SQL ja SQLite kurssin tahdissa. Jokainen kysely on ajettu SQLitellä.</p>
+    </div>
+    <nav class="strip" aria-label="Osat">
+      <ol class="weeks"></ol>
+      <span class="tally"></span>
+    </nav>
+    <div class="course">
+
+
+<!-- 1 -->
+<section class="week" id="s1" data-date="2026-10-01">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 1</b> · to 1.10.</span><span>Tietokanta · SQLite · SELECT</span></div>
+    <h2>Ensimmäiset kyselyt</h2>
+    <p class="tldr">Tietokanta on joukko tauluja. Taulussa on rivejä ja sarakkeita, vähän kuin Excelissä, mutta jokaisella sarakkeella on oma tietotyyppinsä.</p>
+  </div>
+  <p>SQLite on tietokanta, joka mahtuu yhteen tiedostoon. Sitä käytetään komentoriviltä <code>sqlite3</code>-ohjelmalla. Pisteellä alkavat komennot ovat SQLiten omia apukomentoja, eivät SQL:ää, eikä niiden perään tule puolipistettä.</p>
+  <div class="code"><pre><code class="language-bash">sqlite3 kirjasto.db     # avaa tai luo tietokannan
+
+.read kirjasto.sql      # ajaa SQL-tiedoston
+.tables                 # näyttää taulut
+.schema kirja           # näyttää, miten taulu on luotu
+.headers on             # sarakkeiden nimet näkyviin
+.mode column            # siistit sarakkeet
+.quit                   # lopettaa</code></pre></div>
+
+  <h3>Harjoitustietokanta</h3>
+  <p>Kaikki lapun esimerkit käyttävät tätä kolmen taulun kirjastoa. Tallenna se tiedostoon <code>kirjasto.sql</code> ja lue se sisään komennolla <code>.read kirjasto.sql</code>. Vuodet ovat teosten ensijulkaisuvuosia, sivumäärät ja hinnat keksittyjä.</p>
+  <div class="code"><pre><code class="language-sql">CREATE TABLE kirjailija (
+  id   INTEGER PRIMARY KEY,
+  nimi TEXT NOT NULL,
+  maa  TEXT
+);
+CREATE TABLE kirja (
+  id            INTEGER PRIMARY KEY,
+  nimi          TEXT NOT NULL,
+  kirjailija_id INTEGER REFERENCES kirjailija(id),
+  vuosi         INTEGER,
+  sivut         INTEGER,
+  hinta         REAL
+);
+CREATE TABLE lainaus (
+  id          INTEGER PRIMARY KEY,
+  kirja_id    INTEGER REFERENCES kirja(id),
+  lainaaja    TEXT,
+  lainattu    TEXT,
+  palautettu  TEXT
+);
+INSERT INTO kirjailija VALUES
+ (1,'Mary Shelley','Iso-Britannia'),(2,'Edgar Allan Poe','Yhdysvallat'),(3,'H. P. Lovecraft','Yhdysvallat'),
+ (4,'Bram Stoker','Irlanti'),(5,'Emily Brontë','Iso-Britannia');
+INSERT INTO kirja VALUES
+ (1,'Humiseva harju',5,1847,416,16.90),
+ (2,'Frankenstein',1,1818,280,12.50),
+ (3,'Dracula',4,1897,488,24.00),
+ (4,'Usherin talon häviö',2,1839,64,8.50),
+ (5,'Cthulhun kutsu',3,1928,80,11.90),
+ (6,'Korppi',2,1845,48,NULL),
+ (7,'Hulluuden vuorilla',3,1936,176,19.50),
+ (8,'Arthur Gordon Pymin seikkailut',2,1838,256,NULL),
+ (9,'Kalevala',NULL,1849,400,22.00);
+INSERT INTO lainaus VALUES
+ (1,3,'Ada','2026-09-01','2026-09-20'),
+ (2,2,'Ada','2026-09-15',NULL),
+ (3,1,'Linus','2026-09-10','2026-09-24'),
+ (4,5,'Grace','2026-09-18',NULL),
+ (5,3,'Grace','2026-09-25',NULL);</code></pre></div>
+
+  <h3>SELECT</h3>
+  <p>Jokainen kysely alkaa kahdella asialla: mitkä sarakkeet (<code>SELECT</code>) ja mistä taulusta (<code>FROM</code>). Tähti tarkoittaa kaikkia sarakkeita. Kysely päättyy puolipisteeseen.</p>
+  <div class="code"><pre><code class="language-sql">SELECT * FROM kirjailija;          -- kaikki sarakkeet ja rivit
+
+SELECT nimi, vuosi FROM kirja;     -- vain kaksi saraketta
+
+SELECT nimi FROM kirjailija;
+-- Mary Shelley
+-- Edgar Allan Poe
+-- H. P. Lovecraft
+-- Bram Stoker
+-- Emily Brontë</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Teksti kirjoitetaan <em>yksinkertaisiin</em> lainausmerkkeihin: <code>'Irlanti'</code>. Kaksinkertaiset lainausmerkit tarkoittavat SQL:ssä sarakkeen tai taulun nimeä, ja SQLite hyväksyy ne joskus tekstinä, mikä tekee virheistä vaikeita huomata.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 1</span>
+    <p>Hae kaikkien kirjailijoiden nimet ja maat.</p>
+    <details><summary>Näytä vihje</summary><p>Tarvitset kaksi saraketta pilkulla erotettuna ja taulun <code>kirjailija</code>.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-sql">SELECT nimi, maa FROM kirjailija;
+-- Mary Shelley     Iso-Britannia
+-- Edgar Allan Poe  Yhdysvallat
+-- H. P. Lovecraft  Yhdysvallat
+-- Bram Stoker      Irlanti
+-- Emily Brontë     Iso-Britannia</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="week" id="s2" data-date="2026-10-08">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 2</b> · to 8.10.</span><span>ORDER BY · LIMIT · DISTINCT · AS</span></div>
+    <h2>Taulut ja kyselyt</h2>
+    <p class="tldr">Tietokanta palauttaa rivit missä järjestyksessä sattuu. Jos järjestyksellä on väliä, se pitää pyytää <code>ORDER BY</code>:llä.</p>
+  </div>
+
+  <h3>Järjestys ja määrä</h3>
+  <div class="code"><pre><code class="language-sql">SELECT nimi, vuosi FROM kirja ORDER BY vuosi LIMIT 3;
+-- Frankenstein                    1818
+-- Arthur Gordon Pymin seikkailut  1838
+-- Usherin talon häviö             1839
+
+SELECT nimi, sivut FROM kirja ORDER BY sivut DESC LIMIT 2;   -- DESC = suurin ensin
+-- Dracula         488
+-- Humiseva harju  416</code></pre></div>
+
+  <h3>Ei toistoja</h3>
+  <div class="code"><pre><code class="language-sql">SELECT DISTINCT maa FROM kirjailija;
+-- Iso-Britannia
+-- Yhdysvallat
+-- Irlanti</code></pre></div>
+
+  <h3>Laskut ja uudet nimet</h3>
+  <p>Sarakkeilla voi laskea, ja <code>AS</code> antaa tulokselle nimen. Nimeä voi käyttää <code>ORDER BY</code>:ssä.</p>
+  <div class="code"><pre><code class="language-sql">SELECT nimi, round(hinta * 0.9, 2) AS ale
+FROM kirja
+ORDER BY ale DESC
+LIMIT 3;
+-- Dracula             21.6
+-- Kalevala            19.8
+-- Hulluuden vuorilla  17.55</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Kahden kokonaisluvun jako antaa kokonaisluvun. Desimaalit saa, kun toinen luku on desimaaliluku.</p>
+    <div class="code"><pre><code class="language-sql">SELECT 7 / 2, 7 / 2.0, 7 % 2;
+-- 3   3.5   1</code></pre></div>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 2</span>
+    <p>Listaa kolme ohuinta kirjaa ja niiden sivumäärät, ohuin ensin.</p>
+    <details><summary>Näytä vihje</summary><p>Järjestä sivumäärän mukaan ja rajaa kolmeen. Nouseva järjestys on oletus.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-sql">SELECT nimi, sivut FROM kirja ORDER BY sivut LIMIT 3;
+-- Korppi               48
+-- Usherin talon häviö  64
+-- Cthulhun kutsu       80</code></pre></div></details>
+  </div>
+</section>
+
+<p class="break">to 15.10. ei opetusta, syysloma. Hyvä hetki kerrata osat 1–2.</p>
+
+<!-- 3 -->
+<section class="week" id="s3" data-date="2026-10-22">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 3</b> · to 22.10.</span><span>WHERE · AND/OR · IN · BETWEEN · LIKE · NULL</span></div>
+    <h2>Ehdot ja tyhjät arvot</h2>
+    <p class="tldr"><code>WHERE</code> päättää, mitkä rivit pääsevät tulokseen. NULL tarkoittaa, ettei arvoa tiedetä, eikä sitä voi verrata yhtäsuuruusmerkillä.</p>
+  </div>
+  <div class="code"><pre><code class="language-sql">SELECT nimi FROM kirja WHERE vuosi &lt; 1840;
+-- Frankenstein, Usherin talon häviö, Arthur Gordon Pymin seikkailut
+
+SELECT nimi, vuosi FROM kirja
+WHERE vuosi BETWEEN 1840 AND 1850       -- molemmat päät mukana
+ORDER BY vuosi;
+-- Korppi 1845, Humiseva harju 1847, Kalevala 1849
+
+SELECT nimi FROM kirja WHERE kirjailija_id IN (2, 3);   -- Poe ja Lovecraft
+-- Usherin talon häviö, Cthulhun kutsu, Korppi, Hulluuden vuorilla,
+-- Arthur Gordon Pymin seikkailut</code></pre></div>
+
+  <h3>AND ja OR</h3>
+  <div class="code"><pre><code class="language-sql">SELECT nimi FROM kirja WHERE sivut &gt; 200 AND hinta &lt; 20;
+-- Humiseva harju, Frankenstein
+
+SELECT nimi FROM kirja WHERE vuosi &lt; 1840 OR sivut &gt; 400;
+-- Humiseva harju, Frankenstein, Dracula, Usherin talon häviö,
+-- Arthur Gordon Pymin seikkailut</code></pre></div>
+  <p>Arthur Gordon Pymin seikkailut (256 sivua) puuttuu ensimmäisestä tuloksesta, koska sen hinta on NULL. NULL ei ole pienempi eikä suurempi kuin 20, joten ehto ei ole tosi.</p>
+
+  <h3>LIKE</h3>
+  <p><code>%</code> tarkoittaa mitä tahansa määrää merkkejä ja <code>_</code> tasan yhtä merkkiä.</p>
+  <div class="code"><pre><code class="language-sql">SELECT nimi FROM kirja WHERE nimi LIKE 'H%';
+-- Humiseva harju, Hulluuden vuorilla
+
+SELECT nimi FROM kirja WHERE nimi LIKE '%talo%';
+-- Usherin talon häviö</code></pre></div>
+
+  <h3>NULL</h3>
+  <div class="code"><pre><code class="language-sql">SELECT nimi FROM kirja WHERE hinta IS NULL;
+-- Korppi, Arthur Gordon Pymin seikkailut
+
+SELECT nimi, IFNULL(hinta, 'ei tiedossa') FROM kirja WHERE id IN (5, 6);
+-- Cthulhun kutsu  11.9
+-- Korppi          ei tiedossa</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p><code>WHERE hinta = NULL</code> ei anna virhettä, mutta ei myöskään yhtään riviä. Käytä aina <code>IS NULL</code> tai <code>IS NOT NULL</code>.</p>
+    <p><code>LIKE</code> ei välitä isoista ja pienistä kirjaimista, mutta vain a–z-kirjaimilla. Ä ja ö lasketaan eri merkeiksi isona ja pienenä: <code>'Ä' LIKE 'ä'</code> on epätosi.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 3</span>
+    <p>Hae 1800-luvulla julkaistut kirjat, joiden hinta on tiedossa. Näytä nimi, vuosi ja hinta vanhimmasta uusimpaan.</p>
+    <details><summary>Näytä vihje</summary><p>Kaksi ehtoa <code>AND</code>:lla: vuosi väliltä 1800–1899 ja hinta, joka ei ole NULL.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-sql">SELECT nimi, vuosi, hinta
+FROM kirja
+WHERE vuosi BETWEEN 1800 AND 1899
+  AND hinta IS NOT NULL
+ORDER BY vuosi;
+-- Frankenstein         1818  12.5
+-- Usherin talon häviö  1839  8.5
+-- Humiseva harju       1847  16.9
+-- Kalevala             1849  22.0
+-- Dracula              1897  24.0</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="week" id="s4" data-date="2026-10-29">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 4</b> · to 29.10.</span><span>INSERT · UPDATE · DELETE</span></div>
+    <h2>Lisää, muuta ja poista</h2>
+    <p class="tldr"><code>INSERT</code> lisää rivin, <code>UPDATE</code> muuttaa rivejä ja <code>DELETE</code> poistaa niitä. Kaksi viimeistä tarvitsevat lähes aina <code>WHERE</code>-ehdon.</p>
+  </div>
+  <div class="code"><pre><code class="language-sql">INSERT INTO kirja (nimi, kirjailija_id, vuosi, sivut, hinta)
+VALUES ('Charles Dexter Wardin tapaus', 3, 1941, 144, 14.90);
+-- id jätettiin pois, joten SQLite antoi suurinta id:tä seuraavan numeron: 10
+
+UPDATE kirja SET hinta = 9.90 WHERE nimi = 'Korppi';
+
+UPDATE kirja SET hinta = round(hinta * 1.1, 2) WHERE kirjailija_id = 3;
+-- Lovecraftin kirjat kallistuvat 10 %:
+-- Cthulhun kutsu 11.9 → 13.09, Hulluuden vuorilla 19.5 → 21.45,
+-- Charles Dexter Wardin tapaus 14.9 → 16.39
+
+DELETE FROM lainaus WHERE palautettu IS NOT NULL;
+-- poistaa palautetut lainat, jäljelle jää 3 riviä</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Ilman <code>WHERE</code>-ehtoa <code>UPDATE</code> muuttaa ja <code>DELETE</code> poistaa <em>kaikki</em> rivit, eikä SQLite kysy varmistusta. Aja sama ehto ensin <code>SELECT</code>-kyselynä ja katso, mitkä rivit se löytää.</p>
+    <div class="code"><pre><code class="language-sql">SELECT * FROM lainaus WHERE palautettu IS NOT NULL;   -- 1. tarkista
+DELETE   FROM lainaus WHERE palautettu IS NOT NULL;   -- 2. poista</code></pre></div>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 4</span>
+    <p>Lisää Mary Shelleylle kirja <em>Viimeinen ihminen</em> (1826, 480 sivua, hinta ei tiedossa). Merkitse sitten Gracen Dracula-laina palautetuksi 1.10.2026.</p>
+    <details><summary>Näytä vihje</summary><p>Mary Shelleyn id on 1. Hinnan voi jättää pois sarakelistasta, jolloin siihen tulee NULL. Päivämäärät ovat muodossa <code>'2026-10-01'</code>.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-sql">INSERT INTO kirja (nimi, kirjailija_id, vuosi, sivut)
+VALUES ('Viimeinen ihminen', 1, 1826, 480);
+
+UPDATE lainaus
+SET palautettu = '2026-10-01'
+WHERE lainaaja = 'Grace' AND kirja_id = 3;
+
+SELECT * FROM lainaus WHERE lainaaja = 'Grace';
+-- 4  5  Grace  2026-09-18  NULL
+-- 5  3  Grace  2026-09-25  2026-10-01</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="week" id="s5" data-date="2026-11-05">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 5</b> · to 5.11.</span><span>JOIN · LEFT JOIN · aliakset</span></div>
+    <h2>Taulujen liitokset</h2>
+    <p class="tldr"><code>JOIN</code> yhdistää kaksi taulua sarakkeen kautta, joka on molemmissa. Kirjassa on <code>kirjailija_id</code>, ja se vastaa kirjailijataulun <code>id</code>:tä.</p>
+  </div>
+  <div class="code"><pre><code class="language-sql">SELECT kirja.nimi, kirjailija.nimi
+FROM kirja
+JOIN kirjailija ON kirja.kirjailija_id = kirjailija.id
+ORDER BY kirja.vuosi
+LIMIT 3;
+-- Frankenstein                    Mary Shelley
+-- Arthur Gordon Pymin seikkailut  Edgar Allan Poe
+-- Usherin talon häviö             Edgar Allan Poe</code></pre></div>
+  <p>Lyhyet aliakset (<code>k</code>, <code>a</code>, <code>l</code>) säästävät kirjoittamista, kun tauluja on monta.</p>
+  <div class="code"><pre><code class="language-sql">SELECT l.lainaaja, k.nimi
+FROM lainaus l
+JOIN kirja k ON l.kirja_id = k.id
+WHERE l.palautettu IS NULL
+ORDER BY l.lainaaja;
+-- Ada    Frankenstein
+-- Grace  Cthulhun kutsu
+-- Grace  Dracula</code></pre></div>
+
+  <h3>LEFT JOIN</h3>
+  <p>Tavallinen <code>JOIN</code> pudottaa rivit, joille ei löydy paria. Kalevalalla ei ole kirjailijaa, joten liitoksessa on 8 kirjaa eikä 9. <code>LEFT JOIN</code> pitää kaikki vasemman taulun rivit ja täyttää puuttuvat kohdat NULLilla.</p>
+  <div class="code"><pre><code class="language-sql">SELECT k.nimi
+FROM kirja k
+LEFT JOIN lainaus l ON l.kirja_id = k.id
+WHERE l.id IS NULL
+ORDER BY k.nimi;
+-- kirjat, joita ei ole lainattu kertaakaan:
+-- Arthur Gordon Pymin seikkailut, Hulluuden vuorilla, Kalevala, Korppi,
+-- Usherin talon häviö</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Jos <code>LEFT JOIN</code>in oikean taulun ehto kirjoitetaan <code>WHERE</code>-osaan, NULL-rivit putoavat pois ja liitos toimii kuin tavallinen <code>JOIN</code>. Ehto kuuluu silloin <code>ON</code>-osaan.</p>
+    <div class="code"><pre><code class="language-sql">-- kaikki kirjailijat, ja vuoden 1840 jälkeiset kirjat jos niitä on
+SELECT a.nimi, k.nimi
+FROM kirjailija a
+LEFT JOIN kirja k ON k.kirjailija_id = a.id AND k.vuosi &gt; 1840
+ORDER BY a.nimi, k.nimi;
+-- Mary Shelley näkyy NULLin kanssa, koska Frankenstein on vuodelta 1818.
+-- Siirrä ehto WHEREen, niin hän katoaa kokonaan.</code></pre></div>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 5</span>
+    <p>Listaa jokaisesta lainasta päivä, lainaaja, kirjan nimi ja kirjailija. Uusin laina ensin.</p>
+    <details><summary>Näytä vihje</summary><p>Tarvitset kaksi liitosta: lainaus → kirja ja kirja → kirjailija.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-sql">SELECT l.lainattu, l.lainaaja, k.nimi AS kirja, a.nimi AS kirjailija
+FROM lainaus l
+JOIN kirja k      ON k.id = l.kirja_id
+JOIN kirjailija a ON a.id = k.kirjailija_id
+ORDER BY l.lainattu DESC;
+-- 2026-09-25  Grace  Dracula         Bram Stoker
+-- 2026-09-18  Grace  Cthulhun kutsu  H. P. Lovecraft
+-- 2026-09-15  Ada    Frankenstein    Mary Shelley
+-- 2026-09-10  Linus  Humiseva harju  Emily Brontë
+-- 2026-09-01  Ada    Dracula         Bram Stoker</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="week" id="s6" data-date="2026-11-12">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 6</b> · to 12.11.</span><span>CREATE TABLE · rajoitteet · viiteavaimet</span></div>
+    <h2>Oma taulu</h2>
+    <p class="tldr">Taulua luodessa päätetään sarakkeet, niiden tyypit ja säännöt. Säännöt estävät huonon tiedon pääsyn tauluun jo ennen kuin sitä ehtii syntyä.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Rajoite</th><th>Mitä se tekee</th></tr></thead>
+    <tbody>
+      <tr><td><code>PRIMARY KEY</code></td><td>Rivin yksilöivä tunniste. <code>INTEGER PRIMARY KEY</code> numeroituu itse.</td></tr>
+      <tr><td><code>NOT NULL</code></td><td>Arvo on pakollinen.</td></tr>
+      <tr><td><code>UNIQUE</code></td><td>Kahdella rivillä ei voi olla samaa arvoa.</td></tr>
+      <tr><td><code>DEFAULT</code></td><td>Oletusarvo, jos arvoa ei anneta.</td></tr>
+      <tr><td><code>CHECK</code></td><td>Arvon pitää täyttää ehto.</td></tr>
+      <tr><td><code>REFERENCES</code></td><td>Viiteavain: arvon pitää löytyä toisesta taulusta.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="code"><pre><code class="language-sql">PRAGMA foreign_keys = ON;
+
+CREATE TABLE lukupiiri (
+  id         INTEGER PRIMARY KEY,
+  nimi       TEXT NOT NULL UNIQUE,
+  perustettu TEXT DEFAULT (date('now'))
+);
+CREATE TABLE jasen (
+  id       INTEGER PRIMARY KEY,
+  nimi     TEXT NOT NULL,
+  email    TEXT UNIQUE,
+  ika      INTEGER CHECK (ika &gt;= 15),
+  piiri_id INTEGER REFERENCES lukupiiri(id)
+);
+
+INSERT INTO lukupiiri (nimi) VALUES ('Salonki');
+INSERT INTO jasen (nimi, email, ika, piiri_id) VALUES ('Ada', 'ada@esim.fi', 28, 1);
+
+INSERT INTO jasen (nimi, email, ika, piiri_id) VALUES ('Linus', 'ada@esim.fi', 30, 1);
+-- UNIQUE constraint failed: jasen.email
+INSERT INTO jasen (nimi, ika, piiri_id) VALUES ('Nuori', 12, 1);
+-- CHECK constraint failed: ika &gt;= 15
+INSERT INTO jasen (nimi, ika, piiri_id) VALUES ('Eksynyt', 40, 99);
+-- FOREIGN KEY constraint failed
+
+ALTER TABLE jasen ADD COLUMN kaupunki TEXT;   -- uusi sarake jälkikäteen
+DROP TABLE IF EXISTS vanha;                   -- poistaa taulun, jos se on olemassa</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>SQLite ei tarkista viiteavaimia oletuksena. <code>PRAGMA foreign_keys = ON;</code> pitää antaa jokaisen yhteyden alussa, muuten kirja voi viitata kirjailijaan, jota ei ole.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 6</span>
+    <p>Luo taulu <code>arvostelu</code>: id, kirja (pakollinen, viittaa kirjaan), tähdet 1–5 (pakollinen) ja vapaa teksti. Lisää yksi arvostelu Draculalle.</p>
+    <details><summary>Näytä vihje</summary><p>Tähtien sääntö onnistuu <code>CHECK (tahdet BETWEEN 1 AND 5)</code>. Draculan id on 3.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-sql">CREATE TABLE arvostelu (
+  id       INTEGER PRIMARY KEY,
+  kirja_id INTEGER NOT NULL REFERENCES kirja(id),
+  tahdet   INTEGER NOT NULL CHECK (tahdet BETWEEN 1 AND 5),
+  teksti   TEXT
+);
+
+INSERT INTO arvostelu (kirja_id, tahdet, teksti)
+VALUES (3, 5, 'Kreivi vei yöunet.');
+
+SELECT * FROM arvostelu;
+-- 1  3  5  Kreivi vei yöunet.</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="week" id="s7" data-date="2026-11-19">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 7</b> · to 19.11.</span><span>VIEW · INDEX · EXPLAIN QUERY PLAN</span></div>
+    <h2>Näkymät ja indeksit</h2>
+    <p class="tldr">Näkymä on tallennettu kysely, jota käytetään kuin taulua. Indeksi on hakemisto, joka nopeuttaa hakuja isoissa tauluissa.</p>
+  </div>
+  <h3>Näkymä</h3>
+  <div class="code"><pre><code class="language-sql">CREATE VIEW lainassa AS
+SELECT l.lainaaja, k.nimi, l.lainattu
+FROM lainaus l
+JOIN kirja k ON k.id = l.kirja_id
+WHERE l.palautettu IS NULL;
+
+SELECT * FROM lainassa ORDER BY lainattu;
+-- Ada    Frankenstein    2026-09-15
+-- Grace  Cthulhun kutsu  2026-09-18
+-- Grace  Dracula         2026-09-25</code></pre></div>
+  <p>Näkymä ei tallenna tietoa, vaan ajaa kyselyn joka kerta uudelleen. Kun lainaus palautetaan, se katoaa näkymästä itsestään.</p>
+
+  <h3>Indeksi</h3>
+  <p><code>EXPLAIN QUERY PLAN</code> kertoo, miten SQLite aikoo hakea rivit. <code>SCAN</code> tarkoittaa, että se käy koko taulun läpi. <code>SEARCH ... USING INDEX</code> tarkoittaa, että se hyppää suoraan oikeisiin riveihin.</p>
+  <div class="code"><pre><code class="language-sql">EXPLAIN QUERY PLAN SELECT * FROM kirja WHERE vuosi = 1897;
+-- SCAN kirja
+
+CREATE INDEX idx_kirja_vuosi ON kirja(vuosi);
+
+EXPLAIN QUERY PLAN SELECT * FROM kirja WHERE vuosi = 1897;
+-- SEARCH kirja USING INDEX idx_kirja_vuosi (vuosi=?)</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Indeksi ei ole ilmainen. Se vie tilaa, ja jokainen <code>INSERT</code> ja <code>UPDATE</code> joutuu päivittämään myös indeksin. Indeksoi sarakkeet, joilla oikeasti haetaan tai liitetään.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 7</span>
+    <p>Tee näkymä <code>hinnasto</code>, jossa on kirjan nimi ja hinta. Kirjat ilman hintaa jätetään pois. Hae näkymästä kolme kalleinta.</p>
+    <details><summary>Näytä vihje</summary><p>Rajaus tulee näkymän sisälle, järjestys ja <code>LIMIT</code> vasta kyselyyn, joka hakee näkymästä.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-sql">CREATE VIEW hinnasto AS
+SELECT nimi, hinta FROM kirja WHERE hinta IS NOT NULL;
+
+SELECT * FROM hinnasto ORDER BY hinta DESC LIMIT 3;
+-- Dracula             24.0
+-- Kalevala            22.0
+-- Hulluuden vuorilla  19.5</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="week" id="s8" data-date="2026-11-26">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 8</b> · to 26.11.</span><span>Funktiot · GROUP BY · HAVING · CASE</span></div>
+    <h2>SQLiten valmiit funktiot</h2>
+    <p class="tldr">Osa funktioista käsittelee yhtä arvoa kerrallaan, kuten <code>upper</code>. Koostefunktiot, kuten <code>COUNT</code> ja <code>AVG</code>, tiivistävät monta riviä yhdeksi luvuksi.</p>
+  </div>
+  <h3>Teksti ja päivämäärät</h3>
+  <div class="code"><pre><code class="language-sql">SELECT upper(nimi), length(nimi) FROM kirja WHERE id = 2;   -- FRANKENSTEIN  12
+SELECT substr(nimi, 1, 5) FROM kirja WHERE id = 1;          -- Humis
+SELECT nimi || ' (' || vuosi || ')' FROM kirja WHERE id = 3; -- Dracula (1897)
+
+SELECT date('2026-10-01', '+14 days');                        -- 2026-10-15
+SELECT julianday('2026-10-01') - julianday('2026-09-15');     -- 16.0</code></pre></div>
+
+  <h3>Koostefunktiot</h3>
+  <div class="code"><pre><code class="language-sql">SELECT COUNT(*), COUNT(hinta) FROM kirja;   -- 9  7   (COUNT(sarake) ohittaa NULLit)
+
+SELECT round(AVG(hinta), 2), MIN(hinta), MAX(hinta), SUM(sivut) FROM kirja;
+-- 16.47  8.5  24.0  2208</code></pre></div>
+
+  <h3>GROUP BY ja HAVING</h3>
+  <p><code>GROUP BY</code> laskee koosteen erikseen jokaiselle ryhmälle. <code>WHERE</code> rajaa rivejä ennen ryhmittelyä, <code>HAVING</code> ryhmiä sen jälkeen.</p>
+  <div class="code"><pre><code class="language-sql">SELECT a.nimi, COUNT(k.id) AS kirjoja, round(AVG(k.sivut)) AS sivuja_keskim
+FROM kirjailija a
+JOIN kirja k ON k.kirjailija_id = a.id
+GROUP BY a.id, a.nimi
+HAVING COUNT(k.id) &gt;= 2
+ORDER BY a.nimi;
+-- Edgar Allan Poe  3  123.0
+-- H. P. Lovecraft  2  128.0</code></pre></div>
+
+  <h3>CASE</h3>
+  <div class="code"><pre><code class="language-sql">SELECT nimi,
+  CASE WHEN sivut &gt; 400 THEN 'tiiliskivi'
+       WHEN sivut &gt; 150 THEN 'keskikokoinen'
+       ELSE 'ohut' END AS koko
+FROM kirja ORDER BY sivut DESC LIMIT 4;
+-- Dracula         tiiliskivi
+-- Humiseva harju  tiiliskivi
+-- Kalevala        keskikokoinen
+-- Frankenstein    keskikokoinen</code></pre></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Jos sarake on <code>SELECT</code>-osassa mutta ei koostefunktiossa eikä <code>GROUP BY</code>:ssä, SQLite valitsee siihen arvon jostain ryhmän rivistä ilman virheilmoitusta. Esimerkiksi SQL Server ja PostgreSQL antavat tästä virheen, joten kaikki <code>SELECT</code>-osan tavalliset sarakkeet kannattaa kirjoittaa myös <code>GROUP BY</code>:hin.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 8</span>
+    <p>Laske jokaiselle maalle kirjojen määrä ja keskimääräinen sivumäärä kokonaislukuna. Eniten kirjoja ensin.</p>
+    <details><summary>Näytä vihje</summary><p>Maa on kirjailijataulussa, sivumäärä kirjataulussa. Liitä, ryhmittele maan mukaan ja pyöristä <code>round</code>-funktiolla.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-sql">SELECT a.maa, COUNT(*) AS kirjoja, round(AVG(k.sivut)) AS sivuja
+FROM kirja k
+JOIN kirjailija a ON a.id = k.kirjailija_id
+GROUP BY a.maa
+ORDER BY kirjoja DESC;
+-- Yhdysvallat    5  125.0
+-- Iso-Britannia  2  348.0
+-- Irlanti        1  488.0</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="week" id="s9" data-date="2026-12-03">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 9</b> · to 3.12.</span><span>BEGIN · COMMIT · ROLLBACK</span></div>
+    <h2>Transaktiot</h2>
+    <p class="tldr">Transaktio niputtaa monta muutosta yhdeksi. Joko kaikki onnistuvat, tai mikään ei jää voimaan.</p>
+  </div>
+  <p>Tavallinen esimerkki on tilisiirto: rahan pitää lähteä yhdeltä tililtä ja tulla toiselle. Jos jälkimmäinen epäonnistuu, myös ensimmäinen perutaan.</p>
+  <div class="code"><pre><code class="language-sql">CREATE TABLE tili (nimi TEXT PRIMARY KEY, saldo INTEGER CHECK (saldo &gt;= 0));
+INSERT INTO tili VALUES ('Ada', 100), ('Linus', 20);
+
+BEGIN;
+UPDATE tili SET saldo = saldo + 50 WHERE nimi = 'Ada';
+UPDATE tili SET saldo = saldo - 50 WHERE nimi = 'Linus';
+-- CHECK constraint failed: saldo &gt;= 0
+ROLLBACK;
+
+SELECT * FROM tili;
+-- Ada    100
+-- Linus  20     ← Adankaan saldo ei muuttunut</code></pre></div>
+
+  <h3>Hätäjarru</h3>
+  <p><code>ROLLBACK</code> peruu kaikki muutokset takaisin transaktion alkuun, myös vahingossa tehdyt.</p>
+  <div class="code"><pre><code class="language-sql">BEGIN;
+DELETE FROM lainaus;               -- oho, kaikki lainat lähti
+SELECT COUNT(*) FROM lainaus;      -- 0
+ROLLBACK;
+SELECT COUNT(*) FROM lainaus;      -- 5</code></pre></div>
+
+  <div class="table-wrap"><table>
+    <thead><tr><th>ACID</th><th>Tarkoittaa</th></tr></thead>
+    <tbody>
+      <tr><td>Atomicity</td><td>Kaikki tai ei mitään.</td></tr>
+      <tr><td>Consistency</td><td>Säännöt pitävät transaktion jälkeenkin.</td></tr>
+      <tr><td>Isolation</td><td>Keskeneräiset muutokset eivät näy muille.</td></tr>
+      <tr><td>Durability</td><td>Hyväksytty muutos säilyy, vaikka virta katkeaisi.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Virhe transaktion keskellä ei peru aiempia muutoksia itsestään. Ne jäävät odottamaan, ja jos seuraavaksi annetaan <code>COMMIT</code>, puolikas muutos tallentuu. Virheen jälkeen tulee <code>ROLLBACK</code>.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 9</span>
+    <p>Ada palauttaa Frankensteinin 1.10.2026, ja Linus lainaa sen samana päivänä. Tee molemmat muutokset yhtenä transaktiona.</p>
+    <details><summary>Näytä vihje</summary><p>Ensin <code>UPDATE</code> vanhaan lainaan (id 2), sitten <code>INSERT</code> uudesta lainasta. Frankensteinin id on 2.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-sql">BEGIN;
+UPDATE lainaus SET palautettu = '2026-10-01' WHERE id = 2;
+INSERT INTO lainaus (kirja_id, lainaaja, lainattu) VALUES (2, 'Linus', '2026-10-01');
+COMMIT;
+
+SELECT * FROM lainaus WHERE kirja_id = 2;
+-- 2  2  Ada    2026-09-15  2026-10-01
+-- 6  2  Linus  2026-10-01  NULL</code></pre></div></details>
+  </div>
+</section>
+
+
+    </div>
+  </main>
+
+  <p class="colophon">lunttilaput · ex libris · mila.palviainen · esimerkit ja ratkaisut ajettu Python 3.11:llä ja SQLite 3.45:llä</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" data-manual></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const EMPTY = () => ({ known: {}, done: {} });
+  let data = EMPTY();
+  try { const c = JSON.parse(localStorage.getItem("lunttilaput.v1") || "null"); if (c) data = Object.assign(EMPTY(), c); } catch (e) {}
+
+  /* Persistence: private db doc when available, browser as cache */
+  let docRef = null, writing = false, dirty = false, timer = null;
+  const setSync = (s, t) => { const el = $("sync"); el.dataset.state = s; el.textContent = t; };
+  function persist() {
+    try { localStorage.setItem("lunttilaput.v1", JSON.stringify(data)); } catch (e) {}
+    if (!docRef) return;
+    dirty = true; clearTimeout(timer); timer = setTimeout(flush, 500);
+  }
+  async function flush() {
+    if (!docRef || writing || !dirty) return;
+    writing = true; dirty = false; setSync("ok", "tallennetaan…");
+    try { await docRef.set(JSON.parse(JSON.stringify(data))); setSync("ok", "tallessa"); }
+    catch (e) {
+      if (e && e.code === "unavailable") { dirty = true; setTimeout(flush, 1500 + Math.random() * 1000); }
+      else { docRef = null; setSync("local", "tallennetaan tähän selaimeen"); }
+    } finally { writing = false; if (dirty) flush(); }
+  }
+  async function connect() {
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    try {
+      const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+      if (!db || !user) return;
+      const uid = await user.id(); if (!uid) return;
+      const ref = db.doc("data/users/" + uid + "/lunttilaput");
+      let first = true;
+      ref.onSnapshot((snap) => {
+        if (first) {
+          first = false; docRef = ref; setSync("ok", "tallessa");
+          if (!snap.exists) { if (Object.keys(data.known).length || Object.keys(data.done).length) { dirty = true; flush(); } return; }
+        }
+        if (!snap.exists || snap.metadata.hasPendingWrites || writing || dirty) return;
+        data = Object.assign(EMPTY(), snap.data());
+        try { localStorage.setItem("lunttilaput.v1", JSON.stringify(data)); } catch (e) {}
+        sync();
+      }, () => { docRef = null; setSync("local", "tallennetaan tähän selaimeen"); });
+    } catch (e) {}
+  }
+
+  /* Theme */
+  const themeBtn = $("theme-toggle");
+  let theme = "dark";
+  try { theme = localStorage.getItem("marginalia.theme") || theme; } catch (e) {}
+  function applyTheme(t) {
+    if (t === "light") document.documentElement.setAttribute("data-theme", "light"); else document.documentElement.removeAttribute("data-theme");
+    themeBtn.textContent = t === "light" ? "tumma teema" : "vaalea teema"; themeBtn.setAttribute("aria-pressed", String(t === "light"));
+  }
+  applyTheme(theme);
+  themeBtn.addEventListener("click", () => { theme = theme === "light" ? "dark" : "light"; applyTheme(theme); try { localStorage.setItem("marginalia.theme", theme); } catch (e) {} });
+
+  /* Sheets and weeks */
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const sheets = [...document.querySelectorAll("main.sheet")].map(el => {
+    const weeks = [...el.querySelectorAll(".course .week")];
+    const unit = el.dataset.slip === "python" ? "Viikko" : "Osa";
+    let nowId = null;
+    weeks.forEach(w => { if (new Date(w.dataset.date + "T00:00:00") <= today) nowId = w.id; });
+    const list = el.querySelector(".weeks");
+    weeks.forEach((w, i) => {
+      list.insertAdjacentHTML("beforeend", `<li><a href="#${w.id}" data-week="${w.id}" aria-label="${unit} ${i + 1}">${i + 1}</a></li>`);
+      if (w.id === nowId) w.querySelector(".week-meta span").insertAdjacentHTML("beforeend", `<span class="now-badge">tällä viikolla</span>`);
+      const task = w.querySelector(".task");
+      if (task) {
+        task.insertAdjacentHTML("afterbegin", `<span class="stamp" aria-hidden="true">tehty</span>`);
+        task.insertAdjacentHTML("beforeend", `<div class="task-done"><button type="button" data-done="${w.id}" aria-pressed="false">merkitse tehdyksi</button></div>`);
+      }
+      w.insertAdjacentHTML("beforeend", `<div class="know"><button class="btn toggle-on" type="button" data-know="${w.id}" aria-pressed="false">${unit.toLowerCase()} hallussa</button><span class="ks"></span></div>`);
+    });
+    const slip = document.querySelector(`.slip[data-sheet="${el.dataset.slip}"]`);
+    return { el, weeks, nowId, list, slip, unit, tally: el.querySelector(".tally") };
+  });
+  function sync(changed) {
+    sheets.forEach(sh => {
+      const label = sh.unit.toLowerCase() + " hallussa";
+      sh.weeks.forEach(w => {
+        const on = !!data.known[w.id], done = !!data.done[w.id];
+        const kb = w.querySelector("[data-know]");
+        kb.setAttribute("aria-pressed", String(on)); kb.textContent = on ? "hallussa ✓" : label;
+        w.querySelector(".ks").textContent = w.id === changed ? "tallennettu" : "";
+        const t = w.querySelector(".task");
+        if (t) { t.dataset.done = String(done); const db = t.querySelector("[data-done]"); db.setAttribute("aria-pressed", String(done)); db.textContent = done ? "tehty ✓" : "merkitse tehdyksi"; }
+        const a = sh.list.querySelector(`[data-week="${w.id}"]`);
+        a.dataset.done = String(on); a.dataset.now = String(w.id === sh.nowId);
+      });
+      const n = sh.weeks.length, k = sh.weeks.filter(w => data.known[w.id]).length, d = sh.weeks.filter(w => data.done[w.id]).length;
+      sh.tally.innerHTML = `${k}/${n} hallussa<br>${d}/${n} tehty`;
+      if (sh.slip) {
+        sh.slip.querySelector(".m").textContent = `${n} ${sh.unit === "Osa" ? "osaa" : "viikkoa"} · ${k}/${n} hallussa`;
+        sh.slip.querySelector(".bar i").style.transform = `scaleX(${(k + d) / (n * 2)})`;
+      }
+    });
+  }
+  document.addEventListener("click", (e) => {
+    const k = e.target.closest(".course button[data-know]"), d = e.target.closest(".course button[data-done]");
+    if (!k && !d) return;
+    const key = k ? "known" : "done", id = (k || d).dataset[k ? "know" : "done"];
+    if (data[key][id]) delete data[key][id]; else data[key][id] = true;
+    persist(); sync(id);
+  });
+
+  /* Slip switching: remembered per browser, and a #s3-style link opens the right sheet */
+  function show(name, focus) {
+    const sh = sheets.find(x => x.el.dataset.slip === name) || sheets[0];
+    sheets.forEach(x => { x.el.hidden = x !== sh; if (x.slip) x.slip.setAttribute("aria-pressed", String(x === sh)); });
+    try { localStorage.setItem("lunttilaput.slip", sh.el.dataset.slip); } catch (e) {}
+    if (focus) sh.el.querySelector(".sheet-head h2").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  document.querySelectorAll(".slip[data-sheet]").forEach(b => b.addEventListener("click", () => show(b.dataset.sheet, true)));
+  function fromHash() {
+    const t = location.hash && document.getElementById(location.hash.slice(1));
+    const sh = t && t.closest("main.sheet");
+    if (sh) { show(sh.dataset.slip); t.scrollIntoView(); return true; }
+    return false;
+  }
+  window.addEventListener("hashchange", fromHash);
+  if (!fromHash()) { let saved = null; try { saved = localStorage.getItem("lunttilaput.slip"); } catch (e) {} show(saved || "python"); }
+
+  /* Copy buttons */
+  document.querySelectorAll(".course .code").forEach(box => {
+    const b = document.createElement("button"); b.className = "copy"; b.type = "button"; b.textContent = "kopioi";
+    b.addEventListener("click", () => {
+      const code = box.querySelector("code"), text = code.innerText;
+      const done = (ok) => { b.dataset.state = ok ? "ok" : ""; b.textContent = ok ? "kopioitu" : "valittu, paina ctrl+c"; setTimeout(() => { b.dataset.state = ""; b.textContent = "kopioi"; }, 1800); };
+      const select = () => { const r = document.createRange(); r.selectNodeContents(code); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done(false); };
+      try { navigator.clipboard.writeText(text).then(() => done(true), select); } catch (err) { select(); }
+    });
+    box.appendChild(b);
+  });
+
+  if (window.Prism) Prism.highlightAll();
+  sync();
+  connect();
+})();
+</script>
+<script>(function(){var c=document.getElementById("bookcover");if(!c)return;try{if(sessionStorage.getItem("opened-lunttilaput")){c.remove();return;}sessionStorage.setItem("opened-lunttilaput","1");}catch(e){}c.addEventListener("animationend",function(){c.remove();});setTimeout(function(){if(c.parentNode)c.remove();},2500);})();</script>
+
+</body>
+</html>

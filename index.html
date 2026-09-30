@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="fi">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mila Palviainen Portfolio</title>
-<meta name="description" content="Mila Palviainen – IT business student and mixed media artist from Tampere. UX/UI, code and art in a tech × dark academia style.">
+<title>Mila Palviainen – portfolio</title>
+<meta name="description" content="Mila Palviainen – IT-tradenomiopiskelija ja sekatekniikkataiteilija Tampereelta. UX/UI:ta, koodia ja taidetta teknologia × dark academia -hengessä.">
 <meta name="theme-color" content="#2e0f17">
 <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="Mila Palviainen – portfolio">
-<meta property="og:description" content="IT business student & mixed media artist. Tech × art × dark academia.">
+<meta property="og:description" content="IT-tradenomiopiskelija &amp; sekatekniikkataiteilija. Teknologia × taide × dark academia.">
 <meta property="og:image" content="https://mmilymary.github.io/img/og.jpg">
 <meta property="og:url" content="https://mmilymary.github.io/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Courier+Prime:wght@400;700&family=Pinyon+Script&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Courier+Prime:wght@400;700&family=Pinyon+Script&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: dark;
@@ -52,7 +52,9 @@
   .nav.solid { background: rgba(28,11,16,.88); }
   .nav .logo { white-space: nowrap; font-family: "VT323", monospace; font-size: 24px; color: #f0d4d8; text-decoration: none; letter-spacing: .04em; }
   .nav ul { list-style: none; display: flex; gap: clamp(12px, 3vw, 32px); margin: 0; padding: 0; }
-  .nav ul a { text-decoration: none; font-size: 15px; color: #e6dad6; letter-spacing: .06em; transition: color .2s; }
+  .nav ul a { white-space: nowrap; text-decoration: none; font-size: 15px; color: #e6dad6; letter-spacing: .06em; transition: color .2s; }
+  .nav ul a.nav-ex { color: #fff; border: 1px solid rgba(255,122,162,.65); border-radius: 999px; padding: 4px 11px; box-shadow: 0 0 14px rgba(255,122,162,.28); }
+  .nav ul a.nav-ex:hover { border-color: #ff7aa2; box-shadow: 0 0 20px rgba(255,122,162,.5); }
   .nav ul a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,122,162,.6); }
 
   /* ---------- hero ---------- */
@@ -131,7 +133,7 @@
   .shot:hover .window { transform: translateY(-6px) rotate(-.4deg); border-color: var(--neon); box-shadow: 0 40px 70px rgba(0,0,0,.6), 0 0 26px rgba(255,122,162,.18); }
   .shot .pin { position: absolute; width: 34px; height: 34px; top: -14px; right: -12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,.55)); }
   .project .num { font-family: "VT323", monospace; font-size: 22px; color: var(--rose); letter-spacing: .1em; }
-  .project h3 { font-family: "Bodoni Moda", serif; font-weight: 400; font-size: clamp(34px, 4vw, 52px); line-height: 1; margin: 8px 0 18px; letter-spacing: -.01em; }
+  .project h3 { font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-size: clamp(34px, 4vw, 52px); line-height: 1; margin: 8px 0 18px; letter-spacing: -.01em; }
   .project p { color: var(--muted); font-size: 16px; line-height: 1.7; margin: 0 0 16px; }
   .project p.lead { color: var(--cream); font-size: 18px; }
   .project dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0 0 20px; font-size: 14px; }
@@ -153,16 +155,16 @@
   .ph-phone { width: 24%; height: 88%; }
   .ph-desk { width: 40%; height: 70%; border-radius: 8px 8px 0 0 !important; }
   .ph span { font-family: "VT323", monospace; font-size: 14px; color: #b5475a; }
-  .ph b { font-family: "Bodoni Moda", serif; font-weight: 400; font-style: italic; font-size: clamp(13px, 1.5vw, 18px); line-height: 1.1; }
+  .ph b { font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-style: italic; font-size: clamp(13px, 1.5vw, 18px); line-height: 1.1; }
   .ph > div::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 12px; height: 38%;
     background: repeating-linear-gradient(to bottom, rgba(46,15,23,.12) 0 6px, transparent 6px 16px); }
   .next { border: 1px dashed rgba(201,163,166,.35); border-radius: 16px; padding: clamp(28px, 5vw, 48px); text-align: center; }
   .next .num { font-family: "VT323", monospace; font-size: 22px; color: var(--rose); letter-spacing: .1em; }
-  .next h3 { font-family: "Bodoni Moda", serif; font-weight: 400; font-size: clamp(28px, 3.4vw, 40px); margin: 8px 0 10px; }
+  .next h3 { font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-size: clamp(28px, 3.4vw, 40px); margin: 8px 0 10px; }
   .next p { margin: 0; color: var(--muted); }
   .cursor { display: inline-block; width: .6em; height: 1.05em; vertical-align: -.15em; background: var(--dusty); margin-left: 4px; animation: blink 1s steps(1) infinite; }
   @keyframes blink { 50% { opacity: 0; } }
-  @media (max-width: 860px) { .project { grid-template-columns: 1fr; } .project:nth-of-type(even) .shot { order: 0; } .work .count { font-size: 16px; } .shot .pin { right: -4px; } }
+  @media (max-width: 860px) { .project { grid-template-columns: minmax(0, 1fr); } .project:nth-of-type(even) .shot { order: 0; } .work .count { font-size: 16px; white-space: nowrap; } .shot .pin { right: -4px; } }
 
   /* ---------- curiosities ---------- */
   .curiosities {
@@ -180,7 +182,7 @@
   @keyframes grain { 0%{transform:translate(0,0)} 25%{transform:translate(-3%,2%)} 50%{transform:translate(2%,-3%)} 75%{transform:translate(-2%,-1%)} 100%{transform:translate(0,0)} }
   .word {
     position: absolute; left: 0; right: 0; top: 70px; margin: 0; text-align: center; z-index: 1;
-    font-family: "Bodoni Moda", serif; font-weight: 400; font-size: min(19vw, 290px); line-height: .8; letter-spacing: -.04em;
+    font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-size: min(19vw, 290px); line-height: .8; letter-spacing: -.04em;
     color: var(--cream); pointer-events: none; user-select: none;
   }
   .stage {
@@ -269,7 +271,8 @@
     .specimen + .specimen { margin-top: 40px; }
     .ruler { display: none; }
   }
-  @media (max-width: 420px) { .nav { padding: 12px; gap: 8px; } .nav .logo { font-size: 18px; letter-spacing: 0; } .nav ul { gap: 10px; } .nav ul a { font-size: 12px; letter-spacing: 0; } }
+  @media (max-width: 420px) { .nav .ln { display: none; } .nav { padding: 12px; gap: 8px; } .nav .logo { font-size: 18px; letter-spacing: 0; } .nav ul { gap: 8px; } .nav ul a { font-size: 12px; letter-spacing: 0; } .nav ul a.nav-ex { padding: 3px 7px; } .work .count { font-size: 14px; letter-spacing: .02em; } }
+  @media (max-width: 374px) { .nav .logo { font-size: 15px; } .nav ul { gap: 6px; } .work .count { font-size: 13px; letter-spacing: 0; } }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     body::after, .star, .contact .neon, .scroll-cue, .cursor { animation: none; }
@@ -293,51 +296,52 @@
   </defs>
 </svg>
 
-<nav class="nav" id="nav" aria-label="Main">
-  <a class="logo" href="#top">&gt; mila.palviainen</a>
+<nav class="nav" id="nav" aria-label="Päävalikko">
+  <a class="logo" href="#top">&gt; mila<span class="ln">.palviainen</span></a>
   <ul>
-    <li><a href="#work">work</a></li>
-    <li><a href="#about">about</a></li>
-    <li><a href="#art">art</a></li>
-    <li><a href="#contact">contact</a></li>
+    <li><a class="nav-ex" href="exlibris.html">ex libris</a></li>
+    <li><a href="#work">työt</a></li>
+    <li><a href="#about">minusta</a></li>
+    <li><a href="#art">taide</a></li>
+    <li><a href="#contact">yhteys</a></li>
   </ul>
 </nav>
 
 <main id="top">
   <!-- HERO -->
-  <section class="hero" id="hero" aria-label="Intro">
+  <section class="hero" id="hero" aria-label="Johdanto">
     <img class="flower left"  src="img/peony_C.webp"   alt="" style="top:0; --h:31vh">
     <img class="flower right" src="img/peony_G.webp"   alt="" style="top:0; --h:31vh">
     <img class="flower left"  src="img/peony_F_r.webp" alt="" style="bottom:0; --h:29vh">
     <img class="flower right" src="img/peony_A_r.webp" alt="" style="bottom:0; --h:25vh; transform: translate(22%, 14%)">
     <canvas id="chains" aria-hidden="true"></canvas>
     <div class="center">
-      <span class="eyebrow">IT business student &amp; artist</span>
+      <span class="eyebrow">IT-tradenomiopiskelija &amp; taiteilija</span>
       <h1>MILA PALVIAINEN</h1>
-      <img class="heart" id="heart" src="img/heart_cutout.webp" alt="Anatomical heart, mixed media artwork by Mila Palviainen">
-      <span class="tag">&gt; tech × art × dark academia</span>
+      <img class="heart" id="heart" src="img/heart_cutout.webp" alt="Anatominen sydän, Mila Palviaisen sekatekniikkateos">
+      <span class="tag">&gt; teknologia × taide × dark academia</span>
     </div>
-    <a class="scroll-cue" href="#about">scroll ↓</a>
+    <a class="scroll-cue" href="#about">vieritä ↓</a>
   </section>
 
   <!-- ABOUT -->
   <section class="about" id="about" aria-labelledby="about-title">
     <div class="wrap">
       <div class="reveal">
-        <p class="label">// ABOUT ME</p>
-        <h2 id="about-title">Mixed media –<br>now with code.</h2>
+        <p class="label">// MINUSTA</p>
+        <h2 id="about-title">Sekatekniikkaa –<br>nyt myös koodilla.</h2>
         <ul class="facts">
-          <li>&gt; based_in: Tampere, Finland</li>
-          <li>&gt; studying: BBA, IT @ TAMK</li>
-          <li>&gt; medium: mixed media – whatever the idea needs</li>
-          <li>&gt; into: UX/UI · AI · business</li>
+          <li>&gt; paikkakunta: Tampere</li>
+          <li>&gt; opinnot: IT-tradenomi @ TAMK</li>
+          <li>&gt; tekniikka: sekatekniikka – mitä idea ikinä vaatii</li>
+          <li>&gt; kiinnostaa: UX/UI · tekoäly · liiketoiminta</li>
         </ul>
       </div>
       <div class="story reveal">
-        <p>I'm Mila – a mother of four, an artist and an IT business student at TAMK in Tampere.</p>
-        <p>I graduated as a cosmetologist in December 2024, but I never ended up working in the field. Even during those studies it was clear where my curiosity kept pulling me: technology, digital art, advertising and business. In my free time I make mixed media art – watercolours, coloured pencils, acrylics, ink markers and whatever else the piece asks for.</p>
-        <p>While at home with my youngest, I decided to apply to IT, and the field surprised me with how wide it is. It brings together everything I enjoy, and much of it can be done on my own terms.</p>
-        <p>I'm most drawn to UX/UI design, where I can bring my own creativity and hand-drawn touch into interfaces. I'm also drawn to AI studies and to the business side of my BBA degree. Step by step I'm diving into code by building my own projects and sketching concepts in my free time.</p>
+        <p>Olen Mila – neljän lapsen äiti, taiteilija ja IT-tradenomiopiskelija TAMKissa Tampereella.</p>
+        <p>Valmistuin kosmetologiksi joulukuussa 2024, mutta en koskaan päätynyt alan töihin. Jo niiden opintojen aikana oli selvää, mihin uteliaisuus veti: teknologiaan, digitaiteeseen, mainontaan ja liiketoimintaan. Vapaa-ajalla teen sekatekniikkataidetta – akvarelleja, värikyniä, akryyleja, tusseja ja mitä ikinä teos pyytääkään.</p>
+        <p>Kotona kuopuksen kanssa päätin hakea IT-alalle, ja ala yllätti laajuudellaan. Siinä yhdistyy kaikki, mistä pidän, ja paljon siitä voi tehdä omilla ehdoilla.</p>
+        <p>Eniten minua vetää UX/UI-suunnittelu, jossa pääsen tuomaan omaa luovuutta ja käsin piirrettyä jälkeä käyttöliittymiin. Kiinnostavat myös tekoälyopinnot ja tradenomitutkinnon liiketoimintapuoli. Pikkuhiljaa sukellan koodiin rakentamalla omia projekteja ja luonnostelemalla konsepteja vapaa-ajalla.</p>
       </div>
     </div>
   </section>
@@ -348,136 +352,136 @@
     <div class="wrap">
       <div class="head reveal">
         <div>
-          <p class="label">// SELECTED WORK</p>
-          <h2 id="work-title">Things I've built.</h2>
+          <p class="label">// VALITUT TYÖT</p>
+          <h2 id="work-title">Asioita, jotka olen rakentanut.</h2>
         </div>
-        <span class="count">[ 03 projects · more loading ]</span>
+        <span class="count">[ 03 projektia · lisää latautuu ]</span>
       </div>
 
       <article class="project reveal">
-        <a class="shot" href="https://mmilymary.github.io/recap-generator/" target="_blank" rel="noopener" aria-label="Open recap-generator live">
+        <a class="shot" href="https://mmilymary.github.io/recap-generator/" target="_blank" rel="noopener" aria-label="Avaa recap-generator">
           <div class="window">
             <div class="bar"><i></i><i></i><i></i><span>mmilymary.github.io/recap-generator</span></div>
-            <img src="img/proj_recap.webp" alt="Screenshot of the recap-generator tool with a form on the left and a recap card preview on the right" loading="lazy">
+            <img src="img/proj_recap.webp" alt="Kuvakaappaus recap-generatorista: lomake vasemmalla ja koostekortin esikatselu oikealla" loading="lazy">
           </div>
           <svg class="pin" aria-hidden="true"><use href="#y2k-star"/></svg>
         </a>
         <div class="info">
           <span class="num">01</span>
           <h3>recap-generator</h3>
-          <p class="lead">A small web tool that turns my weekly study notes into Instagram-ready recap cards.</p>
-          <p>I wanted my study posts to look the same every week without redesigning them in Canva each time. So I built my own generator: type the week's topics, pick a font and a photo, download a 1080 × 1440 card.</p>
+          <p class="lead">Pieni verkkotyökalu, joka muuttaa viikon opiskelumuistiinpanot valmiiksi Instagram-koostekorteiksi.</p>
+          <p>Halusin, että opiskelupostaukseni näyttävät joka viikko samalta ilman, että suunnittelen ne Canvassa joka kerta uudestaan. Joten tein oman generaattorin: kirjoita viikon aiheet, valitse fontti ja kuva, lataa 1080 × 1440 -kortti.</p>
           <dl>
-            <dt>role</dt><dd>idea, design &amp; code</dd>
-            <dt>learned</dt><dd>drawing on canvas, saving state in the browser, designing phone-first</dd>
+            <dt>rooli</dt><dd>idea, suunnittelu &amp; koodi</dd>
+            <dt>opin</dt><dd>piirtämään canvasille, tallentamaan tilan selaimeen ja suunnittelemaan puhelin edellä</dd>
           </dl>
           <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>Canvas</li><li>GitHub Pages</li></ul>
           <div class="actions">
-            <a class="btn primary" href="https://mmilymary.github.io/recap-generator/" target="_blank" rel="noopener">try it live ↗</a>
-            <a class="btn" href="https://github.com/mmilymary/recap-generator" target="_blank" rel="noopener">view code ↗</a>
+            <a class="btn primary" href="https://mmilymary.github.io/recap-generator/" target="_blank" rel="noopener">kokeile ↗</a>
+            <a class="btn" href="https://github.com/mmilymary/recap-generator" target="_blank" rel="noopener">katso koodi ↗</a>
           </div>
         </div>
       </article>
 
       <article class="project reveal">
-        <a class="shot" href="#top" aria-label="Back to the top of this portfolio">
+        <a class="shot" href="#top" aria-label="Takaisin portfolion alkuun">
           <div class="window">
             <div class="bar"><i></i><i></i><i></i><span>mila.palviainen / portfolio</span></div>
-            <img src="img/proj_portfolio.webp" alt="Screenshot of this portfolio's hero with chains, peonies and an anatomical heart" loading="lazy">
+            <img src="img/proj_portfolio.webp" alt="Kuvakaappaus portfolion aloitusnäkymästä: ketjut, pionit ja anatominen sydän" loading="lazy">
           </div>
           <svg class="pin" aria-hidden="true"><use href="#y2k-star"/></svg>
         </a>
         <div class="info">
           <span class="num">02</span>
-          <h3>this portfolio</h3>
-          <p class="lead">My own mixed media artworks turned into interactive, digital elements.</p>
-          <p>The peonies, the heart and the beetles are photos of my physical artworks, cut out and cleaned up so they can live on a web page. The chains are drawn in code and swing with a small physics simulation – move your mouse over them.</p>
+          <h3>Portfolio</h3>
+          <p class="lead">Omat sekatekniikkateokseni muutettuina interaktiivisiksi, digitaalisiksi elementeiksi.</p>
+          <p>Pionit, sydän ja kuoriaiset ovat valokuvia fyysisistä teoksistani, rajattuina ja siistittyinä niin, että ne voivat elää verkkosivulla. Ketjut on piirretty koodilla, ja ne heiluvat pienen fysiikkasimulaation avulla – vie hiiri niiden päälle.</p>
           <dl>
-            <dt>role</dt><dd>art, design &amp; build</dd>
-            <dt>learned</dt><dd>design systems in Figma, image cut-outs with Python, physics on canvas</dd>
+            <dt>rooli</dt><dd>taide, suunnittelu &amp; toteutus</dd>
+            <dt>opin</dt><dd>design systemeitä Figmassa, kuvien rajausta Pythonilla ja fysiikkaa canvasilla</dd>
           </dl>
-          <ul class="tags"><li>Figma</li><li>Python · OpenCV</li><li>HTML · CSS · JS</li><li>Canvas physics</li></ul>
+          <ul class="tags"><li>Figma</li><li>Python · OpenCV</li><li>HTML · CSS · JS</li><li>Canvas-fysiikka</li></ul>
           <div class="actions">
-            <span class="btn ghost">✦ you're looking at it</span>
-            <a class="btn" href="https://github.com/mmilymary/mmilymary.github.io" target="_blank" rel="noopener">view code ↗</a>
+            <span class="btn ghost">✦ katselet sitä juuri nyt</span>
+            <a class="btn" href="https://github.com/mmilymary/mmilymary.github.io" target="_blank" rel="noopener">katso koodi ↗</a>
           </div>
         </div>
       </article>
 
       <article class="project reveal">
-        <a class="shot" href="diiva.html" aria-label="Read the Diiva's Juurileipä case study">
+        <a class="shot" href="diiva.html" aria-label="Lue Diiva&#x27;s Juurileipä -projektin tarina">
           <div class="window">
-            <div class="bar"><i></i><i></i><i></i><span>diiva's juurileipä · concept</span></div>
-            <img src="img/diiva/d_new_home.webp" alt="The redesigned Diiva's Juurileipä homepage on desktop: chef's hat logo, Kahvila | Ravintola | Leipomo and a big red Order bread button" loading="lazy" style="aspect-ratio:1860/750">
+            <div class="bar"><i></i><i></i><i></i><span>diiva's juurileipä · konsepti</span></div>
+            <img src="img/diiva/d_new_home.webp" alt="Uudistettu Diiva&#x27;s Juurileivän etusivu tietokoneella: kokinhattulogo, Kahvila | Ravintola | Leipomo ja iso punainen Tilaa leipää -painike" loading="lazy" style="aspect-ratio:1860/750">
           </div>
           <svg class="pin" aria-hidden="true"><use href="#y2k-star"/></svg>
         </a>
         <div class="info">
           <span class="num">03</span>
           <h3>Diiva's Juurileipä</h3>
-          <p class="lead">A calmer way to order sourdough and book a table – for a real café &amp; bakery in Mänttä.</p>
-          <p>A redesign concept for a lovely, one-of-a-kind café, bakery and restaurant. I simplified bread pre-orders and table booking, refreshed the look to match the brand, and designed a simple dashboard for the staff.</p>
+          <p class="lead">Rauhallisempi tapa tilata juurileipää ja varata pöytä – oikealle mänttäläiselle kahvilalle ja leipomolle.</p>
+          <p>Uudistuskonsepti ihanalle ja ainutlaatuiselle kahvila-leipomo-ravintolalle. Yksinkertaistin leipien ennakkotilaukset ja pöytävaraukset, raikastin ilmeen brändin näköiseksi ja suunnittelin henkilökunnalle selkeän hallintanäkymän.</p>
           <dl>
-            <dt>role</dt><dd>UX research, concept, UI design</dd>
-            <dt>type</dt><dd>real client · concept</dd>
+            <dt>rooli</dt><dd>UX-tutkimus, konsepti, UI-suunnittelu</dd>
+            <dt>tyyppi</dt><dd>oikea asiakas · konsepti</dd>
           </dl>
-          <ul class="tags"><li>UX/UI</li><li>Figma</li><li>Service design</li><li>Mobile + dashboard</li></ul>
+          <ul class="tags"><li>UX/UI</li><li>Figma</li><li>Palvelumuotoilu</li><li>Mobiili + hallintanäkymä</li></ul>
           <div class="actions">
-            <a class="btn primary" href="diiva.html">read the case study →</a>
+            <a class="btn primary" href="diiva.html">lue koko tarina →</a>
           </div>
         </div>
       </article>
 
       <div class="next reveal">
         <span class="num">04</span>
-        <h3>next side quest</h3>
-        <p>loading<span class="cursor" aria-hidden="true"></span></p>
+        <h3>seuraava sivutehtävä</h3>
+        <p>latautuu<span class="cursor" aria-hidden="true"></span></p>
       </div>
     </div>
   </section>
 
   <!-- CURIOSITIES -->
   <section class="curiosities" id="art" aria-labelledby="cur-title">
-    <h2 class="word" id="cur-title">curiosities</h2>
+    <h2 class="word" id="cur-title">naturalia</h2>
     <svg class="star s1" aria-hidden="true"><use href="#y2k-star"/></svg>
     <svg class="star s2" aria-hidden="true"><use href="#y2k-star"/></svg>
     <svg class="star s3" aria-hidden="true"><use href="#y2k-star"/></svg>
     <svg class="star s4" aria-hidden="true"><use href="#y2k-star"/></svg>
     <svg class="star s5" aria-hidden="true"><use href="#y2k-star"/></svg>
     <div class="stage">
-      <figure class="specimen reveal" data-status="> scan 100% · 6 legs">
+      <figure class="specimen reveal" data-status="&gt; skannaus 100% · 6 jalkaa">
         <div class="box">
           <div class="glass"></div>
           <img class="frame" src="img/frame.svg" alt="">
           <div class="ruler"></div>
-          <img class="bug" src="img/stag.webp" alt="Stag beetle, drawing by Mila Palviainen">
+          <img class="bug" src="img/stag.webp" alt="Tammihärkä, Mila Palviaisen piirros">
         </div>
-        <figcaption><b>SPECIMEN_001</b><span>fam. Lucanidae · stag beetle</span><span class="status" aria-live="polite"></span></figcaption>
+        <figcaption><b>NÄYTE_001</b><span>fam. Lucanidae</span><span class="status" aria-live="polite"></span></figcaption>
         <div class="hud" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       </figure>
-      <figure class="specimen reveal" data-status="> scan 100% · pattern: unique">
+      <figure class="specimen reveal" data-status="&gt; skannaus 100% · kuvio: ainutlaatuinen">
         <div class="box">
           <div class="glass"></div>
           <img class="frame" src="img/frame.svg" alt="">
           <div class="ruler"></div>
-          <img class="bug" src="img/goliath.webp" alt="Orange and black patterned beetle, drawing by Mila Palviainen">
+          <img class="bug" src="img/goliath.webp" alt="Oranssimusta kuvioitu kuoriainen, Mila Palviaisen piirros">
         </div>
-        <figcaption><b>SPECIMEN_002</b><span>fam. Scarabaeidae · flower chafer</span><span class="status" aria-live="polite"></span></figcaption>
+        <figcaption><b>NÄYTE_002</b><span>fam. Scarabaeidae</span><span class="status" aria-live="polite"></span></figcaption>
         <div class="hud" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       </figure>
     </div>
   </section>
 
   <!-- QUOTE -->
-  <section class="quote" aria-label="Quote">
+  <section class="quote" aria-label="Lainaus">
     <svg class="qstar" aria-hidden="true"><use href="#y2k-star"/></svg>
-    <blockquote class="reveal">“I’ve always made things by hand.<br>Now I’m learning to make them with code, too.”</blockquote>
+    <blockquote class="reveal">”Samaa taidetta, vähän eri tavalla”</blockquote>
   </section>
 
   <!-- CONTACT -->
   <section class="contact" id="contact" aria-labelledby="contact-title">
-    <p class="label">// CONTACT</p>
-    <h2 class="neon" id="contact-title">let's talk</h2>
+    <p class="label">// YHTEYS</p>
+    <h2 class="neon" id="contact-title">hei, jutellaanko!</h2>
     <ul class="links">
       <li><a href="mailto:mila.palviainen2@gmail.com">mila.palviainen2@gmail.com</a></li>
       <li><a href="https://instagram.com/mmilymary" target="_blank" rel="noopener">instagram @mmilymary</a></li>
@@ -486,7 +490,7 @@
     </ul>
   </section>
 </main>
-<footer>© 2026 Mila Palviainen · made with care in Tampere</footer>
+<footer>© 2026 Mila Palviainen · Tampere</footer>
 
 <script>
 (() => {

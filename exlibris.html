@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Ex Libris</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* Layout: a single painted shelf is the whole interface; hotspots sit on the painting, the reading card sits beside it (below on phones). */
+:root{
+  --bg:#1c0b10; --surface:#2a1419; --line:#4a2a31;
+  --cream:#eee6e2; --muted:#b39a97; --dusty:#c9a3a6; --rose:#b5475a; --neon:#ff7aa2;
+  --dim:rgba(14,4,8,.7);
+  --f-display:"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --f-body:"Cormorant Garamond", "Garamond", Georgia, serif;
+  --f-code:"VT323", "Courier New", monospace;
+  --s1:.25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem; --s6:2.25rem; --s7:3.5rem;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:var(--f-body);font-size:1.15rem;line-height:1.5;padding-inline:16px;padding-block:var(--s6) var(--s7)}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:var(--s6)}
+header{display:grid;gap:var(--s2);max-width:40rem}
+.eyebrow{font-family:var(--f-code);font-size:1.1rem;letter-spacing:.08em;color:var(--dusty);margin:0}
+.eyebrow a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line)}
+.eyebrow a:hover,.eyebrow a:focus-visible{color:var(--neon);border-color:var(--neon);outline:none}
+h1{font-family:var(--f-display);font-weight:500;font-variation-settings:"opsz" 11;font-optical-sizing:none;font-size:clamp(2.6rem,7vw,4.2rem);line-height:1;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 em{font-style:italic;color:var(--dusty)}
+.lede{margin:0;color:var(--muted);max-width:34rem}
+
+.room{display:grid;gap:var(--s5);align-items:start}
+@media (min-width:900px){.room{grid-template-columns:minmax(0,600px) minmax(0,1fr);gap:var(--s6)}}
+
+.stage{position:relative;width:100%;max-width:620px;aspect-ratio:4/5}
+#chains{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.dim{opacity:0;transition:opacity .35s ease}
+.stage.on .dim{opacity:1}
+.hot{cursor:pointer;outline:none}
+.hot .shape{fill:transparent;stroke:transparent;stroke-width:3;transition:stroke .25s ease}
+.hot.active .shape{stroke:var(--neon);stroke-opacity:.35;stroke-width:1.5;filter:url(#glow)}
+.hot:focus-visible .shape{stroke:var(--neon);stroke-dasharray:10 6}
+.flame{mix-blend-mode:screen;animation:flick 3.2s infinite ease-in-out;transform-box:fill-box;transform-origin:50% 60%}
+.flame.b{animation-duration:2.6s;animation-delay:-1.1s}
+@keyframes flick{0%,100%{opacity:.85;transform:scale(1)}23%{opacity:1;transform:scale(1.06)}41%{opacity:.7;transform:scale(.95)}67%{opacity:.95;transform:scale(1.03)}}
+
+.card{border-top:1px solid var(--line);padding-top:var(--s5);display:grid;gap:var(--s4);min-width:0}
+@media (min-width:900px){.card{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--s5));border-top:0;border-left:1px solid var(--line);padding:0 0 0 var(--s6)}}
+.meta{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;font-family:var(--f-code);font-size:1.05rem;letter-spacing:.06em;color:var(--dusty)}
+.chip{border:1px solid currentColor;padding:0 .5em;border-radius:2px;line-height:1.35}
+.chip.valmis{color:var(--neon)} .chip.kesken{color:var(--dusty)} .chip.tulossa{color:var(--muted);border-style:dashed}
+.card h2{font-family:var(--f-display);font-weight:500;font-variation-settings:"opsz" 11;font-optical-sizing:none;font-size:clamp(1.9rem,4vw,2.5rem);line-height:1.05;margin:0;text-wrap:balance}
+.pre-label{font-family:var(--f-code);color:var(--muted);font-size:1.05rem;margin:0}
+.card p.preface{margin:0;font-style:italic;font-size:1.25rem;max-width:30rem}
+.cta{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
+.btn{display:inline-flex;align-items:center;gap:.4em;font-family:var(--f-code);font-size:1.25rem;letter-spacing:.05em;color:var(--bg);background:var(--dusty);padding:.35em .9em;border-radius:2px;text-decoration:none;transition:background .2s}
+.btn:hover,.btn:focus-visible{background:var(--neon);outline:none}
+.fine{color:var(--muted);font-size:1rem}
+
+.index{display:flex;flex-wrap:wrap;gap:var(--s2);margin:0;padding:0;list-style:none;border-top:1px dashed var(--line);padding-top:var(--s4)}
+.index button{font:inherit;font-family:var(--f-code);font-size:1.05rem;color:var(--muted);background:none;border:1px solid var(--line);border-radius:2px;padding:.1em .6em;cursor:pointer;transition:color .2s,border-color .2s}
+.index button:hover,.index button:focus-visible,.index button[aria-pressed="true"]{color:var(--cream);border-color:var(--neon);outline:none}
+.guide{list-style:none;margin:0;padding:0;border-top:1px dashed var(--line);display:grid}
+.guide li{border-bottom:1px solid var(--line)}
+.guide button{all:unset;box-sizing:border-box;width:100%;display:grid;gap:.15rem;padding:.7rem .2rem;cursor:pointer}
+.guide .g-name{font-family:var(--f-code);font-size:1.15rem;letter-spacing:.05em;color:var(--cream);transition:color .2s}
+.guide .g-soon{font-size:.9rem;color:var(--muted);border:1px dashed var(--line);padding:0 .35em;margin-left:.3em}
+.guide .g-about{color:var(--muted);font-size:1.05rem;line-height:1.35}
+.guide button:hover .g-name,.guide button:focus-visible .g-name{color:var(--neon)}
+.guide button:focus-visible{outline:1px solid var(--neon);outline-offset:2px}
+.hint{font-family:var(--f-code);color:var(--muted);font-size:1rem;margin:0}
+
+.pins{position:absolute;inset:0;pointer-events:none}
+.pin{position:absolute;display:flex;align-items:center;gap:.4rem;transform:translate(-9px,-50%);pointer-events:auto;text-decoration:none;color:var(--cream);font-family:var(--f-code);font-size:clamp(.95rem,2.6vw,1.1rem);letter-spacing:.05em;line-height:1;cursor:pointer;background:none;border:0;padding:0}
+.pin.left{flex-direction:row-reverse;transform:translate(calc(-100% + 9px),-50%)}
+.pin{pointer-events:none!important}
+.pin .dot{pointer-events:auto;cursor:pointer;position:relative;flex:none;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,#fff 0 22%,var(--neon) 30% 55%,transparent 60%);box-shadow:0 0 10px 2px rgba(255,122,162,.55)}
+.pin .dot::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px solid var(--neon);opacity:0;animation:ping 2.4s ease-out infinite}
+.pin:nth-child(2) .dot::after{animation-delay:.4s}.pin:nth-child(3) .dot::after{animation-delay:.8s}.pin:nth-child(4) .dot::after{animation-delay:1.2s}.pin:nth-child(5) .dot::after{animation-delay:1.6s}.pin:nth-child(6) .dot::after{animation-delay:2s}
+@keyframes ping{0%{transform:scale(.6);opacity:.9}80%,100%{transform:scale(1.9);opacity:0}}
+.pin .tag{opacity:0;transform:translateX(-4px);pointer-events:none;transition:opacity .2s,transform .2s,background .2s,border-color .2s,color .2s;background:rgba(20,6,10,.82);border:1px solid rgba(255,122,162,.45);padding:.28em .55em .22em;border-radius:2px;white-space:nowrap;transition:background .2s,border-color .2s,color .2s}
+.pin.soon .tag{border-style:dashed;color:var(--muted)}
+.pin:hover .tag,.pin:focus-visible .tag,.pin.active .tag{opacity:1;transform:none;background:var(--neon);border-color:var(--neon);color:var(--bg)}
+.pin:focus-visible{outline:none}
+@media (prefers-reduced-motion:reduce){.pin .dot::after{animation:none}}
+@media (prefers-reduced-motion:reduce){.flame{animation:none}.dim,.hot .shape{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <nav class="eyebrow" aria-label="Murupolku"><a href="index.html">portfolio</a> / ex libris</nav>
+    <h1>Ex <em>Libris</em></h1>
+    <p class="lede">Opiskelutyökalut samalla hyllyllä. Paina pinkkiä pistettä, niin esine aukeaa.</p>
+  </header>
+
+  <div class="room">
+    <div class="stage" id="stage">
+      <svg viewBox="0 0 960 1200" role="img" aria-label="Kaksi puista hyllyä: vanhoja kirjoja, kartta, lasikupu, kynttilöitä, patsas, punainen ristikirja ja musta käärme.">
+        <defs>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="darken"><feColorMatrix type="matrix" values=".32 0 0 0 0  0 .28 0 0 0  0 0 .3 0 0  0 0 0 1 0"/></filter>
+          <filter id="feather" x="-30%" y="-30%" width="160%" height="160%"><feMorphology operator="dilate" radius="6"/><feGaussianBlur stdDeviation="14"/></filter>
+          <radialGradient id="fl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".55"/><stop offset=".4" stop-color="#ff9a5a" stop-opacity=".18"/><stop offset="1" stop-color="#ff7a3a" stop-opacity="0"/></radialGradient>
+          <mask id="spot" maskUnits="userSpaceOnUse" x="0" y="0" width="960" height="1200">
+            <rect width="960" height="1200" fill="#fff"/>
+            <polygon id="hole" points="" fill="#000" filter="url(#feather)"/>
+          </mask>
+        </defs>
+        <image href="img/hylly.webp" x="0" y="0" width="960" height="1200"/>
+        
+        
+        <image class="dim" href="img/hylly.webp" x="0" y="0" width="960" height="1200" filter="url(#darken)" mask="url(#spot)"/>
+        <g id="hots"></g>
+      </svg>
+      <canvas id="chains" aria-hidden="true"></canvas>
+      <div class="pins" id="pins"></div>
+    </div>
+
+    <aside class="card" id="card" aria-live="polite"></aside>
+  </div>
+</div>
+
+<script>
+const MARG="marginalia.html";
+const ITEMS=[
+  {id:"marginalia",about:"oppimispäiväkirja ja lukulista",pin:[313,340],side:"left",short:"Marginalia",name:"Marginalia",kind:"oppimispäiväkirja",status:"kesken",
+   pts:"276,253 351,253 351,560 276,560",
+   preface:"Kurssit, videot ja omat kokeilut leviävät helposti joka suuntaan. Tähän kirjaan kerään, mitä olen oppinut ja mikä on vielä kesken.",
+   href:MARG,cta:"Avaa kirja"},
+  {id:"lunttilaput",about:"tiiviit muistilaput ja pieniä tehtäviä: Python ja SQL",pin:[810,1085],side:"left",short:"Lunttilaput",name:"Lunttilaput",kind:"muistilaput",status:"valmis",
+   pts:"609,1013 840,1013 840,1098 609,1098",
+   preface:"Kurssien asiat olivat hajallaan Moodlessa, dioissa ja omissa muistiinpanoissa. Kokosin ne lapuille ja tarkistin jokaisen kohdan. Mukana on myös pieniä tehtäviä.",
+   href:"lunttilaput.html",cta:"Avaa lunttilaput"},
+  {id:"grimoire",about:"koodipätkät ja komennot selityksineen",pin:[500,985],side:"right",short:"Grimoire",name:"Grimoire",kind:"koodipätkät",status:"kesken",
+   pts:"347,924 498,867 604,1093 449,1164",
+   preface:"Komennot unohtuvat aina juuri silloin, kun niitä tarvitsee. Tähän kirjaan kerään koodipätkät ja lyhyen selityksen siitä, mitä ne tekevät. Ensimmäisenä komentorivi.",
+   href:"grimoire.html",cta:"Avaa grimoire"},
+  {id:"urakartta",about:"IT-alan roolit ja apua oman suunnan löytämiseen",pin:[590,230],side:"right",short:"Urakartta",name:"Urakartta",kind:"IT-alan roolit",status:"kesken",
+   pts:"471,124 711,124 711,427 471,427",
+   preface:"IT-alalla on paljon muutakin kuin koodausta. Kartalla on rooleja, joista harva on kuullut, ja pari kysymystä oman suunnan etsimiseen.",
+   href:"urakartta.html",cta:"Avaa kartta"},
+  {id:"naturalia",about:"taidetta ja pieniä löytöjä",pin:[566,470],side:"left",short:"Naturalia",name:"Naturalia",kind:"taide",status:"valmis",
+   pts:"511,302 622,302 622,542 511,542",
+   preface:"Taideteoksia ja pieniä löytöjä. Kokoelma kasvaa pikkuhiljaa.",
+   href:"index.html#art",cta:"Katso teokset"},
+  {id:"portfolio",about:"etusivu: taide, projektit ja yhteystiedot",pin:[150,900],side:"right",short:"Portfolio",name:"Portfolio",kind:"etusivu",status:"valmis",
+   pts:"22,649 276,649 276,1067 22,1067",
+   preface:"Takaisin etusivulle: taidetta, projekteja ja yhteystiedot.",
+   href:"index.html",cta:"Avaa portfolio"}
+];
+const NS="http://www.w3.org/2000/svg";
+const hots=document.getElementById("hots"),stage=document.getElementById("stage"),card=document.getElementById("card"),hole=document.getElementById("hole");
+let active=null;
+
+ITEMS.forEach(it=>{
+  const a=document.createElementNS(NS,"a");
+  a.setAttribute("class","hot");a.dataset.id=it.id;
+  a.setAttribute("tabindex","0");a.setAttribute("role","link");
+  a.setAttribute("aria-label",`${it.name}, ${it.status}`);
+  if(it.href){a.setAttribute("href",it.href);if(/^https?:/.test(it.href)){a.setAttribute("target","_blank");a.setAttribute("rel","noopener")}}
+  const p=document.createElementNS(NS,"polygon");p.setAttribute("class","shape");p.setAttribute("points",it.pts);
+  a.appendChild(p);hots.appendChild(a);it.el=a;
+  a.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse")show(it.id)});
+  a.addEventListener("focus",()=>show(it.id));
+  a.addEventListener("pointerdown",e=>{a._touch=e.pointerType!=="mouse"});
+  a.addEventListener("click",e=>{
+    // touch: first tap previews, second opens. Items without a page only preview.
+    if(!it.href||(a._touch&&active!==it.id)){e.preventDefault();show(it.id)}
+  });
+  a.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!it.href){e.preventDefault();show(it.id)}});
+});
+stage.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse")dimOff()});
+const pinsEl=document.getElementById("pins");
+ITEMS.forEach(it=>{
+  const el=document.createElement(it.href?"a":"button");
+  el.className="pin"+(it.pin[0]>600&&it.side==="left"||it.side==="left"?" left":"")+(it.href?"":" soon");
+  if(it.href){el.href=it.href;if(/^https?:/.test(it.href)){el.target="_blank";el.rel="noopener"}}else{el.type="button"}
+  el.style.left=(it.pin[0]/960*100)+"%";el.style.top=(it.pin[1]/1200*100)+"%";
+  el.innerHTML=`<span class="dot" aria-hidden="true"></span><span class="tag">${it.short}</span>`;
+  el.setAttribute("aria-label",`${it.name}, ${it.status}`);
+  el.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse")show(it.id)});
+  el.addEventListener("focus",()=>show(it.id));
+  el.addEventListener("pointerdown",e=>{el._touch=e.pointerType!=="mouse"});
+  el.addEventListener("click",e=>{if(!it.href||(el._touch&&active!==it.id)){e.preventDefault();show(it.id)}});
+  pinsEl.appendChild(el);it.pinEl=el;
+  it.el.setAttribute("tabindex","-1");
+});
+
+
+function dimOff(){stage.classList.remove("on");ITEMS.forEach(i=>{i.el.classList.remove("active");i.pinEl&&i.pinEl.classList.remove("active")})}
+function show(id){
+  const it=ITEMS.find(i=>i.id===id);if(!it)return;
+  active=id;hole.setAttribute("points",it.pts);stage.classList.add("on");
+  ITEMS.forEach(i=>{i.el.classList.toggle("active",i.id===id);i.pinEl&&i.pinEl.classList.toggle("active",i.id===id)});
+  render(it);
+}
+function render(it){
+  const cta=it.href
+    ? `<div class="cta"><a class="btn" href="${it.href}"${/^https?:/.test(it.href)?' target="_blank" rel="noopener"':''}>${it.cta} →</a></div>`
+    : `<p class="fine">Tätä kirjoitetaan vielä.</p>`;
+  card.innerHTML=`
+    <div class="meta"><span>${it.kind}</span><span class="chip ${it.status}">${it.status}</span></div>
+    <h2>${it.name}</h2>
+    <p class="pre-label">// esipuhe</p>
+    <p class="preface">${it.preface}</p>
+    ${cta}
+    ${indexHTML(it.id)}`;
+  bindIndex();
+}
+function intro(){
+  card.innerHTML=`
+    <div class="meta"><span>6 esinettä</span></div>
+    <h2>Mistä aloitetaan?</h2>
+    ${indexHTML(null)}`;
+  bindIndex();
+}
+function indexHTML(cur){
+  if(cur===null) return `<ul class="guide" aria-label="Kaikki esineet">${ITEMS.map(i=>`<li><button type="button" data-id="${i.id}"><span class="g-name">${i.name}${i.href?"":' <span class="g-soon">tulossa</span>'}</span><span class="g-about">${i.about}</span></button></li>`).join("")}</ul>`;
+  return `<ul class="index" aria-label="Kaikki esineet">${ITEMS.map(i=>`<li><button type="button" data-id="${i.id}" aria-pressed="${i.id===cur}">${i.name}</button></li>`).join("")}</ul>`;
+}
+function bindIndex(){card.querySelectorAll(".index button,.guide button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.id)))}
+intro();
+
+/* chrome chains, same links and physics as the portfolio hero */
+(()=>{
+  const cv=document.getElementById("chains"),ctx=cv.getContext("2d");
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W=0,H=0,k=1,DPR=1,ropes=[],S=null,running=true,time=0,wind=0;
+  const grad=(g,x0,y0,x1,y1,st)=>{const gr=g.createLinearGradient(x0,y0,x1,y1);st.forEach(([o,c])=>gr.addColorStop(o,c));return gr};
+  const rrect=(g,x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()};
+  function sprites(L){
+    const s=DPR,pad=4,Wf=L*.6,t=Math.max(1.6,L*.15);
+    const face=document.createElement("canvas");face.width=Math.ceil((Wf+t+pad*2)*s);face.height=Math.ceil((L+t+pad*2)*s);
+    let g=face.getContext("2d");g.scale(s,s);const ox=pad+t/2,oy=pad+t/2;
+    rrect(g,ox,oy,Wf,L,Wf/2);g.lineWidth=t+Math.max(1,L*.05);g.strokeStyle="#1c1e22";g.stroke();
+    g.lineWidth=t;g.strokeStyle=grad(g,ox,oy,ox+Wf,oy+L,[[0,"#fbfcfe"],[.22,"#b7bec8"],[.42,"#ffffff"],[.6,"#6d7681"],[.8,"#d9dee5"],[1,"#8a939e"]]);g.stroke();
+    if(L>14){g.beginPath();g.arc(ox+Wf/2,oy+Wf/2,Wf/2-t*.15,Math.PI*1.1,Math.PI*1.55);g.lineWidth=Math.max(.8,L*.03);g.strokeStyle="rgba(255,255,255,.9)";g.lineCap="round";g.stroke()}
+    const we=Math.max(1.8,L*.2);const edge=document.createElement("canvas");edge.width=Math.ceil((we+pad*2)*s);edge.height=Math.ceil((L+t+pad*2)*s);
+    g=edge.getContext("2d");g.scale(s,s);const ex=pad,ey=pad+t/2-we*.2;
+    rrect(g,ex-.8,ey-.8,we+1.6,L+we*.4+1.6,(we+1.6)/2);g.fillStyle="#1c1e22";g.fill();
+    rrect(g,ex,ey,we,L+we*.4,we/2);g.fillStyle=grad(g,ex,0,ex+we,0,[[0,"#5f6873"],[.35,"#ffffff"],[.55,"#c3c9d1"],[1,"#4b535d"]]);g.fill();
+    return{face,edge,fw:face.width/s,fh:face.height/s,ew:edge.width/s,eh:edge.height/s};
+  }
+  function rope(a,len,pitch,end,sag){
+    const n=Math.max(2,Math.round(len/pitch)+1),pts=[];const b=end||[a[0],a[1]+len];
+    for(let i=0;i<n;i++){const f=i/(n-1);const x=a[0]+(b[0]-a[0])*f,y=a[1]+(b[1]-a[1])*f+(end?Math.sin(f*Math.PI)*(sag||len*.25):0);pts.push({x,y,px:x,py:y})}
+    return{pts,pitch,end,x0:a[0],y0:a[1]};
+  }
+  // anchor points in painting coordinates (960 x 1200)
+  const P=(x,y)=>[x*k,y*k];
+  function build(){
+    ropes=[];const L=Math.max(10,24*k),p=L*.72;S=sprites(L);
+    const d=(a,b,m)=>Math.hypot(b[0]-a[0],b[1]-a[1])*m;
+    // swag under the upper shelf, in front of the painted chains
+    let a=P(300,606),b=P(610,606);ropes.push(rope(a,d(a,b,1.15),p,b));
+    ropes.push(rope(P(895,606),170*k,p));
+    for(let i=0;i<300;i++)step();
+  }
+  function resize(){
+    const r=cv.getBoundingClientRect();DPR=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;k=W/960;
+    cv.width=W*DPR;cv.height=H*DPR;build();
+  }
+  const ptr={x:-9999,y:-9999,vx:0,vy:0,active:false};
+  const stage=document.getElementById("stage");
+  stage.addEventListener("pointermove",e=>{const r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;if(ptr.active){ptr.vx=x-ptr.x;ptr.vy=y-ptr.y}ptr.x=x;ptr.y=y;ptr.active=true},{passive:true});
+  stage.addEventListener("pointerleave",()=>{ptr.active=false});
+  function step(){
+    time+=1/60;const g=.16,damp=.955,R=70*Math.max(.6,k),R2=R*R;
+    wind=wind*.95+ptr.vx*.0015;
+    const breeze=reduce?0:Math.sin(time*.35)*.004+Math.sin(time*.9+1)*.002;
+    const pv=Math.min(40,Math.hypot(ptr.vx,ptr.vy));
+    for(const r of ropes){
+      const Q=r.pts,last=Q.length-1;
+      for(let i=1;i<Q.length;i++){
+        if(r.end&&i===last)continue;
+        const q=Q[i],vx=(q.x-q.px)*damp,vy=(q.y-q.py)*damp;
+        q.px=q.x;q.py=q.y;q.x+=vx+(wind+breeze)*(i/last);q.y+=vy+g;
+        if(ptr.active){const dx=q.x-ptr.x,dy=q.y-ptr.y,d2=dx*dx+dy*dy;if(d2<R2){const d=Math.sqrt(d2)||1,s=1-d/R;q.x+=(dx/d)*s*(.35+pv*.02)+ptr.vx*s*.04;q.y+=(dy/d)*s*(.15+pv*.01)+ptr.vy*s*.02}}
+      }
+      for(let it=0;it<10;it++){
+        Q[0].x=r.x0;Q[0].y=r.y0;if(r.end){Q[last].x=r.end[0];Q[last].y=r.end[1]}
+        for(let i=0;i<last;i++){const a=Q[i],b=Q[i+1],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1,diff=(d-r.pitch)/d;
+          const wa=i===0?0:.5,wb=(r.end&&i+1===last)?0:(i===0?1:.5);a.x+=dx*diff*wa;a.y+=dy*diff*wa;b.x-=dx*diff*wb;b.y-=dy*diff*wb}
+      }
+    }
+    ptr.vx*=.6;ptr.vy*=.6;
+  }
+  function draw(){
+    ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,W,H);
+    for(let pass=0;pass<2;pass++){
+      const img=pass?S.edge:S.face,w=pass?S.ew:S.fw,h=pass?S.eh:S.fh;
+      for(const r of ropes){const Q=r.pts;for(let i=pass;i<Q.length-1;i+=2){const a=Q[i],b=Q[i+1],ang=Math.atan2(b.y-a.y,b.x-a.x)-Math.PI/2,c=Math.cos(ang),s=Math.sin(ang);
+        ctx.setTransform(c*DPR,s*DPR,-s*DPR,c*DPR,(a.x+b.x)/2*DPR,(a.y+b.y)/2*DPR);ctx.drawImage(img,-w/2,-h/2,w,h)}}
+    }
+  }
+  function loop(){if(running){step();draw()}requestAnimationFrame(loop)}
+  new IntersectionObserver(es=>{running=es[0].isIntersecting}).observe(stage);
+  let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(resize,150)});
+  resize();if(reduce){draw()}else loop();
+})();
+</script>
+
+</body>
+</html>

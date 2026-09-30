@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Grimoire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=IM+Fell+English:ital@0;1&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* Grimoire: same room as the other Ex Libris pages (base colours, fonts), own ink. Crimson from the red cross-book on the shelf marks spell names and numbers; neon pink stays reserved for anything you can press. Spells are reference cards, not a course: search, filter, copy one line at a time. */
+:root {
+  --bg: #1c0b10; --surface: #2a1419; --surface-2: #33191f; --line: #4a2a31;
+  --text: #eee6e2; --muted: #b39a97; --dusty: #c9a3a6; --rose: #b5475a; --on-rose: #ffffff; --neon: #ff7aa2;
+  --ink: #e5525f; --chrome: #c3c9d1; --chrome-dim: #5f6873;
+  --code-bg: #16070b;
+  --font-display: "IM Fell English", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-spell: "Cormorant Garamond", "IM Fell English", Georgia, serif;
+  --font-body: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-ui: "VT323", "Courier Prime", ui-monospace, monospace;
+  --font-mono: "Courier Prime", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --step-0: 1.0625rem; --step-1: 1.3rem; --step-2: 1.8rem; --step-3: clamp(2.4rem, 7vw, 3.8rem);
+  --s1: .25rem; --s2: .5rem; --s3: .75rem; --s4: 1rem; --s5: 1.5rem; --s6: 2.25rem; --s7: 3.5rem;
+  --radius: 3px; --ease: cubic-bezier(.2,.7,.2,1);
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #f6ecea; --surface: #fff8f6; --surface-2: #f0e0dd; --line: #e0c8c9;
+  --text: #2a1117; --muted: #6e4f55; --dusty: #7d5a60; --rose: #9e3348; --neon: #9e3348;
+  --ink: #a3243a; --chrome: #5f6873; --chrome-dim: #c3c9d1; --code-bg: #fffdfc;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: var(--step-0); line-height: 1.55; padding-inline: 16px; padding-block: 0 var(--s7); margin: 0; }
+a { color: var(--neon); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; border-radius: var(--radius); }
+.wrap { max-width: 50rem; margin-inline: auto; }
+code:not([class]) { font-family: var(--font-mono); font-size: .9em; background: var(--surface-2); padding: .05em .35em; border-radius: 2px; }
+
+/* Masthead */
+.mast { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s4); padding-block: var(--s6) var(--s4); }
+.brand { min-width: 0; display: grid; gap: var(--s2); }
+.back { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: .25rem; font: 400 1.2rem/1 var(--font-ui); color: var(--muted); text-decoration: none; }
+.back:hover, .back:focus-visible { color: var(--neon); }
+.prompt { margin: 0; font: 400 1.25rem/1 var(--font-ui); color: var(--muted); }
+.prompt b { color: var(--ink); font-weight: 400; }
+h1 { font: 400 var(--step-3)/1 var(--font-display); margin: 0; }
+h1 em { color: var(--ink); }
+.lede { margin: 0; max-width: 34rem; color: var(--muted); font-style: italic; }
+.btn { font: 400 1.15rem/1 var(--font-ui); display: inline-flex; align-items: center; gap: var(--s2); padding: .5rem .85rem; min-height: 44px; border-radius: 2px; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--text); transition: background .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease); }
+.btn:hover { background: var(--surface-2); border-color: var(--muted); }
+.side { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.preface { margin: 1.1rem 0 .4rem; max-width: 38rem; }
+.preface .pf-label { display: block; font: 400 1.1rem/1 var(--font-ui); color: var(--ink); margin-bottom: .4rem; }
+.preface p { margin: 0; font: italic 400 1.2rem/1.5 var(--font-spell); color: var(--dusty); text-wrap: pretty; }
+
+/* Collections: the volumes of the grimoire */
+.volumes { display: flex; gap: var(--s2); flex-wrap: wrap; margin: var(--s5) 0 0; padding: 0; list-style: none; }
+.volumes li { font: 400 1.15rem/1 var(--font-ui); padding: .5rem .8rem; border: 1px solid var(--line); border-radius: 2px; color: var(--muted); }
+.volumes li[aria-current="true"] { border-color: var(--ink); color: var(--text); box-shadow: inset 0 3px 0 var(--ink); }
+.volumes li:not([aria-current]) { border-style: dashed; }
+.volumes li span { color: var(--muted); opacity: .8; }
+
+/* Tools: search, tag filter, shell switch */
+.tools { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-block: 1px solid var(--line); margin-top: var(--s5); padding: var(--s3) 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); }
+.row { display: flex; gap: var(--s3); align-items: center; flex-wrap: wrap; }
+.search { flex: 1 1 14rem; min-width: 0; display: flex; align-items: center; gap: var(--s2); border: 1px solid var(--line); border-radius: 2px; padding: 0 .75rem; min-height: 44px; background: var(--surface); }
+.search:focus-within { border-color: var(--neon); }
+.search span { font: 400 1.25rem/1 var(--font-ui); color: var(--ink); }
+.search input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--text); font: 400 1rem var(--font-mono); padding: .6rem 0; }
+.search input:focus { outline: none; }
+.search input::placeholder { color: var(--muted); opacity: .85; }
+.shell { display: inline-flex; border: 1px solid var(--line); border-radius: 2px; }
+.shell button { font: 400 1.15rem/1 var(--font-ui); min-height: 44px; padding: .5rem .8rem; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+.shell button + button { border-left: 1px solid var(--line); }
+.shell button[aria-pressed="true"] { background: var(--rose); color: var(--on-rose); }
+.tags { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 2px 16px; }
+.tag { flex: none; font: 400 1.1rem/1 var(--font-ui); min-height: 36px; padding: .35rem .7rem; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; }
+.tag:hover { color: var(--text); border-color: var(--muted); }
+.tag[aria-pressed="true"] { border-color: var(--neon); color: var(--neon); }
+.count { font: 400 1.1rem/1 var(--font-ui); color: var(--muted); }
+
+/* Spell card */
+.spells { display: grid; gap: var(--s5); margin-top: var(--s5); }
+.spell { position: relative; background: var(--surface); border: 1px solid var(--line); border-top: 2px solid var(--ink); border-radius: 2px; padding: var(--s4) var(--s4) var(--s3); scroll-margin-top: 9rem; }
+.spell-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); flex-wrap: wrap; }
+.num { font: italic 500 1.05rem/1 var(--font-spell); color: var(--ink); letter-spacing: .04em; }
+.spell-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.spell-tags span { font: 400 1rem/1 var(--font-ui); color: var(--muted); }
+.spell-tags span::before { content: "#"; color: var(--ink); }
+.spell h2 { font: italic 500 1.75rem/1.15 var(--font-spell); margin: .35rem 0 .25rem; color: var(--text); text-wrap: balance; }
+.when { margin: 0 0 var(--s3); color: var(--muted); font-style: italic; max-width: 60ch; }
+
+.lines { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-left: 2px solid var(--chrome-dim); border-radius: var(--radius); background: var(--code-bg); }
+.line { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) auto; gap: var(--s3); align-items: start; padding: .65rem .75rem; }
+.line + .line { border-top: 1px dashed var(--line); }
+.line code { background: none; padding: 0; border-radius: 0; font: 400 .92rem/1.5 var(--font-mono); color: var(--chrome); white-space: pre-wrap; overflow-wrap: anywhere; }
+:root[data-theme="light"] .line code { color: #2a1117; }
+.line p { margin: 0; font-size: .98rem; line-height: 1.45; color: var(--text); }
+.copy { font: 400 1rem/1 var(--font-ui); min-height: 32px; min-width: 44px; padding: .3rem .5rem; border: 1px solid var(--line); border-radius: 2px; background: var(--surface); color: var(--muted); cursor: pointer; }
+.copy:hover { color: var(--text); border-color: var(--muted); }
+.copy[data-state="ok"] { color: var(--neon); border-color: var(--neon); }
+.warn { margin: var(--s3) 0 0; padding: var(--s3) var(--s4); border: 1px dashed var(--ink); border-radius: var(--radius); background: color-mix(in srgb, var(--ink) 8%, transparent); }
+.warn b { font: 400 1.05rem var(--font-ui); color: var(--ink); display: block; margin-bottom: .15rem; }
+.warn p { margin: 0; }
+.empty { text-align: center; color: var(--muted); font-style: italic; padding: var(--s6) 0; }
+
+.tips { margin-top: var(--s7); }
+.tips h2 { font: italic 500 1.6rem/1.2 var(--font-spell); margin: 0 0 var(--s3); }
+.tips ul { margin: 0; padding-left: 1.2rem; }
+.tips li { margin-bottom: var(--s2); }
+.tips li::marker { color: var(--ink); }
+.colophon { margin-top: var(--s7); padding-top: var(--s4); border-top: 1px solid var(--line); color: var(--muted); font: 400 1.05rem var(--font-ui); }
+
+@media (min-width: 40.01rem) { .tags { flex-wrap: wrap; overflow: visible; margin: 0; padding: 2px 0; } }
+@media (max-width: 40rem) {
+  .line { grid-template-columns: minmax(0, 1fr) auto; }
+  .line p { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
+
+/* Book opening */
+.bookcover { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; pointer-events: none;
+  background: linear-gradient(90deg, rgba(0,0,0,.5), rgba(0,0,0,0) 7%, rgba(255,255,255,.04) 9%, rgba(0,0,0,0) 12%), #3a0d15;
+  transform-origin: left center; animation: coverOpen 1.15s .2s cubic-bezier(.6,.05,.3,1) forwards; }
+.bookcover span { font: italic 500 clamp(2.8rem, 10vw, 4.8rem) var(--font-spell); color: #e5525f; padding: 1rem; text-align: center; }
+.bookcover span::before, .bookcover span::after { content: "✚"; display: block; font: 400 1.4rem/1 serif; color: #c3c9d1; opacity: .75; margin: .6rem 0; }
+@keyframes coverOpen { 0% { transform: perspective(1800px) rotateY(0); opacity: 1; } 75% { opacity: 1; } 100% { transform: perspective(1800px) rotateY(-105deg); opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .bookcover { display: none; } }
+</style>
+</head>
+<body>
+<div class="bookcover" id="bookcover" aria-hidden="true"><span>Grimoire</span></div>
+
+<div class="wrap">
+  <header class="mast">
+    <div class="brand">
+      <a class="back" href="exlibris.html">← takaisin hyllyyn</a>
+      <p class="prompt">&gt; cd ~/kirjasto/grimoire <b>_</b></p>
+      <h1>Gri<em>moire</em></h1>
+      <p class="lede">Komennot ja koodipätkät selityksineen. Etsi tarve, kopioi rivi ja lue, mitä se tekee.</p>
+    </div>
+    <div class="side">
+      <button class="btn" id="theme-toggle" type="button" aria-pressed="false">vaalea teema</button>
+    </div>
+  </header>
+  <section class="preface" aria-label="Esipuhe"><span class="pf-label">// esipuhe</span><p>Komennot unohtuvat aina juuri silloin, kun niitä tarvitsee. Tähän kirjaan kerään ne, joita oikeasti käytän, ja lyhyen selityksen jokaiselle riville.</p></section>
+
+  <ul class="volumes" aria-label="Kokoelmat">
+    <li aria-current="true">Komentorivi</li>
+    <li>Git <span>· tulossa</span></li>
+    <li>SQL-reseptit <span>· tulossa</span></li>
+    <li>Python <span>· tulossa</span></li>
+  </ul>
+
+  <div class="tools">
+    <div class="row">
+      <label class="search"><span aria-hidden="true">&gt;</span><input id="q" type="search" placeholder="hae: kopioi, ip, poista…" aria-label="Hae loitsuja" autocomplete="off"></label>
+      <div class="shell" role="group" aria-label="Komentotulkki">
+        <button type="button" data-shell="cmd" aria-pressed="true">Windows cmd</button>
+        <button type="button" data-shell="sh" aria-pressed="false">Linux / macOS</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="tags" id="tags" role="group" aria-label="Aiheet"></div>
+    </div>
+    <span class="count" id="count" aria-live="polite"></span>
+  </div>
+
+  <main class="spells" id="spells"></main>
+  <p class="empty" id="empty" hidden>Yhtään loitsua ei löytynyt. Kokeile toista sanaa tai valitse aiheeksi kaikki.</p>
+
+  <section class="tips" aria-label="Hyvä tietää">
+    <h2>Hyvä tietää</h2>
+    <ul>
+      <li>Windowsin cmd ei välitä isoista ja pienistä kirjaimista: <code>DIR</code> ja <code>dir</code> ovat sama komento. Linuxissa ja macOS:ssä <code>ls</code> ja <code>LS</code> eivät ole.</li>
+      <li>Useimmat Windows-komennot kertovat valitsimensa, kun perään kirjoittaa <code>/?</code>, esimerkiksi <code>robocopy /?</code>.</li>
+      <li>Osa komennoista, kuten <code>chkdsk</code>, vaatii järjestelmänvalvojan oikeudet. Avaa silloin komentokehote hiiren oikealla ja valitse <em>Suorita järjestelmänvalvojana</em>.</li>
+      <li>Nuoli ylös tuo edellisen komennon takaisin, ja sarkain täydentää tiedoston tai kansion nimen. Tämä toimii kummassakin ympäristössä.</li>
+    </ul>
+  </section>
+
+  <p class="colophon">grimoire · ex libris · mila.palviainen · osa 1: komentorivi</p>
+</div>
+
+<script>
+(function () {
+  /* Spells. Each line: [command, what it does]. cmd = Windows Command Prompt, sh = bash/zsh on Linux and macOS. */
+  const SPELLS = [
+    { id: "missa", title: "Missä olen ja mitä täällä on", tags: ["perusteet", "tiedostot"],
+      when: "Kun et ole varma, missä kansiossa olet tai mitä siellä on.",
+      cmd: [["cd", "Ilman lisäyksiä näyttää nykyisen kansion polun."],
+            ["dir", "Listaa kansion tiedostot ja alikansiot."],
+            ["dir /a", "Näyttää myös piilotetut tiedostot."],
+            ["tree /f", "Piirtää kansiorakenteen puuna tiedostoineen."]],
+      sh:  [["pwd", "Näyttää nykyisen kansion polun."],
+            ["ls", "Listaa kansion sisällön."],
+            ["ls -la", "Näyttää myös piilotetut tiedostot sekä koot ja oikeudet."],
+            ["tree", "Piirtää kansiorakenteen. Ei ole kaikissa koneissa valmiina."]] },
+
+    { id: "siirry", title: "Siirry toiseen kansioon", tags: ["perusteet", "tiedostot"],
+      when: "Kun pitää päästä kansioon, jossa työskentelet.",
+      cmd: [["cd C:\\Users\\Mila\\Documents", "Siirtyy annettuun kansioon."],
+            ["cd ..", "Siirtyy yhden tason ylöspäin."],
+            ["cd \\", "Siirtyy aseman juureen."],
+            ["cd /d D:\\Kuvat", "Vaihtaa samalla asemaa. Ilman /d-valitsinta asema ei vaihdu."]],
+      sh:  [["cd ~/Documents", "Siirtyy kotikansion Documents-kansioon. ~ tarkoittaa kotikansiota."],
+            ["cd ..", "Siirtyy yhden tason ylöspäin."],
+            ["cd /", "Siirtyy tiedostojärjestelmän juureen."],
+            ["cd -", "Palaa kansioon, jossa olit viimeksi."]] },
+
+    { id: "luo", title: "Luo kansio tai tyhjä tiedosto", tags: ["tiedostot"],
+      when: "Kun aloitat uuden projektin tai tarvitset tyhjän tiedoston pohjaksi.",
+      cmd: [["md \"Uusi kansio\\Alikansio\"", "Luo kansion ja tarvittaessa myös välissä olevat kansiot. Välilyönnin sisältävä nimi lainausmerkkeihin."],
+            ["type nul > muistio.txt", "Luo tyhjän tiedoston."]],
+      sh:  [["mkdir -p \"Uusi kansio/Alikansio\"", "Luo kansion. -p luo myös välissä olevat kansiot."],
+            ["touch muistio.txt", "Luo tyhjän tiedoston, tai päivittää olemassa olevan tiedoston aikaleiman."]] },
+
+    { id: "kopioi", title: "Kopioi, siirrä ja nimeä uudelleen", tags: ["tiedostot"],
+      when: "Kun tiedoston pitää olla toisessa paikassa tai toisella nimellä.",
+      cmd: [["copy raportti.txt D:\\Varmuus\\", "Kopioi tiedoston toiseen kansioon."],
+            ["move raportti.txt D:\\Arkisto\\", "Siirtää tiedoston. Alkuperäinen katoaa."],
+            ["ren vanha.txt uusi.txt", "Vaihtaa tiedoston nimen."]],
+      sh:  [["cp raportti.txt ~/Varmuus/", "Kopioi tiedoston."],
+            ["mv raportti.txt ~/Arkisto/", "Siirtää tiedoston."],
+            ["mv vanha.txt uusi.txt", "Nimeää uudelleen. Linuxissa siirto ja nimeäminen ovat sama komento."]],
+      warn: "Jos kohteessa on jo samanniminen tiedosto, mv korvaa sen kysymättä. Windowsin copy ja move kysyvät ensin." },
+
+    { id: "varmuus", title: "Varmuuskopioi koko kansio", tags: ["tiedostot"],
+      when: "Kun haluat kopioida kansion alikansioineen esimerkiksi ulkoiselle levylle.",
+      cmd: [["robocopy C:\\Projektit D:\\Varmuus /E", "Kopioi kaikki alikansiot, myös tyhjät."],
+            ["robocopy C:\\Projektit D:\\Varmuus /MIR", "Tekee kohteesta tarkan peilikuvan lähteestä."]],
+      sh:  [["cp -r ~/Projektit /media/levy/Varmuus", "Kopioi kansion alikansioineen."],
+            ["rsync -a --delete ~/Projektit/ /media/levy/Varmuus/", "Tekee peilikuvan. Kopioi vain muuttuneet tiedostot."]],
+      warn: "Peilaus (/MIR tai --delete) poistaa kohteesta kaiken, mitä lähteessä ei ole. Jos lähde ja kohde menevät väärin päin, varmuuskopio tyhjenee." },
+
+    { id: "poista", title: "Poista tiedosto tai kansio", tags: ["tiedostot"],
+      when: "Kun jotain pitää siivota pois.",
+      cmd: [["del vanha.txt", "Poistaa tiedoston."],
+            ["del *.tmp", "Poistaa kaikki .tmp-päätteiset tiedostot kansiosta."],
+            ["rd /s /q vanha-kansio", "Poistaa kansion sisältöineen. /q jättää varmistuskysymyksen pois."]],
+      sh:  [["rm vanha.txt", "Poistaa tiedoston."],
+            ["rm *.tmp", "Poistaa kaikki .tmp-päätteiset tiedostot."],
+            ["rm -r vanha-kansio", "Poistaa kansion sisältöineen."]],
+      warn: "Komentoriviltä poistettu ei mene roskakoriin, eikä sitä saa helposti takaisin. Katso ensin dir- tai ls-komennolla samalla kuviolla, mitä olet poistamassa." },
+
+    { id: "etsi", title: "Etsi tekstiä tiedostoista", tags: ["haku"],
+      when: "Kun lokissa on virhe jossain kohtaa tai muistat vain osan sanasta.",
+      cmd: [["find \"ERROR\" app.log", "Näyttää rivit, joilla on ERROR. Haettava teksti lainausmerkkeihin."],
+            ["find /i \"error\" app.log", "Sama, mutta kirjainkoolla ei ole väliä."],
+            ["find /c \"ERROR\" app.log", "Kertoo vain, monellako rivillä osuma on."],
+            ["findstr /s /i \"todo\" *.py", "Etsii kaikista .py-tiedostoista myös alikansioista."]],
+      sh:  [["grep ERROR app.log", "Näyttää rivit, joilla on ERROR."],
+            ["grep -i error app.log", "Kirjainkoolla ei ole väliä."],
+            ["grep -c ERROR app.log", "Kertoo osumarivien määrän."],
+            ["grep -ri todo --include=\"*.py\" .", "Etsii .py-tiedostoista kaikista alikansioista."]] },
+
+    { id: "tuloste", title: "Tallenna tuloste tiedostoon", tags: ["tulosteet"],
+      when: "Kun komennon tulos pitää saada talteen tai liittää tehtävään.",
+      cmd: [["systeminfo > tiedot.txt", "Kirjoittaa tulosteen tiedostoon. Vanha sisältö korvataan."],
+            ["dir >> tiedot.txt", "Lisää tulosteen tiedoston loppuun."],
+            ["tasklist | more", "Näyttää pitkän tulosteen sivu kerrallaan. | vie tulosteen seuraavalle komennolle."]],
+      sh:  [["uname -a > tiedot.txt", "Kirjoittaa tulosteen tiedostoon ja korvaa vanhan sisällön."],
+            ["ls >> tiedot.txt", "Lisää tulosteen tiedoston loppuun."],
+            ["ps aux | less", "Näyttää pitkän tulosteen sivu kerrallaan. Lopeta q-näppäimellä."]],
+      warn: "Yksi > tyhjentää tiedoston ennen kirjoittamista. Kun haluat säilyttää vanhan sisällön, käytä kahta: >>." },
+
+    { id: "ketjuta", title: "Aja komennot peräkkäin", tags: ["ketjutus"],
+      when: "Kun haluat ajaa monta komentoa yhdellä rivillä.",
+      cmd: [["md build && cd build", "Jälkimmäinen ajetaan vain, jos ensimmäinen onnistui."],
+            ["cd build || md build", "Jälkimmäinen ajetaan vain, jos ensimmäinen epäonnistui."],
+            ["cls & dir", "Molemmat ajetaan joka tapauksessa."]],
+      sh:  [["mkdir build && cd build", "Jälkimmäinen ajetaan vain, jos ensimmäinen onnistui."],
+            ["cd build || mkdir build", "Jälkimmäinen ajetaan vain, jos ensimmäinen epäonnistui."],
+            ["clear; ls", "Molemmat ajetaan joka tapauksessa."]],
+      warn: "Yksi & tarkoittaa eri asiaa eri ympäristöissä. Windowsissa se ajaa komennot peräkkäin, Linuxissa ja macOS:ssä se käynnistää komennon taustalle." },
+
+    { id: "prosessit", title: "Mitä koneella pyörii ja miten sen pysäyttää", tags: ["prosessit", "järjestelmä"],
+      when: "Kun ohjelma on jumissa tai haluat tietää, mikä syö koneen tehoja.",
+      cmd: [["tasklist", "Listaa käynnissä olevat prosessit ja niiden tunnukset (PID)."],
+            ["tasklist | find /i \"chrome\"", "Näyttää vain rivit, joilla on chrome."],
+            ["taskkill /IM notepad.exe /F", "Sulkee ohjelman nimen perusteella. /F pakottaa."],
+            ["taskkill /PID 1234 /F", "Sulkee prosessin tunnuksen perusteella."]],
+      sh:  [["ps aux", "Listaa käynnissä olevat prosessit ja niiden tunnukset (PID)."],
+            ["ps aux | grep -i chrome", "Näyttää vain rivit, joilla on chrome."],
+            ["pkill gedit", "Sulkee ohjelman nimen perusteella."],
+            ["kill 1234", "Pyytää prosessia sulkeutumaan. kill -9 pakottaa."]],
+      warn: "Pakotettu sulkeminen ei anna ohjelman tallentaa mitään. Tallentamattomat muutokset katoavat." },
+
+    { id: "tiedot", title: "Koneen tiedot", tags: ["järjestelmä"],
+      when: "Kun tukipalvelu tai tehtävä kysyy, millainen kone sinulla on.",
+      cmd: [["hostname", "Koneen nimi verkossa."],
+            ["ver", "Windowsin versio."],
+            ["systeminfo", "Kaikki kerralla: käyttöjärjestelmä, muisti, asennuspäivä ja verkkokortit."]],
+      sh:  [["hostname", "Koneen nimi verkossa."],
+            ["uname -a", "Ytimen versio ja arkkitehtuuri."],
+            ["df -h", "Levyjen koko ja vapaa tila luettavassa muodossa."]] },
+
+    { id: "ip", title: "Oma IP-osoite ja verkkokortit", tags: ["verkko"],
+      when: "Kun tarvitset oman IP-osoitteen, aliverkon peitteen tai MAC-osoitteen.",
+      cmd: [["ipconfig", "IP-osoite, aliverkon peite ja oletusyhdyskäytävä jokaiselle verkkokortille."],
+            ["ipconfig /all", "Lisäksi MAC-osoite (fyysinen osoite), DNS-palvelimet ja DHCP-tiedot."],
+            ["arp -a", "Lähiverkon laitteet, joihin kone on ollut yhteydessä, ja niiden MAC-osoitteet."]],
+      sh:  [["ip addr", "Linuxin verkkokortit ja osoitteet. macOS:ssä vastaava on ifconfig."],
+            ["ip route", "Linuxin reititystaulu. Rivi default via näyttää oletusyhdyskäytävän."],
+            ["ip neigh", "Lähiverkon laitteet ja niiden MAC-osoitteet. macOS:ssä vastaava on arp -a."]] },
+
+    { id: "ping", title: "Toimiiko yhteys", tags: ["verkko"],
+      when: "Kun sivu ei aukea ja haluat tietää, onko vika omassa koneessa, verkossa vai palvelimessa.",
+      cmd: [["ping google.com", "Lähettää neljä pakettia ja näyttää vastausajat."],
+            ["ping -t 8.8.8.8", "Pingaa, kunnes lopetat Ctrl+C:llä."],
+            ["tracert 1.1.1.1", "Näyttää reitin: jokainen rivi on yksi reititin matkalla."]],
+      sh:  [["ping -c 4 google.com", "Lähettää neljä pakettia. Ilman -c-valitsinta ping jatkuu, kunnes painat Ctrl+C."],
+            ["ping 8.8.8.8", "Pingaa, kunnes lopetat Ctrl+C:llä."],
+            ["traceroute 1.1.1.1", "Näyttää reitin. Linuxiin se pitää joskus asentaa erikseen."]],
+      warn: "Kaikki palvelimet eivät vastaa pingiin. Jos ping ei saa vastausta mutta sivu aukeaa selaimessa, yhteys on kunnossa." },
+
+    { id: "dns", title: "Mihin osoitteeseen nimi osoittaa", tags: ["verkko"],
+      when: "Kun verkkotunnus ei toimi tai haluat nähdä, mikä IP-osoite nimen takana on.",
+      cmd: [["nslookup example.com", "Kysyy DNS-palvelimelta nimen IP-osoitteen."],
+            ["ipconfig /displaydns", "Näyttää koneen muistissa olevat DNS-tulokset."],
+            ["ipconfig /flushdns", "Tyhjentää muistin, jolloin nimet haetaan uudelleen."]],
+      sh:  [["nslookup example.com", "Kysyy nimen IP-osoitteen. Linuxiin se pitää joskus asentaa erikseen."],
+            ["dig example.com", "Yksityiskohtaisempi tuloste. Tulee samassa paketissa kuin nslookup."]] },
+
+    { id: "apu", title: "Siivoa ruutu ja kysy apua", tags: ["perusteet"],
+      when: "Kun ruutu on täynnä tai et muista komennon valitsimia.",
+      cmd: [["cls", "Tyhjentää ruudun."],
+            ["help", "Listaa yleisimmät komennot lyhyine kuvauksineen."],
+            ["dir /?", "Näyttää komennon ohjeen ja valitsimet."]],
+      sh:  [["clear", "Tyhjentää ruudun. Pikanäppäin Ctrl+L tekee saman."],
+            ["man ls", "Avaa komennon käyttöohjeen. Poistu q-näppäimellä."],
+            ["ls --help", "Lyhyt ohje suoraan ruudulle. macOS:n ls ei tunne tätä, käytä siellä man-komentoa."]] }
+  ];
+
+  const ROMAN = n => [["X",10],["IX",9],["V",5],["IV",4],["I",1]].reduce((s, [r, v]) => { while (n >= v) { s += r; n -= v; } return s; }, "");
+  const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+
+  let shell = store.get("grimoire.shell") === "sh" ? "sh" : "cmd";
+  let tag = "kaikki", query = "";
+
+  /* Render cards once; filtering only toggles hidden */
+  const list = document.getElementById("spells");
+  list.innerHTML = SPELLS.map((s, i) => `
+    <article class="spell" id="${s.id}" aria-labelledby="t-${s.id}">
+      <div class="spell-head"><span class="num">Loitsu ${ROMAN(i + 1)}</span><span class="spell-tags">${s.tags.map(t => `<span>${t}</span>`).join("")}</span></div>
+      <h2 id="t-${s.id}">${esc(s.title)}</h2>
+      <p class="when">${esc(s.when)}</p>
+      <ol class="lines" data-for="cmd">${s.cmd.map(line).join("")}</ol>
+      <ol class="lines" data-for="sh">${s.sh.map(line).join("")}</ol>
+      ${s.warn ? `<div class="warn"><b>Varoitus</b><p>${esc(s.warn)}</p></div>` : ""}
+    </article>`).join("");
+  function line([c, d]) { return `<li class="line"><code>${esc(c)}</code><p>${esc(d)}</p><button class="copy" type="button" aria-label="Kopioi ${esc(c)}">kopioi</button></li>`; }
+
+  /* Tag chips */
+  const tags = [...new Set(SPELLS.flatMap(s => s.tags)), "kaikki"];
+  const tagBox = document.getElementById("tags");
+  tagBox.innerHTML = tags.map(t => `<button class="tag" type="button" data-tag="${t}" aria-pressed="${t === tag}">${t}</button>`).join("");
+  tagBox.addEventListener("click", e => { const b = e.target.closest("[data-tag]"); if (!b) return; tag = b.dataset.tag; apply(); });
+
+  /* Search */
+  const q = document.getElementById("q");
+  q.addEventListener("input", () => { query = q.value.trim().toLowerCase(); apply(); });
+
+  /* Shell switch */
+  const shellBtns = document.querySelectorAll("[data-shell]");
+  shellBtns.forEach(b => b.addEventListener("click", () => { shell = b.dataset.shell; store.set("grimoire.shell", shell); apply(); }));
+
+  function apply() {
+    let shown = 0;
+    SPELLS.forEach(s => {
+      const hay = [s.title, s.when, s.warn || "", ...s.tags, ...s[shell].flat()].join(" ").toLowerCase();
+      const ok = (tag === "kaikki" || s.tags.includes(tag)) && (!query || query.split(/\s+/).every(w => hay.includes(w)));
+      const el = document.getElementById(s.id);
+      el.hidden = !ok; if (ok) shown++;
+      el.querySelectorAll(".lines").forEach(l => { l.hidden = l.dataset.for !== shell; });
+    });
+    tagBox.querySelectorAll("[data-tag]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.tag === tag)));
+    shellBtns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.shell === shell)));
+    document.getElementById("count").textContent = shown === SPELLS.length ? `${shown} loitsua` : `${shown} / ${SPELLS.length} loitsua`;
+    document.getElementById("empty").hidden = shown > 0;
+  }
+
+  /* Copy one line */
+  list.addEventListener("click", e => {
+    const b = e.target.closest(".copy"); if (!b) return;
+    const code = b.parentElement.querySelector("code");
+    const done = ok => { b.dataset.state = ok ? "ok" : ""; b.textContent = ok ? "kopioitu" : "valittu"; setTimeout(() => { b.dataset.state = ""; b.textContent = "kopioi"; }, 1600); };
+    const select = () => { const r = document.createRange(); r.selectNodeContents(code); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); done(false); };
+    try { navigator.clipboard.writeText(code.textContent).then(() => done(true), select); } catch (err) { select(); }
+  });
+
+  /* Theme (shared key with the other Ex Libris pages) */
+  const themeBtn = document.getElementById("theme-toggle");
+  let theme = store.get("marginalia.theme") || "dark";
+  function applyTheme(t) {
+    if (t === "light") document.documentElement.setAttribute("data-theme", "light"); else document.documentElement.removeAttribute("data-theme");
+    themeBtn.textContent = t === "light" ? "tumma teema" : "vaalea teema"; themeBtn.setAttribute("aria-pressed", String(t === "light"));
+  }
+  applyTheme(theme);
+  themeBtn.addEventListener("click", () => { theme = theme === "light" ? "dark" : "light"; applyTheme(theme); store.set("marginalia.theme", theme); });
+
+  apply();
+})();
+</script>
+<script>(function(){var c=document.getElementById("bookcover");if(!c)return;try{if(sessionStorage.getItem("opened-grimoire")){c.remove();return;}sessionStorage.setItem("opened-grimoire","1");}catch(e){}c.addEventListener("animationend",function(){c.remove();});setTimeout(function(){if(c.parentNode)c.remove();},2500);})();</script>
+
+</body>
+</html>
