@@ -167,10 +167,10 @@ ITEMS.forEach(it=>{
   a.appendChild(p);hots.appendChild(a);it.el=a;
   a.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse")show(it.id)});
   a.addEventListener("focus",()=>show(it.id));
-  a.addEventListener("pointerdown",e=>{a._touch=e.pointerType!=="mouse"});
+  a.addEventListener("pointerdown",e=>{a._touch=e.pointerType!=="mouse";a._was=active===it.id});
   a.addEventListener("click",e=>{
     // touch: first tap previews, second opens. Items without a page only preview.
-    if(!it.href||(a._touch&&active!==it.id)){e.preventDefault();show(it.id)}
+    if(!it.href||(a._touch&&!a._was)){e.preventDefault();show(it.id)}a._touch=false
   });
   a.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!it.href){e.preventDefault();show(it.id)}});
 });
@@ -185,8 +185,8 @@ ITEMS.forEach(it=>{
   el.setAttribute("aria-label",`${it.name}, ${it.status}`);
   el.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse")show(it.id)});
   el.addEventListener("focus",()=>show(it.id));
-  el.addEventListener("pointerdown",e=>{el._touch=e.pointerType!=="mouse"});
-  el.addEventListener("click",e=>{if(!it.href||(el._touch&&active!==it.id)){e.preventDefault();show(it.id)}});
+  el.addEventListener("pointerdown",e=>{el._touch=e.pointerType!=="mouse";el._was=active===it.id});
+  el.addEventListener("click",e=>{if(!it.href||(el._touch&&!el._was)){e.preventDefault();show(it.id)}el._touch=false});
   pinsEl.appendChild(el);it.pinEl=el;
   it.el.setAttribute("tabindex","-1");
 });

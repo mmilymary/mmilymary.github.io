@@ -257,6 +257,27 @@
   .links a:hover { border-color: var(--neon); color: var(--cream); box-shadow: 0 0 18px rgba(255,122,162,.25); }
   footer { border-top: 1px solid var(--line); padding: 24px 16px; text-align: center; color: var(--muted); font-size: 13px; }
 
+  /* ---------- ex libris: the library band ---------- */
+  .library { padding: clamp(72px, 10vw, 128px) 0; background: radial-gradient(120% 80% at 20% 30%, #2a1419 0%, #1c0b10 60%); border-block: 1px solid var(--line); }
+  .library .wrap { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: clamp(36px, 6vw, 88px); align-items: center; }
+  .shelf { position: relative; display: block; margin: 0; border-radius: 220px 220px 14px 14px; overflow: hidden; border: 1px solid rgba(195,201,209,.45); transition: border-color .3s; box-shadow: 0 30px 60px rgba(0,0,0,.55), inset 0 0 0 6px #1c0b10, inset 0 0 0 7px rgba(195,201,209,.25); background: #1c0b10; }
+  .shelf img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; transition: transform .8s cubic-bezier(.2,.7,.2,1), filter .4s; }
+  .shelf:hover, .shelf:focus-visible { border-color: var(--neon); }
+  .shelf:hover img, .shelf:focus-visible img { transform: scale(1.03); filter: brightness(1.08); }
+  .library h2 { font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-size: clamp(48px, 6.5vw, 84px); line-height: .95; margin: 0 0 18px; letter-spacing: -.01em; }
+  .library h2 em { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--neon); font-weight: 500; }
+  .library .lead { color: var(--cream); font-size: 19px; line-height: 1.6; margin: 0 0 8px; }
+  .library .sub { color: var(--muted); font-size: 16px; line-height: 1.7; margin: 0 0 28px; max-width: 34em; }
+  .shelf-list { list-style: none; padding: 0; margin: 0 0 32px; border-top: 1px solid var(--line); }
+  .shelf-list li { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 14px 4px; border-bottom: 1px solid var(--line); color: var(--muted); }
+  .shelf-list b { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: 26px; line-height: 1; color: var(--cream); }
+  .shelf-list span { font-size: 15px; line-height: 1.5; }
+  @media (max-width: 860px) {
+    .library .wrap { grid-template-columns: minmax(0, 1fr); }
+    .shelf { max-width: 360px; width: 100%; margin: 0 auto; }
+    .shelf-list li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  }
+
   /* ---------- responsive ---------- */
   @media (max-width: 900px) {
     .about .wrap { grid-template-columns: 1fr; }
@@ -346,6 +367,28 @@
     </div>
   </section>
 
+
+  <!-- EX LIBRIS -->
+  <section class="library" id="exlibris" aria-labelledby="lib-title">
+    <div class="wrap">
+      <a class="shelf reveal" href="exlibris.html" aria-label="Astu kirjastoon">
+        <img src="img/hylly.webp" alt="Kirjahylly, jolla on vanhoja kirjoja, kartta, lasikupu, patsas ja mustia käärmeitä" loading="lazy" width="960" height="1200">
+      </a>
+      <div class="reveal">
+        <p class="label">// KIRJASTO</p>
+        <h2 id="lib-title">Ex <em>Libris</em></h2>
+        <p class="lead">Opiskelutyökalut samalla hyllyllä.</p>
+        <p class="sub">Kurssien asiat, omat muistiinpanot ja komennot, jotka unohtuvat aina juuri silloin, kun niitä tarvitsee. Kaikki on koottu, tarkistettu ja kirjoitettu niin, että niistä on hyötyä muillekin.</p>
+        <ul class="shelf-list">
+          <li><b>Lunttilaput</b><span>tiiviit muistilaput ja pieniä tehtäviä: Python, SQL, lukujärjestelmät, liiketalous ja verkot</span></li>
+          <li><b>Grimoire</b><span>komennot ja koodipätkät selityksineen</span></li>
+          <li><b>Marginalia</b><span>oppimispäiväkirja ja lukulista</span></li>
+          <li><b>Urakartta</b><span>IT-alan roolit ja apua oman suunnan löytämiseen</span></li>
+        </ul>
+        <a class="btn primary" href="exlibris.html">astu kirjastoon →</a>
+      </div>
+    </div>
+  </section>
 
   <!-- WORK -->
   <section class="work" id="work" aria-labelledby="work-title">
