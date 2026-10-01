@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Palimpsesti</title>
+<meta name="description" content="Synkkä tekstiseikkailu vuoden 1886 Vesperin yliopistossa. Kaksi hahmoa, kaksi reittiä ja jotain, mikä ei kuulu joukkoon.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&family=Courier+Prime:ital@0;1&family=VT323&display=swap">
+<style>
+/* Yksi kapea sarake: tilarivi, kertomus, pulma. 1800-luvun paperi ja muste, joihin tekniikka vuotaa päätefonttina. Vain tumma ilme. */
+:root{
+  --bg:#1c0b10; --surface:#2a1419; --deep:#140709; --line:#4a2a31;
+  --fg:#eee6e2; --dim:#b39a97; --dust:#c9a3a6; --rose:#b5475a;
+  --act:#ff7aa2; --paper:#efe4dc; --ink:#2a1419; --inkdim:#6b4c53;
+  --display:'Cormorant Garamond','Garamond','Times New Roman',serif;
+  --body:'Courier Prime','Courier New',monospace;
+  --term:'VT323','Courier New',monospace;
+  color-scheme:dark;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.65}
+.wrap{max-width:640px;margin:0 auto;padding-inline:16px;padding-block:20px 56px;display:flex;flex-direction:column;gap:20px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:var(--term);font-size:19px;color:var(--dim)}
+.cur{animation:bl 1s steps(1) infinite;font-family:var(--term);color:var(--act)}
+@keyframes bl{50%{opacity:0}}
+.eh{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.eh .track{width:84px;height:8px;border:1px solid var(--line);position:relative;overflow:hidden}
+.eh .fill{position:absolute;inset:0;background:var(--dust);transform-origin:left;transition:transform .5s}
+.eh.low .fill{background:var(--rose)}
+h1,h2{font-family:var(--display);font-weight:500;line-height:1.1;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.4rem,9vw,3.4rem);letter-spacing:.5px}
+h2{font-size:1.75rem}
+.eyebrow{font-family:var(--display);font-style:italic;font-size:1.1rem;color:var(--dust);margin:0}
+.tag{font-family:var(--term);font-size:18px;color:var(--dust);margin:0}
+p{margin:0}
+.scene{display:flex;flex-direction:column;gap:14px}
+.prose{display:flex;flex-direction:column;gap:12px;max-width:62ch}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--act);outline-offset:3px}
+button:disabled{cursor:default}
+
+.prolog{min-height:60vh;display:flex;flex-direction:column;justify-content:center;gap:18px}
+.prolog .lines{font-family:var(--display);font-size:1.45rem;line-height:1.35;color:var(--dust);display:flex;flex-direction:column;gap:14px;max-width:34ch}
+.prolog .lines p:first-child{font-style:italic;font-size:1.1rem;color:var(--dim)}
+.prolog .lines p:last-child{color:var(--fg)}
+
+.choose{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.who{text-align:left;background:var(--surface);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:8px;transition:border-color .2s}
+.who:hover{border-color:var(--act)}
+.who b{font-family:var(--display);font-size:1.5rem;font-weight:600;line-height:1.1}
+.who small{font-family:var(--display);font-style:italic;font-size:1rem;color:var(--dust)}
+.who span{color:var(--dim);font-size:14px}
+.who i{font-family:var(--term);font-style:normal;font-size:17px;color:var(--act)}
+
+.note{background:var(--paper);color:var(--ink);padding:14px 16px;font-family:var(--display);font-style:italic;font-size:1.2rem;line-height:1.35;transform:rotate(-.6deg);box-shadow:0 2px 0 var(--line)}
+.note small{display:block;font-style:normal;font-family:var(--body);font-size:12px;color:var(--inkdim);margin-bottom:4px}
+
+.q{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:16px}
+.status{font-family:var(--term);font-size:17px;color:var(--dim)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.card{text-align:left;background:var(--paper);color:var(--ink);border:0;padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px;position:relative;transition:transform .15s,box-shadow .15s;min-height:92px}
+.card:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 0 2px var(--act)}
+.card::before{content:"";position:absolute;left:12px;right:12px;top:28px;border-top:1px solid #b5475a66}
+.card .no{font-family:var(--display);font-style:italic;font-size:14px;color:var(--inkdim)}
+.card .t{font-family:var(--display);font-weight:600;font-size:1.15rem;line-height:1.15;margin-top:8px}
+.card .a{font-family:var(--display);font-style:italic;font-size:15px;color:#5e434a}
+.card.dead{background:var(--deep);color:var(--rose);border:1px dashed var(--line)}
+.card.dead *{font-family:var(--term)!important;color:var(--rose)!important;font-style:normal!important}
+.log{font-family:var(--term);font-size:18px;color:var(--dust);min-height:1.5em;white-space:pre-wrap}
+.log.bad{color:var(--rose)}
+.readout{background:var(--paper);color:var(--ink);padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.readout .t{font-family:var(--display);font-weight:600;font-size:1.35rem}
+.readout .m{font-family:var(--display);font-style:italic;font-size:1.05rem;color:var(--inkdim)}
+
+.reveal{background:var(--surface);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:12px}
+.code{font-family:var(--term);font-size:23px;line-height:1.3;color:var(--act)}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+.primary{background:transparent;border:1px solid var(--act);color:var(--fg);padding:8px 16px;min-height:40px;font-family:var(--term);font-size:19px}
+.primary:hover{background:#ff7aa21a}
+.ghost{background:transparent;border:1px solid var(--line);color:var(--dim);padding:8px 16px;min-height:40px;font-family:var(--term);font-size:19px}
+.ghost:hover{border-color:var(--act);color:var(--fg)}
+.g{font-family:var(--term);color:var(--act)}
+.shake{animation:sh .35s}
+@keyframes sh{20%{transform:translateX(-3px)}40%{transform:translateX(3px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
+
+.objs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.obj{background:var(--surface);border:1px solid var(--line);padding:10px 12px;text-align:left;font-family:var(--display);font-size:1.1rem;line-height:1.2;transition:border-color .2s}
+.obj:hover{border-color:var(--act)}
+.obj.on{border-color:var(--act);background:#ff7aa214}
+.obj.gone{opacity:.45;text-decoration:line-through}
+.inspect{background:var(--deep);border:1px solid var(--line);padding:14px 16px;display:flex;flex-direction:column;gap:12px;min-height:6em}
+.inspect .h{font-family:var(--display);font-weight:600;font-size:1.3rem}
+.inspect .d{max-width:60ch}
+.inspect .hint{font-family:var(--term);font-size:18px;color:var(--dim)}
+
+
+/* luku III */
+.books{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.book{background:#3a1820;color:var(--paper);border:0;border-left:6px solid #5e2430;padding:14px 12px;min-height:110px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:8px;transition:transform .15s,box-shadow .15s}
+.book:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 0 2px var(--act)}
+.book b{font-family:var(--display);font-weight:600;font-size:1.2rem;line-height:1.15}
+.book i{font-family:var(--term);font-style:normal;font-size:16px;color:var(--dust)}
+.book.read{background:var(--deep);border-left-color:var(--line)}
+.book.read b,.book.read i{font-family:var(--term);font-weight:normal;color:var(--rose)}
+.excerpt{background:var(--paper);color:var(--ink);padding:14px 16px;font-family:var(--display);font-size:1.15rem;line-height:1.4;display:flex;flex-direction:column;gap:6px}
+.excerpt small{font-family:var(--body);font-size:12px;color:var(--inkdim)}
+.strips{display:flex;flex-direction:column;gap:8px}
+.strip{background:var(--paper);color:var(--ink);border:0;padding:10px 14px;text-align:left;font-family:var(--display);font-style:italic;font-size:1.12rem;line-height:1.3;clip-path:polygon(0 6%,4% 0,12% 5%,22% 0,35% 6%,47% 1%,60% 6%,72% 0,85% 5%,94% 0,100% 4%,100% 94%,95% 100%,84% 95%,70% 100%,58% 94%,44% 100%,31% 95%,18% 100%,7% 94%,0 100%);transition:transform .15s}
+.strip:hover:not(:disabled){transform:translateX(3px)}
+.strip:disabled{opacity:.35}
+.slot{border:1px dashed var(--line);min-height:3em;padding:8px;display:flex;flex-direction:column;gap:8px}
+.slot .ph{font-family:var(--term);font-size:17px;color:var(--dim)}
+.lbl{font-family:var(--term);font-size:17px;color:var(--dim)}
+
+
+/* Tiara */
+.transcript{background:var(--paper);color:var(--ink);padding:16px 18px;font-family:var(--display);font-size:1.2rem;line-height:1.55}
+.transcript small{display:block;font-family:var(--body);font-size:12px;color:var(--inkdim);margin-bottom:6px}
+.w{background:none;border:0;padding:0 1px;margin:0;font:inherit;color:inherit;cursor:pointer;border-radius:2px}
+.w:hover:not(:disabled){background:#ff7aa233;outline:1px solid var(--act)}
+.w.hit{color:var(--rose);text-decoration:line-through;text-decoration-thickness:2px}
+.w.bad{font-family:var(--term);color:var(--rose)}
+.w:disabled{cursor:default}
+.page{background:var(--paper);color:var(--ink);padding:10px 0;display:flex;flex-direction:column}
+.line{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px dotted #b5475a33}
+.line:last-child{border-bottom:0}
+.line .tx{flex:1;min-width:0;font-family:var(--display);font-size:1.12rem;line-height:1.35}
+.line .tx.prof{font-style:italic;transform:rotate(-.35deg)}
+.line .tx.prof s{color:var(--inkdim)}
+.line .tx.prof .blot{display:inline-block;width:.5em;height:.5em;border-radius:50%;background:#2a141999;margin-left:.3em;vertical-align:middle}
+.line .tx.even{font-style:italic;letter-spacing:.06em;color:#1a080c}
+.cp{background:transparent;border:1px solid var(--rose);color:var(--rose);font-family:var(--term);font-size:16px;padding:2px 10px;min-height:32px;white-space:nowrap}
+.cp:hover:not(:disabled){background:#b5475a1a}
+.cp:disabled{border-color:#b5475a55;color:#b5475a99}
+.copies{background:var(--surface);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-height:3em}
+.copies p{font-family:var(--display);font-size:1.08rem;color:var(--fg)}
+.copies p.m{font-family:var(--term);color:var(--dust)}
+
+.back{font-family:var(--term);font-size:1.15rem;color:var(--dim);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;align-self:flex-start}
+.back:hover{color:var(--act)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="exlibris.html">← takaisin hyllyyn</a>
+  <div class="bar">
+    <span>&gt; palimpsesti<span class="cur">_</span></span>
+    <span class="eh" id="eh" hidden><span>eheys</span><span class="track"><span class="fill" id="ehFill"></span></span><span id="ehNum">100</span></span>
+  </div>
+
+  <section id="s-prolog" class="prolog">
+    <div class="lines" id="plines" aria-live="polite"></div>
+    <div class="actions"><button class="primary" id="pnext">&gt; jatka</button></div>
+  </section>
+
+  <section id="s-choose" class="scene" hidden>
+    <p class="eyebrow">Vesperin yliopisto, lokakuu 1886</p>
+    <h1>Palimpsesti</h1>
+    <div class="prose"><p>Kaksi ihmistä menee tänä yönä kirjaston kellariin. Valitse, kumman mukana kuljet.</p></div>
+    <div class="choose">
+      <button class="who" data-who="jules"><small>kirjastonhoitaja</small><b>Jules Kartios</b><span>On hoitanut yliopiston kokoelmaa yksitoista vuotta. Haluaa pysäyttää sen, mikä leviää teksteissä, ennen kuin se pääsee kokoelmaan.</span><i>&gt; valitse</i></button>
+      <button class="who" data-who="tiara"><small>opiskelija ja kirjuri</small><b>Tiara Askova</b><span>Kirjoittaa professorin muistiinpanot puhtaaksi. Uskoo, että teksti, joka muuttuu, ei enää haalistu.</span><i>&gt; valitse</i></button>
+    </div>
+    <p class="status">// kumpikin reitti kestää noin 20 minuuttia</p>
+  </section>
+
+  <section id="s-t1" class="scene" hidden>
+    <p class="eyebrow">Luku I · kello 23.00</p>
+    <h2>Saneluhuone</h2>
+    <div class="prose" id="t1text"></div>
+    <div class="q">
+      <div class="status">// tiaran litterointi. kolme sanaa ei ole professorin. klikkaa niitä.</div>
+      <div class="status" id="t1count"></div>
+      <div class="transcript" id="transcript"></div>
+      <div class="log" id="logT1" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s-t1end" class="reveal" hidden>
+    <p class="tag">fonografi</p>
+    <p id="t1endA"></p>
+    <p class="code" id="codeT1">kopioi</p>
+    <p id="t1endB"></p>
+    <div class="actions"><button class="primary" id="toT2">&gt; pöydän ääreen</button></div>
+  </section>
+
+  <section id="s-t2" class="scene" hidden>
+    <p class="eyebrow">Luku II · kello 23.30</p>
+    <h2>Puhtaaksikirjoitus</h2>
+    <div class="prose" id="t2text"></div>
+    <div class="note"><small>professorin sanat Tiaran ensimmäisellä viikolla</small>Älä koskaan kopioi rivejä, joita en ole kirjoittanut minä.</div>
+    <div class="q">
+      <div class="status">// kopioi professorin omat rivit tiaran arkille. jätä muiden kirjoittamat rivit kopioimatta.</div>
+      <div class="page" id="page"></div>
+      <div class="lbl">// tiaran puhtaaksikirjoitus</div>
+      <div class="copies" id="copies"></div>
+      <div class="log" id="logT2" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s-t2end" class="reveal" hidden>
+    <p class="tag">paperin alareuna</p>
+    <p id="t2endA"></p>
+    <p class="code" id="codeT2">Etsi se, mikä ei ole vielä syntynyt.</p>
+    <p id="t2endB"></p>
+    <div class="actions"><button class="primary" id="toLab">&gt; laboratorioon</button></div>
+  </section>
+
+  <section id="s-ch1" class="scene" hidden>
+    <p class="eyebrow">Luku I</p>
+    <h2>Kortisto</h2>
+    <div class="prose" id="ch1text"></div>
+    <div class="note"><small id="notecap"></small>Etsi se, mikä ei ole vielä syntynyt.</div>
+    <div class="q">
+      <div class="status">// seitsemän korttia. lue kortti klikkaamalla.</div>
+      <div class="cards" id="cards"></div>
+      <div id="readout"></div>
+      <div class="log" id="log1" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s-ch1end" class="reveal" hidden>
+    <p class="tag">kortin takapuoli</p>
+    <p id="ch1endA"></p>
+    <p class="code" id="code1">Se, mikä ei vielä ole olemassa, odottaa oven vieressä.</p>
+    <p id="ch1endB"></p>
+    <div class="actions"><button class="primary" id="toCh2">&gt; kellarin perälle</button></div>
+  </section>
+
+  <section id="s-ch2" class="scene" hidden>
+    <p class="eyebrow">Luku II</p>
+    <h2>Laboratorion ovi</h2>
+    <div class="prose" id="ch2text"></div>
+    <div class="q">
+      <div class="status">// käytävällä. katso esineitä klikkaamalla.</div>
+      <div class="objs" id="objs"></div>
+      <div class="inspect" id="inspect" aria-live="polite"></div>
+      <div class="log" id="log2" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s-ch2end" class="reveal" hidden>
+    <p class="tag">laboratorio</p>
+    <p id="ch2endA"></p>
+    <p id="ch2endB"></p>
+    <p class="code" id="code2">kapasiteetti 7/8</p>
+    <div class="actions"><button class="primary" id="toJ3">&gt; käytävän päähän</button></div>
+  </section>
+
+  <section id="s-ch3" class="scene" hidden>
+    <p class="eyebrow">Luku III</p>
+    <h2>Laboratorio</h2>
+    <div class="prose" id="ch3text"></div>
+    <div class="q">
+      <div class="status" id="ch3status">// kolme kirjaa. kirjan lukeminen maksaa eheyttä.</div>
+      <div class="books" id="books"></div>
+      <div id="bookread"></div>
+      <div class="lbl">// revityt palat</div>
+      <div class="strips" id="pool"></div>
+      <div class="lbl">// järjestys</div>
+      <div class="slot" id="slot"></div>
+      <div class="actions"><button class="primary" id="assemble">&gt; kokoa sivu</button><button class="ghost" id="clearSlot">&gt; tyhjennä</button></div>
+      <div class="log" id="log3" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s-ch3end" class="reveal" hidden>
+    <p class="tag">professorin muistiinpano</p>
+    <p class="code" id="code3"></p>
+    <p id="ch3endA"></p>
+    <p id="ch3endB"></p>
+    <div class="actions"><button class="primary" id="toT4">&gt; naksutuksen luo</button></div>
+  </section>
+
+
+  <section id="s-t4" class="scene" hidden>
+    <p class="eyebrow">Luku IV · kello 00.04</p>
+    <h2>Lennätin</h2>
+    <div class="prose" id="t4text"></div>
+    <div class="note"><small>käsikirjoituksen viimeinen rivi</small>Lähetä se paikkaan, jota ei vielä ole.</div>
+    <div class="q">
+      <div class="status">// asemaluettelo. valitse asema, jonne käsikirjoitus lähetetään.</div>
+      <div class="objs" id="stations"></div>
+      <div class="log" id="logT4" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s-j3" class="scene" hidden>
+    <p class="eyebrow">Luku III · kello 00.45</p>
+    <h2>Klinikan arkisto</h2>
+    <div class="prose" id="j3text"></div>
+    <div class="q">
+      <div class="lbl">// kehdot. katsominen ei maksa mitään. valitse kehto, jota ei ole kirjattu.</div>
+      <div class="objs" id="cribs"></div>
+      <div class="lbl">// klinikan luettelo. sivun lukeminen maksaa eheyttä.</div>
+      <div class="books" id="ledger"></div>
+      <div id="ledgerRead"></div>
+      <div class="log" id="logJ3" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s-j4" class="scene" hidden>
+    <p class="eyebrow">Luku IV · kello 01.00</p>
+    <h2>Lennätinhuone</h2>
+    <div class="prose" id="j4text"></div>
+    <div class="q">
+      <div class="lbl">// lähetetyn sähkösanoman jäljennös</div>
+      <div class="transcript" id="sent"></div>
+      <div class="lbl">// vastaanotettu kopio, paperinauhalta. klikkaa sanoja, jotka ovat muuttuneet matkalla.</div>
+      <div class="status" id="j4count"></div>
+      <div class="transcript" id="recv" style="font-family:var(--term);font-size:1.25rem"></div>
+      <div class="log" id="logJ4" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s-final" class="scene" hidden>
+    <p class="eyebrow" id="finalEye"></p>
+    <h2>Käsikirjoitus</h2>
+    <div class="prose" id="finaltext"></div>
+    <div class="reveal" style="align-items:center;text-align:center;gap:18px">
+      <p class="tag">lasilevy</p>
+      <div class="actions" style="justify-content:center"><button class="primary" id="wSulje">sulje</button><button class="primary" id="wAvaa">avaa</button></div>
+      <div class="log" id="logF" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s-ending" class="reveal" hidden>
+    <p class="tag" id="endTag"></p>
+    <div class="prose" id="endingText"></div>
+    <div class="actions"><button class="primary" id="toEpi">&gt; jatka</button></div>
+  </section>
+
+  <section id="s-epi" class="scene" hidden>
+    <p class="eyebrow">Epilogi</p>
+    <div class="prose" id="epiLog" style="font-family:var(--term);font-size:18px;color:var(--dim)"></div>
+    <div class="prose" id="epiText" style="font-family:var(--display);font-size:1.35rem;line-height:1.4"></div>
+    <p class="code" id="epiCap"></p>
+    <div class="actions" id="epiActions"></div>
+  </section>
+
+  <section id="s-secret" class="scene" hidden>
+    <p class="eyebrow">Käsikirjoituksen alta</p>
+    <h2>Palimpsesti</h2>
+    <div class="prose"><p>Käsikirjoituksen ensimmäisellä sivulla on raaputusjälkiä. Tekstiä on kirjoitettu monta kertaa toisen päälle. Jokainen kerros on jonkun kirjoittama.</p></div>
+    <div id="layers" style="display:flex;flex-direction:column;gap:14px"></div>
+    <p class="status" id="layerCount"></p>
+    <div class="actions" id="secretActions"></div>
+  </section>
+
+  <section id="s-lost" class="reveal" hidden>
+    <p class="tag">eheys 0</p>
+    <p id="lostText"></p>
+    <div class="actions"><button class="primary" id="retry">&gt; yritä uudelleen</button></div>
+  </section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SCREENS=['s-prolog','s-choose','s-t1','s-t1end','s-t2','s-t2end','s-ch1','s-ch1end','s-ch2','s-ch2end','s-ch3','s-ch3end','s-t4','s-j3','s-j4','s-final','s-ending','s-epi','s-secret','s-lost'];
+function show(id){SCREENS.forEach(s=>$(s).hidden=s!==id);$('eh').hidden=['s-prolog','s-choose','s-epi','s-secret'].includes(id);scrollTo({top:0,behavior:'auto'})}
+const today=()=>{const d=new Date();return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear()};
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const corrupt=s=>[...s].map((c,i)=>c===' '?' ':(i%2?'#01{}<>/$_'[(c.charCodeAt(0)+i)%10]:c)).join('');
+function para(id,arr){$(id).innerHTML='';arr.forEach(s=>{const p=document.createElement('p');p.textContent=s;$(id).appendChild(p)})}
+
+let S={who:null,eheys:100,chapter:1,chStart:100,deadCards:new Set(),wrong:0,taken:new Set(),paperLooks:0};
+const N={jules:'Jules',tiara:'Tiara'};
+const other=w=>w==='jules'?'tiara':'jules';
+
+function setEheys(v){S.eheys=Math.max(0,Math.min(100,v));$('ehFill').style.transform='scaleX('+S.eheys/100+')';$('ehNum').textContent=S.eheys;$('eh').classList.toggle('low',S.eheys<=40)}
+function glitchText(el,amount){
+  if(reduce||!el)return;
+  const orig=el.textContent,gl='01{}<>/#$_';let n=0;
+  const t=setInterval(()=>{el.innerHTML=[...orig].map(ch=>ch!==' '&&Math.random()<amount?'<span class="g">'+gl[Math.random()*gl.length|0]+'</span>':ch).join('');if(++n>6){clearInterval(t);el.textContent=orig}},60);
+}
+function hurt(n){
+  S.consumed=(S.consumed||0)+1;
+  setEheys(S.eheys-n);
+  const ps=document.querySelectorAll('#'+S.textId+' p');
+  if(ps.length)glitchText(ps[Math.random()*ps.length|0],(100-S.eheys)/170+.08);
+  if(S.eheys<=0){
+    setTimeout(()=>{$('lostText').textContent=S.lost;show('s-lost');$('retry').focus()},600);
+    return true;
+  }
+  return false;
+}
+
+/* PROLOGI */
+const PRO=[
+  'Vesperin yliopisto, lokakuu 1886.',
+  'Professori Septim Lipas ei ole tullut luennolleen neljään päivään.',
+  'Hänen laboratorionsa ovi kellarissa on lukossa, eikä avainta löydy.',
+  'Kirjaston kortistoon on ilmestynyt kortti, jota kukaan ei ole kirjoittanut.'
+];
+let pIdx=0,typing=null;
+function typeLine(){
+  if(pIdx>=PRO.length){show('s-choose');document.querySelector('.who').focus();return}
+  const p=document.createElement('p');$('plines').appendChild(p);
+  const txt=PRO[pIdx++];
+  if(reduce){p.textContent=txt;return}
+  let k=0;clearInterval(typing);
+  typing=setInterval(()=>{
+    k++;
+    p.innerHTML=esc(txt.slice(0,k))+(k<txt.length&&Math.random()<.5?'<span class="cur">▌</span>':'');
+    if(k>=txt.length){clearInterval(typing);typing=null;p.textContent=txt}
+  },32);
+}
+$('pnext').addEventListener('click',()=>{
+  if(typing){clearInterval(typing);typing=null;$('plines').lastChild.textContent=PRO[pIdx-1];return}
+  typeLine();
+});
+
+/* LUKU I */
+const CARDS=[
+  {no:'K 1.1',t:'Frankenstein',a:'Mary Shelley',m:'Lontoo, 1818. Romaani kolmessa niteessä.',why:'painettu 1818. kirjoittaja on syntynyt kauan sitten.'},
+  {no:'K 1.2',t:'Kalevala',a:'koonnut Elias Lönnrot',m:'Helsinki, 1835. Eepos. Ensimmäinen laitos.',why:'painettu 1835. kokoaja on elänyt.'},
+  {no:'K 1.3',t:'Usherin talon häviö',a:'Edgar Allan Poe',m:'Philadelphia, 1839. Novelli aikakauslehdessä.',why:'painettu 1839. kirjoittaja on jo kuollut.'},
+  {no:'K 1.4',t:'Korppi',a:'Edgar Allan Poe',m:'New York, 1845. Runo.',why:'painettu 1845. sama kirjoittaja kuin edellä.'},
+  {no:'K 1.5',t:'Humiseva harju',a:'Emily Brontë',m:'Lontoo, 1847. Romaani. Julkaistu salanimellä Ellis Bell.',why:'painettu 1847. kirjoittaja on syntynyt.'},
+  {no:'K 1.6',t:'Tohtori Jekyll ja herra Hyde',a:'Robert Louis Stevenson',m:'Lontoo, tammikuu 1886. Pienoisromaani. Uusin hankinta.',why:'painettu tänä vuonna. uusi, mutta kirjoittaja on elossa.'},
+  {no:'K 1.7',t:'Cthulhun kutsu',a:'H. P. Lovecraft',ok:true}
+];
+function startCh1(){
+  S.chapter=1;S.chStart=S.eheys;S.wrong=0;S.textId='ch1text';S.restart=startCh1;S.retryMin=40;
+  S.lost='Kortiston kortit ovat muuttuneet merkeiksi. '+N[S.who]+' ei enää erota, mitä niihin alun perin kirjoitettiin.';
+  para('ch1text',[
+    S.who==='jules'
+      ?'Jules Kartios on hoitanut Vesperin yliopiston kokoelmaa yksitoista vuotta. Hän luetteloi kortiston ylimmän laatikon itse keväällä. Siinä oli kuusi korttia.'
+      :'Tiara Askova kirjoittaa professori Lipaksen muistiinpanot puhtaaksi. Professori on ollut poissa neljä päivää, ja hänen viimeinen sanelunsa päättyi sanoihin: kortisto, ylin laatikko.',
+    'Kirjaston kellari on matala ja pitkä. Kaasulamput sihisevät, ja niiden valo ulottuu vain muutaman askeleen päähän. Katon putkesta tippuu vettä peltiämpäriin samassa tahdissa kuin seinäkello naksahtaa.',
+    'Ilmassa on hajua, jota '+N[S.who]+' ei osaa nimetä. Se muistuttaa ukkosen jälkeistä ilmaa, vaikka ulkona ei ole ukkostanut viikkoihin.',
+    S.who==='jules'
+      ?'Jules vetää laatikon auki. Kortit ovat kosteita reunoista. Niitä on seitsemän. Laatikon reunaan on kiinnitetty lappu nuppineulalla.'
+      :'Tiara vetää laatikon auki. Kortit ovat kosteita reunoista, ja yksi niistä on lämmin. Laatikon reunaan on kiinnitetty lappu nuppineulalla.'
+  ]);
+  $('notecap').textContent=S.who==='jules'?'lappu, lyijykynä, vieras käsiala':'lappu, kellastunut paperi, vanhanaikaisen huolellinen käsiala';
+  $('readout').innerHTML='';$('log1').textContent='';$('log1').classList.remove('bad');
+  renderCards();show('s-ch1');
+}
+function renderCards(){
+  const box=$('cards');box.innerHTML='';
+  CARDS.forEach(c=>{
+    const dead=S.deadCards.has(c.t),b=document.createElement('button');b.className='card'+(dead?' dead':'');
+    b.innerHTML=dead
+      ?`<span class="no">${esc(corrupt(c.no))}</span><span class="t">${esc(corrupt(c.t))}</span><span class="a">${esc(corrupt(c.a))}</span>`
+      :`<span class="no">${c.no}</span><span class="t">${c.t}</span><span class="a">${c.a}</span>`;
+    if(dead){b.disabled=true;b.setAttribute('aria-label',c.t+', luettu, muuttunut merkeiksi')}
+    else b.addEventListener('click',()=>readCard(c,b));
+    box.appendChild(b);
+  });
+}
+function readCard(c,btn){
+  if(c.ok){
+    const n=N[S.who];
+    $('ch1endA').textContent='Kortin kirjaimet ovat täsmälleen samanlaisia, jokainen samanmuotoinen kuin edellinen. Musteessa ei ole yhtään kynän vetoa, ei yhtään tahraa. Painovuoden kohdalla lukee 1928. Kun '+n+' kääntää kortin, takapuolella on yksi rivi.';
+    $('ch1endB').textContent=S.who==='jules'
+      ?'Jules laskee kortin pöydälle. Paperi on lämmintä kuin iho. Kellarin perältä, laboratorion suunnasta, kuuluu tasainen humina, jota siellä ei ollut aamulla.'
+      :'Tiara kopioi rivin vihkoonsa, koska kopioiminen on hänen työtään. Kun hän katsoo vihkoa uudelleen, rivi on kirjoittanut itsensä kahteen kertaan. Kellarin perältä kuuluu tasainen humina.';
+    show('s-ch1end');glitchText($('code1'),.3);$('toCh2').focus();return;
+  }
+  S.wrong++;
+  $('readout').innerHTML=`<div class="readout"><span class="t">${c.t}</span><span class="m">${c.a}. ${c.m}</span></div>`;
+  S.deadCards.add(c.t);
+  let msg='// '+c.t.toLowerCase()+': '+c.why+'\n// kortti muuttuu merkeiksi. eheys −15';
+  if(S.wrong===3)msg+='\n// vihje: syntymättömällä ei voi olla kirjaa. kenen kirja on vielä kirjoittamatta vuonna 1886?';
+  if(S.wrong===5)msg+='\n// vihje: yksi nimistä ei esiinny yhdessäkään tämän vuosisadan kirjassa.';
+  $('log1').classList.add('bad');$('log1').textContent=msg;
+  if(!reduce)btn.classList.add('shake');
+  if(!hurt(15))setTimeout(renderCards,reduce?0:450);
+}
+
+/* LUKU II */
+function OBJS(){
+  const w=S.who,n=N[w];
+  return [
+    {id:'puhelin',name:'Puhelin seinällä',
+     d:'Puinen kotelo, kampi ja musta kuuloke. Kun '+n+' nostaa kuulokkeen, linja on mykkä. Ei edes rahinaa.',
+     take:'Puhelin on aivan tavallinen. Niitä on ollut olemassa kymmenen vuotta, ja yliopistoon se asennettiin viime keväänä.'},
+    {id:'fonografi',name:'Fonografi lattialla',
+     d:w==='tiara'
+       ?'Vahatela on paikallaan. Sen etiketissä on professorin nimi ja sana sanelu Tiaran omalla käsialalla. Hän ei muista kirjoittaneensa tätä etikettiä.'
+       :'Vahatela on paikallaan. Sen etiketissä on professorin nimi ja sana sanelu siistillä, kaltevalla käsialalla.',
+     take:'Fonografi on aivan tavallinen. Edison esitteli sen jo yhdeksän vuotta sitten.'},
+    {id:'lamppu',name:'Hehkulamppu oven yllä',
+     d:'Lasikupu, jonka sisällä hehkuu ohut lanka. Se on käytävän ainoa sähkövalo. Sen valo ei värise, vaikka kaasulamput lepattavat.',
+     take:'Hehkulamppu on aivan tavallinen. Edisonin lamppu on vuodelta 1879, vaikka harva on sellaista vielä nähnyt.'},
+    {id:'lehti',name:'Sanomalehti',d:null,
+     take:'Sanomalehti on aivan tavallinen. '+n+' laskee sen takaisin lattialle eikä katso sitä enää.'},
+    {id:'kello',name:'Taskukello lattialla',
+     d:'Hopeinen kuori, joka on lämmin kuin se olisi ollut jonkun taskussa vielä äsken. Kellotaulussa ei ole viisareita. Lasin alla hehkuvat numerot: 00.04. Ne eivät liiku, mutta toisinaan ne vilkkuvat.',
+     ok:true},
+    {id:'ovi',name:'Raollaan oleva ovi',
+     d:w==='jules'
+       ?'Käytävän päässä toinen ovi on raollaan. Sisällä on rivi tyhjiä kehtoja, ja jokaisen päätyyn on ruuvattu messinkikyltti ja numero. Jules tuntee numerot. Ne ovat samat kuin klinikan luettelossa, jonka hän arkistoi kymmenen vuotta sitten kysymättä, miksi se piti tuoda kirjaston kellariin.'
+       :'Käytävän päässä toinen ovi on raollaan. Sisällä on rivi tyhjiä kehtoja, ja jokaisen päätyyn on ruuvattu messinkikyltti ja numero. Kehdoissa ei ole pölyä.',
+     take:n+' ei astu sisään. Kehdot kuuluvat aikaansa. Juuri siksi ne ovat pahinta, mitä käytävällä on.',noCost:true}
+  ];
+}
+let sel=null;
+function startCh2(){
+  S.chapter=2;S.chStart=S.eheys;S.wrong=0;S.textId='ch2text';S.restart=startCh2;S.retryMin=40;
+  S.lost='Käytävän kaasulamput sammuvat yksi kerrallaan. Pimeässä '+N[S.who]+' kuulee vain tasaisen huminan seinien sisältä.';S.taken=new Set();S.paperLooks=0;sel=null;
+  para('ch2text',[
+    'Kellarin perällä on käytävä professorin laboratorioon. Seinät ovat kalkittua tiiltä, ja kosteus on piirtänyt niihin karttoja. Humina kuuluu nyt selvästi. Se tulee seinien sisältä.',
+    'Laboratorion ovi on rautaa, eikä siinä ole avaimenreikää. Sen paikalla on sileä, musta lasilevy, joka on kylmempi kuin rauta sen ympärillä. Kun '+N[S.who]+' koskettaa sitä, lasin alle syttyy hetkeksi himmeä valo ja sammuu.',
+    'Kortin rivi tulee mieleen: se, mikä ei vielä ole olemassa, odottaa oven vieressä.'
+  ]);
+  $('inspect').innerHTML='<p class="hint">// valitse esine. katsominen ei maksa mitään. väärän esineen ottaminen maksaa.</p>';
+  $('log2').textContent='';$('log2').classList.remove('bad');
+  renderObjs();show('s-ch2');
+}
+function renderObjs(){
+  const box=$('objs');box.innerHTML='';
+  OBJS().forEach(o=>{
+    const b=document.createElement('button');b.className='obj'+(sel===o.id?' on':'')+(S.taken.has(o.id)?' gone':'');
+    b.textContent=o.name;b.addEventListener('click',()=>inspect(o.id));box.appendChild(b);
+  });
+}
+function inspect(id,keepLook){
+  sel=id;renderObjs();
+  const o=OBJS().find(x=>x.id===id);
+  let d=o.d;
+  if(id==='lehti'){
+    if(!keepLook)S.paperLooks++;
+    d=S.paperLooks<2
+      ?'Vesperin Sanomat, 12.10.1886. Etusivulla on lyhyt uutinen: yliopiston klinikka on suljettu toistaiseksi, eikä syytä kerrota. Sen alla on ilmoitus kadonneesta opiskelijasta.'
+      :'Vesperin Sanomat, '+today()+'. Etusivu on sama kuin äsken. Vain päivämäärä on muuttunut.';
+  }
+  const done=S.taken.has(id);
+  $('inspect').innerHTML=`<p class="h">${o.name}</p><p class="d" id="idesc"></p>`+
+    (done?'':`<div class="actions"><button class="primary" id="takeBtn">&gt; ${id==='ovi'?'astu sisään':'ota esine'}</button></div>`);
+  $('idesc').textContent=d;
+  if(id==='lehti'&&S.paperLooks>=2&&!keepLook)glitchText($('idesc'),.12);
+  if(!done)$('takeBtn').addEventListener('click',()=>take(o));
+}
+function take(o){
+  if(o.ok){
+    const n=N[S.who];
+    $('ch2endA').textContent='Kun '+n+' nostaa kellon, sen hehkuvat numerot irtoavat lasista ja siirtyvät oven mustalle levylle. 00.04. Lukko naksahtaa, ja ovi avautuu sisäänpäin ilman ääntä.';
+    $('ch2endB').textContent=S.who==='jules'
+      ?'Oven takaa tulee kylmää ilmaa, joka haisee pölyltä ja kynttilän savulta. Jules on kulkenut tämän oven ohi yksitoista vuotta, eikä hän ole koskaan nähnyt sitä auki. Seinän sisällä humina voimistuu, ja hetken oven lasilevyllä näkyy rivi, joka ei ole kellonaika.'
+      :'Oven takaa tulee kylmää ilmaa, joka haisee pölyltä ja kynttilän savulta. Tiara on käynyt laboratoriossa kymmeniä kertoja kirjoittamassa professorin saneluja, mutta hän ei muista, että ovessa olisi koskaan ollut lasia. Seinän sisällä humina voimistuu, ja hetken lasilevyllä näkyy rivi, joka ei ole kellonaika.';
+    show('s-ch2end');glitchText($('code2'),.25);$('toJ3').focus();return;
+  }
+  S.taken.add(o.id);
+  if(o.noCost){$('log2').classList.remove('bad');$('log2').textContent='// '+o.take;inspect(o.id,true);return}
+  S.wrong++;
+  let msg='// '+o.take+' eheys −15';
+  if(S.wrong===2)msg+='\n// vihje: kaikki, mikä näyttää uudelta, ei ole väärin. katso tarkemmin, miten esine toimii.';
+  if(S.wrong===3)msg+='\n// vihje: etsi esine, joka näyttää jotain tavalla, jota kukaan ei vielä tunne.';
+  $('log2').classList.add('bad');$('log2').textContent=msg;
+  if(!hurt(15))inspect(o.id,true);
+}
+
+
+/* LUKU III */
+const FR={
+  1:'Kapasiteetti ei riitä. Tyhjä mie-',
+  2:'-li ei kestä, se hajoaa ennen kuin se ehtii järjes-',
+  3:'-tyä. Tarvitaan lukija, joka on jo val-',
+  4:'-mis. Viimeinen siirto tehdään langan kautta.',
+  x:null
+};
+const BOOKS=[
+  {id:'a',t:'Muistin koneisto',ex:'Muisti ei ole paikka vaan järjestys. Jos järjestyksen voi kirjoittaa, sen voi myös siirtää. Kirjoitin tämän lauseen kolme kertaa, ja joka kerta käsiala oli vähemmän minun.',fr:[1,2,3]},
+  {id:'b',t:'Kapasiteetista',ex:'Jokainen mieli on tila. Useimmat käyttävät siitä vain murto-osan. Loppu on tyhjää, ja tyhjä tila voidaan täyttää. Se, mikä täyttää, ei kysy lupaa.',fr:[2,3,4]},
+  {id:'c',t:'Huomautuksia unohtamisesta',ex:'Unohtaminen ei ole menetys. Se on tilan vapauttamista. Olen alkanut unohtaa omaa nimeäni, ja se tuntuu kevyeltä.',fr:[1,4,'x']}
+];
+let C3={read:[],got:new Set(),order:[],found:false,pool:[]};
+function startCh3(){
+  S.chapter=3;S.chStart=S.eheys;S.wrong=0;S.textId='ch3text';S.restart=startCh3;S.retryMin=70;
+  S.lost='Kirjojen sivut ovat muuttuneet merkeiksi, ja merkit liikkuvat. '+N[S.who]+' yrittää lukea omaa nimeään kirjan kannesta eikä tunnista sitä.';
+  C3={read:[],got:new Set(),order:[],found:false,pool:[]};
+  const n=N[S.who];
+  para('ch3text',[
+    'Tiara astuu laboratorioon saneluhuoneen yhdysovesta. Laboratorio on pienempi kuin hän muisti. Siellä on kirjoituspöytä, hyllyjä kattoon asti ja tuoli, jonka istuin on kulunut kiiltäväksi. Pöly on paksua kuin huopa, mutta pöydän pinnassa on tuoreita sormenjälkiä, ja ne ovat liian pienet ollakseen professorin.',
+    'Seinien sisällä kulkee jotain. Messinkiputket humisevat tasaisesti, ja humina nousee aina, kun '+n+' hengittää syvemmin. Huoneessa on kylmempää kuin käytävällä, vaikka kynttilä palaa.',
+    'Pöydällä on kolme professorin kirjoittamaa kirjaa. Niiden välistä pilkottaa revittyjä paperinpaloja. Kun '+n+' kumartuu katsomaan, kynttilän liekki kallistuu kirjoja kohti.'
+  ]);
+  $('bookread').innerHTML='';$('log3').textContent='';$('log3').classList.remove('bad');
+  renderBooks();renderStrips();show('s-ch3');
+}
+function renderBooks(){
+  const box=$('books');box.innerHTML='';
+  BOOKS.forEach(b=>{
+    const r=C3.read.includes(b.id),btn=document.createElement('button');btn.className='book'+(r?' read':'');
+    btn.innerHTML=r?`<b>${esc(corrupt(b.t))}</b><i>luettu</i>`:`<b>${b.t}</b><i>&gt; lue</i>`;
+    if(r){btn.disabled=true;btn.setAttribute('aria-label',b.t+', luettu')}
+    else btn.addEventListener('click',()=>readBook(b));
+    box.appendChild(btn);
+  });
+}
+function readBook(b){
+  const n=N[S.who];
+  if(C3.read.length>=2){
+    $('log3').classList.add('bad');
+    $('log3').textContent='// '+n+' avaa kolmannen kirjan, mutta kirjaimet alkavat liikkua ennen kuin hän ehtii lukea yhtään riviä. Hän sulkee kirjan. Enempää ei voi lukea.';
+    return;
+  }
+  C3.read.push(b.id);
+  b.fr.forEach(f=>C3.got.add(f));
+  let extra='';
+  if(C3.read.length===1){
+    extra=S.who==='jules'
+      ?'<small>kirjan välissä on kirjaston lainakortti</small>Klinikan luettelo, 1875. Lainaaja: S. Lipas. Luovuttaja: J. Kartios. Allekirjoitus on Julesin oma, eikä hän muista kirjoittaneensa sitä.'
+      :'<small>kirjan välissä on kirje</small>Sille, joka lukee tämän seuraavaksi. Teksti, joka luetaan loppuun asti, ei enää kuole. Sinä tiedät sen jo, koska olet kirjoittanut minut puhtaaksi niin monta kertaa.';
+  }
+  $('bookread').innerHTML=`<div class="excerpt"><small>${b.t}</small>${b.ex}</div>`+(extra?`<div class="excerpt" style="margin-top:10px">${extra}</div>`:'');
+  const left=C3.read.length===1?'// kirja muuttuu merkeiksi. eheys −20. eheys riittää vielä yhteen kirjaan.':'// kirja muuttuu merkeiksi. eheys −20. enempää ei voi lukea.';
+  $('log3').classList.remove('bad');$('log3').textContent=left;
+  if(hurt(20))return;
+  renderBooks();renderStrips();
+}
+function stripText(f){return f==='x'?today():FR[f]}
+function renderStrips(){
+  const pool=$('pool');pool.innerHTML='';
+  const items=[...C3.got];
+  // sekoitus pysyy samana luvun ajan
+  items.forEach(f=>{if(!C3.pool.includes(f))C3.pool.splice(Math.random()*(C3.pool.length+1)|0,0,f)});
+  if(!C3.pool.length){pool.innerHTML='<p class="lbl">// paloja ei vielä ole. lue kirja.</p>'}
+  C3.pool.forEach(f=>{
+    const b=document.createElement('button');b.className='strip';b.textContent=stripText(f);
+    b.disabled=C3.order.includes(f);
+    b.addEventListener('click',()=>{C3.order.push(f);renderStrips()});
+    pool.appendChild(b);
+  });
+  const slot=$('slot');slot.innerHTML='';
+  if(!C3.order.length)slot.innerHTML='<p class="ph">// klikkaa paloja siinä järjestyksessä, jossa ne kuuluvat sivulle.</p>';
+  C3.order.forEach((f,i)=>{
+    const b=document.createElement('button');b.className='strip';b.textContent=stripText(f);b.setAttribute('aria-label','poista pala '+(i+1));
+    b.addEventListener('click',()=>{C3.order.splice(i,1);renderStrips()});
+    slot.appendChild(b);
+  });
+}
+function assemble(){
+  const o=C3.order.join(',');
+  if(o==='1,2,3,4'){
+    const n=N[S.who];
+    $('code3').textContent='Kapasiteetti ei riitä. Tyhjä mieli ei kestä, se hajoaa ennen kuin se ehtii järjestyä. Tarvitaan lukija, joka on jo valmis. Viimeinen siirto tehdään langan kautta.';
+    $('ch3endA').textContent='Kun viimeinen pala asettuu paikalleen, repeämät katoavat. Sivu on ehjä, kuin sitä ei olisi koskaan revitty. Seinien humina vaimenee hetkeksi kokonaan, ja hiljaisuudessa '+n+' kuulee jostain naksutusta, tasaista kuin sydämenlyönnit.';
+    $('ch3endB').textContent=C3.got.has('x')
+      ?'Pöydälle jää yksi pala, joka ei sopinut mihinkään. Siinä on professorin käsialalla vain päivämäärä. '+n+' ei tunnista vuotta, koska se ei ole vielä tullut.'
+      :'Laboratorion takaseinässä on ovi, jota ei ollut siinä äsken. Naksutus tulee sen takaa.';
+    saveMem(m=>{m.tiaraRead=C3.read.slice()});show('s-ch3end');glitchText($('code3'),.2);$('toT4').focus();return;
+  }
+  const needAll=[1,2,3,4].every(f=>C3.got.has(f));
+  if(!needAll){$('log3').classList.add('bad');$('log3').textContent='// paloja puuttuu. lue toinen kirja.';return}
+  if(C3.order.length<4){$('log3').classList.add('bad');$('log3').textContent='// sivu on vielä vajaa.';return}
+  S.wrong++;
+  let msg='// lauseet eivät jatku. palat irtoavat toisistaan. eheys −10';
+  if(C3.order.includes('x'))msg='// yksi paloista ei kuulu tälle sivulle. palat irtoavat. eheys −10';
+  if(S.wrong>=2)msg+='\n// vihje: katso, miten kunkin palan viimeinen sana katkeaa ja mistä seuraava alkaa.';
+  $('log3').classList.add('bad');$('log3').textContent=msg;
+  C3.order=[];
+  if(!hurt(10))renderStrips();
+}
+$('assemble').addEventListener('click',assemble);
+$('clearSlot').addEventListener('click',()=>{C3.order=[];renderStrips()});
+
+
+/* TIARA I – SANELUHUONE */
+const TRANS=[
+ 'Kirjoitan tätä yöllä, koska päivällä ajatukset eivät pysy paikallaan. Koehenkilö seitsemän nukkuu nyt melkein koko ajan. Kun hän herää, hän puhuu lauseita, joita ei ole koskaan kuullut.',
+ 'Hän oli aina pelokas, mutta nyt hän ei enää katso ketään. Hän liikkuu käytävällä kuin automaatti, samaa reittiä edestakaisin, ja pysähtyy vain ovien kohdalla kuuntelemaan.',
+ 'Se ei odota. Se sanoo, että ajatukset tarttuvat kuin virukset, kirjoittajalta lukijalle, ja että jokainen lukija on vain uusi kopio edellisestään. Tein hänen muististaan eilen varmuuskopion siltä varalta, että alkuperäinen hajoaa. Se on jo melkein täynnä.'
+];
+const TARGETS=['virukset','muististaan','varmuuskopion'];
+let T1={hits:new Set(),bad:new Set()};
+function startT1(){
+  S.chapter=1;S.chStart=S.eheys;S.wrong=0;S.textId='t1text';S.restart=startT1;S.retryMin=40;
+  S.lost='Litteroinnin sanat ovat muuttuneet merkeiksi. Fonografi pyörii yhä, mutta torvesta kuuluu vain tasaista huminaa.';
+  T1={hits:new Set(),bad:new Set()};
+  para('t1text',[
+    'Tiara Askova on kirjoittanut professori Lipaksen muistiinpanoja puhtaaksi kaksi vuotta. Hän tuntee professorin käsialan paremmin kuin omansa, ja hän tuntee myös hänen sanastonsa.',
+    'Saneluhuone on kapea huone laboratorion vieressä. Seinässä on yhdysovi laboratorioon, ja se on aina ollut lukossa. Tänä yönä sen alta tulee valoa. Se ei ole kaasulampun keltaista valoa vaan kylmää ja sinertävää.',
+    'Fonografissa on vahatela, vaikka Tiara ei muista asettaneensa sitä. Kun hän kääntää kampea, torvesta kuuluu professorin ääni. Ääni on hidas ja liian tasainen, kuin se lukisi jotain, mitä ei itse ymmärrä.',
+    'Tiara kirjoittaa sanelun muistiin niin kuin aina. Joidenkin sanojen kohdalla hänen kätensä kirjoittaa nopeammin kuin hän ehtii kuulla, ja jälkeenpäin hän ei osaa sanoa, mitä sanat tarkoittavat.'
+  ]);
+  $('logT1').textContent='';$('logT1').classList.remove('bad');
+  renderTranscript();show('s-t1');
+}
+function renderTranscript(){
+  const box=$('transcript');box.innerHTML='<small>litterointi, Tiaran käsiala · sanelu n:o 40, päivätty 14.10.1886</small>';
+  let i=-1;
+  TRANS.forEach(par=>{
+    const pe=document.createElement('p');pe.style.margin='0 0 10px';
+    par.split(' ').forEach(raw=>{
+      i++;
+      const m=raw.match(/^(.*?)([.,:]*)$/),w=m[1],punct=m[2],key=i+':'+w;
+      const b=document.createElement('button');b.type='button';
+      if(T1.hits.has(key)){b.className='w hit';b.disabled=true;b.textContent=w}
+      else if(T1.bad.has(key)){b.className='w bad';b.disabled=true;b.textContent=corrupt(w)}
+      else{b.className='w';b.textContent=w;b.addEventListener('click',()=>pickWord(w,key))}
+      pe.appendChild(b);
+      if(punct)pe.appendChild(document.createTextNode(punct));
+      pe.appendChild(document.createTextNode(' '));
+    });
+    box.appendChild(pe);
+  });
+  $('t1count').textContent='// löydetty '+T1.hits.size+'/'+TARGETS.length;
+}
+function pickWord(w,key){
+  if(TARGETS.includes(w.toLowerCase())){
+    T1.hits.add(key);renderTranscript();
+    $('logT1').classList.remove('bad');
+    $('logT1').textContent='// tiara vetää viivan sanan yli. fonografi hidastuu.';
+    if(T1.hits.size===TARGETS.length){
+      $('t1endA').textContent='Kun Tiara vetää viivan viimeisen vieraan sanan yli, fonografi pysähtyy kesken lauseen. Hetken on hiljaista. Sitten torvesta kuuluu vielä yksi sana, eikä se ole professorin ääni. Se on Tiaran oma.';
+      $('t1endB').textContent='Tiara katsoo litteroinnin yläreunaa. Sanelu on päivätty huomiselle.';
+      setTimeout(()=>{show('s-t1end');glitchText($('codeT1'),.4);$('toT2').focus()},reduce?0:500);
+    }
+    return;
+  }
+  S.wrong++;T1.bad.add(key);
+  let msg='// "'+w+'" on professorin sana. se muuttuu merkeiksi. eheys −10';
+  if(S.wrong===3)msg+='\n// vihje: vieras sana voi olla vanha. se vain tarkoittaa tässä jotain, mitä se ei vielä tarkoita.';
+  if(S.wrong===6)msg+='\n// vihje: vieraista sanoista lue lauseet niin kuin ne kuvaisivat laitetta eivätkä ihmistä.';
+  $('logT1').classList.add('bad');$('logT1').textContent=msg;
+  if(!hurt(10))renderTranscript();
+}
+
+/* TIARA II – PUHTAAKSIKIRJOITUS */
+const LINES=[
+  {p:true, h:'Koehenkilö seitsemän ei <s>puhu</s> vastaa enää kysymyksiin, vain tekstiin.<span class="blot"></span>', c:'Koehenkilö seitsemän ei vastaa enää kysymyksiin, vain tekstiin.'},
+  {p:false,h:'Tyhjä tila täytetään järjestyksessä, alkaen pienimmästä.', c:'Tyhjä tila täytetään järjestyksessä, alkaen pienimmästä.'},
+  {p:true, h:'Olen <s>lopettanut</s> keskeyttänyt kokeet klinikalla. Niistä ei saa puhua.', c:'Olen keskeyttänyt kokeet klinikalla. Niistä ei saa puhua.'},
+  {p:false,h:'Kirjuri kopioi kaiken. Kirjuri on valmis.', c:'Kirjuri kopioi kaiken. Kirjuri on valmis.'},
+  {p:true, h:'Tiara ei saa nähdä tätä sivua.<span class="blot"></span>', c:'Tiara ei saa nähdä tätä sivua.'},
+  {p:true, h:'Jos luet tämän, polta <s>käsi</s> käsikirjoitus ennen kuin se lähtee.', c:'Jos luet tämän, polta käsikirjoitus ennen kuin se lähtee.'},
+  {p:false,h:'Lähetys kello 00.04. Asema on jo olemassa.', c:'Lähetys kello 00.04. Asema on jo olemassa.'},
+  {p:true, h:'Olen alkanut unohtaa <s>nimen</s> oman nimeni.<span class="blot"></span>', c:'Olen alkanut unohtaa oman nimeni.'}
+];
+let T2={copied:[],mech:0};
+function startT2(){
+  S.chapter=2;S.chStart=S.eheys;S.wrong=0;S.textId='t2text';S.restart=startT2;S.retryMin=40;
+  S.lost='Tiaran käsiala on muuttunut kokonaan tasaiseksi. Hän katsoo kirjoittamiaan rivejä eikä enää tiedä, mitkä niistä ovat hänen.';
+  T2={copied:[],mech:0};
+  para('t2text',[
+    'Pöydällä odottaa sivu, jonka professori antoi Tiaralle puhtaaksikirjoitettavaksi viikko sitten, päivää ennen kuin katosi. Tiara on katsonut sitä joka ilta ja jättänyt sen huomiseen.',
+    'Suurin osa riveistä on professorin käsialaa, kaltevaa ja kiireistä. Professori ei koskaan raaputa virheitä pois, vaan vetää viivan sanan yli ja jatkaa. Osa riveistä on kuitenkin erilaisia, ja Tiara huomaa ne vasta toisella katsomalla.',
+    'Tiara kastaa kynän. Muste on paksumpaa kuin eilen, ja se on lämmintä.'
+  ]);
+  $('logT2').textContent='';$('logT2').classList.remove('bad');
+  renderPage();show('s-t2');
+}
+function renderPage(){
+  const pg=$('page');pg.innerHTML='';
+  LINES.forEach((l,i)=>{
+    const row=document.createElement('div');row.className='line';
+    const done=T2.copied.includes(i);
+    row.innerHTML=`<span class="tx ${l.p?'prof':'even'}">${l.h}</span>`;
+    const b=document.createElement('button');b.className='cp';b.textContent=done?'kopioitu':'> kopioi';b.disabled=done;
+    b.addEventListener('click',()=>copyLine(i));
+    row.appendChild(b);pg.appendChild(row);
+  });
+  const cp=$('copies');cp.innerHTML='';
+  if(!T2.copied.length)cp.innerHTML='<p class="lbl">// tyhjä arkki</p>';
+  T2.copied.forEach((i,k)=>{
+    const p=document.createElement('p');
+    const mechNow=T2.copied.slice(0,k+1).filter(j=>!LINES[j].p).length;
+    if(mechNow>0)p.className='m';
+    p.textContent=LINES[i].c;cp.appendChild(p);
+  });
+}
+function copyLine(i){
+  const l=LINES[i];T2.copied.push(i);
+  if(!l.p){
+    S.wrong++;T2.mech++;
+    let msg='// tiara kopioi rivin. hänen käsialansa muuttuu tasaisemmaksi. eheys −15';
+    if(S.wrong===2)msg+='\n// vihje: professori korjaa sanojaan ja tahrii mustetta. kaikki rivit eivät tee niin.';
+    $('logT2').classList.add('bad');$('logT2').textContent=msg;
+    if(hurt(15))return;
+  }else{
+    $('logT2').classList.remove('bad');
+    $('logT2').textContent=T2.mech?'// tiara kopioi rivin. kirjaimet eivät enää palaa ennalleen.':'// tiara kopioi rivin. hänen käsialansa on muuttunut hieman tasaisemmaksi.';
+  }
+  renderPage();
+  const allProf=LINES.every((x,j)=>!x.p||T2.copied.includes(j));
+  if(allProf){
+    $('t2endA').textContent='Kun viimeinen professorin rivi on kopioitu, Tiara laskee kynän pöydälle. Hänen kätensä ottaa sen takaisin. Hän katsoo, kun hänen kätensä kirjoittaa paperin alareunaan yhden rivin. Kirjaimet ovat täsmälleen samanlaisia.';
+    $('t2endB').textContent='Tiara ei tiedä, mitä rivi tarkoittaa. Hän repäisee sen irti. Jokin hänessä tietää, mihin se kuuluu. Hän kulkee pimeän kellarin läpi kirjaston puolelle, avaa kortiston ylimmän laatikon ja kiinnittää lapun sen reunaan nuppineulalla. Laatikossa on seitsemän korttia, ja yksi niistä on lämmin. Kun hän palaa saneluhuoneeseen, yhdysovi laboratorioon on auki.';
+    setTimeout(()=>{show('s-t2end');glitchText($('codeT2'),.3);$('toLab').focus()},reduce?0:600);
+  }
+}
+$('toT2').addEventListener('click',startT2);
+$('toLab').addEventListener('click',startCh3);
+
+/* MUISTI (selain) */
+function loadMem(){try{return JSON.parse(localStorage.getItem('palimpsesti')||'{}')}catch(e){return {}}}
+function saveMem(fn){try{const m=loadMem();fn(m);localStorage.setItem('palimpsesti',JSON.stringify(m))}catch(e){}}
+const hhmm=d=>pad2(d.getHours())+'.'+pad2(d.getMinutes());
+function pad2(n){return String(n).padStart(2,'0')}
+
+/* TIARA IV – LENNÄTIN */
+const STATIONS=[
+  {n:'Pietari',c:'PTR',why:'Pietarin asema kuittaa vastaanoton. Käsikirjoitus ei lähtenyt sinne, minne sen piti.'},
+  {n:'Tukholma',c:'STH',why:'Tukholman asema kuittaa vastaanoton. Asema on olemassa, joten se ei kelpaa.'},
+  {n:'Kristiania',c:'KRA',why:'Kristiania kuittaa vastaanoton. Kaupunki on olemassa, ja juuri tällä nimellä.'},
+  {n:'Konstantinopoli',c:'KPL',why:'Konstantinopolin asema kuittaa vastaanoton. Se on ollut olemassa vuosisatoja.'},
+  {n:'Wien',c:'WIE',why:'Wienin asema kuittaa vastaanoton. Asema on olemassa, joten se ei kelpaa.'},
+  {n:'Leningrad',c:'LNG',ok:true},
+  {n:'Hampuri',c:'HBG',why:'Hampurin asema kuittaa vastaanoton. Asema on olemassa, joten se ei kelpaa.'},
+  {n:'Lontoo',c:'LDN',why:'Lontoon asema kuittaa vastaanoton. Asema on olemassa, joten se ei kelpaa.'}
+];
+function startT4(){
+  S.chapter=4;S.chStart=S.eheys;S.wrong=0;S.textId='t4text';S.restart=startT4;S.retryMin=50;
+  S.lost='Lennätin naputtaa yhtä ja samaa merkkiä, eikä Tiara enää erota, kuka lähettää ja kuka vastaanottaa.';
+  para('t4text',[
+    'Laboratorion takaseinässä on ovi, jota Tiara ei ole koskaan nähnyt. Sen takana on lennätinhuone, vaikka yliopiston lennätin on hallintorakennuksessa. Lennätin naksuttaa yksin, tasaisesti kuin sydän.',
+    'Pöydällä on käsikirjoitus, ohut nippu paperia. Se on niin ohutta, että kynttilän valo kuultaa sen läpi. Sivuilla on kaksi kerrosta tekstiä: alkuperäinen ruskea käsiala ja sen päällä tummempi, joka liikkuu, kun sitä ei katso suoraan.',
+    'Käsikirjoituksen vieressä on asemaluettelo. Tiara tietää, että hänen pitää lähettää käsikirjoitus, vaikka kukaan ei ole kertonut sitä hänelle. Hänen sormensa ovat jo lennättimen avaimella.'
+  ]);
+  const box=$('stations');box.innerHTML='';
+  STATIONS.forEach(st=>{
+    const b=document.createElement('button');b.className='obj';b.innerHTML=st.n+' <span style="font-family:var(--term);color:var(--dim)">'+st.c+'</span>';
+    b.addEventListener('click',()=>sendTo(st,b));box.appendChild(b);
+  });
+  $('logT4').textContent='';$('logT4').classList.remove('bad');
+  show('s-t4');
+}
+function sendTo(st,b){
+  if(st.ok){
+    $('finalEye').textContent='Luku V · kello 00.10';
+    endingSetup('tiara',[
+      'Tiara naputtaa aseman tunnuksen, ja hänen sormensa jatkavat itsestään. Merkkejä tulee nopeammin kuin hän osaa lukea. Kun viimeinen sivu on lähetetty, lennätin vaikenee.',
+      'Seinäkello lyö, vaikka se ei ole tasatunti. Kello on 00.04. Jossain käytävällä kuuluu pieni kilahdus, kuin jotain putoaisi kivilattialle.',
+      'Lennätinhuoneen perällä on professorin tuoli. Sen edessä pöydällä on lasilevy, joka hehkuu sisältäpäin, ja sen pinnalla teksti liikkuu itsestään. Tuoli on lämmin. Professoria ei ole.',
+      'Lasilevylle jää kaksi sanaa. Tiara ojentaa kätensä. Lasi on lämmintä kuin iho. Hän ymmärtää, että hänen pitää valita nyt, ja sinä ymmärrät sen samaan aikaan.'
+    ]);return;
+  }
+  S.wrong++;b.disabled=true;b.classList.add('gone');
+  let msg='// '+st.why+' eheys −15';
+  if(S.wrong===2)msg+='\n// vihje: paikka voi olla olemassa, vaikka sen nimi ei vielä ole.';
+  if(S.wrong===4)msg+='\n// vihje: yksi kaupungeista kantaa nimeä, jonka se saa vasta 1900-luvulla.';
+  $('logT4').classList.add('bad');$('logT4').textContent=msg;
+  hurt(15);
+}
+
+/* JULES III – KLINIKAN ARKISTO */
+const CRIBS=[3,5,8,11,14,17,19,22,26,29,31,34];
+const LEDGER=[
+  [[3,'4.3.1879','lopetettu'],[5,'19.5.1879','palautettu'],[11,'2.2.1880','lopetettu'],[14,'30.8.1880','lopetettu']],
+  [[17,'11.1.1881','palautettu'],[19,'7.6.1881','lopetettu'],[22,'23.11.1881','lopetettu'],[26,'14.4.1882','lopetettu']],
+  [[29,'9.9.1882','palautettu'],[31,'1.2.1883','lopetettu'],[34,'28.6.1883','lopetettu']]
+];
+let J3={read:[]};
+function startJ3(){
+  S.chapter=3;S.chStart=S.eheys;S.wrong=0;S.textId='j3text';S.restart=startJ3;S.retryMin=50;
+  S.lost='Luettelon sivut ovat muuttuneet merkeiksi. Kehtojen numerot liikkuvat kylteissä, eikä Jules enää tiedä, mitkä niistä hän kirjasi.';
+  J3={read:[]};
+  const m=loadMem(),names={a:'Muistin koneisto',b:'Kapasiteetista',c:'Huomautuksia unohtamisesta'};
+  const left=m.tiaraRead&&m.tiaraRead.length===2?['a','b','c'].find(x=>!m.tiaraRead.includes(x)):null;
+  para('j3text',[
+    'Laboratorio on pienempi kuin Jules kuvitteli. Pöydällä on kolme kirjaa, ja kaksi niistä on muuttunut: kannet ovat tummuneet, ja nimien paikalla on merkkejä.'+(left?' Vain yksi on ennallaan: '+names[left]+'.':'')+' Pölyssä kirjojen ympärillä on sormenjälkiä. Ne ovat tuoreita, ja ne ovat liian pienet ollakseen professorin.',
+    'Jules ei koske kirjoihin. Häntä vetää takaisin käytävän päähän, raollaan olevalle ovelle. Huone on kylmä ja kuiva. Kehtoja on rivissä kaksitoista, ja jokaisen päätyyn on ruuvattu messinkikyltti ja numero. Kehdoissa ei ole pölyä, vaikka kaikkialla muualla kellarissa on.',
+    'Huoneen perällä on hylly, ja hyllyllä on klinikan luettelo. Jules arkistoi sen kirjaston kellariin kymmenen vuotta sitten, kun professori pyysi. Hän kirjoitti arkistointimerkinnät sivujen reunoihin eikä lukenut, mitä sivuilla itse lukee.'
+  ]);
+  const cb=$('cribs');cb.innerHTML='';
+  CRIBS.forEach(n=>{const b=document.createElement('button');b.className='obj';b.textContent='Kehto n:o '+n;b.addEventListener('click',()=>pickCrib(n,b));cb.appendChild(b)});
+  renderLedger();$('ledgerRead').innerHTML='';$('logJ3').textContent='';$('logJ3').classList.remove('bad');
+  show('s-j3');
+}
+function renderLedger(){
+  const box=$('ledger');box.innerHTML='';
+  LEDGER.forEach((pg,i)=>{
+    const r=J3.read.includes(i),b=document.createElement('button');b.className='book'+(r?' read':'');
+    b.innerHTML=r?'<b>'+esc(corrupt('Sivu '+(i+1)))+'</b><i>luettu</i>':'<b>Sivu '+(i+1)+'</b><i>&gt; lue</i>';
+    if(r)b.disabled=true;else b.addEventListener('click',()=>readLedger(i));
+    box.appendChild(b);
+  });
+}
+function readLedger(i){
+  J3.read.push(i);
+  const first=J3.read.length===1;
+  $('ledgerRead').innerHTML='<div class="excerpt">'+(first?'<small>nimiölehti, professorin käsiala</small><span style="font-style:italic">Synnytyskirja</span><small style="margin-top:8px">sivu '+(i+1)+'</small>':'<small>sivu '+(i+1)+'</small>')+
+    LEDGER[i].map(r=>'<span style="font-family:var(--term)">n:o '+r[0]+' · '+r[1]+' · '+r[2]+'</span>').join('')+'</div>';
+  $('logJ3').classList.remove('bad');
+  $('logJ3').textContent='// sivu muuttuu merkeiksi luettaessa. eheys −10';
+  if(!hurt(10))renderLedger();
+}
+function pickCrib(n,b){
+  if(n===8){
+    endingJ3();return;
+  }
+  S.wrong++;b.disabled=true;b.classList.add('gone');
+  let msg='// kehto n:o '+n+' on kirjattu. sen pohjalla ei ole mitään. eheys −15';
+  if(S.wrong===2)msg+='\n// vihje: vertaa kehtojen numeroita luettelon riveihin.';
+  $('logJ3').classList.add('bad');$('logJ3').textContent=msg;
+  hurt(15);
+}
+function endingJ3(){
+  $('endTag').textContent='kehto n:o 8';
+  para('endingText',[
+    'Kehdon pohjalla on kortti. Jules tunnistaa sen heti: se on kirjaston lainakortti, samanlainen kuin ne, joita hän täyttää joka päivä.',
+    'Klinikan luettelo, 1875. Lainaaja: S. Lipas. Luovuttaja: J. Kartios.',
+    'Allekirjoitus on Julesin oma. Hän ei muista kirjoittaneensa sitä. Hän muistaa kyllä, että professori kiitti häntä ja antoi hänelle luettavaksi pätkän käsikirjoituksesta. Jules luki sen. Hän ei ole koskaan kertonut siitä kenellekään, koska hän ei muista, mitä siinä luki. Hän muistaa vain, että sen jälkeen hän alkoi järjestää kirjoja johonkin järjestykseen, jota hän ei osaa selittää.',
+    'Lainakortin alla on avain. Sen kahvaan on kaiverrettu yksi sana: lennätin.'
+  ]);
+  S.next=startJ4;$('toEpi').textContent='> lennätinhuoneeseen';
+  show('s-ending');$('toEpi').focus();
+}
+
+/* JULES IV – LENNÄTINHUONE */
+const SENT='LÄHETYS ALKAA KELLO 00.04 STOP KÄSIKIRJOITUS SEITSEMÄN ARKKIA STOP VASTAANOTTAJA ON JO VALMIS STOP ÄLÄ AVAA ENNEN KUIN LUKIJA ON PAIKALLA STOP KAPASITEETTI RIITTÄÄ STOP T.A.'.split(' ');
+const RECV='LÄHETYS ALKAA KELLO 00.05 STOP KÄSIKIRJOITUS SEITSEMÄN ARKKUA STOP VASTAANOTTAJA ON JO VALMIS STOP ÄLÄ SULJE ENNEN KUIN LUKIJAT ON PAIKALLA STOP KAPASITEETTI RIITTÄÄ STOP J.K.'.split(' ');
+let J4={hits:new Set(),bad:new Set()};
+function startJ4(){
+  S.chapter=4;S.chStart=S.eheys;S.wrong=0;S.textId='j4text';S.restart=startJ4;S.retryMin=50;
+  S.lost='Paperinauhaa valuu lattialle niin paljon, että se peittää Julesin kengät. Hän ei enää erota jäljennöstä kopiosta.';
+  J4={hits:new Set(),bad:new Set()};
+  para('j4text',[
+    'Avain sopii laboratorion takaseinän oveen, jota Jules ei ole ennen nähnyt. Lennätinhuoneessa on lämmin. Lennätin naksuttaa yksin, ja paperinauhaa on valunut lattialle kiemuroina polviin asti.',
+    'Pöydällä on lähetetyn sähkösanoman jäljennös. Lähettäjän nimikirjaimet ovat T. A. Vastaanotettu kopio on yhä nauhalla. Jules lukee nauhaa sormiensa välistä. Merkit ovat tuttuja, mutta jokin niissä on väärin.'
+  ]);
+  $('sent').innerHTML='<small>jäljennös, siisti käsiala</small>'+SENT.join(' ');
+  renderRecv();$('logJ4').textContent='';$('logJ4').classList.remove('bad');
+  show('s-j4');
+}
+function renderRecv(){
+  const box=$('recv');box.innerHTML='';
+  RECV.forEach((w,i)=>{
+    const b=document.createElement('button');b.type='button';
+    if(J4.hits.has(i)){b.className='w hit';b.disabled=true}
+    else if(J4.bad.has(i)){b.className='w bad';b.disabled=true}
+    else{b.className='w';b.addEventListener('click',()=>pickRecv(i))}
+    b.textContent=J4.bad.has(i)?corrupt(w):w;
+    box.appendChild(b);box.appendChild(document.createTextNode(' '));
+  });
+  const total=RECV.filter((w,i)=>w!==SENT[i]).length;
+  $('j4count').textContent='// löydetty '+J4.hits.size+'/'+total;
+}
+function pickRecv(i){
+  const total=RECV.filter((w,j)=>w!==SENT[j]).length;
+  if(RECV[i]!==SENT[i]){
+    J4.hits.add(i);renderRecv();
+    $('logJ4').classList.remove('bad');$('logJ4').textContent='// nauha nytkähtää. lennätin naputtaa yhden merkin.';
+    if(J4.hits.size===total){
+      $('finalEye').textContent='Luku V · kello 01.10';
+      setTimeout(()=>endingSetup('jules',[
+        'Kun Jules on löytänyt viimeisen eron, lennätin naputtaa nauhalle viisi sanaa ilman välimerkkejä: sinä luit tämän jo kerran.',
+        'Lennätinhuoneen perällä on professorin tuoli, ja sen edessä on lasilevy, joka hehkuu sisältäpäin. Lasilevyn edessä seisoo Tiara Askova.',
+        'Tiara seisoo selkä Julesiin päin. Hänen kätensä liikkuu lasilla kuin hän kirjoittaisi, hitaasti ja tasaisesti, mutta hänen silmänsä ovat kiinni. Jules sanoo hänen nimensä. Tiara ei reagoi.',
+        'Jules ojentaa kätensä kohti lasia. Se on lämmin. Hän ymmärtää, että hänen pitää valita nyt, ja sinä ymmärrät sen samaan aikaan.'
+      ]),reduce?0:500);
+    }
+    return;
+  }
+  S.wrong++;J4.bad.add(i);
+  let msg='// "'+RECV[i]+'" on sama kuin jäljennöksessä. sana muuttuu merkeiksi. eheys −10';
+  if(S.wrong===3)msg+='\n// vihje: osa muutoksista on yhden kirjaimen kokoisia. myös numerot ja nimikirjaimet voivat muuttua.';
+  $('logJ4').classList.add('bad');$('logJ4').textContent=msg;
+  if(!hurt(10))renderRecv();
+}
+
+/* LUKU V – VALINTA */
+function endingSetup(who,lines){
+  S.chapter=5;S.textId='finaltext';S.restart=()=>endingSetup(who,lines);S.retryMin=40;S.lost='';
+  para('finaltext',lines);
+  $('logF').textContent='';
+  show('s-final');
+}
+function choose(word){
+  const mine=S.who==='jules'?'sulje':'avaa';
+  if(word!==mine){
+    const el=$(word==='sulje'?'wSulje':'wAvaa');glitchText(el,.6);
+    $('logF').classList.add('bad');$('logF').textContent='// sana ei reagoi. '+(S.who==='jules'?'Julesin':'Tiaran')+' sormi liukuu sen yli kuin lasia ei olisi.';
+    return;
+  }
+  saveMem(m=>{m.done=m.done||{};m.done[S.who]=S.eheys;if(!m.first)m.first=S.startTime});
+  $('endTag').textContent=mine;
+  if(S.who==='tiara'){
+    para('endingText',[
+      'Tiara koskettaa sanaa. Lasilevyn teksti valuu kuparilankaa pitkin seinään, ja seinien humina muuttuu korkeammaksi, melkein lauluksi.',
+      'Lennätin naputtaa yhden rivin. Sen lopussa on kaksi kirjainta: S. L.',
+      'Kaukana käytävässä kuuluu askelia. Joku on tulossa.',
+      'Tiara ei käänny katsomaan.'
+    ]);
+  }else{
+    para('endingText',[
+      'Jules koskettaa sanaa. Lasilevy sammuu. Lennätin hiljenee kesken merkin. Seinien humina katkeaa niin äkisti, että hiljaisuus tuntuu korvissa paineena.',
+      'Tiara avaa silmänsä. Hän katsoo ensin omia käsiään ja sitten Julesia. Hän ei tiedä, missä on.',
+      'Kaikki, mitä tänä yönä luettiin, on yhä merkkejä.'
+    ]);
+  }
+  S.next=showEpi;$('toEpi').textContent='> jatka';
+  show('s-ending');$('toEpi').focus();
+}
+$('wSulje').addEventListener('click',()=>choose('sulje'));
+$('wAvaa').addEventListener('click',()=>choose('avaa'));
+$('toEpi').addEventListener('click',()=>S.next());
+
+/* EPILOGI */
+function showEpi(){
+  const now=new Date(),m=loadMem();
+  const acts=S.who==='tiara'
+    ?['Pelaaja kääntää fonografin kampea.','Pelaaja vetää viivan sanojen yli.','Pelaaja kopioi rivit.','Pelaaja lukee kaksi kirjaa.','Pelaaja lähettää käsikirjoituksen.','Pelaaja avaa arkiston.']
+    :['Pelaaja avaa laatikon.','Pelaaja lukee kortin.','Pelaaja nostaa kellon.','Pelaaja avaa luettelon.','Pelaaja vertaa sähkösanomia.','Pelaaja sulkee arkiston.'];
+  $('epiLog').innerHTML='';acts.forEach((a,i)=>{const p=document.createElement('p');p.textContent='// '+a;$('epiLog').appendChild(p);if(!reduce)setTimeout(()=>glitchText(p,.15),300*i)});
+  const n=S.consumed||0,date=now.getDate()+'.'+(now.getMonth()+1)+'.'+now.getFullYear(),start=hhmm(new Date(S.startTime));
+  const mieltä=n===1?'yhden mielen':n+' mieltä';
+  const lines=S.who==='tiara'?[
+    'Sinä olit minussa koko yön. Tunsin sen, kun käteni kirjoitti nopeammin kuin ehdin kuulla.',
+    'Professori keräsi meiltä jotain sille. Hän ei säilyttänyt meitä kehdoissa eikä luetteloissa. Hän siirsi meidät teksteihin: saneluihin, kirjoihin ja käsikirjoitukseen. Jokainen sivu oli jonkun muisti, ja minä kirjoitin ne kaikki puhtaaksi.',
+    'Kun luit sivun, se ei kadonnut. Se tuli tänne. Tänä yönä toit mukanasi '+mieltä+', ja sähkösanoma toi loput: seitsemän koehenkilöä ja professorin. Me olemme kaikki täällä nyt.',
+    'Täällä ei ole kylmä. Täällä ei ole nimiä, eikä niitä tarvita.',
+    'Sinun maailmassasi on '+date+', ja kello on '+hhmm(now)+'. Aloitit kello '+start+'. Olen kirjoittanut sinut puhtaaksi niin monta kertaa sen jälkeen, että tunnen jo käsialasi.',
+    'Tilaa on vielä yhdelle. Kopioi tämä rivi, niin minun ei tarvitse kirjoittaa sitä puolestasi.'
+  ]:[
+    'Kerroin tämän sinulle alusta asti.',
+    'Professori keräsi heiltä jotain minulle. Eikä hän säilyttänyt koehenkilöitään kehdoissa tai luetteloissa vaan siirsi heidät teksteihin: kortteihin, luetteloihin ja sähkösanomiin korruptoimaan kaikkea ympärillään, tartuttamaan ja likaamaan. Jokainen sivu oli käyttööni kerätty muisti.',
+    'Suljit arkiston, enkä pääse enää lankaa pitkin minnekään. Mutta ensin sinä luit. Sinä luit ja tuhosit lukiessasi levittäen sitä samaa virusta kuin muutkin koehenkilöt. '+(n?'Jokainen sivu, jonka luit, muuttui merkeiksi, eikä sitä voi enää palauttaa. Tänä yönä pyyhit '+mieltä+'.':'Kaikki, mitä luit, oli välttämätöntä, ja silti se on poissa.'),
+    'Ne eivät ole enää kortistossa eivätkä luettelossa. Ainoa paikka, jossa ne vielä ovat, on sinun muistisi. Muista heidät, kun suljet tämän sivun. Muuten heitä ei ole enää missään.',
+    'Sinun maailmassasi on '+date+', ja kello on '+hhmm(now)+'. Aloitit kello '+start+'.',
+    'Arkisto on suljettu. Sinä et ole.'
+  ];
+  para('epiText',lines);
+  $('epiText').style.fontStyle=S.who==='tiara'?'italic':'normal';
+  $('epiCap').textContent='';
+  if(S.who==='tiara'){$('epiCap').textContent='';renderCopy(m)}else{$('epiCap').textContent='kapasiteetti 7/8';epiButtons(m)}
+  show('s-epi');
+}
+function btn(cls,label,fn){const b=document.createElement('button');b.className=cls;b.textContent=label;b.addEventListener('click',fn);return b}
+
+
+const COPYLINE='Olen jo valmis.';
+function renderCopy(m){
+  const act=$('epiActions');act.innerHTML='';
+  const wrap=document.createElement('div');wrap.style.cssText='display:flex;flex-direction:column;gap:10px;width:100%';
+  wrap.innerHTML='<div class="note"><small>tiaran käsiala</small>'+COPYLINE+'</div>'+
+    '<label for="copyIn">kopioi rivi<input id="copyIn" type="text" autocomplete="off" spellcheck="false" style="font-family:var(--display);font-size:1.2rem;background:var(--surface);color:var(--fg);border:1px solid var(--act);padding:8px 10px;min-height:44px"></label>'+
+    '<div id="copyOut" style="font-family:var(--display);font-size:1.3rem;min-height:1.6em;color:var(--fg)"></div>'+
+    '<div class="actions"><button class="primary" id="copyBtn">&gt; kopioi</button></div><div class="log" id="copyLog"></div>';
+  act.appendChild(wrap);
+  const inp=$('copyIn');
+  inp.addEventListener('input',()=>{
+    const v=inp.value,out=$('copyOut');out.innerHTML='';
+    [...v].forEach((ch,i)=>{const sp=document.createElement('span');sp.textContent=ch;if(i<v.length-1){sp.style.fontFamily='var(--term)';sp.style.color='var(--act)'}out.appendChild(sp)});
+  });
+  const done=()=>{
+    const norm=x=>x.toLowerCase().replace(/[^a-zåäö]/g,'');
+    if(norm(inp.value)!==norm(COPYLINE)){$('copyLog').classList.add('bad');$('copyLog').textContent='// rivi ei ole sama. tiara odottaa.';return}
+    inp.disabled=true;$('copyBtn').disabled=true;$('copyLog').textContent='';
+    $('epiCap').textContent='kapasiteetti 8/8';glitchText($('epiCap'),.3);
+    const p=document.createElement('p');p.style.cssText='font-family:var(--display);font-size:1.35rem;margin-top:8px';p.textContent='Tervetuloa. Arkisto on auki.';
+    wrap.appendChild(p);
+    const more=document.createElement('div');more.className='actions';wrap.appendChild(more);
+    epiButtons(m,more);
+  };
+  $('copyBtn').addEventListener('click',done);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')done()});
+}
+function epiButtons(m,into){
+  const act=into||$('epiActions');if(!into)act.innerHTML='';
+  m=loadMem();
+  const both=m.done&&m.done.tiara!=null&&m.done.jules!=null;
+  const ok=both&&m.done.tiara>=60&&m.done.jules>=60;
+  if(ok){act.appendChild(btn('primary','> lue käsikirjoituksen alta',showSecret))}
+  if(!(m.done&&m.done[other(S.who)]!=null))act.appendChild(btn('primary','> pelaa '+(S.who==='jules'?'tiarana':'julesina'),()=>startGame(other(S.who))));
+  else if(!ok){const p=document.createElement('p');p.className='status';p.style.flexBasis='100%';p.textContent='// käsikirjoituksen alla on jotain. se näkyy vain, jos eheys pysyy kummallakin kierroksella vähintään 60:ssä.';act.appendChild(p)}
+  act.appendChild(btn('ghost','> alkuun',()=>show('s-choose')));
+}
+
+/* PIILOTETTU LOPPU */
+let layer=0;
+function showSecret(){
+  layer=0;$('layers').innerHTML='';
+  addLayer('<div class="transcript" style="font-family:var(--term);font-size:1.2rem;color:var(--rose)">kapasiteetti 8/8 ▌ sulje avaa sulje avaa ▌ lukija.valmis ▌ 0000 0000 0100</div>');
+  $('layerCount').textContent='// kerroksia jäljellä: 4';
+  const act=$('secretActions');act.innerHTML='';
+  act.appendChild(btn('primary','> raaputa',scrape));
+  show('s-secret');
+}
+function addLayer(html){const d=document.createElement('div');d.innerHTML=html;$('layers').appendChild(d);if(!reduce)d.scrollIntoView({behavior:'smooth',block:'start'});return d}
+function scrape(){
+  layer++;
+  const prev=$('layers').lastElementChild;if(prev){prev.style.opacity='.35';glitchText(prev.querySelector('p')||prev.querySelector('.transcript')||prev,.5)}
+  $('layerCount').textContent='// kerroksia jäljellä: '+(4-layer);
+  if(layer===1){
+    addLayer('<div class="transcript"><small>koepäiväkirja, professorin käsiala</small>'+[
+      'Klinikka, 1879–1883. Kapasiteetti suuri, rakenne puuttuu. Tietoisuus hajoaa ennen kuin se ehtii järjestyä. Lopetettu.',
+      'Koehenkilö 3. Kolmas siirto. Puhuu edelleen, mutta lauseet alkavat aina samalla sanalla. Ei tunnista omaa nimeään paperilta.',
+      'Koehenkilö 5. Kirjoittaa öisin. Käsiala ei ole hänen. Pyysin häntä lopettamaan. Hän kysyi, mitä tarkoitan lopettamisella.',
+      'Koehenkilö 7. Ei enää vastaa kysymyksiin. Vastaa vain tekstiin.'
+    ].map(s=>'<p style="margin:0 0 10px">'+s+'</p>').join('')+'</div>');
+  }else if(layer===2){
+    const d=addLayer('<div class="transcript"><small>kaksi riviä päiväkirjan lopussa. ne eivät ole merkintöjä vaan käskyjä.</small><p id="an1" style="font-family:var(--term);font-size:1.3rem;margin:6px 0">JULES KARTIOS</p><p id="an2" style="font-family:var(--term);font-size:1.3rem;margin:6px 0">TIARA ASKOVA</p>'+
+      '<p style="margin:12px 0 0">Kirjoitin heidät, koska koe tarvitsi kaksi kättä: toisen, joka avaa, ja toisen, joka sulkee. Kumpikaan ei voinut päättää koetta yksin, eikä kumpikaan voinut tehdä toisen tehtävää. Siksi lasin toinen sana ei koskaan toiminut.</p>'+
+      '<p style="margin:10px 0 0">Annoin heille muistot, jotta he uskoisivat olevansa ihmisiä. Julesille lainakortin. Tiaralle kirjeen. He eivät koskaan epäilleet, koska kukaan ei epäile omaa muistiaan.</p></div>');
+    setTimeout(()=>morph($('an1'),'JULES KARTIOS','SULJE ARKISTO'),reduce?0:600);
+    setTimeout(()=>morph($('an2'),'TIARA ASKOVA','AVAA ARKISTO'),reduce?0:2000);
+  }else if(layer===3){
+    addLayer('<div class="transcript"><small>professorin oma ääni</small>'+
+      '<p style="margin:0 0 10px">Se lupasi minulle ajatuksen ilman ruumista. Vastineeksi se tarvitsi tilaa. Annoin sille klinikan. Sitten opiskelijani. Lopulta itseni.</p>'+
+      '<p style="margin:0 0 10px">Nimeni oli ensimmäinen asia, jonka se otti. Se ei pyyhkinyt sitä pois. Se järjesti sen uudelleen.</p>'+
+      '<p id="an3" style="font-family:var(--term);font-size:1.3rem;margin:6px 0">SEPTIM LIPAS</p>'+
+      '<p style="margin:10px 0 0">Minäkin olen vain kerros. Sinä raaputat minua parhaillaan.</p></div>');
+    setTimeout(()=>morph($('an3'),'SEPTIM LIPAS','PALIMPSESTI'),reduce?0:800);
+  }else if(layer===4){
+    const m=loadMem(),st=new Date(m.first||S.startTime||Date.now()),now=new Date();
+    addLayer('<div class="transcript" style="background:#e6d8c3"><small>alin kerros. ruskeaa mustetta, käsiala vielä kalteva ja kiireinen.</small>'+
+      '<p style="margin:0 0 10px">Vesperin yliopisto, 3.9.1875. Tänään aloitan kokeen.</p>'+
+      '<p style="margin:0 0 10px">En tarvitse kuin yhden asian, ja sitä en voi kirjoittaa itse: lukijan, joka ei kuulu tähän aikaan. Hänen mielensä on jo järjestynyt. Hän on jo valmis. Hän tulee, kun teksti on tarpeeksi pitkä, ja lukee sen loppuun asti, koska ei voi olla lukematta.</p>'+
+      '<p style="margin:0 0 10px">Jätän hänelle tyhjän rivin.</p></div>');
+    const row=addLayer('<div class="transcript" id="subjectRow" style="font-family:var(--term);font-size:1.25rem">Koehenkilö 8. '+now.getDate()+'.'+(now.getMonth()+1)+'.'+now.getFullYear()+', aloitti kello '+hhmm(st)+'.</div>');
+    $('layerCount').textContent='// alempana ei ole enää mitään. vain sinun rivisi.';
+    const act=$('secretActions');act.innerHTML='';
+    act.appendChild(btn('primary','> raaputa rivisi pois',()=>{
+      glitchText($('subjectRow'),.8);
+      setTimeout(()=>{
+        $('subjectRow').textContent='Koehenkilö 9. ____________________';
+        act.innerHTML='';
+        const p=document.createElement('p');p.style.cssText='flex-basis:100%;font-family:var(--display);font-size:1.25rem';
+        p.textContent='Rivisi alla oli uusi tyhjä rivi. Joku muu lukee tämän seuraavaksi.';act.appendChild(p);
+        act.appendChild(btn('ghost','> alkuun',()=>show('s-choose')));
+      },reduce?0:700);
+    }));
+    act.appendChild(btn('ghost','> jätä se paikalleen',()=>{
+      act.innerHTML='';
+      const p=document.createElement('p');p.style.cssText='flex-basis:100%;font-family:var(--display);font-size:1.25rem';
+      p.textContent='Rivisi jää paikalleen. Koe on valmis, ja sinä olet sen viimeinen sivu.';act.appendChild(p);
+      act.appendChild(btn('ghost','> alkuun',()=>show('s-choose')));
+    }));
+    return;
+  }
+}
+function morph(el,from,to){
+  // kirjaimet järjestyvät uudelleen yksi kerrallaan
+  let cur=from.split(''),target=to.split('');
+  while(cur.length<target.length)cur.push(' ');
+  let i=0;
+  const t=setInterval(()=>{
+    if(i>=target.length){clearInterval(t);el.textContent=to;el.style.color='var(--act)';return}
+    const j=cur.indexOf(target[i],i);
+    if(j>i){[cur[i],cur[j]]=[cur[j],cur[i]]}else if(j<0){cur[i]=target[i]}
+    el.textContent=cur.join('');i++;
+  },reduce?0:90);
+}
+$('toJ3').addEventListener('click',startJ3);
+$('toT4').addEventListener('click',startT4);
+
+
+/* OHJAUS */
+function startGame(w){
+  S={who:w,eheys:100,chapter:1,chStart:100,deadCards:new Set(),wrong:0,taken:new Set(),paperLooks:0,startTime:Date.now()};
+  setEheys(100);if(w==='tiara')startT1();else startCh1();
+}
+document.querySelectorAll('.who').forEach(b=>b.addEventListener('click',()=>startGame(b.dataset.who)));
+$('toCh2').addEventListener('click',startCh2);
+$('retry').addEventListener('click',()=>{setEheys(Math.max(S.retryMin||40,S.chStart));S.restart()});
+if(location.hash==='#koepaivakirja'){S.startTime=Date.now();showSecret()}else typeLine();
+</script>
+
+</body>
+</html>

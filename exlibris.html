@@ -83,6 +83,8 @@ h1 em{font-style:italic;color:var(--dusty)}
 @keyframes ping{0%{transform:scale(.6);opacity:.9}80%,100%{transform:scale(1.9);opacity:0}}
 .pin .tag{opacity:0;transform:translateX(-4px);pointer-events:none;transition:opacity .2s,transform .2s,background .2s,border-color .2s,color .2s;background:rgba(20,6,10,.82);border:1px solid rgba(255,122,162,.45);padding:.28em .55em .22em;border-radius:2px;white-space:nowrap;transition:background .2s,border-color .2s,color .2s}
 .pin.soon .tag{border-style:dashed;color:var(--muted)}
+@keyframes glx{0%,100%{transform:none;text-shadow:none}25%{transform:translateX(1px);text-shadow:-2px 0 var(--neon)}50%{transform:translateX(-1px);text-shadow:2px 0 #fff}75%{text-shadow:none}}
+@media (prefers-reduced-motion:no-preference){.pin.glitch .tag{animation:glx .5s steps(2) infinite}}
 .pin:hover .tag,.pin:focus-visible .tag,.pin.active .tag{opacity:1;transform:none;background:var(--neon);border-color:var(--neon);color:var(--bg)}
 .pin:focus-visible{outline:none}
 @media (prefers-reduced-motion:reduce){.pin .dot::after{animation:none}}
@@ -153,6 +155,16 @@ const ITEMS=[
    preface:"Takaisin etusivulle: taidetta, projekteja ja yhteystiedot.",
    href:"index.html",cta:"Avaa portfolio"}
 ];
+const PLAYED=(()=>{try{const m=JSON.parse(localStorage.getItem("palimpsesti")||"{}");return !!(m.done&&Object.keys(m.done).length)}catch(e){return false}})();
+ITEMS.push(PLAYED
+  ?{id:"palimpsesti",about:"synkkä tekstiseikkailu vuoden 1886 Vesperin yliopistossa",pin:[880,975],side:"left",short:"Palimpsesti",name:"Palimpsesti",kind:"tekstiseikkailu",status:"valmis",
+    pts:"842,920 917,920 917,1052 842,1052",
+    preface:"Yksi yö vuonna 1886. Kaksi hahmoa, kaksi reittiä ja jotain, mikä ei kuulu joukkoon. Olet jo lukenut sen kerran.",
+    href:"palimpsesti.html",cta:"Lue uudelleen"}
+  :{id:"palimpsesti",about:"jotain, mitä ei ole luetteloitu",pin:[880,975],side:"left",short:"???",name:"???",kind:"luetteloimaton",status:"valmis",glitch:true,
+    pts:"842,920 917,920 917,1052 842,1052",
+    preface:"Tätä esinettä ei ole kirjattu kokoelmaan. Kukaan ei muista, mistä se tuli.",
+    href:"palimpsesti.html",cta:"Koske"});
 const NS="http://www.w3.org/2000/svg";
 const hots=document.getElementById("hots"),stage=document.getElementById("stage"),card=document.getElementById("card"),hole=document.getElementById("hole");
 let active=null;
@@ -178,7 +190,7 @@ stage.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse")dimOff()});
 const pinsEl=document.getElementById("pins");
 ITEMS.forEach(it=>{
   const el=document.createElement(it.href?"a":"button");
-  el.className="pin"+(it.pin[0]>600&&it.side==="left"||it.side==="left"?" left":"")+(it.href?"":" soon");
+  el.className="pin"+(it.pin[0]>600&&it.side==="left"||it.side==="left"?" left":"")+(it.href?"":" soon")+(it.glitch?" glitch":"");
   if(it.href){el.href=it.href;if(/^https?:/.test(it.href)){el.target="_blank";el.rel="noopener"}}else{el.type="button"}
   el.style.left=(it.pin[0]/960*100)+"%";el.style.top=(it.pin[1]/1200*100)+"%";
   el.innerHTML=`<span class="dot" aria-hidden="true"></span><span class="tag">${it.short}</span>`;
@@ -214,7 +226,7 @@ function render(it){
 }
 function intro(){
   card.innerHTML=`
-    <div class="meta"><span>6 esinettä</span></div>
+    <div class="meta"><span>${ITEMS.length} esinettä</span></div>
     <h2>Mistä aloitetaan?</h2>
     ${indexHTML(null)}`;
   bindIndex();
