@@ -340,7 +340,7 @@ h1 em { color: var(--ink); }
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
 
   let shell = store.get("grimoire.shell") === "sh" ? "sh" : "cmd";
-  let tag = "kaikki", query = "";
+  let tag = "perusteet", query = "";
 
   /* Render cards once; filtering only toggles hidden */
   const list = document.getElementById("spells");

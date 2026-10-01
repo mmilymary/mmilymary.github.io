@@ -13,7 +13,7 @@
 :root {
   --bg: #1c0b10; --surface: #2a1419; --surface-2: #33191f; --line: #4a2a31;
   --text: #eee6e2; --muted: #b39a97; --dusty: #c9a3a6; --rose: #b5475a; --on-rose: #ffffff; --neon: #ff7aa2;
-  --code-bg: #16070b; --tk-str: #e8c39a; --tk-num: #c9b3e0;
+  --code-bg: #16070b; --tk-str: #a8ab84; --tk-num: #c9a3a6;
   --font-display: "IM Fell English", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --font-body: "Newsreader", "Iowan Old Style", Georgia, serif;
   --font-ui: "VT323", "Courier Prime", ui-monospace, monospace;
@@ -26,7 +26,7 @@
 :root[data-theme="light"] {
   --bg: #f6ecea; --surface: #fff8f6; --surface-2: #f0e0dd; --line: #e0c8c9;
   --text: #2a1117; --muted: #6e4f55; --dusty: #7d5a60; --rose: #9e3348; --neon: #9e3348;
-  --code-bg: #fffdfc; --tk-str: #7a5410; --tk-num: #5b3a86;
+  --code-bg: #fffdfc; --tk-str: #5b6136; --tk-num: #7d5a60;
   color-scheme: light;
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -103,12 +103,17 @@ h1 em { color: var(--neon); }
 .copy { position: absolute; top: 6px; right: 6px; font: 400 1rem/1 var(--font-ui); padding: .35rem .55rem; min-height: 30px; background: var(--surface); color: var(--muted); border: 1px solid var(--line); border-radius: var(--radius); cursor: pointer; }
 .copy:hover { color: var(--text); }
 .copy[data-state="ok"] { color: var(--neon); border-color: var(--neon); }
-.token.keyword, .token.boolean, .token.builtin { color: var(--neon); }
+/* Code colours: muted, warm tones so code reads calmly next to the rest of the page */
+:root { --tk-text: #e2d5d2; --tk-kw: #d48a9a; --tk-fn: #ead9cf; --tk-com: #93807d; --tk-punc: #a8918e; }
+:root { --tk-str: #a8ab84; --tk-num: #c9a3a6; }
+:root[data-theme="light"] { --tk-text: #2a1117; --tk-kw: #9e3348; --tk-fn: #2a1117; --tk-com: #7a6266; --tk-punc: #6e4f55; --tk-str: #5b6136; --tk-num: #7d5a60; }
+.code pre code { color: var(--tk-text); }
+.token.keyword, .token.boolean, .token.builtin { color: var(--tk-kw); }
 .token.string, .token.triple-quoted-string { color: var(--tk-str); }
 .token.number { color: var(--tk-num); }
-.token.comment { color: var(--muted); font-style: italic; }
-.token.decorator, .token.function { color: var(--text); font-weight: 700; }
-.token.operator, .token.punctuation { color: var(--muted); }
+.token.comment { color: var(--tk-com); font-style: italic; }
+.token.decorator, .token.function { color: var(--tk-fn); }
+.token.operator, .token.punctuation { color: var(--tk-punc); }
 .pit { margin-top: var(--s5); border: 1px dashed var(--rose); border-radius: var(--radius); padding: var(--s4) var(--s4) var(--s3); background: color-mix(in srgb, var(--rose) 7%, transparent); }
 .pit-label { font: 400 1.05rem var(--font-ui); color: var(--neon); display: block; margin-bottom: var(--s1); }
 .pit p { margin: 0 0 var(--s2); }
