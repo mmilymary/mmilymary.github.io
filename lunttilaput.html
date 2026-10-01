@@ -7,17 +7,17 @@
 <title>Lunttilaput</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&family=IM+Fell+English:ital@0;1&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&family=IM+Fell+English:ital@0;1&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400&family=VT323&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
 <style>
 /* Layout: a drawer of paper slips across the top (each slip = one cheat sheet; empty slot = the next one), and the chosen slip unfolds below as a week-by-week sheet. Exercises are themselves little paper slips. Colours from mila.palviainen. */
 :root {
   --bg: #1c0b10; --surface: #2a1419; --surface-2: #33191f; --line: #4a2a31;
   --text: #eee6e2; --muted: #b39a97; --dusty: #c9a3a6; --rose: #b5475a; --on-rose: #ffffff; --neon: #ff7aa2;
-  --code-bg: #16070b; --tk-str: #a8ab84; --tk-num: #c9a3a6;
+  --code-bg: #16070b; --tk-str: #c9a090; --tk-num: #b99474;
   --font-display: "IM Fell English", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --font-body: "Newsreader", "Iowan Old Style", Georgia, serif;
   --font-ui: "VT323", "Courier Prime", ui-monospace, monospace;
-  --font-mono: "Courier Prime", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-mono: "IBM Plex Mono", "Courier Prime", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --step--1: .8125rem; --step-0: 1.0625rem; --step-1: 1.3rem; --step-2: 1.8rem; --step-3: clamp(2.4rem, 7vw, 3.8rem);
   --s1: .25rem; --s2: .5rem; --s3: .75rem; --s4: 1rem; --s5: 1.5rem; --s6: 2.25rem; --s7: 3.5rem;
   --radius: 3px; --ease: cubic-bezier(.2,.7,.2,1);
@@ -26,7 +26,7 @@
 :root[data-theme="light"] {
   --bg: #f6ecea; --surface: #fff8f6; --surface-2: #f0e0dd; --line: #e0c8c9;
   --text: #2a1117; --muted: #6e4f55; --dusty: #7d5a60; --rose: #9e3348; --neon: #9e3348;
-  --code-bg: #fffdfc; --tk-str: #5b6136; --tk-num: #7d5a60;
+  --code-bg: #fffdfc; --tk-str: #7a4a3e; --tk-num: #7a4b2a;
   color-scheme: light;
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -104,10 +104,10 @@ h1 em { color: var(--neon); }
 .copy:hover { color: var(--text); }
 .copy[data-state="ok"] { color: var(--neon); border-color: var(--neon); }
 /* Code colours: muted, warm tones so code reads calmly next to the rest of the page */
-:root { --tk-text: #e2d5d2; --tk-kw: #d48a9a; --tk-fn: #ead9cf; --tk-com: #93807d; --tk-punc: #a8918e; }
-:root { --tk-str: #a8ab84; --tk-num: #c9a3a6; }
-:root[data-theme="light"] { --tk-text: #2a1117; --tk-kw: #9e3348; --tk-fn: #2a1117; --tk-com: #7a6266; --tk-punc: #6e4f55; --tk-str: #5b6136; --tk-num: #7d5a60; }
-.code pre code { color: var(--tk-text); }
+:root { --tk-text: #c7b49c; --tk-kw: #c48a6a; --tk-fn: #d4c2a8; --tk-com: #8f7c6a; --tk-punc: #a3907c; }
+:root { --tk-str: #c9a090; --tk-num: #b99474; }
+:root[data-theme="light"] { --tk-text: #3b2a20; --tk-kw: #8a3d26; --tk-fn: #3b2a20; --tk-com: #76624f; --tk-punc: #6b5544; --tk-str: #7a4a3e; --tk-num: #7a4b2a; }
+.code pre code { color: var(--tk-text); font-weight: 400; -webkit-font-smoothing: antialiased; }
 .token.keyword, .token.boolean, .token.builtin { color: var(--tk-kw); }
 .token.string, .token.triple-quoted-string { color: var(--tk-str); }
 .token.number { color: var(--tk-num); }

@@ -7,7 +7,7 @@
 <title>Grimoire</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=IM+Fell+English:ital@0;1&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=VT323&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=IM+Fell+English:ital@0;1&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400&family=VT323&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
 <style>
 /* Grimoire: same room as the other Ex Libris pages (base colours, fonts), own ink. Crimson from the red cross-book on the shelf marks spell names and numbers; neon pink stays reserved for anything you can press. Spells are reference cards, not a course: search, filter, copy one line at a time. */
 :root {
@@ -19,7 +19,7 @@
   --font-spell: "Cormorant Garamond", "IM Fell English", Georgia, serif;
   --font-body: "Newsreader", "Iowan Old Style", Georgia, serif;
   --font-ui: "VT323", "Courier Prime", ui-monospace, monospace;
-  --font-mono: "Courier Prime", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-mono: "IBM Plex Mono", "Courier Prime", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --step-0: 1.0625rem; --step-1: 1.3rem; --step-2: 1.8rem; --step-3: clamp(2.4rem, 7vw, 3.8rem);
   --s1: .25rem; --s2: .5rem; --s3: .75rem; --s4: 1rem; --s5: 1.5rem; --s6: 2.25rem; --s7: 3.5rem;
   --radius: 3px; --ease: cubic-bezier(.2,.7,.2,1);
@@ -96,8 +96,8 @@ h1 em { color: var(--ink); }
 .lines { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-left: 2px solid var(--chrome-dim); border-radius: var(--radius); background: var(--code-bg); }
 .line { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) auto; gap: var(--s3); align-items: start; padding: .65rem .75rem; }
 .line + .line { border-top: 1px dashed var(--line); }
-.line code { background: none; padding: 0; border-radius: 0; font: 400 .92rem/1.5 var(--font-mono); color: var(--chrome); white-space: pre-wrap; overflow-wrap: anywhere; }
-:root[data-theme="light"] .line code { color: #2a1117; }
+.line code { background: none; padding: 0; border-radius: 0; font: 400 .9rem/1.55 var(--font-mono); color: #c7b49c; -webkit-font-smoothing: antialiased; white-space: pre-wrap; overflow-wrap: anywhere; }
+:root[data-theme="light"] .line code { color: #3b2a20; }
 .line p { margin: 0; font-size: .98rem; line-height: 1.45; color: var(--text); }
 .copy { font: 400 1rem/1 var(--font-ui); min-height: 32px; min-width: 44px; padding: .3rem .5rem; border: 1px solid var(--line); border-radius: 2px; background: var(--surface); color: var(--muted); cursor: pointer; }
 .copy:hover { color: var(--text); border-color: var(--muted); }
