@@ -143,6 +143,7 @@ button:disabled{cursor:default}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
+<script data-goatcounter="https://mmilymary.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <main class="wrap">
@@ -790,6 +791,9 @@ function copyLine(i){
 $('toT2').addEventListener('click',startT2);
 $('toLab').addEventListener('click',startCh3);
 
+/* LASKURI: GoatCounter-tapahtumat. Toimii vain, jos sivulla on GoatCounterin skripti. */
+function track(name){try{window.goatcounter&&window.goatcounter.count&&window.goatcounter.count({path:'palimpsesti-'+name,title:'Palimpsesti: '+name,event:true})}catch(e){}}
+
 /* MUISTI (selain) */
 function loadMem(){try{return JSON.parse(localStorage.getItem('palimpsesti')||'{}')}catch(e){return {}}}
 function saveMem(fn){try{const m=loadMem();fn(m);localStorage.setItem('palimpsesti',JSON.stringify(m))}catch(e){}}
@@ -971,6 +975,7 @@ function choose(word){
     $('logF').classList.add('bad');$('logF').textContent='// sana ei reagoi. '+(S.who==='jules'?'Julesin':'Tiaran')+' sormi liukuu sen yli kuin lasia ei olisi.';
     return;
   }
+  track('loppu-'+mine);
   saveMem(m=>{m.done=m.done||{};m.done[S.who]=S.eheys;if(!m.first)m.first=S.startTime});
   $('endTag').textContent=mine;
   if(S.who==='tiara'){
@@ -1068,6 +1073,7 @@ function epiButtons(m,into){
 /* PIILOTETTU LOPPU */
 let layer=0;
 function showSecret(){
+  if(location.hash!=='#koepaivakirja')track('kolmas-loppu');
   layer=0;$('layers').innerHTML='';
   addLayer('<div class="transcript" style="font-family:var(--term);font-size:1.2rem;color:var(--rose)">kapasiteetti 8/8 ▌ sulje avaa sulje avaa ▌ lukija.valmis ▌ 0000 0000 0100</div>');
   $('layerCount').textContent='// kerroksia jäljellä: 4';
@@ -1147,6 +1153,7 @@ $('toT4').addEventListener('click',startT4);
 /* OHJAUS */
 function startGame(w){
   S={who:w,eheys:100,chapter:1,chStart:100,deadCards:new Set(),wrong:0,taken:new Set(),paperLooks:0,startTime:Date.now()};
+  track('aloitus-'+w);
   setEheys(100);if(w==='tiara')startT1();else startCh1();
 }
 document.querySelectorAll('.who').forEach(b=>b.addEventListener('click',()=>startGame(b.dataset.who)));
