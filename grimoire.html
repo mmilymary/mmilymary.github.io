@@ -58,9 +58,12 @@ h1 em { color: var(--ink); }
 
 /* Collections: the volumes of the grimoire */
 .volumes { display: flex; gap: var(--s2); flex-wrap: wrap; margin: var(--s5) 0 0; padding: 0; list-style: none; }
-.volumes li { font: 400 1.15rem/1 var(--font-ui); padding: .5rem .8rem; border: 1px solid var(--line); border-radius: 2px; color: var(--muted); }
-.volumes li[aria-current="true"] { border-color: var(--ink); color: var(--text); box-shadow: inset 0 3px 0 var(--ink); }
-.volumes li:not([aria-current]) { border-style: dashed; }
+.volumes li.soon, .volumes button { font: 400 1.15rem/1 var(--font-ui); padding: .5rem .8rem; border: 1px solid var(--line); border-radius: 2px; color: var(--muted); }
+.volumes li.soon { border-style: dashed; }
+.volumes button { display: block; background: none; cursor: pointer; transition: color .15s, border-color .15s; }
+.volumes button:hover { color: var(--text); border-color: var(--muted); }
+.volumes button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.volumes button[aria-pressed="true"] { border-color: var(--ink); color: var(--text); box-shadow: inset 0 3px 0 var(--ink); cursor: default; }
 .volumes li span { color: var(--muted); opacity: .8; }
 
 /* Tools: search, tag filter, shell switch */
@@ -112,6 +115,7 @@ h1 em { color: var(--ink); }
 .tips ul { margin: 0; padding-left: 1.2rem; }
 .tips li { margin-bottom: var(--s2); }
 .tips li::marker { color: var(--ink); }
+.tips a { color: var(--text); text-decoration-color: var(--ink); text-underline-offset: 3px; }
 .colophon { margin-top: var(--s7); padding-top: var(--s4); border-top: 1px solid var(--line); color: var(--muted); font: 400 1.05rem var(--font-ui); }
 
 @media (min-width: 40.01rem) { .tags { flex-wrap: wrap; overflow: visible; margin: 0; padding: 2px 0; } }
@@ -149,10 +153,10 @@ h1 em { color: var(--ink); }
   <section class="preface" aria-label="Esipuhe"><span class="pf-label">// esipuhe</span><p>Komennot unohtuvat aina juuri silloin, kun niitä tarvitsee. Tähän kirjaan kerään ne, joita oikeasti käytän, ja lyhyen selityksen jokaiselle riville.</p></section>
 
   <ul class="volumes" aria-label="Kokoelmat">
-    <li aria-current="true">Komentorivi</li>
-    <li>Git <span>· tulossa</span></li>
-    <li>SQL-reseptit <span>· tulossa</span></li>
-    <li>Python <span>· tulossa</span></li>
+    <li><button type="button" data-vol="cmd" aria-pressed="true">Komentorivi</button></li>
+    <li><button type="button" data-vol="sql" aria-pressed="false">SQL-reseptit</button></li>
+    <li class="soon">Git <span>· tulossa</span></li>
+    <li class="soon">Python <span>· tulossa</span></li>
   </ul>
 
   <div class="tools">
@@ -172,7 +176,7 @@ h1 em { color: var(--ink); }
   <main class="spells" id="spells"></main>
   <p class="empty" id="empty" hidden>Yhtään loitsua ei löytynyt. Kokeile toista sanaa tai valitse aiheeksi kaikki.</p>
 
-  <section class="tips" aria-label="Hyvä tietää">
+  <section class="tips" data-vol="cmd" aria-label="Hyvä tietää">
     <h2>Hyvä tietää</h2>
     <ul>
       <li>Windowsin cmd ei välitä isoista ja pienistä kirjaimista: <code>DIR</code> ja <code>dir</code> ovat sama komento. Linuxissa <code>ls</code> ja <code>LS</code> ovat eri asioita. macOS:ssä <code>LS</code> voi toimia, mutta komennot kannattaa aina kirjoittaa pienillä kirjaimilla.</li>
@@ -182,7 +186,17 @@ h1 em { color: var(--ink); }
     </ul>
   </section>
 
-  <p class="colophon">grimoire · ex libris · mila.palviainen · osa 1: komentorivi</p>
+  <section class="tips" data-vol="sql" aria-label="Hyvä tietää" hidden>
+    <h2>Hyvä tietää</h2>
+    <ul>
+      <li>macOS:ssä sqlite3 on valmiina: avaa Pääte ja kirjoita <code>sqlite3</code>. Windowsiin lataa <a href="https://sqlite.org/download.html" target="_blank" rel="noopener">sqlite.org/download.html</a>-sivulta paketti <em>sqlite-tools-win-x64</em>, pura se kansioon ja käynnistä sqlite3.exe.</li>
+      <li>SQL-lause loppuu puolipisteeseen. Jos kehote muuttuu jatkoriviksi, esimerkiksi <code>...&gt;</code>, puolipiste puuttuu. Kirjoita <code>;</code> ja paina Enter.</li>
+      <li>Pisteellä alkavat komennot, kuten <code>.tables</code> ja <code>.mode</code>, ovat SQLiten omia apukomentoja. Niiden perään ei tule puolipistettä, ja vanhemmissa versioissa puolipiste antaa virheen.</li>
+      <li>Esimerkit käyttävät lunttilapun SQL-osion kirjastotietokantaa, jossa on taulut kirjailija, kirja ja lainaus.</li>
+    </ul>
+  </section>
+
+  <p class="colophon">grimoire · ex libris · mila.palviainen · <span id="vol-label">osa 1: komentorivi</span></p>
 </div>
 
 <script>
@@ -335,54 +349,522 @@ h1 em { color: var(--ink); }
             ["ls --help", "Lyhyt ohje suoraan ruudulle. macOS:n ls ei tunne tätä, käytä siellä man-komentoa."]] }
   ];
 
+  const SQL = [
+   {
+    "id": "sql-avaa",
+    "title": "Avaa tietokanta ja poistu",
+    "tags": [
+     "perusteet"
+    ],
+    "osFirst": true,
+    "when": "Kun aloitat työt tai haluat vaihtaa toiseen tietokantaan.",
+    "cmd": [
+     [
+      "sqlite3 kirjasto.db",
+      "Kirjoitetaan komentokehotteeseen. Avaa tiedoston kansiosta, jossa olet. Jos tiedostoa ei ole, se syntyy vasta, kun tallennat siihen jotain."
+     ],
+     [
+      ".open C:/kurssi/kirjasto.db",
+      "Avaa toisen tietokannan kesken istunnon. Kirjoita polkuun vinoviivat /, ei kenoviivoja \\."
+     ]
+    ],
+    "sh": [
+     [
+      "sqlite3 kirjasto.db",
+      "Kirjoitetaan päätteeseen. Avaa tiedoston kansiosta, jossa olet. Jos tiedostoa ei ole, se syntyy vasta, kun tallennat siihen jotain."
+     ],
+     [
+      ".open /Users/mila/kurssi/kirjasto.db",
+      "Avaa toisen tietokannan kesken istunnon. Linuxissa kotikansio on /home/käyttäjänimi."
+     ]
+    ],
+    "sql": [
+     [
+      "SELECT sqlite_version();",
+      "Kertoo SQLiten version. Osa pistekomennoista toimii vain uudehkoissa versioissa."
+     ],
+     [
+      ".quit",
+      "Lopettaa SQLiten. .exit tekee saman."
+     ]
+    ],
+    "warn": "Vanhemmat SQLite-versiot eivät tunne ~-merkkiä, joten .open ~/kirjasto.db antaa niissä virheen. macOS:n valmis SQLite on usein vanhempi. Koko polku toimii kaikissa versioissa."
+   },
+   {
+    "id": "sql-rakenne",
+    "title": "Mitä tietokannassa on",
+    "tags": [
+     "perusteet",
+     "rakenne"
+    ],
+    "when": "Kun avaat tietokannan ensimmäistä kertaa tai et muista sarakkeiden nimiä.",
+    "sql": [
+     [
+      ".tables",
+      "Listaa taulut."
+     ],
+     [
+      ".schema kirja",
+      "Näyttää CREATE TABLE -lauseen, jolla taulu on tehty."
+     ],
+     [
+      "PRAGMA table_info(kirja);",
+      "Sarakkeet allekkain: muun muassa nimi, tietotyyppi, saako olla tyhjä ja onko pääavain."
+     ],
+     [
+      "SELECT name FROM sqlite_master WHERE type = 'table';",
+      "Taulujen nimet tavallisena kyselynä. Kätevä, kun listaa tarvitsee osana toista kyselyä."
+     ]
+    ]
+   },
+   {
+    "id": "sql-tuloste",
+    "title": "Luettava tuloste",
+    "tags": [
+     "perusteet",
+     "tulosteet"
+    ],
+    "when": "Kun tulos tulee yhtenä rivinä pystyviivojen kanssa eikä siitä saa selvää.",
+    "sql": [
+     [
+      ".headers on",
+      "Näyttää sarakkeiden nimet tuloksen yläpuolella."
+     ],
+     [
+      ".mode column",
+      "Asettaa sarakkeet siististi allekkain."
+     ],
+     [
+      ".mode box",
+      "Piirtää tuloksen ympärille taulukon viivat."
+     ],
+     [
+      ".nullvalue NULL",
+      "Näyttää tyhjät arvot sanana NULL, jotta ne erottaa tyhjästä tekstistä."
+     ]
+    ],
+    "warn": "SQLite 3.52:sta alkaen tulos näkyy valmiiksi laatikkona otsikoineen. Vanhemmissa versioissa nämä tarvitaan. Asetukset ovat voimassa vain siihen asti, kun suljet SQLiten."
+   },
+   {
+    "id": "sql-skripti",
+    "title": "Aja SQL-tiedosto",
+    "tags": [
+     "tiedostot"
+    ],
+    "when": "Kun taulut ja testidata ovat valmiina .sql-tiedostossa, eikä niitä halua kirjoittaa käsin.",
+    "sql": [
+     [
+      ".read luo.sql",
+      "Ajaa tiedoston lauseet järjestyksessä, kuin olisit kirjoittanut ne itse."
+     ],
+     [
+      "sqlite3 kirjasto.db < luo.sql",
+      "Sama SQLiten ulkopuolelta. Toimii Windowsin komentokehotteessa (cmd) ja macOS:n päätteessä. PowerShell ei tunne <-merkkiä."
+     ]
+    ],
+    "warn": "SQLite ei pysähdy virheeseen, vaan jatkaa seuraavasta lauseesta. Jos ajat saman tiedoston kahdesti, CREATE TABLE antaa virheen, mutta INSERT-lauseet voivat lisätä rivit toiseen kertaan. Aja tiedosto tyhjään tietokantaan."
+   },
+   {
+    "id": "sql-tuo",
+    "title": "Tuo CSV-tiedosto tauluun",
+    "tags": [
+     "tiedostot"
+    ],
+    "when": "Kun data on Excelissä tai CSV-tiedostossa ja se pitää saada tietokantaan.",
+    "sql": [
+     [
+      "CREATE TABLE uutuus (nimi TEXT, vuosi INTEGER, hinta REAL);",
+      "Tee taulu ensin, niin sarakkeet saavat oikeat tietotyypit."
+     ],
+     [
+      ".import --csv --skip 1 kirjat.csv uutuus",
+      "Tuo rivit tauluun. --skip 1 ohittaa tiedoston ensimmäisen rivin, jolla ovat sarakkeiden nimet."
+     ],
+     [
+      "SELECT COUNT(*) FROM uutuus;",
+      "Tarkistaa, montako riviä tuli."
+     ]
+    ],
+    "warn": "Jos taulua ei ole olemassa, .import tekee sen itse. Silloin ensimmäinen rivi tulkitaan sarakkeiden nimiksi ja kaikki arvot tallentuvat tekstinä, jolloin numerot lajittuvat väärin."
+   },
+   {
+    "id": "sql-vie",
+    "title": "Vie tulos CSV-tiedostoon",
+    "tags": [
+     "tiedostot",
+     "tulosteet"
+    ],
+    "when": "Kun kyselyn tulos pitää saada Exceliin tai liitteeksi.",
+    "sql": [
+     [
+      ".headers on",
+      "Ensimmäiselle riville tulevat sarakkeiden nimet."
+     ],
+     [
+      ".mode csv",
+      "Tulostaa pilkuilla erotettuina."
+     ],
+     [
+      ".once kirjat.csv",
+      "Seuraavan kyselyn tulos menee tiedostoon eikä ruudulle."
+     ],
+     [
+      "SELECT nimi, vuosi, hinta FROM kirja;",
+      "Kysely, jonka tulos tallennetaan."
+     ],
+     [
+      ".mode box",
+      "Palauttaa tavallisen tulosteen."
+     ]
+    ],
+    "cmd": [
+     [
+      "start kirjat.csv",
+      "Kirjoitetaan komentokehotteeseen. Avaa tiedoston oletusohjelmalla, yleensä Excelillä."
+     ]
+    ],
+    "sh": [
+     [
+      "open kirjat.csv",
+      "Kirjoitetaan päätteeseen. Avaa tiedoston oletusohjelmalla. Linuxissa sama on xdg-open."
+     ]
+    ],
+    "warn": "Tiedosto tallentuu UTF-8-muodossa. Jos Excel näyttää ääkköset väärin, tuo tiedosto Excelin Tiedot-välilehden kautta tekstitiedostona."
+   },
+   {
+    "id": "sql-top",
+    "title": "Suurimmat ja pienimmät",
+    "tags": [
+     "haku"
+    ],
+    "when": "Kun tarvitset vain kärjen, esimerkiksi kolme paksuinta kirjaa.",
+    "sql": [
+     [
+      "SELECT nimi, sivut FROM kirja ORDER BY sivut DESC LIMIT 3;",
+      "Kolme suurinta. DESC lajittelee suurimmasta pienimpään."
+     ],
+     [
+      "SELECT nimi, sivut FROM kirja ORDER BY sivut DESC LIMIT 3 OFFSET 3;",
+      "Seuraavat kolme. OFFSET hyppää annetun määrän rivejä yli."
+     ],
+     [
+      "SELECT MIN(vuosi), MAX(vuosi) FROM kirja;",
+      "Pienin ja suurin arvo ilman lajittelua."
+     ]
+    ]
+   },
+   {
+    "id": "sql-osuma",
+    "title": "Etsi osalla sanasta",
+    "tags": [
+     "haku"
+    ],
+    "when": "Kun muistat nimestä vain osan.",
+    "sql": [
+     [
+      "SELECT nimi FROM kirja WHERE nimi LIKE '%usher%';",
+      "% tarkoittaa mitä tahansa tekstiä. Löytää Usherin talon häviön, vaikka kirjoitit pienellä."
+     ],
+     [
+      "SELECT nimi FROM kirja WHERE nimi LIKE 'H%';",
+      "Nimet, jotka alkavat H-kirjaimella."
+     ],
+     [
+      "SELECT nimi FROM kirja WHERE nimi LIKE '_orppi';",
+      "_ tarkoittaa tasan yhtä merkkiä."
+     ]
+    ],
+    "warn": "LIKE ei välitä kirjainkoosta vain a–z-kirjaimissa. Ä ja ä ovat sille eri merkkejä, joten '%ä%' ei löydä isoa Ä:tä."
+   },
+   {
+    "id": "sql-null",
+    "title": "Puuttuvat arvot",
+    "tags": [
+     "haku",
+     "siivous"
+    ],
+    "when": "Kun haluat tietää, mistä riveistä tieto puuttuu, tai näyttää tyhjän tilalle jotain muuta.",
+    "sql": [
+     [
+      "SELECT nimi FROM kirja WHERE hinta IS NULL;",
+      "Rivit, joilta hinta puuttuu."
+     ],
+     [
+      "SELECT COUNT(*) - COUNT(hinta) FROM kirja;",
+      "Montako hintaa puuttuu. COUNT(sarake) ei laske tyhjiä."
+     ],
+     [
+      "SELECT nimi, IFNULL(hinta, 0) FROM kirja;",
+      "Näyttää tyhjän hinnan tilalla nollan. Taulu ei muutu."
+     ],
+     [
+      "SELECT nimi, COALESCE(hinta, 'ei tiedossa') FROM kirja;",
+      "Sama, mutta COALESCE ottaa ensimmäisen ei-tyhjän arvon pidemmästäkin listasta."
+     ]
+    ],
+    "warn": "WHERE hinta = NULL ei löydä koskaan mitään, koska NULL ei ole yhtä suuri minkään kanssa. Käytä aina IS NULL tai IS NOT NULL."
+   },
+   {
+    "id": "sql-tuplat",
+    "title": "Etsi tuplat",
+    "tags": [
+     "siivous"
+    ],
+    "when": "Kun epäilet, että sama rivi on tallennettu kahteen kertaan.",
+    "sql": [
+     [
+      "SELECT nimi, COUNT(*) FROM kirja GROUP BY nimi HAVING COUNT(*) > 1;",
+      "Nimet, jotka esiintyvät useammin kuin kerran. Tyhjä tulos tarkoittaa, ettei tuplia ole."
+     ],
+     [
+      "SELECT kirja_id, COUNT(*) AS kertaa FROM lainaus GROUP BY kirja_id HAVING COUNT(*) > 1;",
+      "Sama toisesta taulusta: kirjat, joita on lainattu useammin kuin kerran."
+     ]
+    ],
+    "warn": "HAVING suodattaa ryhmiä, WHERE yksittäisiä rivejä. Ehto COUNT(*) > 1 kuuluu siksi HAVING-osaan."
+   },
+   {
+    "id": "sql-orvot",
+    "title": "Rivit, joilla ei ole paria",
+    "tags": [
+     "siivous",
+     "haku"
+    ],
+    "when": "Kun haluat löytää kirjat, joita ei ole lainattu kertaakaan, tai kirjat ilman kirjailijaa.",
+    "sql": [
+     [
+      "SELECT k.nimi FROM kirja k LEFT JOIN lainaus l ON l.kirja_id = k.id WHERE l.id IS NULL;",
+      "Kirjat, joille ei löydy yhtään lainausta. LEFT JOIN pitää mukana myös parittomat rivit."
+     ],
+     [
+      "SELECT k.nimi FROM kirja k LEFT JOIN kirjailija a ON a.id = k.kirjailija_id WHERE a.id IS NULL;",
+      "Kirjat, joille ei löydy kirjailijaa."
+     ]
+    ]
+   },
+   {
+    "id": "sql-case",
+    "title": "Luokittele arvot",
+    "tags": [
+     "haku"
+    ],
+    "when": "Kun haluat tulokseen oman sarakkeen, joka kertoo luvun sijaan sanan.",
+    "sql": [
+     [
+      "SELECT nimi, CASE WHEN hinta IS NULL THEN 'kysy hintaa' WHEN hinta < 15 THEN 'edullinen' ELSE 'normaali' END AS hintaluokka FROM kirja;",
+      "Ehdot tarkistetaan järjestyksessä, ja ensimmäinen osuva voittaa. ELSE kattaa loput."
+     ]
+    ]
+   },
+   {
+    "id": "sql-pvm",
+    "title": "Päivämäärillä laskeminen",
+    "tags": [
+     "päivämäärät"
+    ],
+    "when": "Kun tarvitset eräpäivän tai haluat tietää, montako päivää kahden päivämäärän välissä on.",
+    "sql": [
+     [
+      "SELECT date('now');",
+      "Tämä päivä. Aika on UTC-aikaa."
+     ],
+     [
+      "SELECT datetime('now', 'localtime');",
+      "Päivä ja kellonaika koneen omalla aikavyöhykkeellä."
+     ],
+     [
+      "SELECT lainaaja, date(lainattu, '+14 days') AS erapaiva FROM lainaus;",
+      "Lisää päivämäärään 14 päivää."
+     ],
+     [
+      "SELECT lainaaja, julianday(palautettu) - julianday(lainattu) AS paivia FROM lainaus WHERE palautettu IS NOT NULL;",
+      "Päivien määrä kahden päivämäärän välillä."
+     ],
+     [
+      "SELECT strftime('%Y-%m', lainattu) AS kuukausi, COUNT(*) FROM lainaus GROUP BY kuukausi;",
+      "Lainaukset kuukausittain. strftime poimii päivämäärästä halutut osat."
+     ]
+    ],
+    "warn": "SQLiten päivämääräfunktiot ymmärtävät muodon VVVV-KK-PP, esimerkiksi 2026-10-01. Suomalainen 1.10.2026 antaa tulokseksi NULL."
+   },
+   {
+    "id": "sql-kokeile",
+    "title": "Kokeile muutosta turvallisesti",
+    "tags": [
+     "muutokset"
+    ],
+    "when": "Kun et ole varma, mitä UPDATE tai DELETE tekee, ja haluat perumismahdollisuuden.",
+    "sql": [
+     [
+      "BEGIN;",
+      "Aloittaa transaktion. Muutokset jäävät odottamaan."
+     ],
+     [
+      "UPDATE kirja SET hinta = round(hinta * 1.1, 2) WHERE kirjailija_id = 3;",
+      "Muutos, jota kokeillaan: hintaan 10 % lisää."
+     ],
+     [
+      "SELECT nimi, hinta FROM kirja WHERE kirjailija_id = 3;",
+      "Tarkista tulos."
+     ],
+     [
+      "ROLLBACK;",
+      "Peruu kaiken BEGINin jälkeen tehdyn. Jos tulos oli oikea, kirjoita sen sijaan COMMIT;"
+     ]
+    ],
+    "warn": "Ilman BEGIN-komentoa jokainen lause tallentuu heti, eikä paluuta ole. Kokeile WHERE-ehto ensin SELECT-kyselyllä ja vaihda se vasta sitten UPDATEen tai DELETEen."
+   },
+   {
+    "id": "sql-lisaa",
+    "title": "Lisää rivi ja hae sen tunnus",
+    "tags": [
+     "muutokset"
+    ],
+    "when": "Kun lisäät rivin ja tarvitset sen id:n heti seuraavaan lisäykseen.",
+    "sql": [
+     [
+      "INSERT INTO kirjailija (nimi, maa) VALUES ('Oscar Wilde', 'Irlanti');",
+      "Lisää rivin. id jätetään pois, jolloin SQLite antaa sen itse."
+     ],
+     [
+      "SELECT last_insert_rowid();",
+      "Viimeksi lisätyn rivin id tässä istunnossa."
+     ],
+     [
+      ".changes on",
+      "Tästä eteenpäin SQLite kertoo jokaisen lauseen jälkeen, montako riviä muuttui."
+     ]
+    ]
+   },
+   {
+    "id": "sql-varmuus",
+    "title": "Varmuuskopioi tietokanta",
+    "tags": [
+     "tiedostot",
+     "muutokset"
+    ],
+    "when": "Ennen isoa muutosta tai kun haluat palauttaa tehtävän tietokannan kokonaisena.",
+    "sql": [
+     [
+      ".backup varmuus.db",
+      "Kopioi koko tietokannan uuteen tiedostoon."
+     ],
+     [
+      ".output kirjasto-dump.sql",
+      "Ohjaa tulosteen tiedostoon, kunnes kirjoitat .output ilman tiedostonimeä."
+     ],
+     [
+      ".dump",
+      "Kirjoittaa koko tietokannan SQL-lauseina, joilla sen voi rakentaa uudelleen."
+     ],
+     [
+      ".output",
+      "Palauttaa tulosteen ruudulle."
+     ]
+    ],
+    "warn": ".dump-tiedosto on tavallista tekstiä, joten sen voi avata muistiossa ja ajaa .read-komennolla toiseen tietokantaan."
+   },
+   {
+    "id": "sql-apu",
+    "title": "Siivoa ruutu ja kysy apua",
+    "tags": [
+     "perusteet"
+    ],
+    "when": "Kun ruutu on täynnä tai et muista pistekomennon valitsimia.",
+    "sql": [
+     [
+      ".help",
+      "Listaa kaikki pistekomennot."
+     ],
+     [
+      ".help import",
+      "Näyttää yhden komennon ohjeen."
+     ]
+    ],
+    "cmd": [
+     [
+      ".shell cls",
+      "Tyhjentää ruudun. .shell ajaa komennon Windowsin komentokehotteessa."
+     ]
+    ],
+    "sh": [
+     [
+      ".shell clear",
+      "Tyhjentää ruudun. .shell ajaa komennon päätteessä."
+     ]
+    ]
+   }
+  ];
+
   const ROMAN = n => [["X",10],["IX",9],["V",5],["IV",4],["I",1]].reduce((s, [r, v]) => { while (n >= v) { s += r; n -= v; } return s; }, "");
   const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
 
   let shell = store.get("grimoire.shell") === "sh" ? "sh" : "cmd";
-  let tag = "perusteet", query = "";
+  const VOLS = {
+    cmd: { spells: SPELLS, first: "perusteet", hint: "hae: kopioi, ip, poista…", label: "osa 1: komentorivi" },
+    sql: { spells: SQL, first: "perusteet", hint: "hae: csv, null, tuplat…", label: "osa 2: sql-reseptit" }
+  };
+  let vol = location.hash === "#sql" || /^#sql-/.test(location.hash) ? "sql" : "cmd";
+  let tag = VOLS[vol].first, query = "";
 
-  /* Render cards once; filtering only toggles hidden */
   const list = document.getElementById("spells");
-  list.innerHTML = SPELLS.map((s, i) => `
+  const tagBox = document.getElementById("tags");
+  const q = document.getElementById("q");
+  const volBtns = document.querySelectorAll("[data-vol]:is(button)");
+  const shellBtns = document.querySelectorAll("[data-shell]");
+
+  function line([c, d]) { return `<li class="line"><code>${esc(c)}</code><p>${esc(d)}</p><button class="copy" type="button" aria-label="Kopioi ${esc(c)}">kopioi</button></li>`; }
+  function lines(arr, f) { return arr && arr.length ? `<ol class="lines" data-for="${f}">${arr.map(line).join("")}</ol>` : ""; }
+
+  /* Render the chosen volume; filtering only toggles hidden */
+  function render() {
+    const V = VOLS[vol];
+    list.innerHTML = V.spells.map((s, i) => `
     <article class="spell" id="${s.id}" aria-labelledby="t-${s.id}">
-      <div class="spell-head"><span class="num">Loitsu ${ROMAN(i + 1)}</span><span class="spell-tags">${s.tags.map(t => `<span>${t}</span>`).join("")}</span></div>
+      <div class="spell-head"><span class="num">${vol === "sql" ? "Resepti" : "Loitsu"} ${ROMAN(i + 1)}</span><span class="spell-tags">${s.tags.map(t => `<span>${t}</span>`).join("")}</span></div>
       <h2 id="t-${s.id}">${esc(s.title)}</h2>
       <p class="when">${esc(s.when)}</p>
-      <ol class="lines" data-for="cmd">${s.cmd.map(line).join("")}</ol>
-      <ol class="lines" data-for="sh">${s.sh.map(line).join("")}</ol>
+      ${s.osFirst || !s.sql ? lines(s.cmd, "cmd") + lines(s.sh, "sh") + lines(s.sql, "all") : lines(s.sql, "all") + lines(s.cmd, "cmd") + lines(s.sh, "sh")}
       ${s.warn ? `<div class="warn"><b>Varoitus</b><p>${esc(s.warn)}</p></div>` : ""}
     </article>`).join("");
-  function line([c, d]) { return `<li class="line"><code>${esc(c)}</code><p>${esc(d)}</p><button class="copy" type="button" aria-label="Kopioi ${esc(c)}">kopioi</button></li>`; }
+    const tags = [...new Set(V.spells.flatMap(s => s.tags)), "kaikki"];
+    tagBox.innerHTML = tags.map(t => `<button class="tag" type="button" data-tag="${t}" aria-pressed="${t === tag}">${t}</button>`).join("");
+    q.placeholder = V.hint;
+    q.setAttribute("aria-label", vol === "sql" ? "Hae reseptejä" : "Hae loitsuja");
+    document.querySelectorAll("section.tips").forEach(t => { t.hidden = t.dataset.vol !== vol; });
+    document.getElementById("vol-label").textContent = V.label;
+    volBtns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.vol === vol)));
+  }
 
-  /* Tag chips */
-  const tags = [...new Set(SPELLS.flatMap(s => s.tags)), "kaikki"];
-  const tagBox = document.getElementById("tags");
-  tagBox.innerHTML = tags.map(t => `<button class="tag" type="button" data-tag="${t}" aria-pressed="${t === tag}">${t}</button>`).join("");
+  volBtns.forEach(b => b.addEventListener("click", () => {
+    if (b.dataset.vol === vol) return;
+    vol = b.dataset.vol; tag = VOLS[vol].first; query = ""; q.value = "";
+    try { history.replaceState(null, "", vol === "sql" ? "#sql" : location.pathname + location.search); } catch (e) {}
+    render(); apply();
+  }));
   tagBox.addEventListener("click", e => { const b = e.target.closest("[data-tag]"); if (!b) return; tag = b.dataset.tag; apply(); });
-
-  /* Search */
-  const q = document.getElementById("q");
   q.addEventListener("input", () => { query = q.value.trim().toLowerCase(); apply(); });
-
-  /* Shell switch */
-  const shellBtns = document.querySelectorAll("[data-shell]");
   shellBtns.forEach(b => b.addEventListener("click", () => { shell = b.dataset.shell; store.set("grimoire.shell", shell); apply(); }));
 
   function apply() {
+    const spells = VOLS[vol].spells, noun = vol === "sql" ? "reseptiä" : "loitsua";
     let shown = 0;
-    SPELLS.forEach(s => {
-      const hay = [s.title, s.when, s.warn || "", ...s.tags, ...s[shell].flat()].join(" ").toLowerCase();
+    spells.forEach(s => {
+      const hay = [s.title, s.when, s.warn || "", ...s.tags, ...(s[shell] || []).flat(), ...(s.sql || []).flat()].join(" ").toLowerCase();
       const ok = (tag === "kaikki" || s.tags.includes(tag)) && (!query || query.split(/\s+/).every(w => hay.includes(w)));
       const el = document.getElementById(s.id);
       el.hidden = !ok; if (ok) shown++;
-      el.querySelectorAll(".lines").forEach(l => { l.hidden = l.dataset.for !== shell; });
+      el.querySelectorAll(".lines").forEach(l => { l.hidden = l.dataset.for !== "all" && l.dataset.for !== shell; });
     });
     tagBox.querySelectorAll("[data-tag]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.tag === tag)));
     shellBtns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.shell === shell)));
-    document.getElementById("count").textContent = shown === SPELLS.length ? `${shown} loitsua` : `${shown} / ${SPELLS.length} loitsua`;
-    document.getElementById("empty").hidden = shown > 0;
+    document.getElementById("count").textContent = shown === spells.length ? `${shown} ${noun}` : `${shown} / ${spells.length} ${noun}`;
+    const empty = document.getElementById("empty");
+    empty.hidden = shown > 0;
+    empty.textContent = `Yhtään ${vol === "sql" ? "reseptiä" : "loitsua"} ei löytynyt. Kokeile toista sanaa tai valitse aiheeksi kaikki.`;
   }
+  render();
 
   /* Copy one line */
   list.addEventListener("click", e => {
@@ -404,6 +886,7 @@ h1 em { color: var(--ink); }
   themeBtn.addEventListener("click", () => { theme = theme === "light" ? "dark" : "light"; applyTheme(theme); store.set("marginalia.theme", theme); });
 
   apply();
+  if (location.hash.length > 4) { const t = document.getElementById(location.hash.slice(1)); if (t) { tag = "kaikki"; apply(); t.scrollIntoView(); } }
 })();
 </script>
 <script>(function(){var c=document.getElementById("bookcover");if(!c)return;try{if(sessionStorage.getItem("opened-grimoire")){c.remove();return;}sessionStorage.setItem("opened-grimoire","1");}catch(e){}c.addEventListener("animationend",function(){c.remove();});setTimeout(function(){if(c.parentNode)c.remove();},2500);})();</script>
