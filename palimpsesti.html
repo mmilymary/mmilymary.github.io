@@ -313,6 +313,7 @@ button:disabled{cursor:default}
     <div class="q">
       <div class="lbl">// kehdot. katsominen ei maksa mitään. valitse kehto, jota ei ole kirjattu.</div>
       <div class="objs" id="cribs"></div>
+      <div class="inspect" id="cribLook" aria-live="polite"><p class="hint">// valitse kehto. katsominen ei maksa mitään. väärän kehdon tutkiminen maksaa.</p></div>
       <div class="lbl">// klinikan luettelo. sivun lukeminen maksaa eheyttä.</div>
       <div class="books" id="ledger"></div>
       <div id="ledgerRead"></div>
@@ -858,7 +859,7 @@ function sendTo(st,b){
   if(S.wrong===2)msg+='\n// vihje: paikka voi olla olemassa, vaikka sen nimi ei vielä ole.';
   if(S.wrong===4)msg+='\n// vihje: yksi kaupungeista kantaa nimeä, jonka se saa vasta 1900-luvulla.';
   $('logT4').classList.add('bad');$('logT4').textContent=msg;
-  hurt(15);
+  if(!hurt(15))lookCrib(n,b);
 }
 
 /* JULES III – KLINIKAN ARKISTO */
@@ -881,7 +882,8 @@ function startJ3(){
     'Huoneen perällä on hylly, ja hyllyllä on klinikan luettelo. Jules arkistoi sen kirjaston kellariin kymmenen vuotta sitten, kun professori pyysi. Hän kirjoitti arkistointimerkinnät sivujen reunoihin eikä lukenut, mitä sivuilla itse lukee.'
   ]);
   const cb=$('cribs');cb.innerHTML='';
-  CRIBS.forEach(n=>{const b=document.createElement('button');b.className='obj';b.textContent='Kehto n:o '+n;b.addEventListener('click',()=>pickCrib(n,b));cb.appendChild(b)});
+  CRIBS.forEach(n=>{const b=document.createElement('button');b.className='obj';b.textContent='Kehto n:o '+n;b.addEventListener('click',()=>lookCrib(n,b));cb.appendChild(b)});
+  $('cribLook').innerHTML='<p class="hint">// valitse kehto. katsominen ei maksa mitään. väärän kehdon tutkiminen maksaa.</p>';
   renderLedger();$('ledgerRead').innerHTML='';$('logJ3').textContent='';$('logJ3').classList.remove('bad');
   show('s-j3');
 }
@@ -902,6 +904,16 @@ function readLedger(i){
   $('logJ3').classList.remove('bad');
   $('logJ3').textContent='// sivu muuttuu merkeiksi luettaessa. eheys −10';
   if(!hurt(10))renderLedger();
+}
+function lookCrib(n,b){
+  [...$('cribs').children].forEach(x=>x.classList.toggle('on',x===b));
+  const pg=LEDGER.findIndex(p=>p.some(r=>r[0]===n));
+  const d=n===8
+    ?'Messinkikyltti on tummunut, ja numeron alla on klinikan leima. Kehdon pohjalla on ohut, harmaa huopa. Ruuvien kannat ovat kirkkaat.'
+    :'Messinkikyltti on tummunut, ja numeron alla on klinikan leima. Kehdon pohjalla on ohut, harmaa huopa. Ruuvien kannat ovat ruosteessa.';
+  $('cribLook').innerHTML='<p class="h">Kehto n:o '+n+'</p><p class="d"></p>'+(b.disabled?'':'<div class="actions"><button class="primary" id="cribTake">&gt; katso kehdon pohjaan</button></div>');
+  $('cribLook').querySelector('.d').textContent=d;
+  if(!b.disabled)$('cribTake').addEventListener('click',()=>pickCrib(n,b));
 }
 function pickCrib(n,b){
   if(n===8){
@@ -1182,7 +1194,7 @@ if(location.hash==='#koepaivakirja'){S.startTime=Date.now();showSecret()}else ty
 <script>
 /* KUVAT JA GLITCH (kokeiluversio) */
 const IMG={"yo": "img/yo.jpg", "sanelu": "img/sanelu.jpg", "poyta": "img/poyta.jpg", "kortisto": "img/kortisto.jpg", "ovi": "img/ovi.jpg", "lab": "img/lab.jpg", "lennatin": "img/lennatin.jpg", "kehdot": "img/kehdot.jpg", "kello": "img/kello.jpg"};
-const SHOTS={'s-choose':'yo','s-t1':'sanelu','s-t2':'poyta','s-ch1':'kortisto','s-ch2':'ovi','s-ch3':'lab','s-t4':'lennatin','s-j3':'kehdot','s-j4':'lennatin','s-final':'lennatin'};
+const SHOTS={'s-choose':'yo','s-t1':'sanelu','s-t2':'poyta','s-ch1':'kortisto','s-ch2':'ovi','s-ch3':'lab','s-t4':'lennatin','s-j3':'lab','s-j4':'lennatin','s-final':'lennatin'};
 const ALT={yo:'Vesperin yliopisto sumuisena yönä.',sanelu:'Saneluhuone, jossa on fonografi. Lukitun oven alta tulee sinistä valoa.',poyta:'Kirjurin pöytä, jolla on käsinkirjoitettu sivu ja mustepullo.',kortisto:'Kirjaston kellarin käytävä ja kortistokaappi.',ovi:'Rautaovi, jossa on musta lasiruutu avaimenreiän paikalla.',lab:'Professorin laboratorio, pöydällä kolme kirjaa.',lennatin:'Lennätinhuone, nojatuoli ja hehkuva lasilevy.',kehdot:'Rivi tyhjiä rautakehtoja tiiliseinän vieressä.',kello:'Suljettu messinkinen taskukello kivilattialla.'};
 const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
 function makeShot(key){
@@ -1221,6 +1233,9 @@ inspect=function(id,keep){_inspect(id,keep);if(id==='kello'){const f=makeShot('k
       if(c.length){const b=c[Math.random()*c.length|0];b.classList.add('flick');setTimeout(()=>b.classList.remove('flick'),180+Math.random()*140)}}
     tick()},3500+Math.random()*3500)})();
 })();
+
+/* julesin luku III: laboratorio ensin, kehtohuone kun hän siirtyy sinne */
+new MutationObserver(()=>{const t=$('j3text'),ps=t.querySelectorAll('p');if(ps[0]&&!t.querySelector('.shot'))ps[0].after(makeShot('kehdot'))}).observe($('j3text'),{childList:true});
 </script>
 </body>
 </html>
