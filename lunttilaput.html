@@ -119,6 +119,12 @@ th { font: 400 1.05rem var(--font-ui); color: var(--muted); }
 td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(--neon); }
 .break { margin-top: var(--s7); padding: var(--s4); border: 1px solid var(--line); border-radius: var(--radius); color: var(--muted); font-style: italic; text-align: center; }
 
+.docs { margin-top: var(--s5); font: 400 1.05rem/1.5 var(--font-ui); color: var(--muted); }
+.docs span { display: block; color: var(--neon); }
+.docs a { margin-right: .2rem; }
+.explain { border-top: 1px dashed var(--line); padding: .65rem 0 .4rem; }
+.explain-label { font: 400 1.15rem var(--font-ui); color: var(--neon); display: block; margin-bottom: .2rem; }
+.explain p { margin: 0; font-style: italic; }
 /* Exercise card */
 .task { margin-top: var(--s6); padding: 1.2rem 1.25rem .5rem; position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; }
 .task-label { font: 400 1.15rem/1 var(--font-ui); color: var(--neon); display: flex; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
@@ -803,10 +809,22 @@ SELECT nimi FROM kirjailija;
 -- Bram Stoker
 -- Emily Brontë</code></pre></div>
 
+  <h3>Hyvä tietää</h3>
+  <ul>
+    <li>SQL jaetaan usein kolmeen osaan. <strong>DDL</strong> määrittää rakenteen (<code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>), <strong>DML</strong> käsittelee tietoja (<code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>) ja <strong>DCL</strong> hallitsee käyttöoikeuksia (<code>GRANT</code>). SQLitessa ei ole käyttäjiä, joten DCL-käskyjä siinä ei ole.</li>
+    <li>SQL-käskyissä isoilla ja pienillä kirjaimilla ei ole väliä, merkkijonoissa on.</li>
+    <li>Jos painat Enteriä ennen puolipistettä, SQLite näyttää jatkokehotteen <code>...&gt;</code> ja odottaa loppua. Jos kaikki menee sekaisin, Ctrl+C keskeyttää.</li>
+  </ul>
+  <div class="code"><pre><code class="language-sql">select 7 * 6;                    -- 42
+SELECT 'Hei, ' || 'maailma!';    -- Hei, maailma!   (|| yhdistää merkkijonot)
+select 'HEI' = 'hei';            -- 0 eli epätosi</code></pre></div>
+
   <div class="pit">
     <span class="pit-label">Sudenkuoppa</span>
     <p>Teksti kirjoitetaan <em>yksinkertaisiin</em> lainausmerkkeihin: <code>'Irlanti'</code>. Kaksinkertaiset lainausmerkit tarkoittavat SQL:ssä sarakkeen tai taulun nimeä, ja SQLite hyväksyy ne joskus tekstinä, mikä tekee virheistä vaikeita huomata.</p>
   </div>
+
+  <p class="docs"><span>SQLiten dokumentaatio</span> <a href="https://www.sqlite.org/cli.html" target="_blank" rel="noopener">Komentotulkki ja pistekomennot</a></p>
 
   <div class="task">
     <span class="task-label">Harjoitus 1</span>
@@ -818,6 +836,7 @@ SELECT nimi FROM kirjailija;
 -- H. P. Lovecraft  Yhdysvallat
 -- Bram Stoker      Irlanti
 -- Emily Brontë     Iso-Britannia</code></pre></div></details>
+    <div class="explain"><span class="explain-label">Selitä omin sanoin</span><p>Mitä eroa on komennolla <code>.tables</code> ja SQL-käskyllä <code>SELECT</code>? Miksi toinen päättyy puolipisteeseen ja toinen ei?</p></div>
   </div>
 </section>
 
@@ -862,6 +881,8 @@ LIMIT 3;
 -- 3   3.5   1</code></pre></div>
   </div>
 
+  <p class="docs"><span>SQLiten dokumentaatio</span> <a href="https://www.sqlite.org/lang_select.html" target="_blank" rel="noopener">SELECT</a></p>
+
   <div class="task">
     <span class="task-label">Harjoitus 2</span>
     <p>Listaa kolme ohuinta kirjaa ja niiden sivumäärät, ohuin ensin.</p>
@@ -870,6 +891,7 @@ LIMIT 3;
 -- Korppi               48
 -- Usherin talon häviö  64
 -- Cthulhun kutsu       80</code></pre></div></details>
+    <div class="explain"><span class="explain-label">Selitä omin sanoin</span><p>Jos <code>ORDER BY</code> jätetään pois, mitkä rivit <code>LIMIT 3</code> palauttaa? Voiko tulokseen luottaa?</p></div>
   </div>
 </section>
 
@@ -925,6 +947,8 @@ SELECT nimi, IFNULL(hinta, 'ei tiedossa') FROM kirja WHERE id IN (5, 6);
     <p><code>LIKE</code> ei välitä isoista ja pienistä kirjaimista, mutta vain a–z-kirjaimilla. Ä ja ö lasketaan eri merkeiksi isona ja pienenä: <code>'Ä' LIKE 'ä'</code> on epätosi.</p>
   </div>
 
+  <p class="docs"><span>SQLiten dokumentaatio</span> <a href="https://www.sqlite.org/lang_expr.html" target="_blank" rel="noopener">Lausekkeet: vertailut, LIKE, BETWEEN, IN, IS NULL</a></p>
+
   <div class="task">
     <span class="task-label">Harjoitus 3</span>
     <p>Hae 1800-luvulla julkaistut kirjat, joiden hinta on tiedossa. Näytä nimi, vuosi ja hinta vanhimmasta uusimpaan.</p>
@@ -939,6 +963,7 @@ ORDER BY vuosi;
 -- Humiseva harju       1847  16.9
 -- Kalevala             1849  22.0
 -- Dracula              1897  24.0</code></pre></div></details>
+    <div class="explain"><span class="explain-label">Selitä omin sanoin</span><p>Miksi <code>WHERE hinta = NULL</code> ei löydä yhtään riviä, vaikka taulussa on tyhjiä hintoja?</p></div>
   </div>
 </section>
 
@@ -970,6 +995,8 @@ DELETE FROM lainaus WHERE palautettu IS NOT NULL;
 DELETE   FROM lainaus WHERE palautettu IS NOT NULL;   -- 2. poista</code></pre></div>
   </div>
 
+  <p class="docs"><span>SQLiten dokumentaatio</span> <a href="https://www.sqlite.org/lang_insert.html" target="_blank" rel="noopener">INSERT</a> · <a href="https://www.sqlite.org/lang_update.html" target="_blank" rel="noopener">UPDATE</a> · <a href="https://www.sqlite.org/lang_delete.html" target="_blank" rel="noopener">DELETE</a></p>
+
   <div class="task">
     <span class="task-label">Harjoitus 4</span>
     <p>Lisää Mary Shelleylle kirja <em>Viimeinen ihminen</em> (1826, 480 sivua, hinta ei tiedossa). Merkitse sitten Gracen Dracula-laina palautetuksi 1.10.2026.</p>
@@ -984,6 +1011,7 @@ WHERE lainaaja = 'Grace' AND kirja_id = 3;
 SELECT * FROM lainaus WHERE lainaaja = 'Grace';
 -- 4  5  Grace  2026-09-18  NULL
 -- 5  3  Grace  2026-09-25  2026-10-01</code></pre></div></details>
+    <div class="explain"><span class="explain-label">Selitä omin sanoin</span><p>Miksi <code>UPDATE</code>- ja <code>DELETE</code>-käskyn ehto kannattaa ajaa ensin <code>SELECT</code>-kyselynä?</p></div>
   </div>
 </section>
 
@@ -1035,6 +1063,8 @@ ORDER BY a.nimi, k.nimi;
 -- Siirrä ehto WHEREen, niin hän katoaa kokonaan.</code></pre></div>
   </div>
 
+  <p class="docs"><span>SQLiten dokumentaatio</span> <a href="https://www.sqlite.org/lang_select.html" target="_blank" rel="noopener">SELECT ja liitokset</a></p>
+
   <div class="task">
     <span class="task-label">Harjoitus 5</span>
     <p>Listaa jokaisesta lainasta päivä, lainaaja, kirjan nimi ja kirjailija. Uusin laina ensin.</p>
@@ -1049,6 +1079,7 @@ ORDER BY l.lainattu DESC;
 -- 2026-09-15  Ada    Frankenstein    Mary Shelley
 -- 2026-09-10  Linus  Humiseva harju  Emily Brontë
 -- 2026-09-01  Ada    Dracula         Bram Stoker</code></pre></div></details>
+    <div class="explain"><span class="explain-label">Selitä omin sanoin</span><p>Miksi Kalevala puuttuu tavallisen <code>JOIN</code>-liitoksen tuloksesta mutta näkyy <code>LEFT JOIN</code> -liitoksessa?</p></div>
   </div>
 </section>
 
@@ -1103,6 +1134,8 @@ DROP TABLE IF EXISTS vanha;                   -- poistaa taulun, jos se on olema
     <p>SQLite ei tarkista viiteavaimia oletuksena. <code>PRAGMA foreign_keys = ON;</code> pitää antaa jokaisen yhteyden alussa, muuten kirja voi viitata kirjailijaan, jota ei ole.</p>
   </div>
 
+  <p class="docs"><span>SQLiten dokumentaatio</span> <a href="https://www.sqlite.org/lang_createtable.html" target="_blank" rel="noopener">CREATE TABLE</a> · <a href="https://www.sqlite.org/foreignkeys.html" target="_blank" rel="noopener">Viiteavaimet</a> · <a href="https://www.sqlite.org/lang_altertable.html" target="_blank" rel="noopener">ALTER TABLE</a></p>
+
   <div class="task">
     <span class="task-label">Harjoitus 6</span>
     <p>Luo taulu <code>arvostelu</code>: id, kirja (pakollinen, viittaa kirjaan), tähdet 1–5 (pakollinen) ja vapaa teksti. Lisää yksi arvostelu Draculalle.</p>
@@ -1119,6 +1152,7 @@ VALUES (3, 5, 'Kreivi vei yöunet.');
 
 SELECT * FROM arvostelu;
 -- 1  3  5  Kreivi vei yöunet.</code></pre></div></details>
+    <div class="explain"><span class="explain-label">Selitä omin sanoin</span><p>Mitä hyötyä on siitä, että tietokanta itse hylkää virheellisen rivin, eikä tarkistusta jätetä pelkästään sovelluksen tehtäväksi?</p></div>
   </div>
 </section>
 
@@ -1157,6 +1191,8 @@ EXPLAIN QUERY PLAN SELECT * FROM kirja WHERE vuosi = 1897;
     <p>Indeksi ei ole ilmainen. Se vie tilaa, ja jokainen <code>INSERT</code> ja <code>UPDATE</code> joutuu päivittämään myös indeksin. Indeksoi sarakkeet, joilla oikeasti haetaan tai liitetään.</p>
   </div>
 
+  <p class="docs"><span>SQLiten dokumentaatio</span> <a href="https://www.sqlite.org/lang_createview.html" target="_blank" rel="noopener">CREATE VIEW</a> · <a href="https://www.sqlite.org/lang_createindex.html" target="_blank" rel="noopener">CREATE INDEX</a> · <a href="https://www.sqlite.org/eqp.html" target="_blank" rel="noopener">EXPLAIN QUERY PLAN</a></p>
+
   <div class="task">
     <span class="task-label">Harjoitus 7</span>
     <p>Tee näkymä <code>hinnasto</code>, jossa on kirjan nimi ja hinta. Kirjat ilman hintaa jätetään pois. Hae näkymästä kolme kalleinta.</p>
@@ -1168,6 +1204,7 @@ SELECT * FROM hinnasto ORDER BY hinta DESC LIMIT 3;
 -- Dracula             24.0
 -- Kalevala            22.0
 -- Hulluuden vuorilla  19.5</code></pre></div></details>
+    <div class="explain"><span class="explain-label">Selitä omin sanoin</span><p>Indeksi nopeuttaa hakuja. Miksi sitä ei silti kannata lisätä jokaiseen sarakkeeseen?</p></div>
   </div>
 </section>
 
@@ -1219,6 +1256,8 @@ FROM kirja ORDER BY sivut DESC LIMIT 4;
     <p>Jos sarake on <code>SELECT</code>-osassa mutta ei koostefunktiossa eikä <code>GROUP BY</code>:ssä, SQLite valitsee siihen arvon jostain ryhmän rivistä ilman virheilmoitusta. Esimerkiksi SQL Server ja PostgreSQL antavat tästä virheen, joten kaikki <code>SELECT</code>-osan tavalliset sarakkeet kannattaa kirjoittaa myös <code>GROUP BY</code>:hin.</p>
   </div>
 
+  <p class="docs"><span>SQLiten dokumentaatio</span> <a href="https://www.sqlite.org/lang_corefunc.html" target="_blank" rel="noopener">Perusfunktiot</a> · <a href="https://www.sqlite.org/lang_aggfunc.html" target="_blank" rel="noopener">Koostefunktiot</a> · <a href="https://www.sqlite.org/lang_datefunc.html" target="_blank" rel="noopener">Päivämäärät ja ajat</a></p>
+
   <div class="task">
     <span class="task-label">Harjoitus 8</span>
     <p>Laske jokaiselle maalle kirjojen määrä ja keskimääräinen sivumäärä kokonaislukuna. Eniten kirjoja ensin.</p>
@@ -1231,6 +1270,7 @@ ORDER BY kirjoja DESC;
 -- Yhdysvallat    5  125.0
 -- Iso-Britannia  2  348.0
 -- Irlanti        1  488.0</code></pre></div></details>
+    <div class="explain"><span class="explain-label">Selitä omin sanoin</span><p>Mitä eroa on <code>WHERE</code>- ja <code>HAVING</code>-ehdolla? Miksi <code>COUNT(*)</code> ja <code>COUNT(hinta)</code> antavat eri tuloksen?</p></div>
   </div>
 </section>
 
@@ -1278,6 +1318,8 @@ SELECT COUNT(*) FROM lainaus;      -- 5</code></pre></div>
     <p>Virhe transaktion keskellä ei peru aiempia muutoksia itsestään. Ne jäävät odottamaan, ja jos seuraavaksi annetaan <code>COMMIT</code>, puolikas muutos tallentuu. Virheen jälkeen tulee <code>ROLLBACK</code>.</p>
   </div>
 
+  <p class="docs"><span>SQLiten dokumentaatio</span> <a href="https://www.sqlite.org/lang_transaction.html" target="_blank" rel="noopener">Transaktiot</a></p>
+
   <div class="task">
     <span class="task-label">Harjoitus 9</span>
     <p>Ada palauttaa Frankensteinin 1.10.2026, ja Linus lainaa sen samana päivänä. Tee molemmat muutokset yhtenä transaktiona.</p>
@@ -1290,8 +1332,11 @@ COMMIT;
 SELECT * FROM lainaus WHERE kirja_id = 2;
 -- 2  2  Ada    2026-09-15  2026-10-01
 -- 6  2  Linus  2026-10-01  NULL</code></pre></div></details>
+    <div class="explain"><span class="explain-label">Selitä omin sanoin</span><p>Mitä tilisiirrolle tapahtuisi ilman transaktiota, jos virta katkeaisi kahden <code>UPDATE</code>-käskyn välissä?</p></div>
   </div>
 </section>
+
+<p class="break">to 10.12. Osa 10: harjoitustöiden ohjauskerta. Ei uutta asiaa, hyvä hetki kerrata.</p>
 
 
     </div>
