@@ -134,7 +134,6 @@ h1 em { color: var(--ink); }
 @keyframes coverOpen { 0% { transform: perspective(1800px) rotateY(0); opacity: 1; } 75% { opacity: 1; } 100% { transform: perspective(1800px) rotateY(-105deg); opacity: 0; visibility: hidden; } }
 @media (prefers-reduced-motion: reduce) { .bookcover { display: none; } }
 </style>
-<script data-goatcounter="https://mmilymary.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div class="bookcover" id="bookcover" aria-hidden="true"><span>Grimoire</span></div>
@@ -156,7 +155,7 @@ h1 em { color: var(--ink); }
   <ul class="volumes" aria-label="Kokoelmat">
     <li><button type="button" data-vol="cmd" aria-pressed="true">Komentorivi</button></li>
     <li><button type="button" data-vol="sql" aria-pressed="false">SQL-reseptit</button></li>
-    <li class="soon">Git <span>· tulossa</span></li>
+    <li><button type="button" data-vol="git" aria-pressed="false">Git</button></li>
     <li class="soon">Python <span>· tulossa</span></li>
   </ul>
 
@@ -193,7 +192,16 @@ h1 em { color: var(--ink); }
       <li>macOS:ssä sqlite3 on valmiina: avaa Pääte ja kirjoita <code>sqlite3</code>. Windowsiin lataa <a href="https://sqlite.org/download.html" target="_blank" rel="noopener">sqlite.org/download.html</a>-sivulta paketti <em>sqlite-tools-win-x64</em>, pura se kansioon ja käynnistä sqlite3.exe.</li>
       <li>SQL-lause loppuu puolipisteeseen. Jos kehote muuttuu jatkoriviksi, esimerkiksi <code>...&gt;</code>, puolipiste puuttuu. Kirjoita <code>;</code> ja paina Enter.</li>
       <li>Pisteellä alkavat komennot, kuten <code>.tables</code> ja <code>.mode</code>, ovat SQLiten omia apukomentoja. Niiden perään ei tule puolipistettä, ja vanhemmissa versioissa puolipiste antaa virheen.</li>
-      <li>Esimerkit käyttävät lunttilapun SQL-osion kirjastotietokantaa, jossa on taulut kirjailija, kirja ja lainaus.</li>
+    </ul>
+  </section>
+
+  <section class="tips" data-vol="git" aria-label="Hyvä tietää" hidden>
+    <h2>Hyvä tietää</h2>
+    <ul>
+      <li>Windowsiin Git asennetaan osoitteesta <a href="https://git-scm.com" target="_blank" rel="noopener">git-scm.com</a> (Git for Windows), minkä jälkeen se toimii komentokehotteessa. Macissa riittää kirjoittaa Päätteeseen <code>git --version</code>: jos Gitiä ei ole, kone tarjoutuu asentamaan komentorivityökalut.</li>
+      <li>Muutos kulkee kolmen vaiheen läpi: <code>git add</code> valitsee, <code>git commit</code> tallentaa omalle koneelle ja <code>git push</code> lähettää GitHubiin.</li>
+      <li>Kun lataat tiedostoja GitHubin sivulla (<em>Add files via upload</em>), sekin on commit. Tarkista ennen lataamista tiedoston nimi: jos laitteella on jo samanniminen tiedosto, selain voi lisätä nimeen numeron.</li>
+      <li>GitHub ei hyväksy komentorivillä tavallista salasanaa. Windowsissa Git for Windows avaa ensimmäisellä kerralla selainikkunan, jossa kirjaudut GitHubiin. Macissa salasanan tilalle kirjoitetaan GitHubin asetuksista luotu henkilökohtainen tunniste (personal access token), ellei koneelle ole asennettu Git Credential Manageria.</li>
     </ul>
   </section>
 
@@ -797,6 +805,397 @@ h1 em { color: var(--ink); }
    }
   ];
 
+  const GIT = [
+   {
+    "id": "git-alku",
+    "title": "Ensiasetukset",
+    "tags": [
+     "perusteet"
+    ],
+    "when": "Kerran uudella koneella, ennen ensimmäistä committia.",
+    "cmd": [
+     [
+      "git config --global core.autocrlf true",
+      "Windows käyttää rivinvaihtona eri merkkejä kuin muut. Tämä asetus muuntaa ne, ettei jokainen rivi näytä muuttuneelta."
+     ]
+    ],
+    "sh": [
+     [
+      "git config --global core.autocrlf input",
+      "Muuntaa vahingossa tulleet Windows-rivinvaihdot tavallisiksi, kun tallennat."
+     ]
+    ],
+    "all": [
+     [
+      "git --version",
+      "Kertoo, onko Git asennettu ja mikä versio."
+     ],
+     [
+      "git config --global user.name \"Mila Palviainen\"",
+      "Nimi, joka näkyy jokaisessa tallennuksessa."
+     ],
+     [
+      "git config --global user.email \"oma@osoite.fi\"",
+      "Sähköposti tallennuksiin. GitHub yhdistää tallennukset tiliisi tämän perusteella."
+     ],
+     [
+      "git config --global init.defaultBranch main",
+      "Uusien projektien päähaaran nimeksi tulee main, kuten GitHubissa."
+     ],
+     [
+      "git config --list",
+      "Näyttää kaikki asetukset."
+     ]
+    ]
+   },
+   {
+    "id": "git-kloonaa",
+    "title": "Hae projekti GitHubista koneelle",
+    "tags": [
+     "perusteet",
+     "github"
+    ],
+    "when": "Kun projekti on GitHubissa ja haluat työstää sitä omalla koneella.",
+    "all": [
+     [
+      "git clone https://github.com/mmilymary/mmilymary.github.io.git",
+      "Kopioi koko projektin historioineen uuteen kansioon."
+     ],
+     [
+      "cd mmilymary.github.io",
+      "Siirtyy kloonattuun kansioon."
+     ],
+     [
+      "git remote -v",
+      "Näyttää, mihin GitHub-osoitteeseen kansio on yhdistetty."
+     ]
+    ]
+   },
+   {
+    "id": "git-uusi",
+    "title": "Aloita uusi projekti",
+    "tags": [
+     "perusteet"
+    ],
+    "when": "Kun kansiossa on jo tiedostoja ja haluat alkaa seurata niitä Gitillä.",
+    "all": [
+     [
+      "git init",
+      "Tekee nykyisestä kansiosta Git-projektin. Kansioon syntyy piilotettu .git-kansio."
+     ],
+     [
+      "git add .",
+      "Ottaa mukaan kaikki kansion tiedostot."
+     ],
+     [
+      "git commit -m \"Ensimmäinen versio\"",
+      "Tallentaa ensimmäisen version."
+     ]
+    ],
+    "warn": "Älä aja git init -komentoa kotikansiossa tai työpöydällä. Silloin Git yrittää seurata kaikkia koneesi tiedostoja."
+   },
+   {
+    "id": "git-tila",
+    "title": "Mitä on muuttunut",
+    "tags": [
+     "perusteet"
+    ],
+    "when": "Aina ennen kuin tallennat tai lähetät mitään. Tämä on Gitin tärkein komento.",
+    "all": [
+     [
+      "git status",
+      "Näyttää muuttuneet, uudet ja tallennukseen valitut tiedostot."
+     ],
+     [
+      "git status -s",
+      "Sama lyhyesti: M = muuttunut, A = lisätty, ?? = Git ei vielä seuraa."
+     ],
+     [
+      "git diff",
+      "Näyttää muutokset rivi riviltä. Poistetut rivit alkavat miinuksella ja lisätyt plussalla."
+     ],
+     [
+      "git diff --staged",
+      "Näyttää vain ne muutokset, jotka olet jo valinnut tallennukseen."
+     ]
+    ]
+   },
+   {
+    "id": "git-tallenna",
+    "title": "Tallenna muutos",
+    "tags": [
+     "perusteet"
+    ],
+    "when": "Kun jokin kokonaisuus on valmis, esimerkiksi uusi sivu tai korjattu virhe.",
+    "all": [
+     [
+      "git add grimoire.html",
+      "Valitsee tiedoston seuraavaan tallennukseen."
+     ],
+     [
+      "git add .",
+      "Valitsee kaikki muuttuneet ja uudet tiedostot kansiosta."
+     ],
+     [
+      "git commit -m \"SQL-reseptit Grimoireen\"",
+      "Tallentaa valitut muutokset. Viesti kertoo, mitä muuttui."
+     ],
+     [
+      "git log --oneline -3",
+      "Tarkistaa, että tallennus näkyy historiassa."
+     ]
+    ],
+    "warn": "Tallennus (commit) on vasta omalla koneella. GitHubiin se menee vasta git push -komennolla."
+   },
+   {
+    "id": "git-push",
+    "title": "Lähetä GitHubiin ja hae sieltä",
+    "tags": [
+     "github"
+    ],
+    "when": "Kun tallennukset pitää saada verkkoon, tai kun olet muokannut tiedostoja GitHubin sivulla.",
+    "all": [
+     [
+      "git push",
+      "Lähettää omat tallennukset GitHubiin."
+     ],
+     [
+      "git push -u origin main",
+      "Ensimmäisellä kerralla: kertoo, mihin haaraan jatkossa lähetetään. Sen jälkeen pelkkä git push riittää."
+     ],
+     [
+      "git pull",
+      "Hakee GitHubista muutokset, joita koneellasi ei vielä ole."
+     ]
+    ],
+    "warn": "Jos olet ladannut tiedostoja GitHubin sivulla, aja git pull ennen omaa git push -komentoa. Muuten GitHub hylkää lähetyksen, koska sen historiassa on jotain, mitä koneellasi ei ole."
+   },
+   {
+    "id": "git-historia",
+    "title": "Selaa historiaa",
+    "tags": [
+     "historia"
+    ],
+    "when": "Kun haluat nähdä, mitä on tehty ja milloin.",
+    "all": [
+     [
+      "git log --oneline",
+      "Tallennukset riveittäin: lyhyt tunniste ja viesti. Poistu q-näppäimellä."
+     ],
+     [
+      "git log --oneline -- grimoire.html",
+      "Vain ne tallennukset, joissa tämä tiedosto muuttui."
+     ],
+     [
+      "git show --stat HEAD",
+      "Viimeisimmän tallennuksen tiedot ja muuttuneet tiedostot. HEAD tarkoittaa uusinta tallennusta."
+     ]
+    ]
+   },
+   {
+    "id": "git-peru",
+    "title": "Peru muutos ennen tallennusta",
+    "tags": [
+     "korjaus"
+    ],
+    "when": "Kun muokkasit tiedostoa ja haluat sen takaisin sellaiseksi kuin se oli viimeksi tallennettuna.",
+    "all": [
+     [
+      "git restore grimoire.html",
+      "Palauttaa tiedoston viimeksi tallennettuun versioon."
+     ],
+     [
+      "git restore --staged grimoire.html",
+      "Poistaa tiedoston tallennukseen valituista. Muutokset jäävät tiedostoon."
+     ]
+    ],
+    "warn": "git restore ilman --staged-valitsinta hävittää tallentamattomat muutokset. Niitä ei saa takaisin."
+   },
+   {
+    "id": "git-korjaa",
+    "title": "Korjaa viimeisin tallennus",
+    "tags": [
+     "korjaus"
+    ],
+    "when": "Kun commit-viestissä on kirjoitusvirhe tai yksi tiedosto jäi pois.",
+    "all": [
+     [
+      "git commit --amend -m \"Korjattu viesti\"",
+      "Vaihtaa viimeisimmän tallennuksen viestin."
+     ],
+     [
+      "git add unohtunut.html",
+      "Valitsee unohtuneen tiedoston."
+     ],
+     [
+      "git commit --amend --no-edit",
+      "Lisää sen viimeisimpään tallennukseen ja pitää viestin ennallaan."
+     ]
+    ],
+    "warn": "Käytä --amend-valitsinta vain tallennuksiin, joita et ole vielä lähettänyt GitHubiin."
+   },
+   {
+    "id": "git-revert",
+    "title": "Peru tallennus, joka on jo GitHubissa",
+    "tags": [
+     "korjaus",
+     "github"
+    ],
+    "when": "Kun GitHubiin meni jotain rikki ja haluat edellisen version takaisin.",
+    "all": [
+     [
+      "git log --oneline",
+      "Etsi perutun tallennuksen tunniste, esimerkiksi a0874d4."
+     ],
+     [
+      "git revert --no-edit a0874d4",
+      "Tekee uuden tallennuksen, joka kumoaa valitun. Historia säilyy, joten tämä on turvallista."
+     ],
+     [
+      "git push",
+      "Lähettää korjauksen GitHubiin."
+     ]
+    ],
+    "warn": "Ilman --no-edit-valitsinta Git avaa tekstieditorin viestiä varten. Jos editori on Vim, poistu kirjoittamalla :wq ja painamalla Enter."
+   },
+   {
+    "id": "git-nimea",
+    "title": "Nimeä tai poista tiedosto",
+    "tags": [
+     "tiedostot"
+    ],
+    "when": "Kun tiedosto meni väärällä nimellä, esimerkiksi grimoire-1.html, tai vanha tiedosto pitää poistaa.",
+    "all": [
+     [
+      "git rm grimoire.html",
+      "Poistaa vanhan tiedoston sekä kansiosta että seurannasta."
+     ],
+     [
+      "git mv grimoire-1.html grimoire.html",
+      "Nimeää tiedoston uudelleen niin, että Git tietää sen olevan sama tiedosto."
+     ],
+     [
+      "git commit -m \"Grimoire oikealla nimellä\"",
+      "Tallentaa muutoksen."
+     ]
+    ]
+   },
+   {
+    "id": "git-ohita",
+    "title": "Jätä tiedostot seurannan ulkopuolelle",
+    "tags": [
+     "tiedostot"
+    ],
+    "when": "Kun kansiossa on tiedostoja, joita ei kuulu viedä GitHubiin, kuten tietokantoja tai salasanoja.",
+    "cmd": [
+     [
+      "echo *.db>> .gitignore",
+      "Lisää .gitignore-tiedostoon rivin *.db. Älä laita lainausmerkkejä, cmd kirjoittaisi ne tiedostoon."
+     ]
+    ],
+    "sh": [
+     [
+      "echo \"*.db\" >> .gitignore",
+      "Lisää .gitignore-tiedostoon rivin *.db."
+     ]
+    ],
+    "all": [
+     [
+      "git status",
+      "Tarkistaa, että .db-tiedostot eivät enää näy listassa."
+     ],
+     [
+      "git rm --cached kirjasto.db",
+      "Lopettaa jo seuratun tiedoston seuraamisen. Tiedosto jää koneelle."
+     ]
+    ],
+    "warn": ".gitignore koskee vain tiedostoja, joita Git ei vielä seuraa. Jo tallennettu tiedosto pitää ensin poistaa seurannasta git rm --cached -komennolla."
+   },
+   {
+    "id": "git-haara",
+    "title": "Kokeile haarassa",
+    "tags": [
+     "haarat"
+    ],
+    "when": "Kun haluat kokeilla jotain isompaa rikkomatta toimivaa versiota.",
+    "all": [
+     [
+      "git switch -c naturalia",
+      "Tekee uuden haaran ja siirtyy siihen. Täällä tehdyt tallennukset eivät näy main-haarassa."
+     ],
+     [
+      "git branch",
+      "Listaa haarat. Tähti näyttää, missä olet."
+     ],
+     [
+      "git switch main",
+      "Palaa päähaaraan."
+     ],
+     [
+      "git merge naturalia",
+      "Yhdistää kokeiluhaaran muutokset päähaaraan."
+     ],
+     [
+      "git branch -d naturalia",
+      "Poistaa haaran, kun se on yhdistetty."
+     ]
+    ]
+   },
+   {
+    "id": "git-konflikti",
+    "title": "Kun yhdistäminen menee ristiin",
+    "tags": [
+     "haarat",
+     "korjaus"
+    ],
+    "when": "Kun Git ilmoittaa CONFLICT: samaa kohtaa on muutettu kahdessa paikassa.",
+    "all": [
+     [
+      "git status",
+      "Näyttää, missä tiedostoissa on ristiriita."
+     ],
+     [
+      "<<<<<<< HEAD",
+      "Tiedostossa ristiriidan alku. Tämän ja =======-rivin välissä on oma versiosi, sen jälkeen toinen. Valitse oikea teksti ja poista merkkirivit."
+     ],
+     [
+      "git add grimoire.html",
+      "Kertoo Gitille, että ristiriita on ratkaistu."
+     ],
+     [
+      "git commit --no-edit",
+      "Viimeistelee yhdistämisen valmiilla viestillä."
+     ],
+     [
+      "git merge --abort",
+      "Jos haluat luovuttaa: palauttaa tilanteen yhdistämistä edeltävään."
+     ]
+    ]
+   },
+   {
+    "id": "git-stash",
+    "title": "Siirrä keskeneräinen sivuun",
+    "tags": [
+     "haarat"
+    ],
+    "when": "Kun kesken on jotain, mutta pitää vaihtaa haaraa tai hakea muutokset GitHubista.",
+    "all": [
+     [
+      "git stash",
+      "Siirtää tallentamattomat muutokset sivuun, ja kansio palaa viimeksi tallennettuun tilaan."
+     ],
+     [
+      "git stash list",
+      "Näyttää sivuun siirretyt."
+     ],
+     [
+      "git stash pop",
+      "Palauttaa uusimmat sivuun siirretyt muutokset."
+     ]
+    ]
+   }
+  ];
+
   const ROMAN = n => [["X",10],["IX",9],["V",5],["IV",4],["I",1]].reduce((s, [r, v]) => { while (n >= v) { s += r; n -= v; } return s; }, "");
   const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
@@ -804,9 +1203,11 @@ h1 em { color: var(--ink); }
   let shell = store.get("grimoire.shell") === "sh" ? "sh" : "cmd";
   const VOLS = {
     cmd: { spells: SPELLS, first: "perusteet", hint: "hae: kopioi, ip, poista…", label: "osa 1: komentorivi" },
-    sql: { spells: SQL, first: "perusteet", hint: "hae: csv, null, tuplat…", label: "osa 2: sql-reseptit" }
+    sql: { spells: SQL, first: "perusteet", hint: "hae: csv, null, tuplat…", label: "osa 2: sql-reseptit", unit: "Resepti", noun: "reseptiä" },
+    git: { spells: GIT, first: "perusteet", hint: "hae: push, peru, haara…", label: "osa 3: git" }
   };
-  let vol = location.hash === "#sql" || /^#sql-/.test(location.hash) ? "sql" : "cmd";
+  const hv = (location.hash.match(/^#(sql|git)(-|$)/) || [])[1];
+  let vol = hv || "cmd";
   let tag = VOLS[vol].first, query = "";
 
   const list = document.getElementById("spells");
@@ -823,10 +1224,10 @@ h1 em { color: var(--ink); }
     const V = VOLS[vol];
     list.innerHTML = V.spells.map((s, i) => `
     <article class="spell" id="${s.id}" aria-labelledby="t-${s.id}">
-      <div class="spell-head"><span class="num">${vol === "sql" ? "Resepti" : "Loitsu"} ${ROMAN(i + 1)}</span><span class="spell-tags">${s.tags.map(t => `<span>${t}</span>`).join("")}</span></div>
+      <div class="spell-head"><span class="num">${V.unit || "Loitsu"} ${ROMAN(i + 1)}</span><span class="spell-tags">${s.tags.map(t => `<span>${t}</span>`).join("")}</span></div>
       <h2 id="t-${s.id}">${esc(s.title)}</h2>
       <p class="when">${esc(s.when)}</p>
-      ${s.osFirst || !s.sql ? lines(s.cmd, "cmd") + lines(s.sh, "sh") + lines(s.sql, "all") : lines(s.sql, "all") + lines(s.cmd, "cmd") + lines(s.sh, "sh")}
+      ${(() => { const all = s.all || s.sql; return s.osFirst || !all ? lines(s.cmd, "cmd") + lines(s.sh, "sh") + lines(all, "all") : lines(all, "all") + lines(s.cmd, "cmd") + lines(s.sh, "sh"); })()}
       ${s.warn ? `<div class="warn"><b>Varoitus</b><p>${esc(s.warn)}</p></div>` : ""}
     </article>`).join("");
     const tags = [...new Set(V.spells.flatMap(s => s.tags)), "kaikki"];
@@ -841,7 +1242,7 @@ h1 em { color: var(--ink); }
   volBtns.forEach(b => b.addEventListener("click", () => {
     if (b.dataset.vol === vol) return;
     vol = b.dataset.vol; tag = VOLS[vol].first; query = ""; q.value = "";
-    try { history.replaceState(null, "", vol === "sql" ? "#sql" : location.pathname + location.search); } catch (e) {}
+    try { history.replaceState(null, "", vol === "cmd" ? location.pathname + location.search : "#" + vol); } catch (e) {}
     render(); apply();
   }));
   tagBox.addEventListener("click", e => { const b = e.target.closest("[data-tag]"); if (!b) return; tag = b.dataset.tag; apply(); });
@@ -849,10 +1250,10 @@ h1 em { color: var(--ink); }
   shellBtns.forEach(b => b.addEventListener("click", () => { shell = b.dataset.shell; store.set("grimoire.shell", shell); apply(); }));
 
   function apply() {
-    const spells = VOLS[vol].spells, noun = vol === "sql" ? "reseptiä" : "loitsua";
+    const spells = VOLS[vol].spells, noun = VOLS[vol].noun || "loitsua";
     let shown = 0;
     spells.forEach(s => {
-      const hay = [s.title, s.when, s.warn || "", ...s.tags, ...(s[shell] || []).flat(), ...(s.sql || []).flat()].join(" ").toLowerCase();
+      const hay = [s.title, s.when, s.warn || "", ...s.tags, ...(s[shell] || []).flat(), ...(s.all || s.sql || []).flat()].join(" ").toLowerCase();
       const ok = (tag === "kaikki" || s.tags.includes(tag)) && (!query || query.split(/\s+/).every(w => hay.includes(w)));
       const el = document.getElementById(s.id);
       el.hidden = !ok; if (ok) shown++;
@@ -863,7 +1264,7 @@ h1 em { color: var(--ink); }
     document.getElementById("count").textContent = shown === spells.length ? `${shown} ${noun}` : `${shown} / ${spells.length} ${noun}`;
     const empty = document.getElementById("empty");
     empty.hidden = shown > 0;
-    empty.textContent = `Yhtään ${vol === "sql" ? "reseptiä" : "loitsua"} ei löytynyt. Kokeile toista sanaa tai valitse aiheeksi kaikki.`;
+    empty.textContent = `Yhtään ${noun} ei löytynyt. Kokeile toista sanaa tai valitse aiheeksi kaikki.`;
   }
   render();
 
