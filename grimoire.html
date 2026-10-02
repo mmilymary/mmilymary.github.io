@@ -134,6 +134,7 @@ h1 em { color: var(--ink); }
 @keyframes coverOpen { 0% { transform: perspective(1800px) rotateY(0); opacity: 1; } 75% { opacity: 1; } 100% { transform: perspective(1800px) rotateY(-105deg); opacity: 0; visibility: hidden; } }
 @media (prefers-reduced-motion: reduce) { .bookcover { display: none; } }
 </style>
+<script data-goatcounter="https://mmilymary.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div class="bookcover" id="bookcover" aria-hidden="true"><span>Grimoire</span></div>
@@ -329,6 +330,25 @@ h1 em { color: var(--ink); }
       sh:  [["ip addr", "Linuxin verkkokortit ja osoitteet. macOS:ssä vastaava on ifconfig."],
             ["ip route", "Linuxin reititystaulu. Rivi default via näyttää oletusyhdyskäytävän."],
             ["ip neigh", "Lähiverkon laitteet ja niiden MAC-osoitteet. macOS:ssä vastaava on arp -a."]] },
+
+    { id: "dhcp", title: "Hae uusi IP-osoite", tags: ["verkko"],
+      when: "Kun koneella on osoite 169.254.x.x tai verkko ei toimi vaihdetun reitittimen jälkeen.",
+      cmd: [["ipconfig /release", "Luopuu DHCP-palvelimelta saadusta osoitteesta. Yhteys katkeaa hetkeksi."],
+            ["ipconfig /renew", "Pyytää DHCP-palvelimelta uuden osoitteen."],
+            ["ipconfig", "Tarkistaa, millaisen osoitteen kone sai."]],
+      sh:  [["sudo ipconfig set en0 DHCP", "macOS: pyytää liitännälle en0 uuden osoitteen. Kysyy koneen salasanaa."],
+            ["ipconfig getifaddr en0", "macOS: näyttää liitännän en0 IP-osoitteen."],
+            ["networksetup -listallhardwareports", "macOS: kertoo, mikä en-liitäntä on Wi-Fi ja mikä kaapeli."]],
+      warn: "Jos osoite on uusimisen jälkeenkin 169.254.x.x, kone ei tavoita DHCP-palvelinta. Tarkista kaapeli tai Wi-Fi-yhteys." },
+
+    { id: "netstat", title: "Avoimet yhteydet ja portit", tags: ["verkko", "prosessit"],
+      when: "Kun haluat nähdä, mihin koneesi on yhteydessä tai mikä ohjelma kuuntelee porttia.",
+      cmd: [["netstat", "Näyttää aktiiviset TCP-yhteydet."],
+            ["netstat -an", "Kaikki yhteydet ja kuunneltavat portit numeroina, ilman nimihakuja."],
+            ["netstat -ano", "Lisäksi prosessin tunnus (PID). Sen ohjelman näkee tasklist-komennolla."]],
+      sh:  [["netstat -an", "macOS: kaikki yhteydet ja kuunneltavat portit numeroina."],
+            ["ss -tan", "Linux: sama. Uusissa Linuxeissa netstat ei ole aina valmiina."],
+            ["sudo lsof -i :443", "Näyttää, mikä ohjelma käyttää porttia 443. Ilman sudoa näkyvät vain omat ohjelmasi."]] },
 
     { id: "ping", title: "Toimiiko yhteys", tags: ["verkko"],
       when: "Kun sivu ei aukea ja haluat tietää, onko vika omassa koneessa, verkossa vai palvelimessa.",

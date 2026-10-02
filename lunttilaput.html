@@ -214,9 +214,21 @@ td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(
       <span class="bar" aria-hidden="true"><i style="transform:scaleX(0)"></i></span>
     </button>
     <button class="slip" type="button" aria-pressed="false" aria-controls="sheet-verkot" data-sheet="verkot">
-      <span class="k">// lan · osi · kyber</span>
+      <span class="k">// lan · osi · dhcp</span>
       <span class="t">Verkkojen lunttilappu</span>
-      <span class="m">7 osaa · 7 harjoitusta</span>
+      <span class="m">5 osaa · 5 harjoitusta</span>
+      <span class="bar" aria-hidden="true"><i style="transform:scaleX(0)"></i></span>
+    </button>
+    <button class="slip" type="button" aria-pressed="false" aria-controls="sheet-kyber" data-sheet="kyber">
+      <span class="k">// vm · cia · uhat · nis2</span>
+      <span class="t">Kyberturvan lunttilappu</span>
+      <span class="m">4 osaa · 4 harjoitusta</span>
+      <span class="bar" aria-hidden="true"><i style="transform:scaleX(0)"></i></span>
+    </button>
+    <button class="slip" type="button" aria-pressed="false" aria-controls="sheet-data" data-sheet="data">
+      <span class="k">// excel · pivot · power query</span>
+      <span class="t">Datan lunttilappu</span>
+      <span class="m">1 osa · 1 harjoitus</span>
       <span class="bar" aria-hidden="true"><i style="transform:scaleX(0)"></i></span>
     </button>
     <div class="slot">seuraava lappu<br>tulee tähän</div>
@@ -2063,9 +2075,9 @@ b) (12 000 − 10 510,95) / 0,34 = 1 489,05 / 0,34 = 4 379,56 €
 
   <main class="sheet" id="sheet-verkot" data-slip="verkot" hidden>
     <div class="sheet-head">
-      <span class="label">// tietoverkot · kyberturva</span>
+      <span class="label">// tietoverkot</span>
       <h2>Verkkojen <em>lunttilappu</em></h2>
-      <p>Lähiverkko, laitteet, OSI-malli, protokollat, osoitteet, vianetsintä ja kyberturvan perusteet. Termit ja komennot ovat samat kuin Ciscon Networking Academyn kursseilla.</p>
+      <p>Lähiverkko, laitteet, OSI-malli, protokollat, osoitteet ja vianetsintä. Termit ja komennot ovat samat kuin Ciscon Networking Academyn kursseilla.</p>
     </div>
     <nav class="strip" aria-label="Osat">
       <ol class="weeks"></ol>
@@ -2126,10 +2138,24 @@ b) (12 000 − 10 510,95) / 0,34 = 1 489,05 / 0,34 = 4 379,56 €
       <tr><td>Mobiiliverkko</td><td>radio (3G, 4G, 5G)</td><td>Puhelimen yhteyden voi jakaa läppärille Wi-Fin kautta (hotspot, tethering).</td></tr>
     </tbody>
   </table></div>
-  <p>Puhelin tai tabletti pääsee nettiin joko mobiiliverkon tai Wi-Fin kautta. GPS, Bluetooth ja NFC eivät tuo nettiyhteyttä. Kun mobiililaite liitetään käsin suojattuun langattomaan verkkoon, siihen syötetään verkon nimi (SSID), suojaustapa ja salasana.</p>
+  <p>Puhelin tai tabletti pääsee nettiin joko mobiiliverkon tai Wi-Fin kautta. GPS ja NFC eivät tuo nettiyhteyttä. Bluetooth ei myöskään ole itsessään internetyhteys, vaikka puhelin voi jakaa oman mobiiliyhteytensä toiselle laitteelle myös Bluetoothilla. Kun mobiililaite liitetään käsin suojattuun langattomaan verkkoon, siihen syötetään verkon nimi (SSID), suojaustapa ja salasana.</p>
+
+  <h3>Wi-Fi-taajuudet</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Standardi</th><th>Taajuus</th></tr></thead>
+    <tbody>
+      <tr><td>802.11b, 802.11g</td><td>2,4 GHz</td></tr>
+      <tr><td>802.11a</td><td>5 GHz</td></tr>
+      <tr><td>802.11n (Wi-Fi 4)</td><td>2,4 GHz ja 5 GHz</td></tr>
+      <tr><td>802.11ac (Wi-Fi 5)</td><td>5 GHz</td></tr>
+      <tr><td>802.11ax (Wi-Fi 6)</td><td>2,4 GHz ja 5 GHz, Wi-Fi 6E myös 6 GHz</td></tr>
+    </tbody>
+  </table></div>
+  <p>2,4 GHz kantaa pidemmälle ja läpäisee seiniä paremmin, mutta on ruuhkaisempi. 5 GHz on nopeampi, mutta kantama on lyhyempi.</p>
 
   <h3>Vertaisverkko vai asiakas–palvelin</h3>
   <p><strong>Vertaisverkossa</strong> (peer-to-peer) jokainen kone voi olla sekä asiakas että palvelin. Se on halpa ja helppo pystyttää, mutta siinä ei ole keskitettyä hallintaa, joten se sopii vain pieneen verkkoon. Isommissa verkoissa palvelut ovat erillisillä palvelimilla.</p>
+  <p>Selain on web-asiakas (web client) ja verkkosivuja jakava kone web-palvelin (web server). Sivut kirjoitetaan HTML-kuvauskielellä. URL <code>https://www.example.com/sivu.html</code> kertoo protokollan (https), verkkotunnuksen (www.example.com) ja resurssin sijainnin (/sivu.html).</p>
 
   <div class="pit">
     <span class="pit-label">Sudenkuoppa</span>
@@ -2411,6 +2437,7 @@ ping 192.168.1.1       vastaako kohde, eli toimiiko yhteys päästä päähän
 ping -t 192.168.1.1    pingaa jatkuvasti, kunnes painat ctrl+c
 ping -a 192.168.1.1    näyttää myös osoitteen nimen
 ping -4 / ping -6      pakottaa IPv4:n tai IPv6:n
+ping 127.0.0.1         testaa koneen omaa verkkopinoa, ei lähde verkkoon
 tracert tamk.fi        näyttää jokaisen reitittimen matkan varrella
 nslookup tamk.fi       kysyy DNS-palvelimelta nimen osoitteen
 netstat                näyttää koneen aktiiviset TCP-yhteydet</code></pre></div>
@@ -2421,6 +2448,7 @@ netstat                näyttää koneen aktiiviset TCP-yhteydet</code></pre></d
       <tr><td>Ping IP-osoitteeseen toimii, nimeen ei</td><td>DNS ei toimi</td></tr>
       <tr><td>Muut sivut aukeavat, yksi ei</td><td>DNS ei toimi tai kohdepalvelin on alhaalla</td></tr>
       <tr><td>Osoite alkaa 169.254</td><td>DHCP-palvelinta ei tavoiteta</td></tr>
+      <tr><td>ping 127.0.0.1 ei vastaa</td><td>vika on koneessa itsessään, ei verkossa</td></tr>
     </tbody>
   </table></div>
   <p>Oletusyhdyskäytävää pingaamalla tarkistetaan, pääseekö laite ylipäätään oman verkkonsa ulkopuolelle.</p>
@@ -2444,10 +2472,114 @@ c) Kone ei tavoittanut DHCP-palvelinta. Tarkista kaapeli tai Wi-Fi,
   </div>
 </section>
 
-<!-- 5 -->
+</div>
+  </main>
+
+  <main class="sheet" id="sheet-kyber" data-slip="kyber" hidden>
+    <div class="sheet-head">
+      <span class="label">// kyberturva</span>
+      <h2>Kyberturvan <em>lunttilappu</em></h2>
+      <p>Testausympäristö, kyberturvan merkitys liiketoiminnalle, uhat ja niihin varautuminen sekä keskeiset standardit.</p>
+    </div>
+    <nav class="strip" aria-label="Osat">
+      <ol class="weeks"></ol>
+      <span class="tally"></span>
+    </nav>
+    <div class="course">
+
+<!-- 1 -->
+<section class="week" id="k1" data-date="2026-10-09">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 1</b></span><span>virtuaalikone · Docker · 9.10.</span></div>
+    <h2>Testausympäristö</h2>
+    <p class="tldr">Kyberharjoitukset tehdään suljetussa ympäristössä, jotta oma kone ei vahingoitu. Virtuaalikone on kokonainen tietokone ohjelmana, ja Docker-kontti on kevyt, eristetty paikka yhdelle sovellukselle.</p>
+  </div>
+
+  <h3>Virtuaalikone</h3>
+  <p><strong>Hypervisori</strong> on ohjelma, joka ajaa virtuaalikoneita. Jokaisella virtuaalikoneella on oma käyttöjärjestelmänsä, ja se näkee virtuaalisen prosessorin, muistin, levyn ja verkkokortin.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tyyppi</th><th>Toimii</th><th>Esimerkki</th></tr></thead>
+    <tbody>
+      <tr><td>Tyyppi 1 (bare metal)</td><td>suoraan laitteiston päällä, ilman erillistä käyttöjärjestelmää</td><td>VMware ESXi, Microsoft Hyper-V</td></tr>
+      <tr><td>Tyyppi 2 (hosted)</td><td>tavallisena ohjelmana oman käyttöjärjestelmän päällä</td><td>VMware Workstation Pro, VirtualBox</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>Tilannevedos</strong> (snapshot) tallentaa virtuaalikoneen tilan. Siihen voi palata, jos jokin menee rikki. Ota vedos aina ennen kuin kokeilet jotain vaarallista.</li>
+    <li>VMware Workstation Pro on ollut 11.11.2024 alkaen maksuton kaikille, myös opiskelijoille. Macin vastine on VMware Fusion.</li>
+    <li>Virtualisointi pitää olla päällä koneen BIOS- tai UEFI-asetuksissa (Intel VT-x tai AMD-V). Muuten virtuaalikone ja Docker eivät käynnisty.</li>
+  </ul>
+
+  <h3>Asennuksen muistilista</h3>
+  <ul>
+    <li><strong>Onko virtualisointi päällä?</strong> Tehtävienhallinta (Ctrl+Shift+Esc) → Suorituskyky → Suoritin → oikeassa alareunassa Virtualisointi: Käytössä. Jos lukee Poistettu käytöstä, se kytketään päälle BIOS- tai UEFI-asetuksista.</li>
+    <li><strong>Windows 11 virtuaalikoneeseen</strong> vaatii virtuaalisen TPM-turvapiirin. VMware pyytää sitä varten salasanan. Laita se talteen, sillä ilman sitä virtuaalikonetta ei saa auki.</li>
+    <li><strong>Docker Desktopin asennuksessa</strong> valitaan Use WSL 2 instead of Hyper-V.</li>
+    <li>Kun asennus on valmis, käynnistä kone uudelleen ja kokeile <code>docker run hello-world</code>.</li>
+  </ul>
+
+  <h3>Virtuaalikoneen verkko (VMware)</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tila</th><th>Mitä tarkoittaa</th></tr></thead>
+    <tbody>
+      <tr><td>NAT</td><td>Oletus. Virtuaalikone pääsee internetiin isäntäkoneen osoitteen kautta, mutta lähiverkon muut laitteet eivät näe sitä.</td></tr>
+      <tr><td>Bridged (silta)</td><td>Virtuaalikone liittyy lähiverkkoon kuin oma laitteensa ja saa osoitteen samasta verkosta.</td></tr>
+      <tr><td>Host-only</td><td>Virtuaalikone näkee vain isäntäkoneen ja muut saman verkon virtuaalikoneet. Ei internetiä.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Docker</h3>
+  <p><strong>Image</strong> on valmis pohja, esimerkiksi Ubuntu tai web-palvelin. <strong>Kontti</strong> on imagesta käynnistetty, käynnissä oleva kopio. Imageja haetaan Docker Hubista. Windowsissa Docker Desktop ajaa kontit WSL 2:n päällä. WSL 2 on Microsoftin kevyt virtuaalikone, jossa on oikea Linux-ydin.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Komento</th><th>Mitä tekee</th></tr></thead>
+    <tbody>
+      <tr><td><code>docker --version</code></td><td>Kertoo, onko Docker asennettu.</td></tr>
+      <tr><td><code>docker run hello-world</code></td><td>Hakee testi-imagen ja ajaa sen. Jos tervehdys tulee, asennus toimii.</td></tr>
+      <tr><td><code>docker run -it ubuntu bash</code></td><td>Käynnistää Ubuntu-kontin ja avaa sen komentorivin. Poistu kirjoittamalla exit.</td></tr>
+      <tr><td><code>docker run -d -p 8080:80 --name web nginx</code></td><td>Käynnistää web-palvelimen taustalle. Selaimessa osoite localhost:8080 ohjautuu kontin porttiin 80.</td></tr>
+      <tr><td><code>docker run -d -p 127.0.0.1:3000:3000 bkimminich/juice-shop</code></td><td>OWASP Juice Shop, tahallaan haavoittuva verkkokauppa harjoittelua varten. Aukeaa osoitteesta localhost:3000. 127.0.0.1 portin edessä rajaa sovelluksen vain omalle koneelle, jolloin muut verkon laitteet eivät pääse siihen.</td></tr>
+      <tr><td><code>docker ps</code></td><td>Käynnissä olevat kontit. Lisää -a, niin näet myös pysähtyneet.</td></tr>
+      <tr><td><code>docker images</code></td><td>Koneelle haetut imaget.</td></tr>
+      <tr><td><code>docker stop web</code></td><td>Pysäyttää kontin.</td></tr>
+      <tr><td><code>docker rm web</code></td><td>Poistaa pysäytetyn kontin. Image jää koneelle.</td></tr>
+      <tr><td><code>docker rmi nginx</code></td><td>Poistaa imagen.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Virtuaalikone vai kontti</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th>Virtuaalikone</th><th>Docker-kontti</th></tr></thead>
+    <tbody>
+      <tr><td>Käyttöjärjestelmä</td><td>oma, kokonainen</td><td>jakaa isännän Linux-ytimen (Windowsissa WSL 2:n ytimen)</td></tr>
+      <tr><td>Koko</td><td>gigatavuja</td><td>usein megatavuja</td></tr>
+      <tr><td>Käynnistys</td><td>kuin oikealla koneella</td><td>yleensä sekunneissa</td></tr>
+      <tr><td>Eristys</td><td>vahvempi</td><td>kevyempi</td></tr>
+      <tr><td>Sopii</td><td>haittaohjelmien tutkimiseen, kokonaisen järjestelmän kokeiluun</td><td>yksittäisen palvelun tai haavoittuvan harjoitussovelluksen ajamiseen</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Kontti ei ole yhtä tiukasti eristetty kuin virtuaalikone, koska se jakaa isäntäkoneen käyttöjärjestelmän ytimen (Windowsissa WSL 2:n Linux-ytimen). Epäilyttäviä tiedostoja ja haittaohjelmia tutkitaan virtuaalikoneessa, jonka verkko on host-only-tilassa ja josta on otettu tilannevedos.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 1</span>
+    <p>Valitse virtuaalikone tai Docker-kontti: a) avaat sähköpostin epäilyttävän liitteen nähdäksesi, mitä se tekee, b) tarvitset harjoitusta varten tahallaan haavoittuvan web-sovelluksen, c) haluat kokeilla Linuxia graafisella työpöydällä. Mikä verkkotila sopii kohtaan a?</p>
+    <details><summary>Näytä vihje</summary><p>Mieti, tarvitaanko kokonainen käyttöjärjestelmä ja kuinka vahva eristyksen pitää olla.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">a) Virtuaalikone, vahvin eristys. Verkko host-only, ja tilannevedos
+   ennen liitteen avaamista.
+b) Docker-kontti. Sovellus käynnistyy sekunneissa, ja kontin
+   voi poistaa docker rm -komennolla ja aloittaa alusta.
+c) Virtuaalikone, koska graafinen työpöytä on kokonainen
+   käyttöjärjestelmä.</code></pre></div></details>
+  </div>
+</section>
+
+<!-- 1 -->
 <section class="week" id="v5">
   <div class="week-head">
-    <div class="week-meta"><span><b>Osa 6</b></span><span>CIA · riski · liiketoiminta</span></div>
+    <div class="week-meta"><span><b>Osa 2</b></span><span>CIA · riski · liiketoiminta</span></div>
     <h2>Miksi kyberturva kuuluu liiketoimintaan</h2>
     <p class="tldr">Kyberturvassa suojataan tietoa ja palveluita, joiden varassa yritys toimii. Kun järjestelmät pysähtyvät, myös myynti, tuotanto ja asiakaspalvelu pysähtyvät.</p>
   </div>
@@ -2478,7 +2610,7 @@ c) Kone ei tavoittanut DHCP-palvelinta. Tarkista kaapeli tai Wi-Fi,
   </div>
 
   <div class="task">
-    <span class="task-label">Harjoitus 6</span>
+    <span class="task-label">Harjoitus 2</span>
     <p>Mihin CIA-kolmion kohtaan kukin tapaus osuu? a) Verkkokauppa on palvelunestohyökkäyksen takia poissa käytöstä. b) Asiakasrekisteri vuotaa internetiin. c) Hyökkääjä muuttaa laskun tilinumeron.</p>
     <details><summary>Näytä vihje</summary><p>Kysy jokaisesta: katosiko pääsy, näkikö väärä ihminen, vai muuttuiko tieto?</p></details>
     <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">a) saatavuus
@@ -2487,10 +2619,10 @@ c) eheys</code></pre></div></details>
   </div>
 </section>
 
-<!-- 6 -->
+<!-- 2 -->
 <section class="week" id="v6">
   <div class="week-head">
-    <div class="week-meta"><span><b>Osa 7</b></span><span>Uhat · varautuminen</span></div>
+    <div class="week-meta"><span><b>Osa 3</b></span><span>Uhat · varautuminen</span></div>
     <h2>Kyberuhat ja niihin varautuminen</h2>
     <p class="tldr">Useimmat hyökkäykset eivät ole teknisesti nokkelia. Ne hyödyntävät kiirettä, heikkoja salasanoja ja päivittämättömiä järjestelmiä.</p>
   </div>
@@ -2525,7 +2657,7 @@ c) eheys</code></pre></div></details>
   </div>
 
   <div class="task">
-    <span class="task-label">Harjoitus 7</span>
+    <span class="task-label">Harjoitus 3</span>
     <p>Kirjanpitäjä saa sähköpostin, joka näyttää tulevan toimitusjohtajalta: "Maksa tämä lasku heti, olen palaverissa enkä vastaa puhelimeen." Mikä uhka on kyseessä, ja mitkä kaksi toimintatapaa estäisivät vahingon?</p>
     <details><summary>Näytä vihje</summary><p>Viesti ei sisällä haittaohjelmaa. Huomaa kiire ja se, että varmistaminen tehdään tahallaan vaikeaksi.</p></details>
     <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">Uhka: sosiaalinen manipulointi, kohdennettu tietojenkalastelu
@@ -2538,10 +2670,10 @@ Estää:
   </div>
 </section>
 
-<!-- 7 -->
+<!-- 3 -->
 <section class="week" id="v7">
   <div class="week-head">
-    <div class="week-meta"><span><b>Osa 8</b></span><span>ISO/IEC 27001 · NIS2 · Kybermittari · NIST CSF</span></div>
+    <div class="week-meta"><span><b>Osa 4</b></span><span>ISO/IEC 27001 · NIS2 · Kybermittari · NIST CSF</span></div>
     <h2>Kyberturvan keskeiset standardit</h2>
     <p class="tldr">Standardit ja säädökset kertovat, mitä kyberturvassa pitää vähintään hoitaa ja miten sen voi osoittaa muille.</p>
   </div>
@@ -2570,7 +2702,7 @@ Estää:
   </div>
 
   <div class="task">
-    <span class="task-label">Harjoitus 8</span>
+    <span class="task-label">Harjoitus 4</span>
     <p>Pieni ohjelmistoyritys haluaa ensin selvittää, missä kunnossa sen kyberturva on, ja myöhemmin osoittaa isolle asiakkaalle, että tietoturvaa hallitaan järjestelmällisesti. Mitä työkalua tai standardia se käyttäisi kumpaankin?</p>
     <details><summary>Näytä vihje</summary><p>Toinen on maksuton itsearviointi, toinen sertifioitava hallintajärjestelmä.</p></details>
     <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">Nykytilan arviointi   → Kybermittari
@@ -2578,6 +2710,82 @@ Osoitus asiakkaalle   → ISO/IEC 27001 -sertifikaatti</code></pre></div></detai
   </div>
 </section>
 
+    </div>
+  </main>
+
+  <main class="sheet" id="sheet-data" data-slip="data" hidden>
+    <div class="sheet-head">
+      <span class="label">// data-analytiikka · excel</span>
+      <h2>Datan <em>lunttilappu</em></h2>
+      <p>Raakadatasta tietoa päätösten tueksi: datan keräys ja siivous Power Queryllä, analyysi ja raportointi Excelillä.</p>
+    </div>
+    <nav class="strip" aria-label="Osat">
+      <ol class="weeks"></ol>
+      <span class="tally"></span>
+    </nav>
+    <div class="course">
+
+<!-- 1 -->
+<section class="week" id="d1">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 1</b></span><span>prosessi · taulukko · pivot</span></div>
+    <h2>Mitä data-analytiikka on</h2>
+    <p class="tldr">Data-analytiikka on prosessi, jossa raakadatasta jalostetaan käyttökelpoista tietoa päätöksenteon tueksi. 831 tilausriviä ei kerro mitään, mutta myynti vuosittain pylväinä kertoo heti, mihin suuntaan ollaan menossa.</p>
+  </div>
+
+  <h3>Neljä vaihetta</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Vaihe</th><th>Mitä tehdään</th><th>Työkalu</th></tr></thead>
+    <tbody>
+      <tr><td>1. Keräys (data collection)</td><td>Data haetaan tiedostoista, tietokannoista tai verkosta.</td><td>Power Query</td></tr>
+      <tr><td>2. Esikäsittely (data preprocessing)</td><td>Puhdistus ja järjestys: turhat rivit pois, tyhjät ja tuplat kuntoon, oikeat tietotyypit.</td><td>Power Query</td></tr>
+      <tr><td>3. Analyysi (data analysis)</td><td>Tutkitaan, lasketaan, vertaillaan ja visualisoidaan.</td><td>Excel</td></tr>
+      <tr><td>4. Tulkinta ja raportointi (interpretation &amp; reporting)</td><td>Raportit, esitykset, dashboardit, johtopäätökset ja suositukset.</td><td>Excel</td></tr>
+    </tbody>
+  </table></div>
+  <p>Analytiikka auttaa tekemään perusteltuja päätöksiä faktojen pohjalta, löytämään trendejä ja poikkeamia sekä säästämään aikaa ja resursseja.</p>
+
+  <h3>Data analysoitavaan muotoon</h3>
+  <ul>
+    <li><strong>Yksi rivi on yksi tapahtuma</strong>, esimerkiksi yksi tilaus. <strong>Yksi sarake on yksi tieto</strong>, esimerkiksi päivämäärä tai summa.</li>
+    <li>Ylimpänä on yksi otsikkorivi. Ei tyhjiä rivejä tai sarakkeita keskellä, eikä yhdistettyjä soluja.</li>
+    <li>Muuta alue Excel-taulukoksi: valitse jokin solu ja paina <code>Ctrl+T</code>. Taulukko laajenee itse, kun lisäät rivejä.</li>
+    <li><strong>Power Query</strong> löytyy Tiedot-välilehdeltä kohdasta Nouda tiedot. Se tallentaa jokaisen muokkauksen vaiheena, joten kun data päivittyy, samat vaiheet ajetaan uudelleen yhdellä päivityksellä.</li>
+  </ul>
+
+  <h3>Pivot-taulukko</h3>
+  <p>Lisää → Pivot-taulukko. Kentät vedetään neljälle alueelle:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Alue</th><th>Mitä tekee</th><th>Esimerkki</th></tr></thead>
+    <tbody>
+      <tr><td>Rivit</td><td>ryhmät allekkain</td><td>maa tai tilauspäivä</td></tr>
+      <tr><td>Sarakkeet</td><td>ryhmät vierekkäin</td><td>vuosi</td></tr>
+      <tr><td>Arvot</td><td>mitä lasketaan</td><td>tilauksen summa</td></tr>
+      <tr><td>Suodattimet</td><td>rajaa koko taulukon</td><td>vain yksi työntekijä</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Numerokenttä lasketaan Arvoissa oletuksena summana, tekstikenttä määränä.</li>
+    <li>Päivämäärät voi ryhmitellä vuosiksi, neljänneksiksi ja kuukausiksi: hiiren oikea päivämäärän kohdalla → Ryhmittele.</li>
+    <li>Pivot-taulukko ei päivity itsestään. Kun lähdedata muuttuu, valitse Päivitä tai Tiedot → Päivitä kaikki.</li>
+  </ul>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Jos summa- tai päivämääräsarake on tallentunut tekstinä, pivot laskee sen määränä eikä summana, eikä päivämääriä voi ryhmitellä. Tekstinä oleva numero on usein solun vasemmassa reunassa. Korjaa tietotyyppi Power Queryssä tai ennen pivotin tekemistä.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 1</span>
+    <p>Tilaukset: 14.2.2013 Suomi 120 €, 3.5.2013 Ruotsi 80 €, 21.8.2013 Suomi 200 €, 9.11.2013 Norja 50 €, 15.1.2014 Suomi 90 €, 30.3.2014 Ruotsi 160 €, 2.7.2014 Suomi 70 €, 18.12.2014 Norja 230 €. a) Mihin pivot-alueisiin vedät kentät, jotta näet myynnin vuosittain? b) Paljonko myytiin kumpanakin vuonna? c) Mikä maa myi eniten? d) Paljonko myytiin vuoden 2014 ensimmäisellä neljänneksellä?</p>
+    <details><summary>Näytä vihje</summary><p>Ensimmäinen neljännes on tammi–maaliskuu. Laske ensin käsin, sitten kokeile Excelissä ja vertaa.</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">a) Päivämäärä Riveihin ja ryhmittely vuosiksi, summa Arvoihin.
+b) 2013: 120 + 80 + 200 + 50 = 450 €
+   2014: 90 + 160 + 70 + 230 = 550 €
+c) Suomi 480 €, Norja 280 €, Ruotsi 240 €. Eniten myi Suomi.
+d) 15.1. ja 30.3.: 90 + 160 = 250 €</code></pre></div></details>
+  </div>
+</section>
 
     </div>
   </main>
@@ -2682,7 +2890,7 @@ Osoitus asiakkaalle   → ISO/IEC 27001 -sertifikaatti</code></pre></div></detai
       const n = sh.weeks.length, k = sh.weeks.filter(w => data.known[w.id]).length, d = sh.weeks.filter(w => data.done[w.id]).length;
       sh.tally.innerHTML = `${k}/${n} hallussa<br>${d}/${n} tehty`;
       if (sh.slip) {
-        sh.slip.querySelector(".m").textContent = `${n} ${sh.unit === "Osa" ? "osaa" : "viikkoa"} · ${k}/${n} hallussa`;
+        sh.slip.querySelector(".m").textContent = `${n} ${sh.unit === "Osa" ? (n === 1 ? "osa" : "osaa") : (n === 1 ? "viikko" : "viikkoa")} · ${k}/${n} hallussa`;
         sh.slip.querySelector(".bar i").style.transform = `scaleX(${(k + d) / (n * 2)})`;
       }
     });
