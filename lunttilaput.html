@@ -2065,7 +2065,7 @@ b) (12 000 − 10 510,95) / 0,34 = 1 489,05 / 0,34 = 4 379,56 €
     <div class="sheet-head">
       <span class="label">// tietoverkot · kyberturva</span>
       <h2>Verkkojen <em>lunttilappu</em></h2>
-      <p>Lähiverkko, laitteet, OSI-malli, protokollat ja kyberturvan perusteet. Termit ja komennot ovat samat kuin Ciscon Networking Academyn kursseilla.</p>
+      <p>Lähiverkko, laitteet, OSI-malli, protokollat, osoitteet, vianetsintä ja kyberturvan perusteet. Termit ja komennot ovat samat kuin Ciscon Networking Academyn kursseilla.</p>
     </div>
     <nav class="strip" aria-label="Osat">
       <ol class="weeks"></ol>
@@ -2108,11 +2108,28 @@ b) (12 000 − 10 510,95) / 0,34 = 1 489,05 / 0,34 = 4 379,56 €
   <div class="table-wrap"><table>
     <thead><tr><th>Media</th><th>Signaali</th><th>Huomio</th></tr></thead>
     <tbody>
-      <tr><td>Kupari (UTP)</td><td>sähkö</td><td>Ethernet-kaapelin enimmäispituus on 100 metriä. Altis sähkömagneettisille häiriöille.</td></tr>
-      <tr><td>Valokuitu</td><td>valo</td><td>Pitkät matkat ja suuret nopeudet. Ei häiriinny sähkömagneettisesti.</td></tr>
-      <tr><td>Langaton</td><td>radioaallot</td><td>Helppo, mutta kuuluvuus, häiriöt ja tietoturva on mietittävä erikseen.</td></tr>
+      <tr><td>Kupari (UTP)</td><td>sähköpulssit</td><td>Tavallisin tapa kytkeä toimiston työasemat. Ethernet-kaapelin enimmäispituus on 100 metriä. Altis sähkömagneettisille häiriöille (EMI) ja radiotaajuisille häiriöille (RFI).</td></tr>
+      <tr><td>Valokuitu</td><td>valopulssit</td><td>Pitkät matkat ja suurimmat nopeudet. EMI- ja RFI-häiriöt eivät vaikuta siihen lainkaan.</td></tr>
+      <tr><td>Langaton</td><td>radioaallot</td><td>Helppo, mutta kuuluvuus, häiriöt ja tietoturva on mietittävä erikseen. Wi-Fi-standardit 802.11b ja 802.11g toimivat 2,4 GHz:n taajuudella.</td></tr>
     </tbody>
   </table></div>
+  <p>Media valitaan sen mukaan, kuinka pitkän matkan signaalin pitää kulkea ja millaiseen ympäristöön kaapeli asennetaan.</p>
+
+  <h3>Yhteys internetiin</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Yhteys</th><th>Mitä pitkin</th><th>Huomio</th></tr></thead>
+    <tbody>
+      <tr><td>DSL</td><td>puhelinlinja</td><td>DSL-modeemi tuo netin puhelinpistokkeesta.</td></tr>
+      <tr><td>Kaapeli</td><td>kaapelitelevision verkko</td><td>Kaapelimodeemi</td></tr>
+      <tr><td>Valokuitu</td><td>valokuitu</td><td>Nopein</td></tr>
+      <tr><td>Satelliitti</td><td>radio</td><td>Toimii myös syrjäseuduilla, joissa muuta yhteyttä ei ole.</td></tr>
+      <tr><td>Mobiiliverkko</td><td>radio (3G, 4G, 5G)</td><td>Puhelimen yhteyden voi jakaa läppärille Wi-Fin kautta (hotspot, tethering).</td></tr>
+    </tbody>
+  </table></div>
+  <p>Puhelin tai tabletti pääsee nettiin joko mobiiliverkon tai Wi-Fin kautta. GPS, Bluetooth ja NFC eivät tuo nettiyhteyttä. Kun mobiililaite liitetään käsin suojattuun langattomaan verkkoon, siihen syötetään verkon nimi (SSID), suojaustapa ja salasana.</p>
+
+  <h3>Vertaisverkko vai asiakas–palvelin</h3>
+  <p><strong>Vertaisverkossa</strong> (peer-to-peer) jokainen kone voi olla sekä asiakas että palvelin. Se on halpa ja helppo pystyttää, mutta siinä ei ole keskitettyä hallintaa, joten se sopii vain pieneen verkkoon. Isommissa verkoissa palvelut ovat erillisillä palvelimilla.</p>
 
   <div class="pit">
     <span class="pit-label">Sudenkuoppa</span>
@@ -2140,7 +2157,7 @@ Yhteys pääkonttoriin       → WAN (tai internetin yli kulkeva yhteys)</code><
     <thead><tr><th>Laite</th><th>OSI-kerros</th><th>Tehtävä</th></tr></thead>
     <tbody>
       <tr><td>Keskitin (hub)</td><td>1</td><td>Toistaa saapuvan signaalin kaikkiin portteihin. Vanhentunut.</td></tr>
-      <tr><td>Kytkin (switch)</td><td>2</td><td>Oppii, mikä MAC-osoite on missäkin portissa, ja lähettää kehyksen vain oikeaan porttiin.</td></tr>
+      <tr><td>Kytkin (switch)</td><td>2</td><td>Oppii, mikä MAC-osoite on missäkin portissa, ja lähettää kehyksen vain oikeaan porttiin. Jos kohde-MAC on vielä tuntematon tai kehys on broadcast, kytkin lähettää sen kaikista porteista paitsi siitä, josta se tuli.</td></tr>
       <tr><td>Tukiasema (AP)</td><td>2</td><td>Liittää langattomat laitteet lähiverkkoon.</td></tr>
       <tr><td>Reititin (router)</td><td>3</td><td>Valitsee paketille reitin verkosta toiseen. Toimii lähiverkon oletusyhdyskäytävänä.</td></tr>
       <tr><td>Palomuuri</td><td>3–7</td><td>Päästää läpi tai estää liikennettä sääntöjen perusteella.</td></tr>
@@ -2213,19 +2230,20 @@ Tarkistus Windowsissa: ipconfig</code></pre></div></details>
   <p>Muistisääntö alhaalta ylös englanniksi: <em>Please Do Not Throw Sausage Pizza Away</em> (Physical, Data link, Network, Transport, Session, Presentation, Application).</p>
 
   <h3>TCP/IP-malli</h3>
-  <p>Internet toimii käytännössä TCP/IP-mallin mukaan. Siinä on neljä kerrosta, jotka vastaavat OSI-mallia näin:</p>
+  <p>OSI on <strong>referenssimalli</strong>: se kertoo, mitä kunkin kerroksen pitää tehdä, mutta ei sitä, miten protokollat sen tekevät. Internet toimii käytännössä TCP/IP-mallin mukaan, joka on <strong>protokollamalli</strong>. Siinä on neljä kerrosta, jotka vastaavat OSI-mallia näin:</p>
   <div class="table-wrap"><table>
-    <thead><tr><th>TCP/IP</th><th>OSI</th></tr></thead>
+    <thead><tr><th>TCP/IP</th><th>Ciscon kokeissa</th><th>OSI</th></tr></thead>
     <tbody>
-      <tr><td>Sovelluskerros</td><td>7, 6 ja 5</td></tr>
-      <tr><td>Kuljetuskerros</td><td>4</td></tr>
-      <tr><td>Internet-kerros</td><td>3</td></tr>
-      <tr><td>Verkkoyhteyskerros</td><td>2 ja 1</td></tr>
+      <tr><td>Sovelluskerros</td><td>Application</td><td>7, 6 ja 5</td></tr>
+      <tr><td>Kuljetuskerros</td><td>Transport</td><td>4</td></tr>
+      <tr><td>Internet-kerros</td><td>Internet</td><td>3</td></tr>
+      <tr><td>Verkkoyhteyskerros</td><td>Network Access</td><td>2 ja 1</td></tr>
     </tbody>
   </table></div>
 
   <h3>Kapselointi</h3>
-  <p>Lähettäessä jokainen kerros lisää datan ympärille oman otsikkonsa: kuljetuskerros porttinumerot, verkkokerros IP-osoitteet ja siirtoyhteyskerros MAC-osoitteet. Vastaanottaja purkaa kerrokset päinvastaisessa järjestyksessä.</p>
+  <p>Lähettäessä jokainen kerros lisää datan ympärille oman otsikkonsa: kuljetuskerros porttinumerot, verkkokerros IP-osoitteet eli loogiset osoitteet ja siirtoyhteyskerros MAC-osoitteet eli fyysiset osoitteet. Viesti siis pannaan kerros kerrokselta toisen viestin sisään: data → segmentti → paketti → kehys → bitit. Vastaanottaja purkaa kerrokset päinvastaisessa järjestyksessä.</p>
+  <p>Myös puhelut ja videot kulkevat verkossa tavallisina IP-paketteina.</p>
 
   <div class="pit">
     <span class="pit-label">Sudenkuoppa</span>
@@ -2258,23 +2276,27 @@ e) HTTP              → 7 sovelluskerros</code></pre></div></details>
       <tr><td>Yhteys</td><td>Muodostetaan ennen siirtoa kolmivaiheisella kättelyllä: SYN, SYN-ACK, ACK</td><td>Ei yhteyden muodostusta</td></tr>
       <tr><td>Luotettavuus</td><td>Kuittaa vastaanotetut segmentit ja lähettää kadonneet uudelleen</td><td>Ei kuittauksia eikä uudelleenlähetyksiä</td></tr>
       <tr><td>Järjestys</td><td>Kokoaa segmentit oikeaan järjestykseen</td><td>Ei takuuta järjestyksestä</td></tr>
-      <tr><td>Käyttö</td><td>Verkkosivut, sähköposti, tiedostonsiirto</td><td>Puhelut, videot, pelit, DNS-kyselyt</td></tr>
+      <tr><td>Kentät</td><td>Järjestysnumero (sequence number) pitää segmentit järjestyksessä, kuittausnumero (acknowledgment number) kertoo, mitä on vastaanotettu.</td><td>Ei kumpaakaan</td></tr>
+      <tr><td>Käyttö</td><td>Verkkosivut, sähköposti, tiedostonsiirto</td><td>Viiveelle herkät: puhelut, videot, pelit. Myös DNS-kyselyt.</td></tr>
     </tbody>
   </table></div>
+
+  <h3>Portit ja socket</h3>
+  <p><strong>Kohdeportti</strong> kertoo, mille palvelulle segmentti on menossa, esimerkiksi 443 = HTTPS. <strong>Lähdeportin</strong> asiakas arpoo itse. Sen avulla palvelin erottaa saman palvelun eri keskustelut toisistaan, vaikka samalta koneelta olisi auki monta välilehteä. IP-osoite ja portti yhdessä ovat <strong>socket</strong>, esimerkiksi 10.0.0.5:443.</p>
 
   <h3>Tavallisimmat portit</h3>
   <div class="table-wrap"><table>
     <thead><tr><th>Portti</th><th>Protokolla</th><th>Käyttö</th></tr></thead>
     <tbody>
-      <tr><td>20, 21</td><td>FTP (TCP)</td><td>tiedostonsiirto</td></tr>
+      <tr><td>20, 21</td><td>FTP (TCP)</td><td>tiedostonsiirto palvelimelle ja palvelimelta. Käyttää kahta yhteyttä: 21 ohjaukseen ja 20 itse tiedostoon.</td></tr>
       <tr><td>22</td><td>SSH (TCP)</td><td>salattu etäyhteys</td></tr>
       <tr><td>23</td><td>Telnet (TCP)</td><td>salaamaton etäyhteys, vältä</td></tr>
-      <tr><td>25</td><td>SMTP (TCP)</td><td>sähköpostin lähetys</td></tr>
+      <tr><td>25</td><td>SMTP (TCP)</td><td>sähköpostin <strong>lähetys</strong></td></tr>
       <tr><td>53</td><td>DNS (UDP ja TCP)</td><td>nimestä IP-osoitteeksi</td></tr>
       <tr><td>67, 68</td><td>DHCP (UDP)</td><td>osoitteen jako, palvelin 67 ja asiakas 68</td></tr>
       <tr><td>80</td><td>HTTP (TCP)</td><td>verkkosivut ilman salausta</td></tr>
-      <tr><td>110</td><td>POP3 (TCP)</td><td>sähköpostin nouto</td></tr>
-      <tr><td>143</td><td>IMAP (TCP)</td><td>sähköpostin käyttö palvelimella</td></tr>
+      <tr><td>110</td><td>POP3 (TCP)</td><td>sähköpostin <strong>nouto</strong> omalle koneelle</td></tr>
+      <tr><td>143</td><td>IMAP (TCP)</td><td>sähköpostin <strong>nouto</strong>, posti jää palvelimelle</td></tr>
       <tr><td>443</td><td>HTTPS (TCP)</td><td>salatut verkkosivut</td></tr>
       <tr><td>3389</td><td>RDP (TCP)</td><td>Windowsin etätyöpöytä</td></tr>
     </tbody>
@@ -2305,10 +2327,127 @@ e) HTTP              → 7 sovelluskerros</code></pre></div></details>
   </div>
 </section>
 
+<!-- 5: osoitteet, reititys ja vianetsintä -->
+<section class="week" id="vos">
+  <div class="week-head">
+    <div class="week-meta"><span><b>Osa 5</b></span><span>Osoitetyypit · DHCP · ARP · reititys · vianetsintä</span></div>
+    <h2>Miten paketti löytää perille</h2>
+    <p class="tldr">Laite tarvitsee osoitteen, peitteen ja oletusyhdyskäytävän. Niiden avulla se päättää, lähettääkö paketin suoraan vastaanottajalle vai reitittimelle.</p>
+  </div>
+
+  <h3>Osoitetyypit</h3>
+  <p>Osoitteen muuttaminen biteiksi ja aliverkon peite ovat Bittien lunttilapussa (<a href="#b5">osa 5</a> ja <a href="#b6">osa 6</a>), IPv6-osoitteen tiivistys <a href="#b7">osassa 7</a>.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tyyppi</th><th>Osoitteet</th><th>Mihin</th></tr></thead>
+    <tbody>
+      <tr><td>Yksityinen</td><td>10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16</td><td>Sisäverkot. Ei reititetä internetissä.</td></tr>
+      <tr><td>Julkinen</td><td>kaikki muut tavalliset osoitteet</td><td>Reititettävissä koko internetissä</td></tr>
+      <tr><td>Loopback</td><td>127.0.0.1</td><td>Laite testaa omaa verkkopinoaan</td></tr>
+      <tr><td>Link-local (APIPA)</td><td>169.254.0.0/16</td><td>Laite antoi osoitteen itselleen, koska DHCP-palvelinta ei tavoitettu</td></tr>
+      <tr><td>Multicast</td><td>224.0.0.0 – 239.255.255.255</td><td>Yksi lähettäjä, monta vastaanottajaa, esim. verkkopeli tai videolähetys</td></tr>
+      <tr><td>Kokeellinen</td><td>240.0.0.0 – 255.255.255.254</td><td>Varattu, ei käytössä</td></tr>
+      <tr><td>Broadcast</td><td>255.255.255.255</td><td>Kaikille saman lähiverkon laitteille</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Staattinen osoite</strong> asetetaan käsin laitteille, jotka muiden pitää löytää aina samasta osoitteesta: palvelimet, tulostimet ja reitittimet. Muut saavat osoitteen DHCP:ltä.</p>
+
+  <h3>DHCP vaihe vaiheelta</h3>
+  <p>DHCP säästää ylläpidon työtä ja poistaa käsin tehdyt asetusvirheet. Osoite on <strong>laina</strong> (lease): kun sitä ei enää käytetä, se palaa vapaiden osoitteiden joukkoon.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Viesti</th><th>Kuka lähettää</th><th>Mitä tapahtuu</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>DHCPDISCOVER</td><td>asiakas, broadcast</td><td>Kysyy, onko verkossa DHCP-palvelinta. Kohdeosoite 255.255.255.255.</td></tr>
+      <tr><td>2</td><td>DHCPOFFER</td><td>palvelin</td><td>Tarjoaa osoitetta</td></tr>
+      <tr><td>3</td><td>DHCPREQUEST</td><td>asiakas, broadcast</td><td>Hyväksyy tarjouksen</td></tr>
+      <tr><td>4</td><td>DHCPACK</td><td>palvelin</td><td>Vahvistaa lainan</td></tr>
+    </tbody>
+  </table></div>
+  <p>Kaikki lähiverkon laitteet vastaanottavat asiakkaan broadcastit, mutta vain DHCP-palvelin vastaa. Kotireititin on itsekin DHCP-asiakas: se saa julkisen osoitteensa operaattorin DHCP-palvelimelta.</p>
+
+  <h3>Suoraan vai reitittimelle</h3>
+  <p>Ennen lähettämistä laite tekee oman peitteensä ja kohteen IP-osoitteen välillä AND-laskun. Jos tulos on sama kuin oma verkko-osoite, kohde on samassa verkossa.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Kohde</th><th>Kehyksen kohde-MAC</th><th>Paketin kohde-IP</th></tr></thead>
+    <tbody>
+      <tr><td>Samassa verkossa</td><td>kohdelaitteen MAC</td><td>kohdelaitteen IP</td></tr>
+      <tr><td>Toisessa verkossa</td><td>oman oletusyhdyskäytävän MAC</td><td>edelleen lopullisen kohteen IP</td></tr>
+    </tbody>
+  </table></div>
+  <p>MAC-osoitteen laite selvittää <strong>ARP</strong>illa:</p>
+  <ol>
+    <li>Laite lähettää ARP-pyynnön broadcastina MAC-osoitteeseen FFFF.FFFF.FFFF: kenellä on tämä IP-osoite?</li>
+    <li>Kaikki lähiverkon laitteet vastaanottavat pyynnön.</li>
+    <li>Vain se, jonka IP-osoite täsmää, vastaa ja kertoo oman MAC-osoitteensa.</li>
+  </ol>
+  <p>IPv6:ssa saman tehtävän hoitaa <strong>ND</strong> (Neighbor Discovery). MAC-osoitteet ja IPv6-osoitteet kirjoitetaan heksadesimaaleina.</p>
+
+  <h3>Reititin</h3>
+  <ul>
+    <li>Reitittimen kaksi tehtävää ovat <strong>polun valinta</strong> ja <strong>pakettien välitys</strong>. Se katsoo paketin kohde-IP-osoitetta ja vertaa sitä reititystauluunsa.</li>
+    <li>Reititystaulussa kirjain <strong>C</strong> tarkoittaa suoraan kytkettyä verkkoa (directly connected).</li>
+    <li><strong>Oletusreitti</strong> on reitti, jota käytetään, kun kohdeverkkoa ei löydy taulusta. Jos sitäkään ei ole, reititin pudottaa paketin.</li>
+    <li>Reititin purkaa jokaisen kehyksen ja rakentaa sen uudelleen uusilla MAC-osoitteilla. IP-osoitteet pysyvät samoina.</li>
+    <li>Reititin ei välitä broadcasteja toiseen verkkoon. Siksi verkon jakaminen reitittimillä pienentää broadcast-alueita, parantaa suorituskykyä ja tietoturvaa ja antaa laajentaa verkon toiseen paikkaan.</li>
+  </ul>
+  <p><strong>NAT</strong> muuntaa sisäverkon yksityiset osoitteet reitittimen ulkoliitännän julkiseksi osoitteeksi. Näin kaikki kodin laitteet voivat jakaa yhden julkisen IPv4-osoitteen.</p>
+
+  <h3>Siirtyminen IPv6:een</h3>
+  <p>IPv6 tarvitaan, koska IPv4-osoitteet loppuvat. Pelkästään esineiden internet tuo verkkoon miljoonia sensoreita, joista jokainen tarvitsee osoitteen.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tapa</th><th>Mitä tekee</th></tr></thead>
+    <tbody>
+      <tr><td>Dual stack</td><td>Laite käyttää IPv4:ää ja IPv6:ta yhtä aikaa</td></tr>
+      <tr><td>Tunnelointi</td><td>IPv6-paketti kulkee IPv4-paketin sisällä</td></tr>
+      <tr><td>Muunnos (NAT64)</td><td>IPv6-laite ja IPv4-laite keskustelevat muunnoksen kautta</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Vianetsintäkomennot (Windows)</h3>
+  <div class="code"><pre><code class="language-none">ipconfig               IP-osoite, aliverkon peite ja oletusyhdyskäytävä
+ipconfig /all          lisäksi MAC-osoite, DNS-palvelin ja DHCP:n tiedot
+ipconfig /release      luopuu DHCP:ltä saadusta osoitteesta
+ipconfig /renew        pyytää DHCP:ltä uuden osoitteen
+ping 192.168.1.1       vastaako kohde, eli toimiiko yhteys päästä päähän
+ping -t 192.168.1.1    pingaa jatkuvasti, kunnes painat ctrl+c
+ping -a 192.168.1.1    näyttää myös osoitteen nimen
+ping -4 / ping -6      pakottaa IPv4:n tai IPv6:n
+tracert tamk.fi        näyttää jokaisen reitittimen matkan varrella
+nslookup tamk.fi       kysyy DNS-palvelimelta nimen osoitteen
+netstat                näyttää koneen aktiiviset TCP-yhteydet</code></pre></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Oire</th><th>Todennäköinen syy</th></tr></thead>
+    <tbody>
+      <tr><td>Oma lähiverkko toimii, muut verkot ja internet eivät</td><td>Oletusyhdyskäytävä puuttuu tai on väärä</td></tr>
+      <tr><td>Ping IP-osoitteeseen toimii, nimeen ei</td><td>DNS ei toimi</td></tr>
+      <tr><td>Muut sivut aukeavat, yksi ei</td><td>DNS ei toimi tai kohdepalvelin on alhaalla</td></tr>
+      <tr><td>Osoite alkaa 169.254</td><td>DHCP-palvelinta ei tavoiteta</td></tr>
+    </tbody>
+  </table></div>
+  <p>Oletusyhdyskäytävää pingaamalla tarkistetaan, pääseekö laite ylipäätään oman verkkonsa ulkopuolelle.</p>
+
+  <div class="pit">
+    <span class="pit-label">Sudenkuoppa</span>
+    <p>Kokeen vikatehtävissä väärä oletusyhdyskäytävä on usein vain näppäilyvirhe, esimerkiksi 192.168.2.21, kun pitäisi olla 192.168.21.1. Vertaa yhdyskäytävää aina koneen omaan verkko-osoitteeseen numero numerolta.</p>
+  </div>
+
+  <div class="task">
+    <span class="task-label">Harjoitus 5</span>
+    <p>PC1:n osoite on 192.168.20.15/24 ja oletusyhdyskäytävä 192.168.20.1. a) PC1 lähettää paketin osoitteeseen 10.1.1.5. Mikä on lähtevän kehyksen kohde-MAC ja paketin kohde-IP? b) <code>ping 10.1.1.5</code> toimii, mutta <code>ping palvelin.example.com</code> ei. Mikä on vialla? c) Toisena päivänä PC1:n osoite on 169.254.33.7. Mitä teet?</p>
+    <details><summary>Näytä vihje</summary><p>a) Onko 10.1.1.5 verkossa 192.168.20.0/24? b) Mikä palvelu muuttaa nimen osoitteeksi? c) Mistä kone normaalisti saa osoitteensa?</p></details>
+    <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">a) 10.1.1.5 on eri verkossa, joten paketti menee reitittimelle.
+   Kohde-MAC  = oletusyhdyskäytävän 192.168.20.1 MAC (selvitetään ARPilla)
+   Kohde-IP   = 10.1.1.5, lopullinen kohde ei muutu
+b) Yhteys toimii, mutta nimi ei muutu osoitteeksi: DNS.
+   Tarkista: nslookup palvelin.example.com ja ipconfig /all (DNS-palvelin)
+c) Kone ei tavoittanut DHCP-palvelinta. Tarkista kaapeli tai Wi-Fi,
+   sitten ipconfig /release ja ipconfig /renew.</code></pre></div></details>
+  </div>
+</section>
+
 <!-- 5 -->
 <section class="week" id="v5">
   <div class="week-head">
-    <div class="week-meta"><span><b>Osa 5</b></span><span>CIA · riski · liiketoiminta</span></div>
+    <div class="week-meta"><span><b>Osa 6</b></span><span>CIA · riski · liiketoiminta</span></div>
     <h2>Miksi kyberturva kuuluu liiketoimintaan</h2>
     <p class="tldr">Kyberturvassa suojataan tietoa ja palveluita, joiden varassa yritys toimii. Kun järjestelmät pysähtyvät, myös myynti, tuotanto ja asiakaspalvelu pysähtyvät.</p>
   </div>
@@ -2339,7 +2478,7 @@ e) HTTP              → 7 sovelluskerros</code></pre></div></details>
   </div>
 
   <div class="task">
-    <span class="task-label">Harjoitus 5</span>
+    <span class="task-label">Harjoitus 6</span>
     <p>Mihin CIA-kolmion kohtaan kukin tapaus osuu? a) Verkkokauppa on palvelunestohyökkäyksen takia poissa käytöstä. b) Asiakasrekisteri vuotaa internetiin. c) Hyökkääjä muuttaa laskun tilinumeron.</p>
     <details><summary>Näytä vihje</summary><p>Kysy jokaisesta: katosiko pääsy, näkikö väärä ihminen, vai muuttuiko tieto?</p></details>
     <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">a) saatavuus
@@ -2351,7 +2490,7 @@ c) eheys</code></pre></div></details>
 <!-- 6 -->
 <section class="week" id="v6">
   <div class="week-head">
-    <div class="week-meta"><span><b>Osa 6</b></span><span>Uhat · varautuminen</span></div>
+    <div class="week-meta"><span><b>Osa 7</b></span><span>Uhat · varautuminen</span></div>
     <h2>Kyberuhat ja niihin varautuminen</h2>
     <p class="tldr">Useimmat hyökkäykset eivät ole teknisesti nokkelia. Ne hyödyntävät kiirettä, heikkoja salasanoja ja päivittämättömiä järjestelmiä.</p>
   </div>
@@ -2386,7 +2525,7 @@ c) eheys</code></pre></div></details>
   </div>
 
   <div class="task">
-    <span class="task-label">Harjoitus 6</span>
+    <span class="task-label">Harjoitus 7</span>
     <p>Kirjanpitäjä saa sähköpostin, joka näyttää tulevan toimitusjohtajalta: "Maksa tämä lasku heti, olen palaverissa enkä vastaa puhelimeen." Mikä uhka on kyseessä, ja mitkä kaksi toimintatapaa estäisivät vahingon?</p>
     <details><summary>Näytä vihje</summary><p>Viesti ei sisällä haittaohjelmaa. Huomaa kiire ja se, että varmistaminen tehdään tahallaan vaikeaksi.</p></details>
     <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">Uhka: sosiaalinen manipulointi, kohdennettu tietojenkalastelu
@@ -2402,7 +2541,7 @@ Estää:
 <!-- 7 -->
 <section class="week" id="v7">
   <div class="week-head">
-    <div class="week-meta"><span><b>Osa 7</b></span><span>ISO/IEC 27001 · NIS2 · Kybermittari · NIST CSF</span></div>
+    <div class="week-meta"><span><b>Osa 8</b></span><span>ISO/IEC 27001 · NIS2 · Kybermittari · NIST CSF</span></div>
     <h2>Kyberturvan keskeiset standardit</h2>
     <p class="tldr">Standardit ja säädökset kertovat, mitä kyberturvassa pitää vähintään hoitaa ja miten sen voi osoittaa muille.</p>
   </div>
@@ -2431,7 +2570,7 @@ Estää:
   </div>
 
   <div class="task">
-    <span class="task-label">Harjoitus 7</span>
+    <span class="task-label">Harjoitus 8</span>
     <p>Pieni ohjelmistoyritys haluaa ensin selvittää, missä kunnossa sen kyberturva on, ja myöhemmin osoittaa isolle asiakkaalle, että tietoturvaa hallitaan järjestelmällisesti. Mitä työkalua tai standardia se käyttäisi kumpaankin?</p>
     <details><summary>Näytä vihje</summary><p>Toinen on maksuton itsearviointi, toinen sertifioitava hallintajärjestelmä.</p></details>
     <details><summary>Näytä ratkaisu</summary><div class="code"><pre><code class="language-none">Nykytilan arviointi   → Kybermittari
