@@ -301,6 +301,12 @@
     .heart:hover, .heart.beat { animation-duration: 2.4s; }
     .specimen:hover .glass::before, .specimen.on .glass::before { animation: none; opacity: 0; }
   }
+
+  /* Isot näytöt: sisältö landing-osion alla kasvaa kuin selaimen zoomilla, jotta teksti ja kuvat eivät jää pieniksi.
+     Puhelimeen ja läppäriin tämä ei vaikuta. */
+  @media (min-width: 1500px) { .nav, main > section:not(.hero), footer { zoom: 1.15; } }
+  @media (min-width: 1750px) { .nav, main > section:not(.hero), footer { zoom: 1.3; } }
+  @media (min-width: 2200px) { .nav, main > section:not(.hero), footer { zoom: 1.5; } }
 </style>
 <script data-goatcounter="https://mmilymary.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>

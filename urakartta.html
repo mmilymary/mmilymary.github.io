@@ -3,7 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}
+  /* Isot näytöt: sivu kasvaa kuin selaimen zoomilla, jotta teksti ja kuvat eivät jää pieniksi.
+     Puhelimeen ja läppäriin tämä ei vaikuta. */
+  @media (min-width: 1500px) { body { zoom: 1.15; } }
+  @media (min-width: 1750px) { body { zoom: 1.3; } }
+  @media (min-width: 2200px) { body { zoom: 1.5; } }
+</style>
 <title>Urakartta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
