@@ -95,6 +95,18 @@ h1 em{font-style:italic;color:var(--dusty)}
 .pin:focus-visible{outline:none}
 @media (prefers-reduced-motion:reduce){.pin .dot::after{animation:none}}
 @media (prefers-reduced-motion:reduce){.flame{animation:none}.dim,.hot .shape{transition:none}}
+
+/* Ompeluhuone: kynnys ja toinen huone */
+.threshold{display:grid;gap:var(--s2);max-width:40rem;padding-top:var(--s6)}
+.threshold .rule{height:9px;background:linear-gradient(var(--line),var(--line)) center/100% 1px no-repeat,radial-gradient(circle,var(--dusty) 0 2px,transparent 2.5px) center/9px 9px no-repeat;margin-bottom:var(--s4)}
+.prompt{font-family:var(--f-code);font-size:1.25rem;letter-spacing:.04em;color:var(--muted);margin:0;min-height:1.3em}
+.cur{animation:bl 1s steps(1) infinite}@keyframes bl{50%{opacity:0}}
+.threshold h2{font-family:var(--f-display);font-weight:500;font-variation-settings:"opsz" 11;font-optical-sizing:none;font-size:clamp(2.2rem,6vw,3.4rem);line-height:1;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.threshold h2 em{font-style:italic;color:var(--dusty)}
+.stage.sew svg{filter:brightness(.85) saturate(.92);
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 12%,#000 88%,transparent),linear-gradient(to bottom,transparent,#000 10%,#000 84%,transparent);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent,#000 12%,#000 88%,transparent),linear-gradient(to bottom,transparent,#000 10%,#000 84%,transparent);mask-composite:intersect}
+@media (prefers-reduced-motion:reduce){.cur{animation:none}}
 </style>
 <script data-goatcounter="https://mmilymary.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
@@ -131,6 +143,32 @@ h1 em{font-style:italic;color:var(--dusty)}
     </div>
 
     <aside class="card" id="card" aria-live="polite"></aside>
+  </div>
+
+  <section class="threshold" id="ompeluhuone" aria-labelledby="h-ompelu">
+    <div class="rule" aria-hidden="true"></div>
+    <p class="prompt" aria-hidden="true"><span id="typed">&gt; cd ../ompeluhuone</span><span class="cur">_</span></p>
+    <h2 id="h-ompelu">Ompelu<em>huone</em></h2>
+    <p class="lede">Kankaat, langat ja värit samassa nurkassa.</p>
+  </section>
+
+  <div class="room">
+    <div class="stage sew" id="stage2">
+      <svg viewBox="0 0 960 1200" role="img" aria-label="Viktoriaaninen ompelunurkkaus: ompelukone, kirjontakehys ruusuineen, ompelurasia lankarullineen, pitsiä ja kultainen kehys seinällä.">
+        <defs>
+          <mask id="spot2" maskUnits="userSpaceOnUse" x="0" y="0" width="960" height="1200">
+            <rect width="960" height="1200" fill="#fff"/>
+            <polygon id="hole2" points="" fill="#000" filter="url(#feather)"/>
+          </mask>
+        </defs>
+        <image href="img/ompeluhuone.webp" x="0" y="0" width="960" height="1200"/>
+        <image class="dim" href="img/ompeluhuone.webp" x="0" y="0" width="960" height="1200" filter="url(#darken)" mask="url(#spot2)"/>
+        <g id="hots2"></g>
+      </svg>
+      <div class="pins" id="pins2"></div>
+    </div>
+
+    <aside class="card" id="card2" aria-live="polite"></aside>
   </div>
 </div>
 
@@ -173,7 +211,7 @@ ITEMS.push(PLAYED
     preface:"Tätä esinettä ei ole kirjattu kokoelmaan. Kukaan ei muista, mistä se tuli.",
     href:"palimpsesti.html",cta:"Koske"});
 const NS="http://www.w3.org/2000/svg";
-const hots=document.getElementById("hots"),stage=document.getElementById("stage"),card=document.getElementById("card"),hole=document.getElementById("hole");
+function makeRoom({ITEMS,stage,card,hole,hots,pinsEl,title}){
 let active=null;
 
 ITEMS.forEach(it=>{
@@ -194,7 +232,6 @@ ITEMS.forEach(it=>{
   a.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!it.href){e.preventDefault();show(it.id)}});
 });
 stage.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse")dimOff()});
-const pinsEl=document.getElementById("pins");
 ITEMS.forEach(it=>{
   const el=document.createElement(it.href?"a":"button");
   el.className="pin"+(it.pin[0]>600&&it.side==="left"||it.side==="left"?" left":"")+(it.href?"":" soon")+(it.glitch?" glitch":"");
@@ -209,7 +246,6 @@ ITEMS.forEach(it=>{
   pinsEl.appendChild(el);it.pinEl=el;
   it.el.setAttribute("tabindex","-1");
 });
-
 
 function dimOff(){stage.classList.remove("on");ITEMS.forEach(i=>{i.el.classList.remove("active");i.pinEl&&i.pinEl.classList.remove("active")})}
 function show(id){
@@ -234,7 +270,7 @@ function render(it){
 function intro(){
   card.innerHTML=`
     <div class="meta"><span>${ITEMS.length} esinettä</span></div>
-    <h2>Mistä aloitetaan?</h2>
+    <h2>${title}</h2>
     ${indexHTML(null)}`;
   bindIndex();
 }
@@ -244,6 +280,27 @@ function indexHTML(cur){
 }
 function bindIndex(){card.querySelectorAll(".index button,.guide button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.id)))}
 intro();
+}
+
+makeRoom({ITEMS,stage:document.getElementById("stage"),card:document.getElementById("card"),hole:document.getElementById("hole"),hots:document.getElementById("hots"),pinsEl:document.getElementById("pins"),title:"Mistä aloitetaan?"});
+
+/* Ompeluhuone */
+const SEW=[
+  {id:"nayteliina",about:"vuoden commitit kirjottuna kankaaseen",pin:[670,614],side:"left",short:"Näyteliina",name:"Näyteliina",kind:"kirjontatyö",status:"kesken",
+   pts:"613,614 647,533 728,499 809,533 843,614 809,695 728,729 647,695",
+   preface:"Vuoden commitit kirjottuna kankaaseen. Kuvio kirkastuu pisto kerrallaan, ja joulukuussa työ on valmis.",
+   href:"nayteliina.html",cta:"Avaa liina"},
+  {id:"lankalaatikko",about:"väripaletit, kirjontalangat ja kontrastit",pin:[642,400],side:"left",short:"Lankalaatikko",name:"Lankalaatikko",kind:"väripaletit",status:"tulossa",
+   pts:"575,265 890,265 890,500 575,500",
+   preface:"Väripalettityökalu. Jokaiselle värille hex-koodi, lähin DMC-kirjontalanka ja kontrasti tekstin kanssa."}
+];
+makeRoom({ITEMS:SEW,stage:document.getElementById("stage2"),card:document.getElementById("card2"),hole:document.getElementById("hole2"),hots:document.getElementById("hots2"),pinsEl:document.getElementById("pins2"),title:"Mitä pöydällä on?"});
+
+/* kynnys: kehote kirjoittuu uudelleen, kun huone tulee näkyviin (teksti on sivulla valmiina) */
+(()=>{const t=document.getElementById("typed"),full=t.textContent;
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches||!("IntersectionObserver" in window))return;
+  const io=new IntersectionObserver(es=>{if(!es[0].isIntersecting)return;io.disconnect();let i=2;t.textContent=full.slice(0,i);
+    const iv=setInterval(()=>{t.textContent=full.slice(0,++i);if(i>=full.length)clearInterval(iv)},70)},{threshold:.8});io.observe(t)})();
 
 /* chrome chains, same links and physics as the portfolio hero */
 (()=>{
