@@ -12,20 +12,25 @@ jobs:
   paivita:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - name: Hae vuoden commitit
+      - name: Hae commitit vuodesta 2026 alkaen
         env:
           GH_TOKEN: ${{ secrets.NAYTELIINA_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
-          VUOSI=$(date -u +%Y)
-          gh api graphql \
-            -f query='query($login:String!,$from:DateTime!,$to:DateTime!){user(login:$login){contributionsCollection(from:$from,to:$to){contributionCalendar{weeks{contributionDays{date contributionCount}}}}}}' \
-            -f login=mmilymary \
-            -f from="${VUOSI}-01-01T00:00:00Z" \
-            -f to="${VUOSI}-12-31T23:59:59Z" \
-            --jq '[.data.user.contributionsCollection.contributionCalendar.weeks[].contributionDays[] | {date, count: .contributionCount}]' \
-            > nayteliina-data.json
+          echo '[]' > nayteliina-data.json
+          for VUOSI in $(seq 2026 "$(date -u +%Y)"); do
+            gh api graphql \
+              -f query='query($login:String!,$from:DateTime!,$to:DateTime!){user(login:$login){contributionsCollection(from:$from,to:$to){contributionCalendar{weeks{contributionDays{date contributionCount}}}}}}' \
+              -f login=mmilymary \
+              -f from="${VUOSI}-01-01T00:00:00Z" \
+              -f to="${VUOSI}-12-31T23:59:59Z" \
+              --jq '[.data.user.contributionsCollection.contributionCalendar.weeks[].contributionDays[] | {date, count: .contributionCount}]' \
+              > vuosi.json
+            jq -s 'add' nayteliina-data.json vuosi.json > yhdessa.json
+            mv yhdessa.json nayteliina-data.json
+          done
+          rm -f vuosi.json
 
       - name: Tallenna muutokset
         run: |
