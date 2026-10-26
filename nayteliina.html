@@ -57,9 +57,9 @@ pre{font-family:var(--mono);font-size:12px;color:var(--dim);background:var(--sur
 <main class="wrap">
   <header class="top">
     <nav class="crumb" aria-label="Murupolku"><a href="index.html">portfolio</a><span aria-hidden="true">/</span><a href="exlibris.html#ompeluhuone">ex libris</a><span aria-hidden="true">/</span><span>näyteliina</span></nav>
-    <div class="prompt" aria-hidden="true">&gt; nayteliina --vuosi <span id="yr">2026</span><span class="cur">_</span></div>
+    <div class="prompt" aria-hidden="true">&gt; nayteliina --pistot <span id="yr">0/150</span><span class="cur">_</span></div>
     <h1>Näyteliina</h1>
-    <p class="lead">Vuoden commitit kirjottuna kankaaseen. Jokainen päivä, jona GitHubiin on tullut committeja, kirjoo liinaan uusia pistoja. Kuvio on painettu kankaaseen haaleana, ja pistot tuovat sen esiin vuoden mittaan. Joulukuun lopussa liina on valmis.</p>
+    <p class="lead">Commitit kirjottuna kankaaseen. Kuvio on painettu kankaaseen haaleana, ja jokainen päivä, jona GitHubiin tulee committeja, kirjoo siihen seuraavan palan. Kun 150 päivää on kirjottu, liina on valmis.</p>
   </header>
 
   <dl class="stats">
@@ -76,18 +76,18 @@ pre{font-family:var(--mono);font-size:12px;color:var(--dim);background:var(--sur
   </div>
 
   <div class="frame" id="frame">
-    <canvas id="cv" width="600" height="792" role="img" aria-label="Ristipistoliina: kylkiluusydän medaljongissa, ruusuja ja piikkilankaa reunoilla, korppi, avain, pääkallo ja neljä yöperhosta. Haalea kuvio kirkastuu pisto kerrallaan vuoden commit-päivien mukaan."></canvas>
+    <canvas id="cv" width="600" height="792" role="img" aria-label="Ristipistoliina: kylkiluusydän medaljongissa, ruusuja ja piikkilankaa reunoilla, korppi, avain, pääkallo ja neljä yöperhosta. Haalea kuvio kirkastuu pala kerrallaan päivinä, joina GitHubiin tulee committeja."></canvas>
   </div>
-  <p class="maker">kirjottu vuonna <span id="yr2">2026</span> / mmilymary</p>
+  <p class="maker"><span id="yr2">aloitettu 2026</span> / mmilymary</p>
 
   <div class="day">
-    <label for="day">Valitse päivä tai napauta liinaa</label>
+    <label for="day">Valitse pistopäivä tai napauta liinaa</label>
     <input type="range" id="day" min="0" max="364" step="1" value="0">
     <p class="status" id="status" aria-live="polite">// pujotetaan lankaa</p>
   </div>
 
   <ul class="legend">
-    <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><line x1="3" y1="13" x2="13" y2="3" stroke="#b5475a" stroke-width="3" stroke-linecap="round" opacity=".3"/><line x1="3" y1="3" x2="13" y2="13" stroke="#b5475a" stroke-width="3" stroke-linecap="round" opacity=".3"/></svg>ei committeja</li>
+    <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><line x1="3" y1="13" x2="13" y2="3" stroke="#b5475a" stroke-width="3" stroke-linecap="round" opacity=".3"/><line x1="3" y1="3" x2="13" y2="13" stroke="#b5475a" stroke-width="3" stroke-linecap="round" opacity=".3"/></svg>kirjomatta</li>
     <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><line x1="3" y1="13" x2="13" y2="3" stroke="#b5475a" stroke-width="3" stroke-linecap="round"/></svg>puolipisto, 1–2 committia</li>
     <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><line x1="3" y1="13" x2="13" y2="3" stroke="#b5475a" stroke-width="3" stroke-linecap="round"/><line x1="3" y1="3" x2="13" y2="13" stroke="#b5475a" stroke-width="3" stroke-linecap="round"/></svg>ristipisto, 3 tai enemmän</li>
   </ul>
@@ -118,31 +118,33 @@ let days=[],todayIdx=0,year,demo=false,sel=-1,mode='liina';
 function demoData(y){let s=11;const r=()=>(s=(s*16807)%2147483647)/2147483647;const out=[];const end=new Date();
   for(let d=new Date(y,0,1);d<=end&&d.getFullYear()===y;d.setDate(d.getDate()+1)){const we=d.getDay()%6===0;out.push({date:ymd(d),count:r()<(we?.35:.72)?1+Math.floor(r()*r()*9):0})}return out}
 
+/* The cloth is finished after GOAL active days. Each day with commits stitches the next share of the cloth, whenever it happens. */
+const GOAL=150;
 async function load(){
   let list;
   try{const res=await fetch('nayteliina-data.json',{cache:'no-store'});if(!res.ok)throw new Error();list=await res.json();if(!Array.isArray(list)||!list.length)throw new Error()}
   catch(e){demo=true;list=demoData(new Date().getFullYear())}
-  year=+list[0].date.slice(0,4);
-  const map=new Map(list.map(o=>[o.date,o.count]));
-  const n=((year%4===0&&year%100!==0)||year%400===0)?366:365;
-  const now=new Date();
-  for(let i=0;i<n;i++){const d=new Date(year,0,1+i);days.push({d,count:map.has(ymd(d))?map.get(ymd(d)):0})}
-  todayIdx=year<now.getFullYear()?n-1:Math.min(n-1,Math.floor((new Date(now.getFullYear(),now.getMonth(),now.getDate())-new Date(year,0,1))/864e5));
-  heart.forEach((h,c)=>{h.day=Math.floor(c*n/heart.length);heartAt.set(h.y*W+h.x,h)});
-  document.getElementById('yr').textContent=year;document.getElementById('yr2').textContent=year;
-  const past=days.slice(0,todayIdx+1),active=past.filter(d=>d.count>0);
-  let best=0,run=0;past.forEach(d=>{run=d.count>0?run+1:0;best=Math.max(best,run)});
-  const stitched=heart.filter(h=>h.day<=todayIdx&&days[h.day].count>0).length;
-  document.getElementById('s-days').textContent=active.length;
-  document.getElementById('s-commits').textContent=active.reduce((a,d)=>a+d.count,0);
+  list=list.slice().sort((a,b)=>a.date<b.date?-1:1);
+  days=list.filter(o=>o.count>0).map(o=>({d:new Date(+o.date.slice(0,4),+o.date.slice(5,7)-1,+o.date.slice(8,10)),count:o.count}));
+  todayIdx=Math.min(days.length,GOAL)-1;
+  const per=heart.length/GOAL;
+  heart.forEach((h,c)=>{h.day=Math.floor(c/per);heartAt.set(h.y*W+h.x,h)});
+  let best=0,run=0,prev=null;days.forEach(o=>{run=prev&&Math.round((o.d-prev)/864e5)===1?run+1:1;best=Math.max(best,run);prev=o.d});
+  const done=days.length>=GOAL,y0=days.length?days[0].d.getFullYear():new Date().getFullYear(),y1=done?days[GOAL-1].d.getFullYear():y0;
+  document.getElementById('yr').textContent=Math.min(days.length,GOAL)+'/'+GOAL;
+  document.getElementById('yr2').textContent=done?'kirjottu '+(y0===y1?y0:y0+'–'+y1):'aloitettu '+y0;
+  document.getElementById('s-days').textContent=days.length;
+  document.getElementById('s-commits').textContent=days.reduce((a,d)=>a+d.count,0);
   document.getElementById('s-streak').textContent=best+' pv';
-  document.getElementById('s-fill').textContent=Math.round(stitched/heart.length*100)+' %';
-  const sl=document.getElementById('day');sl.max=todayIdx;sl.value=todayIdx;
+  document.getElementById('s-fill').textContent=Math.min(100,Math.round(days.length/GOAL*100))+' %';
+  const sl=document.getElementById('day');sl.max=Math.max(0,todayIdx);sl.value=Math.max(0,todayIdx);sl.disabled=todayIdx<0;
   document.getElementById('note').textContent=demo
     ?'Tässä on esimerkkidataa. Oikeat commitit näkyvät, kun sivu on portfoliossa ja GitHub Action on hakenut ne.'
     :'Data päivittyy kerran vuorokaudessa GitHubin aktiivisuuskalenterista.';
   document.getElementById('json').textContent='nayteliina-data.json\n'+JSON.stringify(list.filter(o=>o.count>0).slice(-3),null,1);
-  sel=todayIdx;showDay(false);setMode('liina',true);
+  sel=todayIdx;
+  if(sel>=0)showDay(false);else document.getElementById('status').textContent='// ensimmäinen pisto odottaa';
+  setMode('liina',true);
 }
 
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
@@ -157,7 +159,7 @@ function bright(hex){let [r,g,b]=rgb(hex).map(v=>v/255);const mx=Math.max(r,g,b)
   if(d){s=d/(1-Math.abs(2*l-1));h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h*=60}
   l=Math.min(.88,l*1.45+.1);s=Math.min(1,s*1.25);return 'hsl('+Math.round(h<0?h+360:h)+','+Math.round(s*100)+'%,'+Math.round(l*100)+'%)'}
 function lighten(hex,t){const c=rgb(hex);return 'rgb('+c.map((v,k)=>Math.round(v+(BRIGHT[k]-v)*t)).join(',')+')'}
-function heartState(h){if(h.day>todayIdx)return 'future';const c=days[h.day].count;return c===0?'empty':c<3?'half':'full'}
+function heartState(h){if(h.day>todayIdx)return 'future';const c=days[h.day].count;return c<3?'half':'full'}
 
 function drawLiina(rows){
   ctx.fillStyle='#1c0b10';ctx.fillRect(0,0,cv.width,cv.height);
@@ -207,8 +209,8 @@ function setMode(m,animate){mode=m;['liina','kaavio','nurja'].forEach(k=>documen
   document.getElementById('json').hidden=m!=='nurja';draw(animate)}
 ['liina','kaavio','nurja'].forEach(k=>document.getElementById('v-'+k).addEventListener('click',()=>setMode(k,k==='liina')));
 
-function showDay(redraw){const d=days[sel],c=d.count,kind=c===0?'paljas kangas':c<3?'puolipisto':'ristipisto';
-  document.getElementById('status').textContent='// '+fi(d.d)+' · '+c+(c===1?' commit':' committia')+' · '+kind;if(redraw)draw(false)}
+function showDay(redraw){const d=days[sel],c=d.count,kind=c<3?'puolipisto':'ristipisto';
+  document.getElementById('status').textContent='// pistopäivä '+(sel+1)+'/'+GOAL+' · '+fi(d.d)+' · '+c+(c===1?' commit':' committia')+' · '+kind;if(redraw)draw(false)}
 document.getElementById('day').addEventListener('input',e=>{sel=+e.target.value;showDay(true)});
 cv.addEventListener('click',e=>{const r=cv.getBoundingClientRect();let x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;if(mode==='nurja')x=W-x;
   let best=null,bd=64;heart.forEach(h=>{if(h.day>todayIdx)return;const dd=(h.x+.5-x)**2+(h.y+.5-y)**2;if(dd<bd){bd=dd;best=h}});
