@@ -73,7 +73,7 @@ h1 em { color: var(--ink); }
 .volumes li span { color: var(--muted); opacity: .8; }
 
 /* Tools: search, tag filter, shell switch */
-.tools { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-block: 1px solid var(--line); margin-top: var(--s5); padding: var(--s3) 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); }
+.tools { background: var(--bg); border-block: 1px solid var(--line); margin-top: var(--s5); padding: var(--s3) 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); }
 .row { display: flex; gap: var(--s3); align-items: center; flex-wrap: wrap; }
 .search { flex: 1 1 14rem; min-width: 0; display: flex; align-items: center; gap: var(--s2); border: 1px solid var(--line); border-radius: 2px; padding: 0 .75rem; min-height: 44px; background: var(--surface); }
 .search:focus-within { border-color: var(--neon); }
@@ -104,6 +104,10 @@ h1 em { color: var(--ink); }
 
 .lines { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-left: 2px solid var(--chrome-dim); border-radius: var(--radius); background: var(--code-bg); }
 .line { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) auto; gap: var(--s3); align-items: start; padding: .65rem .75rem; }
+.spells[data-vol="py"] .line { grid-template-columns: minmax(0, 1fr) auto; }
+.spells[data-vol="py"] .line code { grid-column: 1 / -1; grid-row: 1; }
+.spells[data-vol="py"] .line p { grid-column: 1; grid-row: 2; }
+.spells[data-vol="py"] .line .copy { grid-column: 2; grid-row: 2; align-self: start; }
 .line + .line { border-top: 1px dashed var(--line); }
 .line code { background: none; padding: 0; border-radius: 0; font: 400 .9rem/1.55 var(--font-mono); color: #c7b49c; -webkit-font-smoothing: antialiased; white-space: pre-wrap; overflow-wrap: anywhere; }
 :root[data-theme="light"] .line code { color: #3b2a20; }
@@ -163,7 +167,7 @@ h1 em { color: var(--ink); }
     <li><button type="button" data-vol="cmd" aria-pressed="true">Komentorivi</button></li>
     <li><button type="button" data-vol="sql" aria-pressed="false">SQL-reseptit</button></li>
     <li><button type="button" data-vol="git" aria-pressed="false">Git</button></li>
-    <li class="soon">Python <span>· tulossa</span></li>
+    <li><button type="button" data-vol="py" aria-pressed="false">Python</button></li>
   </ul>
 
   <div class="tools">
@@ -209,6 +213,17 @@ h1 em { color: var(--ink); }
       <li>Muutos kulkee kolmen vaiheen läpi: <code>git add</code> valitsee, <code>git commit</code> tallentaa omalle koneelle ja <code>git push</code> lähettää GitHubiin.</li>
       <li>Kun lataat tiedostoja GitHubin sivulla (<em>Add files via upload</em>), sekin on commit. Tarkista ennen lataamista tiedoston nimi: jos laitteella on jo samanniminen tiedosto, selain voi lisätä nimeen numeron.</li>
       <li>GitHub ei hyväksy komentorivillä tavallista salasanaa. Windowsissa Git for Windows avaa ensimmäisellä kerralla selainikkunan, jossa kirjaudut GitHubiin. Macissa salasanan tilalle kirjoitetaan GitHubin asetuksista luotu henkilökohtainen tunniste (personal access token), ellei koneelle ole asennettu Git Credential Manageria.</li>
+    </ul>
+  </section>
+
+  <section class="tips" data-vol="py" aria-label="Hyvä tietää" hidden>
+    <h2>Hyvä tietää</h2>
+    <ul>
+      <li>Lataa Python osoitteesta <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org</a>. Windowsissa Python käynnistyy asennuksen jälkeen komennolla <code>py</code>, Macissa ja Linuxissa komennolla <code>python3</code>.</li>
+      <li>Koodi kirjoitetaan .py-päätteiseen tiedostoon, esimerkiksi VS Codessa. Sen Python-laajennus näyttää virheet jo kirjoittaessa ja ajaa ohjelman yhdellä napilla.</li>
+      <li>Sisennys on Pythonissa osa kieltä. Saman lohkon rivit sisennetään yhtä paljon, yleensä neljällä välilyönnillä. Sarkaimen ja välilyöntien sekoittaminen antaa virheen.</li>
+      <li>Esimerkit näyttävät tuloksen print-komennolla. Tulkissa, jonka kehote on <code>&gt;&gt;&gt;</code>, pelkkä lauseke riittää, koska tulkki näyttää arvon itse.</li>
+      <li>Kun ohjelma kaatuu, lue virheilmoitus alhaalta ylöspäin. Viimeinen rivi kertoo virheen tyypin, ja sen yläpuolella näkyy rivi, jolla virhe tapahtui.</li>
     </ul>
   </section>
 
@@ -1222,6 +1237,838 @@ h1 em { color: var(--ink); }
    }
   ];
 
+  const PY = [
+ {
+  "id": "py-alku",
+  "title": "Käynnistä Python",
+  "tags": [
+   "perusteet"
+  ],
+  "osFirst": true,
+  "when": "Kun haluat tarkistaa, että Python on asennettu, tai ajaa oman ohjelman komentoriviltä.",
+  "cmd": [
+   [
+    "py --version",
+    "Kertoo Pythonin version. Windowsissa Python käynnistetään py-komennolla."
+   ],
+   [
+    "py",
+    "Avaa interaktiivisen tulkin, jossa voi kokeilla rivejä yksi kerrallaan. Kehote on >>>."
+   ],
+   [
+    "py ohjelma.py",
+    "Ajaa tiedoston ohjelma.py siitä kansiosta, jossa olet."
+   ]
+  ],
+  "sh": [
+   [
+    "python3 --version",
+    "Kertoo Pythonin version. Macissa ja Linuxissa komento on python3."
+   ],
+   [
+    "python3",
+    "Avaa interaktiivisen tulkin, jossa voi kokeilla rivejä yksi kerrallaan. Kehote on >>>."
+   ],
+   [
+    "python3 ohjelma.py",
+    "Ajaa tiedoston ohjelma.py siitä kansiosta, jossa olet."
+   ]
+  ],
+  "all": [
+   [
+    "exit()",
+    "Sulkee tulkin. Pikanäppäin on Windowsissa Ctrl+Z ja Enter, Macissa ja Linuxissa Ctrl+D."
+   ]
+  ],
+  "warn": "Jos Windows avaa Microsoft Storen, kun kirjoitat python, Pythonia ei ole vielä asennettu. Asenna se osoitteesta python.org ja käytä komentoa py."
+ },
+ {
+  "id": "py-tulostus",
+  "title": "Tulosta ja muotoile",
+  "tags": [
+   "perusteet"
+  ],
+  "when": "Kun haluat näyttää käyttäjälle tekstiä, lukuja tai muuttujien arvoja.",
+  "all": [
+   [
+    "print('Kirjasto', 'aukeaa')",
+    "Tulostaa osat välilyönnillä erotettuina: Kirjasto aukeaa."
+   ],
+   [
+    "print('9', '17', sep='–')",
+    "sep vaihtaa erottimen. Tulostaa: 9–17."
+   ],
+   [
+    "print('Ladataan', end='...')\nprint('valmis')",
+    "end vaihtaa rivin lopun. Oletuksena se on rivinvaihto. Tulostaa: Ladataan...valmis."
+   ],
+   [
+    "nimi = 'Frankenstein'\nvuosi = 1818\nprint(f'{nimi} julkaistiin {vuosi}.')",
+    "f-merkkijono: aaltosulkeiden sisään voi kirjoittaa muuttujan tai lausekkeen. Tulostaa: Frankenstein julkaistiin 1818."
+   ],
+   [
+    "hinta = 12.5\nprint(f'{hinta:.2f} €')",
+    ":.2f näyttää kaksi desimaalia. Tulostaa: 12.50 €."
+   ],
+   [
+    "print(f'{vuosi = }')",
+    "Yhtäsuuruusmerkki tulostaa sekä nimen että arvon. Kätevä virheiden etsimisessä. Tulostaa: vuosi = 1818."
+   ]
+  ]
+ },
+ {
+  "id": "py-syote",
+  "title": "Kysy käyttäjältä",
+  "tags": [
+   "perusteet"
+  ],
+  "when": "Kun ohjelman pitää lukea jotain näppäimistöltä.",
+  "all": [
+   [
+    "nimi = input('Nimi: ')",
+    "Näyttää kehotteen ja odottaa Enteriä. input palauttaa aina merkkijonon, vaikka käyttäjä kirjoittaisi numeron."
+   ],
+   [
+    "sivut = int(input('Sivumäärä: '))",
+    "int muuttaa tekstin kokonaisluvuksi, jotta sillä voi laskea."
+   ],
+   [
+    "hinta = float(input('Hinta: ').replace(',', '.'))",
+    "float muuttaa desimaaliluvuksi. Suomalainen kirjoittaa usein pilkun, joten se vaihdetaan ensin pisteeksi."
+   ],
+   [
+    "print(type(sivut))",
+    "Kertoo arvon tyypin: <class 'int'>."
+   ],
+   [
+    "teksti = str(sivut)",
+    "str muuttaa luvun takaisin tekstiksi, esimerkiksi tekstiin liittämistä varten."
+   ]
+  ],
+  "warn": "int('12.5') ja int('kaksi') kaatavat ohjelman ValueError-virheeseen. Välilyönnit luvun ympärillä eivät haittaa: int(' 12 ') on 12."
+ },
+ {
+  "id": "py-merkkijono",
+  "title": "Merkkijonot",
+  "tags": [
+   "perusteet"
+  ],
+  "when": "Kun tekstistä pitää poimia osa, muuttaa kirjainkokoa tai pilkkoa sitä osiin.",
+  "all": [
+   [
+    "teksti = 'Mary Shelley'\nprint(len(teksti))",
+    "Merkkien määrä välilyönti mukaan lukien: 12."
+   ],
+   [
+    "print(teksti[0], teksti[-1])",
+    "Indeksointi alkaa nollasta, ja -1 on viimeinen merkki. Tulostaa: M y."
+   ],
+   [
+    "print(teksti[0:4])",
+    "Viipale: merkit indeksistä 0 alkaen, mutta ei indeksiä 4. Tulostaa: Mary."
+   ],
+   [
+    "print(teksti.upper(), teksti.lower())",
+    "Isoiksi ja pieniksi kirjaimiksi: MARY SHELLEY mary shelley."
+   ],
+   [
+    "print(teksti.replace('Mary', 'M.'))",
+    "Korvaa osan. Tulostaa: M. Shelley. Alkuperäinen teksti ei muutu."
+   ],
+   [
+    "print('  tyhjää ympärillä  '.strip())",
+    "Poistaa välilyönnit ja rivinvaihdot alusta ja lopusta."
+   ],
+   [
+    "osat = 'Emma;Austen;1815'.split(';')\nprint(osat)",
+    "Pilkkoo erottimen kohdalta listaksi: ['Emma', 'Austen', '1815']. Ilman erotinta split pilkkoo välilyönneistä."
+   ],
+   [
+    "print(' / '.join(osat))",
+    "Liittää listan osat yhteen. Tulostaa: Emma / Austen / 1815."
+   ]
+  ]
+ },
+ {
+  "id": "py-if",
+  "title": "Valinta: if, elif ja else",
+  "tags": [
+   "ohjaus"
+  ],
+  "when": "Kun ohjelman pitää toimia eri tavalla eri tilanteissa.",
+  "all": [
+   [
+    "sivut = 320\nif sivut > 500:\n    print('Tiiliskivi')\nelif sivut > 200:\n    print('Sopiva iltalukemiseksi')\nelse:\n    print('Novelli')",
+    "Ehdot tarkistetaan ylhäältä alas, ja vain ensimmäinen tosi haara suoritetaan. Tulostaa: Sopiva iltalukemiseksi."
+   ],
+   [
+    "==  !=  <  <=  >  >=",
+    "Vertailut: yhtä suuri, eri suuri, pienempi, pienempi tai yhtä suuri, suurempi, suurempi tai yhtä suuri."
+   ],
+   [
+    "lainassa = False\nif sivut > 200 and not lainassa:\n    print('Lainaa tämä')",
+    "and vaatii, että molemmat ehdot ovat tosia. or riittää, että toinen on. not kääntää totuusarvon."
+   ],
+   [
+    "tila = 'lainassa' if lainassa else 'hyllyssä'\nprint(tila)",
+    "Lyhyt valinta yhdelle riville. Tulostaa: hyllyssä."
+   ]
+  ],
+  "warn": "Yksi = asettaa arvon, kaksi == vertaa. Kaksoispisteen jälkeiset rivit sisennetään, yleensä neljällä välilyönnillä."
+ },
+ {
+  "id": "py-silmukat",
+  "title": "Toisto: for, while ja range",
+  "tags": [
+   "ohjaus"
+  ],
+  "when": "Kun saman asian pitää toistua useaan kertaan.",
+  "all": [
+   [
+    "for i in range(3):\n    print(i)",
+    "range(3) antaa luvut 0, 1 ja 2. Loppuluku ei tule mukaan."
+   ],
+   [
+    "print(list(range(1, 6)))\nprint(list(range(10, 0, -2)))",
+    "range(alku, loppu, askel). Tulostaa: [1, 2, 3, 4, 5] ja [10, 8, 6, 4, 2]."
+   ],
+   [
+    "for kirjain in 'Ada':\n    print(kirjain)",
+    "for käy läpi myös merkkijonon kirjain kerrallaan: A, d, a."
+   ],
+   [
+    "lainat = 3\nwhile lainat > 0:\n    print(f'Palauta vielä {lainat}')\n    lainat -= 1",
+    "while toistaa niin kauan kuin ehto on tosi. lainat -= 1 on sama kuin lainat = lainat - 1."
+   ],
+   [
+    "for luku in range(1, 100):\n    if luku * luku > 50:\n        print(luku)\n        break",
+    "break lopettaa silmukan heti. Tulostaa: 8, koska 8 × 8 = 64."
+   ],
+   [
+    "for luku in range(6):\n    if luku % 2 == 1:\n        continue\n    print(luku)",
+    "continue hyppää suoraan seuraavaan kierrokseen. % on jakojäännös. Tulostaa: 0, 2 ja 4."
+   ]
+  ],
+  "warn": "Jos while-ehto ei koskaan muutu epätodeksi, silmukka jää pyörimään. Keskeytä ohjelma painamalla Ctrl+C."
+ },
+ {
+  "id": "py-funktio",
+  "title": "Oma funktio",
+  "tags": [
+   "funktiot"
+  ],
+  "when": "Kun sama koodi toistuu ohjelmassa tai haluat jakaa ohjelman selkeisiin osiin.",
+  "all": [
+   [
+    "def esittele(nimi, vuosi):\n    print(f'{nimi} ({vuosi})')",
+    "def määrittelee funktion. nimi ja vuosi ovat parametreja, jotka näkyvät vain funktion sisällä."
+   ],
+   [
+    "esittele('Dracula', 1897)",
+    "Kutsuu funktiota. Arvot menevät parametreille järjestyksessä. Tulostaa: Dracula (1897)."
+   ],
+   [
+    "def ale(hinta, prosentti):\n    return hinta * (1 - prosentti / 100)",
+    "return palauttaa arvon kutsujalle ja lopettaa funktion."
+   ],
+   [
+    "uusi = ale(30, 20)\nprint(uusi)",
+    "Palautettu arvo tallennetaan muuttujaan. Tulostaa: 24.0."
+   ],
+   [
+    "tulos = esittele('Emma', 1815)\nprint(tulos)",
+    "Funktio, jossa ei ole returnia, palauttaa None. Tulostaa ensin Emma (1815) ja sitten None."
+   ]
+  ]
+ },
+ {
+  "id": "py-parametrit",
+  "title": "Oletusarvot ja tyyppivinkit",
+  "tags": [
+   "funktiot"
+  ],
+  "when": "Kun parametrilla on tavallinen arvo, tai haluat kertoa, minkä tyyppisiä arvoja funktio odottaa.",
+  "all": [
+   [
+    "def ale(hinta: float, prosentti: int = 20) -> float:\n    return round(hinta * (1 - prosentti / 100), 2)",
+    "prosentti: int = 20 on oletusarvo. Vinkit : float ja -> float kertovat parametrin ja palautusarvon tyypin."
+   ],
+   [
+    "print(ale(25.0))\nprint(ale(25.0, 50))",
+    "Ilman toista argumenttia käytetään oletusarvoa. Tulostaa: 20.0 ja 12.5."
+   ],
+   [
+    "print(ale(prosentti=10, hinta=40.0))",
+    "Nimetyt argumentit voi antaa missä järjestyksessä tahansa. Tulostaa: 36.0."
+   ],
+   [
+    "def nimilista(nimet: list[str]) -> str:\n    return ', '.join(nimet)",
+    "Myös listan sisällön tyypin voi kertoa. list[str] tarkoittaa merkkijonojen listaa."
+   ]
+  ],
+  "warn": "Python ei tarkista tyyppivinkkejä ajon aikana. Ne auttavat lukijaa ja editoria, joka voi varoittaa väärästä tyypistä etukäteen."
+ },
+ {
+  "id": "py-lista",
+  "title": "Lista: lisää, poista ja järjestä",
+  "tags": [
+   "listat"
+  ],
+  "when": "Kun samaan muuttujaan pitää tallentaa monta arvoa, joiden määrä voi muuttua.",
+  "all": [
+   [
+    "kirjat = ['Emma', 'Dracula', 'Carmilla']",
+    "Lista hakasulkeissa. Tyhjä lista on [] tai list()."
+   ],
+   [
+    "kirjat.append('Villette')",
+    "Lisää loppuun."
+   ],
+   [
+    "kirjat.insert(0, 'Jane Eyre')",
+    "Lisää annettuun kohtaan. Nyt lista on ['Jane Eyre', 'Emma', 'Dracula', 'Carmilla', 'Villette']."
+   ],
+   [
+    "kirjat.remove('Dracula')",
+    "Poistaa arvon perusteella, ja vain ensimmäisen samanlaisen. Jos arvoa ei ole, tulee ValueError."
+   ],
+   [
+    "viimeinen = kirjat.pop()\nprint(viimeinen)",
+    "pop poistaa viimeisen ja palauttaa sen. Tulostaa: Villette. pop(0) poistaisi ensimmäisen."
+   ],
+   [
+    "del kirjat[0]",
+    "Poistaa indeksin perusteella. Jane Eyre poistuu."
+   ],
+   [
+    "print(kirjat.index('Carmilla'))",
+    "Kertoo arvon indeksin: 1."
+   ],
+   [
+    "kirjat.sort()\nprint(kirjat)",
+    "Järjestää listan paikallaan aakkosjärjestykseen: ['Carmilla', 'Emma']. reverse() kääntää järjestyksen."
+   ],
+   [
+    "jarjestetty = sorted(['Odessa', 'Arles', 'Bergen'])",
+    "sorted tekee järjestetyn kopion ja jättää alkuperäisen ennalleen."
+   ]
+  ]
+ },
+ {
+  "id": "py-lista-lapi",
+  "title": "Käy lista läpi",
+  "tags": [
+   "listat"
+  ],
+  "when": "Kun jokaiselle listan alkiolle pitää tehdä jotain, tai listasta pitää laskea jotain.",
+  "all": [
+   [
+    "kirjat = ['Emma', 'Dracula', 'Carmilla']\nfor kirja in kirjat:\n    print(kirja)",
+    "Käy alkiot läpi järjestyksessä."
+   ],
+   [
+    "for numero, kirja in enumerate(kirjat, start=1):\n    print(f'{numero}. {kirja}')",
+    "enumerate antaa myös järjestysnumeron. start=1 aloittaa numeroinnin ykkösestä: 1. Emma, 2. Dracula, 3. Carmilla."
+   ],
+   [
+    "if 'Emma' in kirjat:\n    print('Emma on hyllyssä')",
+    "in kertoo, onko arvo listassa. not in kertoo päinvastaisen."
+   ],
+   [
+    "lainat = []\nif not lainat:\n    print('Ei lainoja')",
+    "Tyhjä lista on epätosi, joten if not lainat on tosi, kun lista on tyhjä."
+   ],
+   [
+    "sivut = [320, 180, 540]\nprint(sum(sivut), min(sivut), max(sivut))",
+    "Summa, pienin ja suurin. Tulostaa: 1040 180 540."
+   ],
+   [
+    "print(kirjat[:2])\nprint(kirjat[-1])",
+    "Viipale toimii kuten merkkijonoissa: ['Emma', 'Dracula'] ja Carmilla."
+   ]
+  ]
+ },
+ {
+  "id": "py-monikko",
+  "title": "Monikko",
+  "tags": [
+   "listat"
+  ],
+  "when": "Kun yhteen kuuluvat arvot pysyvät aina samoina, esimerkiksi kirjan nimi, kirjailija ja vuosi.",
+  "all": [
+   [
+    "kirja = ('Dracula', 'Bram Stoker', 1897)\nprint(kirja[0])",
+    "Monikko tehdään tavallisilla sulkeilla. Alkioihin viitataan kuten listassa. Tulostaa: Dracula."
+   ],
+   [
+    "nimi, kirjailija, vuosi = kirja",
+    "Purku: jokainen arvo menee omaan muuttujaansa järjestyksessä."
+   ],
+   [
+    "kirja[0] = 'Carmilla'",
+    "Antaa virheen TypeError, koska monikkoa ei voi muuttaa. Muuttuvaa tietoa varten käytä listaa."
+   ],
+   [
+    "def lyhin_ja_pisin(sivut):\n    return min(sivut), max(sivut)\n\nlyhin, pisin = lyhin_ja_pisin([320, 180, 540])",
+    "Kun funktio palauttaa monta arvoa, ne tulevat monikkona, jonka voi purkaa saman tien. lyhin on 180 ja pisin 540."
+   ],
+   [
+    "a, b = 1, 2\na, b = b, a",
+    "Kahden muuttujan arvot vaihtuvat päittäin yhdellä rivillä. Nyt a on 2 ja b on 1."
+   ]
+  ]
+ },
+ {
+  "id": "py-keraelma",
+  "title": "Listakeräelmä",
+  "tags": [
+   "listat"
+  ],
+  "when": "Kun haluat tehdä vanhasta listasta uuden listan yhdellä rivillä.",
+  "all": [
+   [
+    "sivut = [320, 180, 540]\ntuplat = [s * 2 for s in sivut]",
+    "Lyhyt tapa kirjoittaa for-silmukka, joka lisää jokaisen tuloksen uuteen listaan. tuplat on [640, 360, 1080]."
+   ],
+   [
+    "kirjat = ['Emma', 'Dracula', 'Carmilla']\nisot = [k.upper() for k in kirjat]",
+    "Toimii kaikille alkioille: ['EMMA', 'DRACULA', 'CARMILLA']."
+   ],
+   [
+    "paksut = [s for s in sivut if s > 300]",
+    "if-osa ottaa mukaan vain ehdon täyttävät: [320, 540]."
+   ],
+   [
+    "paksut = []\nfor s in sivut:\n    if s > 300:\n        paksut.append(s)",
+    "Sama tavallisena silmukkana. Keräelmä on lyhyempi, mutta tämä voi olla aluksi helpompi lukea."
+   ]
+  ]
+ },
+ {
+  "id": "py-sanakirja",
+  "title": "Sanakirja",
+  "tags": [
+   "sanakirjat"
+  ],
+  "when": "Kun arvoja haetaan nimellä eikä järjestysnumerolla, esimerkiksi kirjan tiedot avainten nimi ja vuosi alla.",
+  "all": [
+   [
+    "kirja = {'nimi': 'Emma', 'vuosi': 1815}\nprint(kirja['nimi'])",
+    "Sanakirjassa on avain–arvo-pareja aaltosulkeissa. Arvo haetaan avaimella. Tulostaa: Emma."
+   ],
+   [
+    "kirja['sivut'] = 474",
+    "Lisää uuden avaimen tai korvaa vanhan arvon."
+   ],
+   [
+    "print(kirja.get('kustantaja', 'ei tiedossa'))",
+    "get ei kaadu, jos avainta ei ole, vaan palauttaa toisen argumentin. Hakasulkeilla tulisi KeyError."
+   ],
+   [
+    "if 'vuosi' in kirja:\n    del kirja['vuosi']",
+    "in tarkistaa avaimen olemassaolon, ja del poistaa avaimen arvoineen."
+   ],
+   [
+    "for avain, arvo in kirja.items():\n    print(f'{avain}: {arvo}')",
+    "items antaa parit. Tulostaa: nimi: Emma ja sivut: 474. keys() antaa pelkät avaimet ja values() pelkät arvot."
+   ],
+   [
+    "lainat = {}\nfor nimi in ['Emma', 'Dracula', 'Emma']:\n    lainat[nimi] = lainat.get(nimi, 0) + 1\nprint(lainat)",
+    "Tavallinen tapa laskea, montako kertaa kukin arvo esiintyy. Tulostaa: {'Emma': 2, 'Dracula': 1}."
+   ]
+  ]
+ },
+ {
+  "id": "py-joukko",
+  "title": "Sanakirjakeräelmä ja joukko",
+  "tags": [
+   "sanakirjat"
+  ],
+  "when": "Kun haluat tehdä sanakirjan yhdellä rivillä tai poistaa listasta tuplat.",
+  "all": [
+   [
+    "kirjat = ['Emma', 'Dracula', 'Carmilla']\npituudet = {k: len(k) for k in kirjat}",
+    "Sanakirjakeräelmä: avain ja arvo kaksoispisteellä erotettuina. Tulos on {'Emma': 4, 'Dracula': 7, 'Carmilla': 8}."
+   ],
+   [
+    "genret = {'kauhu', 'romanttinen', 'kauhu'}\nprint(len(genret))",
+    "Joukossa jokainen arvo on vain kerran. Tulostaa: 2. Järjestystä ei ole, joten indeksointi ei toimi."
+   ],
+   [
+    "uniikit = set(['Emma', 'Emma', 'Dracula'])",
+    "set poistaa listasta tuplat: {'Emma', 'Dracula'}."
+   ],
+   [
+    "a = {'Emma', 'Dracula'}\nb = {'Dracula', 'Carmilla'}\nprint(a | b, a & b, a - b)",
+    "Yhdiste (kaikki), leikkaus (molemmissa) ja erotus (vain a:ssa). Tulostaa joukot, joiden järjestys voi vaihdella."
+   ],
+   [
+    "genret.add('scifi')",
+    "Lisää arvon. Jos se on jo joukossa, mitään ei tapahdu."
+   ]
+  ],
+  "warn": "Tyhjät aaltosulkeet {} ovat tyhjä sanakirja, eivät joukko. Tyhjä joukko tehdään kirjoittamalla set()."
+ },
+ {
+  "id": "py-poikkeus",
+  "title": "Virheiden käsittely: try ja except",
+  "tags": [
+   "poikkeukset"
+  ],
+  "when": "Kun ohjelma ei saa kaatua, vaikka jokin menee pieleen, esimerkiksi tekstin muuttaminen luvuksi tai puuttuva tiedosto.",
+  "all": [
+   [
+    "try:\n    sivut = int('kolmesataa')\nexcept ValueError:\n    print('Sivumäärän pitää olla numeroina.')",
+    "try-osaa yritetään. Jos tulee ValueError, ohjelma siirtyy except-osaan eikä kaadu."
+   ],
+   [
+    "try:\n    tulos = 100 / 0\nexcept ZeroDivisionError as virhe:\n    print(f'Virhe: {virhe}')",
+    "as virhe antaa virheen tiedot. Tulostaa: Virhe: division by zero."
+   ],
+   [
+    "try:\n    luku = int('42')\nexcept ValueError:\n    print('Ei luku')\nelse:\n    print(f'Saatiin {luku}')\nfinally:\n    print('Valmis')",
+    "else suoritetaan, jos virhettä ei tullut, ja finally aina. Tulostaa: Saatiin 42 ja Valmis."
+   ],
+   [
+    "def aseta_sivut(sivut: int) -> int:\n    if sivut < 1:\n        raise ValueError('Kirjassa pitää olla sivuja.')\n    return sivut",
+    "raise aiheuttaa virheen itse. Kutsuja voi napata sen omalla try-osallaan."
+   ]
+  ],
+  "warn": "Pelkkä except: ilman virheen nimeä nappaa kaikki virheet, myös kirjoitusvirheet omassa koodissa. Kirjoita mukaan virheen nimi, kuten ValueError."
+ },
+ {
+  "id": "py-tiedosto",
+  "title": "Lue ja kirjoita tiedostoa",
+  "tags": [
+   "tiedostot"
+  ],
+  "when": "Kun tiedot pitää tallentaa ohjelman sulkemisen jälkeenkin tai lukea valmiista tekstitiedostosta.",
+  "all": [
+   [
+    "with open('lainat.txt', 'w', encoding='utf-8') as f:\n    f.write('Emma\\n')\n    f.write('Dracula\\n')",
+    "'w' kirjoittaa tiedoston alusta, ja vanha sisältö häviää. \\n on rivinvaihto. with sulkee tiedoston automaattisesti."
+   ],
+   [
+    "with open('lainat.txt', 'a', encoding='utf-8') as f:\n    f.write('Carmilla\\n')",
+    "'a' lisää loppuun eikä poista vanhaa."
+   ],
+   [
+    "with open('lainat.txt', encoding='utf-8') as f:\n    for rivi in f:\n        print(rivi.strip())",
+    "Lukee rivi kerrallaan. Oletustila on lukeminen. strip poistaa rivin lopun rivinvaihdon."
+   ],
+   [
+    "with open('lainat.txt', encoding='utf-8') as f:\n    sisalto = f.read()",
+    "read lukee koko tiedoston yhdeksi merkkijonoksi."
+   ],
+   [
+    "try:\n    with open('puuttuu.txt', encoding='utf-8') as f:\n        print(f.read())\nexcept FileNotFoundError:\n    print('Tiedostoa ei löytynyt.')",
+    "Jos tiedostoa ei ole, tulee FileNotFoundError. Polku lasketaan siitä kansiosta, josta ohjelma ajetaan."
+   ]
+  ],
+  "warn": "Kirjoita aina encoding='utf-8'. Vanhemmissa Python-versioissa Windows käyttää oletuksena eri merkistöä, jolloin ä ja ö voivat muuttua oudoiksi merkeiksi toisella koneella."
+ },
+ {
+  "id": "py-csv",
+  "title": "CSV-tiedosto ja polut",
+  "tags": [
+   "tiedostot"
+  ],
+  "when": "Kun tieto on taulukkomuodossa, esimerkiksi Excelistä tallennettuna, tai tarvitset tiedoston polun, joka toimii kaikilla koneilla.",
+  "all": [
+   [
+    "import csv\nwith open('kirjat.csv', 'w', newline='', encoding='utf-8') as f:\n    kirjoittaja = csv.writer(f, delimiter=';')\n    kirjoittaja.writerow(['nimi', 'vuosi'])\n    kirjoittaja.writerow(['Emma', 1815])",
+    "csv.writer kirjoittaa rivin listasta. Suomenkielinen Excel käyttää erottimena puolipistettä. newline='' estää tyhjät välirivit Windowsissa."
+   ],
+   [
+    "with open('kirjat.csv', newline='', encoding='utf-8') as f:\n    for rivi in csv.DictReader(f, delimiter=';'):\n        print(rivi['nimi'], rivi['vuosi'])",
+    "DictReader käyttää ensimmäistä riviä avaimina. Tulostaa: Emma 1815. Kaikki arvot luetaan merkkijonoina."
+   ],
+   [
+    "from pathlib import Path\npolku = Path('kirjat.csv')\nprint(polku.exists())",
+    "pathlib käsittelee polkuja. exists kertoo, onko tiedosto olemassa: True."
+   ],
+   [
+    "kansio = Path('varmuuskopio')\nkansio.mkdir(exist_ok=True)\nuusi = kansio / 'kirjat.csv'",
+    "Kauttaviiva yhdistää polun osat, ja tulos toimii sekä Windowsissa että Macissa. exist_ok=True estää virheen, jos kansio on jo olemassa."
+   ]
+  ],
+  "warn": "Excelin tallentamassa CSV-tiedostossa voi olla alussa näkymätön BOM-merkki. Jos ensimmäinen sarake ei löydy nimellään, avaa tiedosto merkistöllä encoding='utf-8-sig'."
+ },
+ {
+  "id": "py-moduuli",
+  "title": "Moduulit ja import",
+  "tags": [
+   "moduulit"
+  ],
+  "when": "Kun tarvitset Pythonin valmiita työkaluja tai haluat jakaa oman ohjelman useaan tiedostoon.",
+  "all": [
+   [
+    "import math\nprint(math.sqrt(16), math.pi)",
+    "Tuo koko moduulin. Nimiin viitataan moduulin nimellä ja pisteellä. Tulostaa: 4.0 3.141592653589793."
+   ],
+   [
+    "from random import randint, choice\nprint(randint(1, 6))\nprint(choice(['Emma', 'Dracula']))",
+    "Tuo vain tietyt nimet, joita voi käyttää suoraan. randint(1, 6) antaa luvun 1–6, molemmat päät mukaan lukien."
+   ],
+   [
+    "from datetime import date\nprint(date.today())",
+    "Tämän päivän päivämäärä muodossa vuosi-kuukausi-päivä."
+   ],
+   [
+    "# kirjasto.py\ndef tervehdi(nimi: str) -> str:\n    return f'Tervetuloa, {nimi}!'\n\nif __name__ == '__main__':\n    print(tervehdi('Ada'))",
+    "Oma moduuli on tavallinen .py-tiedosto. Viimeinen if-osa ajetaan vain, kun tiedosto ajetaan suoraan, ei silloin, kun se tuodaan importilla."
+   ],
+   [
+    "# ohjelma.py, samassa kansiossa\nimport kirjasto\nprint(kirjasto.tervehdi('Mary'))",
+    "Tuo oman moduulin tiedoston nimellä ilman .py-päätettä."
+   ]
+  ],
+  "warn": "Älä nimeä omaa tiedostoa samalla nimellä kuin Pythonin moduuli, esimerkiksi random.py tai math.py. Silloin import tuo oman tiedostosi oikean moduulin sijaan."
+ },
+ {
+  "id": "py-pip",
+  "title": "Virtuaaliympäristö ja pip",
+  "tags": [
+   "moduulit"
+  ],
+  "osFirst": true,
+  "when": "Kun projektiin tarvitaan ulkopuolinen paketti, esimerkiksi requests tai flask.",
+  "cmd": [
+   [
+    "py -m venv .venv",
+    "Tekee projektikansioon virtuaaliympäristön .venv. Siihen asennetut paketit eivät sekoitu muihin projekteihin."
+   ],
+   [
+    ".venv\\Scripts\\activate",
+    "Ottaa ympäristön käyttöön komentokehotteessa. Kehotteen alkuun tulee (.venv). PowerShellissä komento on .venv\\Scripts\\Activate.ps1."
+   ]
+  ],
+  "sh": [
+   [
+    "python3 -m venv .venv",
+    "Tekee projektikansioon virtuaaliympäristön .venv. Siihen asennetut paketit eivät sekoitu muihin projekteihin."
+   ],
+   [
+    "source .venv/bin/activate",
+    "Ottaa ympäristön käyttöön. Kehotteen alkuun tulee (.venv)."
+   ]
+  ],
+  "all": [
+   [
+    "python -m pip install requests",
+    "Asentaa paketin. Kun ympäristö on käytössä, komento on python sekä Windowsissa että Macissa."
+   ],
+   [
+    "python -m pip list",
+    "Näyttää asennetut paketit."
+   ],
+   [
+    "python -m pip freeze > requirements.txt",
+    "Tallentaa pakettien nimet ja versiot tiedostoon, jotta joku muu voi asentaa samat."
+   ],
+   [
+    "python -m pip install -r requirements.txt",
+    "Asentaa kaikki tiedostossa luetellut paketit."
+   ],
+   [
+    "deactivate",
+    "Poistaa ympäristön käytöstä."
+   ]
+  ],
+  "warn": "Lisää .venv-kansio .gitignore-tiedostoon, ettei sitä lähetetä GitHubiin. Jos Macissa tulee pip-asennuksessa virhe externally-managed-environment, ota ensin virtuaaliympäristö käyttöön."
+ },
+ {
+  "id": "py-uv",
+  "title": "uv: nopeampi paketinhallinta",
+  "tags": [
+   "moduulit"
+  ],
+  "osFirst": true,
+  "when": "Kun haluat hoitaa Python-version, virtuaaliympäristön ja paketit yhdellä työkalulla.",
+  "cmd": [
+   [
+    "winget install --id=astral-sh.uv -e",
+    "Asentaa uv:n Windowsiin. Toinen tapa on PowerShellin asennusskripti, joka löytyy uv:n ohjeista osoitteesta docs.astral.sh/uv."
+   ]
+  ],
+  "sh": [
+   [
+    "curl -LsSf https://astral.sh/uv/install.sh | sh",
+    "Asentaa uv:n Maciin tai Linuxiin. Homebrew-käyttäjä voi kirjoittaa myös brew install uv."
+   ]
+  ],
+  "all": [
+   [
+    "uv --version",
+    "Kertoo, onko uv asennettu. Jos komentoa ei löydy, avaa uusi pääte tai komentokehote."
+   ],
+   [
+    "uv init kirjasto\ncd kirjasto",
+    "Tekee uuden projektikansion, jossa on pyproject.toml. Sinne uv kirjaa projektin paketit."
+   ],
+   [
+    "uv add requests",
+    "Lisää paketin projektiin. Virtuaaliympäristö .venv ja lukitustiedosto uv.lock syntyvät automaattisesti."
+   ],
+   [
+    "uv run ohjelma.py",
+    "Ajaa ohjelman projektin ympäristössä. Ympäristöä ei tarvitse ottaa käyttöön erikseen."
+   ],
+   [
+    "uv remove requests",
+    "Poistaa paketin projektista."
+   ],
+   [
+    "uv venv\nuv pip install -r requirements.txt",
+    "Toimii myös pip-tyyliin ilman pyproject.toml-tiedostoa: tekee .venv-ympäristön ja asentaa paketit siihen."
+   ]
+  ],
+  "warn": "uv init tekee eri uv-versioissa vähän erilaisen pohjan. Uusimmat versiot tekevät src-kansion, vanhemmat pelkän main.py-tiedoston. Katso syntynyt kansio ennen kuin aloitat."
+ },
+ {
+  "id": "py-luokka",
+  "title": "Luokka ja olio",
+  "tags": [
+   "luokat"
+  ],
+  "when": "Kun samaan asiaan liittyy sekä tietoa että toimintoja, esimerkiksi kirjalla on nimi ja sen voi lainata.",
+  "all": [
+   [
+    "class Kirja:\n    def __init__(self, nimi: str, sivut: int):\n        self.nimi = nimi\n        self.sivut = sivut\n        self.lainassa = False",
+    "class määrittelee luokan. __init__ ajetaan, kun uusi olio tehdään. self tarkoittaa sitä oliota, jota käsitellään."
+   ],
+   [
+    "    def lainaa(self) -> None:\n        self.lainassa = True\n\n    def __str__(self) -> str:\n        tila = 'lainassa' if self.lainassa else 'hyllyssä'\n        return f'{self.nimi} ({tila})'",
+    "Metodit kirjoitetaan luokan sisään sisennettyinä. __str__ määrää, miltä olio näyttää printissä."
+   ],
+   [
+    "emma = Kirja('Emma', 474)\nemma.lainaa()\nprint(emma)",
+    "Tekee olion ja kutsuu sen metodia. Tulostaa: Emma (lainassa)."
+   ],
+   [
+    "print(emma.sivut)",
+    "Tietojäseneen viitataan pisteellä. Tulostaa: 474."
+   ]
+  ],
+  "warn": "Muista self jokaisen metodin ensimmäiseksi parametriksi. Kutsussa sitä ei kirjoiteta: emma.lainaa(), ei emma.lainaa(emma)."
+ },
+ {
+  "id": "py-luokkametodi",
+  "title": "Luokkamuuttuja ja luokkametodi",
+  "tags": [
+   "luokat"
+  ],
+  "when": "Kun tieto kuuluu koko luokalle eikä yksittäiselle oliolle, tai olion voi tehdä myös toisesta muodosta.",
+  "all": [
+   [
+    "class Lehti:\n    maara = 0\n\n    def __init__(self, nimi: str):\n        self.nimi = nimi\n        Lehti.maara += 1",
+    "maara on luokkamuuttuja. Se on yhteinen kaikille olioille ja kasvaa aina, kun uusi lehti tehdään."
+   ],
+   [
+    "    @classmethod\n    def rivilta(cls, rivi: str) -> 'Lehti':\n        return cls(rivi.strip().title())",
+    "@classmethod saa self-parametrin tilalle luokan, cls. Sitä käytetään usein vaihtoehtoisena tapana tehdä olio."
+   ],
+   [
+    "    @staticmethod\n    def on_kelvollinen(nimi: str) -> bool:\n        return len(nimi.strip()) > 0",
+    "@staticmethod on luokan sisällä oleva tavallinen funktio. Se ei saa selfiä eikä clsiä."
+   ],
+   [
+    "a = Lehti('Aikakausi')\nb = Lehti.rivilta('  tiedelehti ')\nprint(b.nimi, Lehti.maara)",
+    "Tulostaa: Tiedelehti 2. Olioita on tehty kaksi."
+   ]
+  ]
+ },
+ {
+  "id": "py-json",
+  "title": "JSON",
+  "tags": [
+   "verkko"
+  ],
+  "when": "Kun tietoa tallennetaan tiedostoon tai lähetetään verkon yli muodossa, jota muutkin ohjelmat ymmärtävät.",
+  "all": [
+   [
+    "import json\nkirja = {'nimi': 'Emma', 'vuosi': 1815, 'genret': ['romaani']}\nteksti = json.dumps(kirja, ensure_ascii=False, indent=2)",
+    "dumps muuttaa sanakirjan JSON-tekstiksi. ensure_ascii=False pitää ä:t ja ö:t luettavina, ja indent=2 sisentää."
+   ],
+   [
+    "takaisin = json.loads(teksti)\nprint(takaisin['vuosi'])",
+    "loads muuttaa JSON-tekstin takaisin Pythonin tietorakenteeksi. Tulostaa: 1815."
+   ],
+   [
+    "with open('kirja.json', 'w', encoding='utf-8') as f:\n    json.dump(kirja, f, ensure_ascii=False, indent=2)",
+    "dump kirjoittaa suoraan tiedostoon. Huomaa, että nimessä ei ole s-kirjainta."
+   ],
+   [
+    "with open('kirja.json', encoding='utf-8') as f:\n    luettu = json.load(f)",
+    "load lukee tiedostosta."
+   ]
+  ],
+  "warn": "JSON:ssa merkkijonot ovat aina lainausmerkeissä \"näin\". Pythonin True, False ja None näkyvät JSON:ssa muodoissa true, false ja null."
+ },
+ {
+  "id": "py-http",
+  "title": "HTTP-pyyntö",
+  "tags": [
+   "verkko"
+  ],
+  "when": "Kun ohjelman pitää hakea tietoa verkosta, esimerkiksi rajapinnasta, joka palauttaa JSONia.",
+  "all": [
+   [
+    "import requests\nr = requests.get('https://api.github.com/repos/python/cpython', timeout=10)",
+    "Hakee osoitteen. timeout=10 lopettaa odottamisen 10 sekunnin jälkeen. requests asennetaan ensin pipillä tai uv:llä."
+   ],
+   [
+    "print(r.status_code)",
+    "Palvelimen vastauskoodi: 200 tarkoittaa onnistunutta, 404 puuttuvaa sivua."
+   ],
+   [
+    "r.raise_for_status()",
+    "Aiheuttaa virheen, jos vastauskoodi kertoo epäonnistumisesta. Näin virhettä ei huomaa vasta myöhemmin."
+   ],
+   [
+    "data = r.json()\nprint(data['full_name'], data['stargazers_count'])",
+    "json() muuttaa vastauksen suoraan sanakirjaksi. Tulostaa projektin nimen ja tähtien määrän."
+   ],
+   [
+    "r = requests.get('https://api.github.com/search/repositories',\n                 params={'q': 'dark academia'}, timeout=10)",
+    "params lisää hakuparametrit osoitteen perään, ja requests hoitaa välilyöntien ja ääkkösten muuntamisen."
+   ]
+  ]
+ },
+ {
+  "id": "py-palvelin",
+  "title": "Pieni verkkopalvelin",
+  "tags": [
+   "verkko"
+  ],
+  "osFirst": true,
+  "when": "Kun haluat näyttää tiedostoja selaimessa tai tehdä oman pienen rajapinnan.",
+  "cmd": [
+   [
+    "py -m http.server 8000",
+    "Jakaa nykyisen kansion tiedostot osoitteeseen http://localhost:8000. Pysäytä painamalla Ctrl+C."
+   ]
+  ],
+  "sh": [
+   [
+    "python3 -m http.server 8000",
+    "Jakaa nykyisen kansion tiedostot osoitteeseen http://localhost:8000. Pysäytä painamalla Ctrl+C."
+   ]
+  ],
+  "all": [
+   [
+    "from flask import Flask, jsonify\n\napp = Flask(__name__)\n\n@app.route('/')\ndef etusivu():\n    return 'Tervetuloa kirjastoon!'\n\n@app.route('/kirjat')\ndef kirjat():\n    return jsonify(['Emma', 'Dracula', 'Carmilla'])\n\nif __name__ == '__main__':\n    app.run(debug=True, port=8000)",
+    "Flask-palvelin palvelin.py-tiedostossa. @app.route liittää funktion osoitteeseen. Osoite /kirjat palauttaa listan JSONina. Flask asennetaan ensin pipillä tai uv:llä."
+   ],
+   [
+    "python palvelin.py",
+    "Käynnistää palvelimen virtuaaliympäristössä. Avaa selaimessa http://localhost:8000/kirjat."
+   ]
+  ],
+  "warn": "Flaskin oletusportti on 5000, mutta Macissa AirPlay-vastaanotin käyttää usein samaa porttia. Siksi esimerkissä on port=8000. debug=True on tarkoitettu vain omalle koneelle, ei julkiselle palvelimelle."
+ }
+];
+
   const ROMAN = n => [["X",10],["IX",9],["V",5],["IV",4],["I",1]].reduce((s, [r, v]) => { while (n >= v) { s += r; n -= v; } return s; }, "");
   const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
@@ -1230,9 +2077,10 @@ h1 em { color: var(--ink); }
   const VOLS = {
     cmd: { spells: SPELLS, first: "perusteet", hint: "hae: kopioi, ip, poista…", label: "osa 1: komentorivi" },
     sql: { spells: SQL, first: "perusteet", hint: "hae: csv, null, tuplat…", label: "osa 2: sql-reseptit", unit: "Resepti", noun: "reseptiä" },
-    git: { spells: GIT, first: "perusteet", hint: "hae: push, peru, haara…", label: "osa 3: git" }
+    git: { spells: GIT, first: "perusteet", hint: "hae: push, peru, haara…", label: "osa 3: git" },
+    py: { spells: PY, first: "perusteet", hint: "hae: lista, try, pip…", label: "osa 4: python" }
   };
-  const hv = (location.hash.match(/^#(sql|git)(-|$)/) || [])[1];
+  const hv = (location.hash.match(/^#(sql|git|py)(-|$)/) || [])[1];
   let vol = hv || "cmd";
   let tag = VOLS[vol].first, query = "";
 
@@ -1248,6 +2096,7 @@ h1 em { color: var(--ink); }
   /* Render the chosen volume; filtering only toggles hidden */
   function render() {
     const V = VOLS[vol];
+    list.dataset.vol = vol;
     list.innerHTML = V.spells.map((s, i) => `
     <article class="spell" id="${s.id}" aria-labelledby="t-${s.id}">
       <div class="spell-head"><span class="num">${V.unit || "Loitsu"} ${ROMAN(i + 1)}</span><span class="spell-tags">${s.tags.map(t => `<span>${t}</span>`).join("")}</span></div>

@@ -123,11 +123,12 @@ h1 em { color: var(--neon); }
 .pit { margin-top: var(--s5); border: 1px dashed var(--rose); border-radius: var(--radius); padding: var(--s4) var(--s4) var(--s3); background: color-mix(in srgb, var(--rose) 7%, transparent); }
 .pit-label { font: 400 1.05rem var(--font-ui); color: var(--neon); display: block; margin-bottom: var(--s1); }
 .pit p { margin: 0 0 var(--s2); }
-.table-wrap { overflow-x: auto; }
+.table-wrap { overflow-x: auto; background: linear-gradient(to right, var(--bg) 40%, transparent) left / 1.5rem 100% no-repeat local, linear-gradient(to left, var(--bg) 40%, transparent) right / 1.5rem 100% no-repeat local, radial-gradient(farthest-side at 0 50%, color-mix(in srgb, var(--neon) 35%, transparent), transparent) left / .6rem 100% no-repeat scroll, radial-gradient(farthest-side at 100% 50%, color-mix(in srgb, var(--neon) 35%, transparent), transparent) right / .6rem 100% no-repeat scroll; }
 table { border-collapse: collapse; width: 100%; font-size: var(--step--1); }
 th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { font: 400 1.05rem var(--font-ui); color: var(--muted); }
 td:first-child { font-family: var(--font-mono); white-space: nowrap; color: var(--neon); }
+@media (max-width: 640px) { td:first-child, td:first-child code:not([class]) { white-space: normal; } th, td { padding: .45rem .35rem; } }
 .break { margin-top: var(--s7); padding: var(--s4); border: 1px solid var(--line); border-radius: var(--radius); color: var(--muted); font-style: italic; text-align: center; }
 
 .docs { margin-top: var(--s5); font: 400 1.05rem/1.5 var(--font-ui); color: var(--muted); }
