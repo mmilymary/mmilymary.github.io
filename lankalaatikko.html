@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+<title>Lankalaatikko</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Courier+Prime&family=VT323&display=swap">
+<style>
+/* Layout: one working column. Palette rows look like spools in a sewing box; the contrast matrix reads like a chart key; export at the end. */
+:root{
+  --bg:#1c0b10; --surface:#2a1419; --line:#4a2a31; --cream:#eee6e2; --muted:#b39a97;
+  --dusty:#c9a3a6; --neon:#ff7aa2; --brass:#b08a52; --wood:#5a3b26;
+  --ok:#9fd3a8; --warn:#e8c27a; --bad:#e58a8a;
+  --f-display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --f-body:"Cormorant Garamond",Garamond,Georgia,serif;
+  --f-code:"VT323","Courier New",monospace;
+  --f-mono:"Courier Prime","Courier New",monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--cream);font-family:var(--f-body);font-size:1.15rem;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;display:grid;gap:2.25rem;padding-block:2rem 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--dusty)}
+:focus-visible{outline:2px solid var(--neon);outline-offset:2px}
+header{display:grid;gap:.5rem;max-width:40rem}
+.crumb{font-family:var(--f-code);font-size:1.1rem;letter-spacing:.08em;color:var(--dusty);margin:0}
+.crumb a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line)}
+.crumb a:hover{color:var(--neon);border-color:var(--neon)}
+.prompt{font-family:var(--f-code);font-size:1.2rem;color:var(--muted);margin:0}
+.cur{animation:bl 1s steps(1) infinite}@keyframes bl{50%{opacity:0}}
+h1{font-family:var(--f-display);font-weight:500;font-variation-settings:"opsz" 11;font-optical-sizing:none;font-size:clamp(2.6rem,8vw,4rem);line-height:1;margin:0;letter-spacing:-.01em}
+h1 em,h2 em{font-style:italic;color:var(--dusty)}
+.lede{margin:0;color:var(--muted);max-width:36rem}
+section{display:grid;gap:1rem;min-width:0}
+h2{font-family:var(--f-display);font-weight:500;font-variation-settings:"opsz" 11;font-optical-sizing:none;font-size:clamp(1.7rem,4.5vw,2.2rem);line-height:1.1;margin:0;display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+h2 .no{font-family:var(--f-code);font-size:1.1rem;color:var(--muted);letter-spacing:.06em}
+.hint{font-size:1.05rem;color:var(--muted);margin:0;max-width:40rem}
+.row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+button{font-family:var(--f-code);font-size:1.15rem;letter-spacing:.04em;color:var(--cream);background:transparent;border:1px solid var(--line);border-radius:2px;padding:.2em .8em;cursor:pointer;min-height:40px}
+button:hover{border-color:var(--dusty)}
+button.primary{border-color:var(--neon)}
+button[aria-pressed="true"]{border-color:var(--neon);color:var(--cream)}
+.spools{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.spool{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.9rem;align-items:center;background:var(--surface);border:1px solid var(--line);padding:.75rem .9rem}
+.reel{width:68px;height:96px;position:relative;flex:none}
+.reel::before,.reel::after{content:"";position:absolute;left:0;right:0;height:13px;background:var(--wood);border-radius:3px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.35)}
+.reel::before{top:0}.reel::after{bottom:0}
+.reel i{position:absolute;left:7px;right:7px;top:12px;bottom:12px;background:var(--c);background-image:repeating-linear-gradient(170deg,rgba(0,0,0,.22) 0 1.5px,transparent 1.5px 4px),linear-gradient(90deg,rgba(0,0,0,.25),transparent 35%,transparent 65%,rgba(0,0,0,.3))}
+.fields{display:grid;gap:.45rem;min-width:0}
+.line1{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.fields input[type=text]{font-family:var(--f-mono);font-size:.95rem;color:var(--cream);background:var(--bg);border:1px solid var(--line);border-radius:2px;padding:.35em .5em;min-height:38px;min-width:0}
+.fields input.name{flex:1 1 9rem}
+.fields input.hex{width:7.2rem;flex:none;text-transform:lowercase}
+.fields input[type=color]{width:38px;height:38px;padding:0;border:1px solid var(--line);background:none;cursor:pointer;flex:none}
+.dmc{display:flex;flex-wrap:wrap;gap:.4rem .7rem;align-items:center;font-family:var(--f-mono);font-size:.9rem;color:var(--muted)}
+.dmc .chip{width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,.25);flex:none}
+.dmc b{color:var(--cream);font-weight:400}
+.q{font-family:var(--f-code);font-size:1rem;letter-spacing:.04em;border:1px solid currentColor;padding:0 .4em;border-radius:2px;line-height:1.3}
+.q.q1{color:var(--ok)}.q.q2{color:var(--dusty)}.q.q3{color:var(--warn)}.q.q4{color:var(--bad)}
+.del{min-height:38px;min-width:38px;padding:0;font-size:1.3rem;line-height:1}
+.err{color:var(--bad);font-family:var(--f-mono);font-size:.85rem;margin:0}
+textarea{width:100%;min-height:5.5rem;font-family:var(--f-mono);font-size:.95rem;color:var(--cream);background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:.6rem}
+details{border-top:1px dashed var(--line);padding-top:.8rem}
+summary{cursor:pointer;font-family:var(--f-code);font-size:1.15rem;color:var(--dusty);letter-spacing:.04em}
+details[open] summary{margin-bottom:.6rem}
+.scroll{overflow-x:auto;border:1px solid var(--line);background:var(--surface)}
+table{border-collapse:collapse;font-family:var(--f-body);font-size:1.05rem}
+th,td{padding:0;border:1px solid var(--line)}
+thead th{font-weight:600;color:var(--muted);padding:.45rem .3rem;min-width:4.8rem;vertical-align:bottom;text-align:center;line-height:1.1}
+tbody th{position:sticky;left:0;z-index:1;background:var(--surface);font-weight:600;color:var(--cream);padding:.3rem .6rem;text-align:left;white-space:nowrap}
+.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.35rem;vertical-align:middle;border:1px solid rgba(255,255,255,.25)}
+.cell{width:4.8rem;height:4.6rem;text-align:center;line-height:1.05}
+.cell .aa{font-family:var(--f-body);font-size:1.6rem;font-weight:600;display:block}
+.cell .r{font-family:var(--f-code);font-size:1.25rem;display:block;font-variant-numeric:tabular-nums}
+.cell .b{font-family:var(--f-code);font-size:1rem;letter-spacing:.06em;display:inline-block;padding:0 .35em;border-radius:2px;margin-top:2px;background:rgba(0,0,0,.6);color:#fff;line-height:1.2}
+.cell.same{background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(255,255,255,.04) 6px 12px)}
+.cell.dim{opacity:.13}
+.key{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;margin:0;padding:0;list-style:none;font-size:1rem;color:var(--muted)}
+.key b{font-family:var(--f-mono);font-weight:400;color:var(--cream);font-size:.85rem;background:rgba(0,0,0,.55);padding:0 .3em;border-radius:2px}
+label.tog{display:flex;align-items:center;gap:.5rem;font-size:1.05rem;color:var(--muted);cursor:pointer}
+label.tog input{accent-color:var(--neon);width:18px;height:18px}
+pre{margin:0;font-family:var(--f-mono);font-size:.85rem;line-height:1.6;color:var(--cream);background:var(--surface);border:1px solid var(--line);padding:.9rem;overflow-x:auto;white-space:pre}
+.status{font-family:var(--f-code);font-size:1.1rem;color:var(--dusty);margin:0;min-height:1.4em}
+.fine{font-size:1rem;color:var(--muted);margin:0;border-top:1px solid var(--line);padding-top:1rem}
+.card-controls{display:grid;gap:.75rem}
+.card-controls label.lbl{font-family:var(--f-code);font-size:1.1rem;color:var(--muted);letter-spacing:.04em}
+.card-controls input[type=text]{font-family:var(--f-mono);font-size:.95rem;color:var(--cream);background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:.4em .6em;min-height:40px;width:100%;max-width:24rem}
+.preview{border:1px solid var(--line);background:var(--surface);padding:.6rem}
+.preview img{display:block;width:100%;height:auto}
+@media (prefers-reduced-motion:reduce){.cur{animation:none}}
+</style>
+<script data-goatcounter="https://mmilymary.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+
+
+<main class="wrap">
+  <header>
+    <nav class="crumb" aria-label="Murupolku"><a href="index.html">portfolio</a> / <a href="exlibris.html#ompeluhuone">ex libris</a> / lankalaatikko</nav>
+    <p class="prompt" aria-hidden="true">&gt; lankalaatikko --paletti <span id="pname">ex-libris</span><span class="cur">_</span></p>
+    <h1>Lanka<em>laatikko</em></h1>
+    <p class="lede">Väripaletin työkalu. Jokaiselle värille lähin DMC-kirjontalanka ja tieto siitä, mitkä väriparit ovat luettavia tekstinä ja taustana.</p>
+  </header>
+
+  <section aria-labelledby="h-pal">
+    <h2 id="h-pal"><span class="no">I</span>Paletti</h2>
+    <div class="row" role="group" aria-label="Valmiit paletit">
+      <button type="button" id="p-exlibris" aria-pressed="false">Ex Libris</button>
+      <button type="button" id="p-empty" aria-pressed="false">Tyhjä</button>
+    </div>
+    <ul class="spools" id="spools"></ul>
+    <div class="row"><button type="button" class="primary" id="add">+ lisää lanka</button></div>
+    <details>
+      <summary>Liitä värikoodeja</summary>
+      <p class="hint">Liitä värikoodit esimerkiksi Figmasta, yksi tai useampi riville. Nimen voi kirjoittaa koodin eteen: <code>tausta #1c0b10</code></p>
+      <label for="paste" class="hint">Värikoodit</label>
+      <textarea id="paste" placeholder="tausta #1c0b10&#10;teksti #eee6e2&#10;#b5475a"></textarea>
+      <p class="err" id="paste-err" hidden></p>
+      <div class="row"><button type="button" id="paste-add">Lisää paletin perään</button><button type="button" id="paste-replace">Korvaa paletti</button></div>
+    </details>
+  </section>
+
+  <section aria-labelledby="h-con">
+    <h2 id="h-con"><span class="no">II</span>Kontrastit</h2>
+    <p class="hint">Rivi on tekstin väri, sarake taustan väri. Luku on kontrastisuhde WCAG 2.2:n mukaan.</p>
+    <ul class="key">
+      <li><b>AAA</b> 7:1, normaali teksti</li>
+      <li><b>AA</b> 4,5:1, normaali teksti</li>
+      <li><b>iso</b> 3:1, vain iso teksti (24 px, lihavoituna 18,66 px) ja käyttöliittymän osat</li>
+    </ul>
+    <label class="tog"><input type="checkbox" id="only"> Näytä vain tekstiksi kelpaavat parit (AA)</label>
+    <div class="scroll"><table id="matrix"></table></div>
+    <p class="status" id="sum"></p>
+  </section>
+
+  <section aria-labelledby="h-card">
+    <h2 id="h-card"><span class="no">III</span>Palettikortti</h2>
+    <p class="hint">Kuva paletista värikoodeineen, valmiina esitykseen tai somepostaukseen.</p>
+    <div class="card-controls">
+      <div><label class="lbl" for="ctitle">Otsikko</label><input type="text" id="ctitle" value="Ex Libris" maxlength="40"></div>
+      <div class="row" role="group" aria-label="Kortin pohja">
+        <button type="button" id="bg-dark" aria-pressed="true">Tumma pohja</button>
+        <button type="button" id="bg-light" aria-pressed="false">Vaalea pohja</button>
+      </div>
+      <label class="tog"><input type="checkbox" id="cdmc" checked> Näytä DMC-langat</label>
+    </div>
+    <div class="preview" id="cprev"><canvas id="ccv" role="img" aria-label="Palettikortti" style="display:block;width:100%;height:auto"></canvas></div>
+    <img id="cimg" alt="" hidden style="width:100%;height:auto;border:1px solid var(--line)">
+    <div class="row"><button type="button" class="primary" id="cdl">Lataa kuva</button><span class="status" id="cdl-s" aria-live="polite"></span></div>
+      </section>
+
+  <section aria-labelledby="h-exp">
+    <h2 id="h-exp"><span class="no">IV</span>Vienti</h2>
+    <p class="hint">CSS-muuttujat, joiden kommenteissa on lähin lanka.</p>
+    <pre id="css"></pre>
+    <div class="row"><button type="button" id="copy">Kopioi CSS</button><span class="status" id="copied" aria-live="polite"></span></div>
+  </section>
+
+  <p class="fine">DMC ei julkaise virallisia värikoodeja langoilleen. Lankojen värit ovat mittauksiin perustuvia arvioita, ja ne vaihtelevat valon ja näytön mukaan. Vastaavuus lasketaan CIEDE2000-värieron avulla: mitä pienempi ΔE, sitä lähempänä lanka on alkuperäistä väriä.</p>
+</main>
+
+<script>
+const DMC=["3865|Winter White|#F9F7F1","928|Gray Green Very Light|#DDE3E3","B5200|Snow White|#FFFFFF","3024|Brown Gray Very Light|#EBEAE7","3072|Beaver Gray Very Light|#E6E8E8","762|Pearl Gray Very Light|#ECECEC","01|White Tin|#E3E3E6","927|Gray Green Light|#BDCBCB","926|Gray Green Medium|#98AEAE","3768|Gray Green Dark|#657F7F","924|Gray Green Vy Dark|#566A6A","451|Shell Gray Dark|#917B73","3787|Brown Gray Dark|#625D50","3021|Brown Gray Very Dark|#4F4B41","3022|Brown Gray Medium|#8E9078","535|Ash Gray Very Light|#636458","648|Beaver Gray Light|#BCB4AC","647|Beaver Gray Medium|#B0A69C","646|Beaver Gray Dark|#877D73","645|Beaver Gray Very Dark|#6E655C","844|Beaver Gray Ultra Dark|#484848","415|Pearl Gray|#D3D3D6","318|Steel Gray Light|#ABABAB","414|Steel Gray Dark|#8C8C8C","168|Pewter Very Light|#D1D1D1","169|Pewter Light|#848484","317|Pewter Gray|#6C6C6C","413|Pewter Gray Dark|#565656","3799|Pewter Gray Very Dark|#424242","310|Black|#000000","02|Tin|#D7D7D8","03|Tin Medium|#B8B8BB","04|Tin Dark|#AEAEB1","817|Coral Red Very Dark|#BB051F","304|Red Medium|#B71F33","498|Red Dark|#A7132B","816|Garnet|#970B23","815|Garnet Medium|#87071F","814|Garnet Dark|#7B001B","777|Raspberry Very Dark|#913546","3685|Mauve Very Dark|#881531","221|Shell Pink Very Dark|#883E43","315|Antique Mauve Medium Dark|#814952","3802|Antique Mauve Very Dark|#714149","902|Garnet Very Dark|#822637","3740|Antique Violet Dark|#785762","154|Grape Very Dark|#572433","832|Golden Olive|#BD9B51","831|Golden Olive Medium|#AA8F56","830|Golden Olive Dark|#8D784B","829|Golden Olive Very Dark|#7E6B42","611|Drab Brown|#967656","610|Drab Brown Dark|#796047","167|Yellow Beige Very Dark|#A77C49","3828|Hazelnut Brown|#B78B61","420|Hazelnut Brown Dark|#A07042","869|Hazelnut Brown Very Dark|#835E39","782|Topaz Dark|#AE7720","781|Topaz Very Dark|#A26D20","780|Topaz Ultra Very Dark|#94631A","680|Old Gold Dark|#BC8D0E","920|Copper Medium|#AC5414","919|Red Copper|#A64510","918|Red Copper Dark|#82340A","400|Mahogany Dark|#8F430F","300|Mahogany Very Dark|#6F2F00","976|Golden Brown Medium|#C28142","3826|Golden Brown|#AD7239","975|Golden Brown Dark|#914F12","355|Terra Cotta Dark|#984436","3777|Terra Cotta Very Dark|#863022","3858|Rosewood Medium|#964A3F","3857|Rosewood Dark|#68251A","3773|Desert Sand Dark|#B67552","3772|Desert Sand Very Dark|#A06C50","632|Desert Sand Ultra Very Dark|#875539","3860|Cocoa|#7D5D57","779|Cocoa Dark|#624B45","435|Brown Very Light|#B87748","434|Brown Light|#985E33","433|Brown Medium|#7A451F","801|Coffee Brown Dark|#653919","898|Coffee Brown Very Dark|#492A13","938|Coffee Brown Ultra Dark|#361F0E","3371|Black Brown|#1E1108","3863|Mocha Beige Medium|#A4835C","3862|Mocha Beige Dark|#8A6E4E","3031|Mocha Brown Very Dark|#4B3C2A","640|Beige Gray Very Dark|#857B61","3790|Beige Gray Ultra Dark|#7F6A55","3781|Mocha Brown Dark|#6B5743","840|Beige Brown Medium|#9A7C5C","839|Beige Brown Dark|#675541","838|Beige Brown Very Dark|#594937","07|Driftwood|#8F7B6E","08|Driftwood Dark|#6A5046","09|Cocoa Very Dark|#55200E","3713|Salmon Very Light|#FFE2E2","761|Salmon Light|#FFC9C9","760|Salmon|#F5ADAD","3712|Salmon Medium|#F18787","3328|Salmon Dark|#E36D6D","347|Salmon Very Dark|#BF2D2D","353|Peach|#FED7CC","352|Coral Light|#FD9C97","351|Coral|#E96A67","350|Coral Medium|#E04848","349|Coral Dark|#D21035","3708|Melon Light|#FFCBD5","3706|Melon Medium|#FFADBC","3705|Melon Dark|#FF7992","3801|Melon Very Dark|#E74967","666|Bright Red|#E31D42","321|Red|#C72B3B","894|Carnation Very Light|#FFB2BB","893|Carnation Light|#FC90A2","892|Carnation Medium|#FF798C","891|Carnation Dark|#FF5773","818|Baby Pink|#FFDFD9","957|Geranium Pale|#FDB5B5","956|Geranium|#FF9191","309|Rose Dark|#C12041","963|Dusty Rose Ultra Very Light|#FFD7D7","3716|Dusty Rose Medium Very Light|#FFBDBD","962|Dusty Rose Medium|#E68A8A","961|Dusty Rose Dark|#CF7373","3833|Raspberry Light|#EA8699","3832|Raspberry Medium|#DB556E","3831|Raspberry Dark|#B32F48","819|Baby Pink Light|#FFEEEB","3326|Rose Light|#FBADB4","776|Pink Medium|#FCB0B9","899|Rose Medium|#F27688","335|Rose|#EE546E","326|Rose Very Dark|#B33B4B","151|Dusty Rose Very Light|#F0CED4","3354|Dusty Rose Light|#E4A6AC","3733|Dusty Rose|#E8879B","3731|Dusty Rose Very Dark|#DA6783","3689|Mauve Light|#FBBFC2","3688|Mauve Medium|#E7A9AC","3687|Mauve|#C96B70","605|Cranberry Very Light|#FFC0CD","604|Cranberry Light|#FFB0BE","225|Shell Pink Ultra Very Light|#FFDFD5","224|Shell Pink Very Light|#EBB7AF","152|Shell Pink Medium Light|#E2A099","223|Shell Pink Light|#CC847C","3722|Shell Pink Medium|#BC6C64","3721|Shell Pink Dark|#A14B51","778|Antique Mauve Very Light|#DFB3BB","3727|Antique Mauve Light|#DBA9B2","316|Antique Mauve Medium|#B7737F","3726|Antique Mauve Dark|#9B5B66","967|Apricot Very Light|#FFDED5","3824|Apricot Light|#FECDC2","3341|Apricot|#FCAB98","3340|Apricot Medium|#FF836F","608|Burnt Orange Bright|#FD5D35","606|Orange Red Bright|#FA3203","754|Peach Light|#F7CBBF","3771|Terra Cotta Ultra Very Light|#F4BBA9","758|Terra Cotta Very Light|#EEAA9B","3778|Terra Cotta Light|#D98978","356|Terra Cotta Medium|#C56A5B","3830|Terra Cotta|#B95544","3779|Rosewood Ultra Very Light|#F8CAC8","3859|Rosewood Light|#BA8B7C","3861|Cocoa Light|#A68881","22|Alizarin|#BC604E","3350|Dusty Rose Ultra Dark|#BC4365","150|Dusty Rose Ultra Very Dark|#AB0249","3803|Mauve Dark|#AB3357","603|Cranberry|#FFA4BE","602|Cranberry Medium|#E24874","601|Cranberry Dark|#D1286A","600|Cranberry Very Dark|#CD2F63","3806|Cyclamen Pink Light|#FF8CAE","3805|Cyclamen Pink|#F3478B","3804|Cyclamen Pink Dark|#E02876","3609|Plum Ultra Light|#F4AED5","3608|Plum Very Light|#EA9CC4","3607|Plum Light|#C54989","718|Plum|#9C2462","917|Plum Medium|#9B1359","915|Plum Dark|#820043","3743|Antique Violet Very Light|#D7CBD3","3042|Antique Violet Light|#B79DA7","3041|Antique Violet Medium|#956F7C","3836|Grape Light|#BA91AA","3835|Grape Medium|#946083","3834|Grape Dark|#72375D","211|Lavender Light|#E3CBE3","210|Lavender Medium|#C39FC3","209|Lavender Dark|#A37BA7","3837|Lavender Ultra Dark|#6C3A6E","327|Violet Dark|#633666","153|Violet Very Light|#E6CCD9","554|Violet Light|#DBB3CB","553|Violet|#A3638B","552|Violet Medium|#803A6B","550|Violet Very Dark|#5C184E","23|Apple Blossom|#EDE2ED","33|Fuschia|#9C599E","34|Fuschia Dark|#7D3064","35|Fuschia Very Dark|#46052D","372|Mustard Light|#CCB784","371|Mustard|#BFA671","370|Mustard Medium|#B89D64","834|Golden Olive Very Light|#DBBE7F","833|Golden Olive Light|#C8AB6C","613|Drab Brown Very Light|#DCC4AA","612|Drab Brown Light|#BC9A78","3047|Yellow Beige Light|#E7D6C1","3046|Yellow Beige Medium|#D8BC9A","3045|Yellow Beige Dark|#BC966A","422|Hazelnut Brown Light|#C69F7B","728|Topaz|#E4B468","783|Topaz Medium|#CE9124","676|Old Gold Light|#E5CE97","729|Old Gold Medium|#D0A53E","3822|Straw Light|#F6DC98","3821|Straw|#F3CE75","3820|Straw Dark|#DFB65F","3852|Straw Very Dark|#CD9D37","725|Topaz Medium Light|#FFC840","972|Canary Deep|#FFB515","745|Yellow Pale Light|#FFE9AD","743|Yellow Medium|#FED376","742|Tangerine Light|#FFBF57","741|Tangerine Medium|#FFA32B","740|Tangerine|#FF8B00","970|Pumpkin Light|#F78B13","971|Pumpkin|#F67F00","947|Burnt Orange|#FF7B4D","946|Burnt Orange Medium|#EB6307","900|Burnt Orange Dark|#D15807","951|Tawny Light|#FFE2CF","3856|Mahogany Ultra Very Light|#FFD3B5","722|Orange Spice Light|#F7976F","721|Orange Spice Medium|#F27842","720|Orange Spice Dark|#E55C1F","3825|Pumpkin Pale|#FDBD96","922|Copper Light|#E27323","921|Copper|#C66218","3770|Tawny Very Light|#FFEEE3","945|Tawny|#FBD5BB","402|Mahogany Very Light|#F7A777","3776|Mahogany Light|#CF7939","301|Mahogany Medium|#B35F2B","3855|Autumn Gold Light|#FAD396","3854|Autumn Gold Medium|#F2AF68","3853|Autumn Gold Dark|#F29746","3827|Golden Brown Pale|#F7BB77","977|Golden Brown Light|#DC9C56","948|Peach Very Light|#FEE7DA","3774|Desert Sand Very Light|#F3E1D7","950|Desert Sand Light|#EED3C4","3064|Desert Sand|#C48E70","407|Desert Sand Medium|#BB8161","453|Shell Gray Light|#D7CECB","452|Shell Gray Medium|#C0B3AE","712|Cream|#FFFBEF","739|Tan Ultra Very Light|#F8E4C8","738|Tan Very Light|#ECCC9E","437|Tan Light|#E4BB8E","436|Tan|#CB9051","543|Beige Brown Ultra Very Light|#F2E3CE","3864|Mocha Beige Light|#CBB69C","Blanc|White|#FCFBF8","Ecru|Ecru|#F0EADA","822|Beige Gray Light|#E7E2D3","644|Beige Gray Medium|#DDD8CB","642|Beige Gray Dark|#A49878","3023|Brown Gray Light|#B1AA97","3033|Mocha Brown Very Light|#E3D8CC","3782|Mocha Brown Light|#D2BCA6","3032|Mocha Brown Medium|#B39F8B","3866|Mocha Brown Ultra Very Light|#FAF6F0","842|Beige Brown Very Light|#D1BAA1","841|Beige Brown Light|#B69B7E","05|Driftwood Light|#E3CCBE","06|Driftwood Medium Light|#DCC6B8","19|Autumn Gold Medium Light|#F7C95F","20|Shrimp|#F7AF93","21|Alizarin Light|#D79982","472|Avocado Green Ultra Light|#D8E498","165|Moss Green Very Light|#EFF4A4","3819|Moss Green Light|#E0E868","166|Moss Green Medium Light|#C0C840","581|Moss Green|#A7AE38","580|Moss Green Dark|#888D33","734|Olive Green Light|#C7C077","733|Olive Green Medium|#BCB34C","732|Olive Green|#948C36","731|Olive Green Dark|#938B37","730|Olive Green Very Dark|#827B30","3013|Khaki Green Light|#B9B982","3012|Khaki Green Medium|#A6A75D","3011|Khaki Green Dark|#898A58","746|Off White|#FCFCEE","677|Old Gold Very Light|#F5ECCB","3829|Old Gold Very Dark|#A98204","445|Lemon Light|#FFFB8B","307|Lemon|#FDED54","973|Canary Bright|#FFE300","444|Lemon Dark|#FFD600","3078|Golden Yellow Very Light|#FDF9CD","727|Topaz Very Light|#FFF1AF","726|Topaz Light|#FDD755","744|Yellow Pale|#FFE793","3823|Yellow Ultra Pale|#FFFDE3","16|Chartreuse Light|#C9C258","17|Yellow Plum Light|#E5E272","18|Yellow Plum|#D9D56D","964|Sea Green Light|#A9E2D8","959|Sea Green Medium|#59C7B4","958|Sea Green Dark|#3EB6A1","3851|Green Bright Light|#49B3A1","943|Green Bright Medium|#3D9384","3850|Green Bright Dark|#378477","993|Aquamarine Very Light|#90C0B4","992|Aquamarine Light|#6FAE9F","3814|Aquamarine|#508B7D","991|Aquamarine Dark|#477B6E","966|Jade Ultra Very Light|#B9D7C0","564|Jade Very Light|#A7CDAF","563|Jade Light|#8FC098","562|Jade Medium|#53976A","505|Jade Green|#338362","3817|Celadon Green Light|#99C3AA","3816|Celadon Green|#65A57D","163|Celadon Green Medium|#4D8361","3815|Celadon Green Dark|#477759","561|Celadon Green Very Dark|#2C6A45","504|Blue Green Very Light|#C4DECC","3813|Blue Green Light|#B2D4BD","503|Blue Green Medium|#7BAC94","502|Blue Green|#5B9071","501|Blue Green Dark|#396F52","500|Blue Green Very Dark|#044D33","955|Nile Green Light|#A2D6AD","954|Nile Green|#88BA91","913|Nile Green Medium|#6DAB77","912|Emerald Green Light|#1B9D6B","911|Emerald Green Medium|#189065","910|Emerald Green Dark|#187E56","909|Emerald Green Very Dark|#156F49","3818|Emerald Green Ultra Very Dark|#115A3B","369|Pistachio Green Very Light|#D7EDCC","368|Pistachio Green Light|#A6C298","320|Pistachio Green Medium|#69885A","367|Pistachio Green Dark|#617A52","319|Pistachio Green Very Dark|#205F2E","890|Pistachio Green Ultra Very Dark|#174923","164|Forest Green Light|#C8D8B8","989|Forest Green|#8DA675","988|Forest Green Medium|#738B5B","987|Forest Green Dark|#587141","986|Forest Green Very Dark|#405230","772|Yellow Green Very Light|#E4ECD4","3348|Yellow Green Light|#CCD9B1","3347|Yellow Green Medium|#71935C","3346|Hunter Green|#406A3A","3345|Hunter Green Dark|#1B5915","895|Hunter Green Very Dark|#1B5300","704|Chartreuse Bright|#9ECF34","703|Chartreuse|#7BB547","702|Kelly Green|#47A72F","701|Green Light|#3F8F29","700|Green Bright|#07731B","699|Green|#056517","907|Parrot Green Light|#C7E666","906|Parrot Green Medium|#7FB335","905|Parrot Green Dark|#628A28","904|Parrot Green Very Dark|#557822","471|Avocado Green Very Light|#AEBF79","470|Avocado Green Light|#94AB4F","469|Avocado Green|#72843C","937|Avocado Green Medium|#627133","936|Avocado Green Very Dark|#4C5826","935|Avocado Green Dark|#424D21","934|Avocado Green Black|#313919","523|Fern Green Light|#ABB197","3053|Green Gray|#9CA482","3052|Green Gray Medium|#889268","3051|Green Gray Dark|#5F6648","524|Fern Green Very Light|#C4CDAC","522|Fern Green|#969E7E","520|Fern Green Dark|#666D4F","3364|Pine Green|#83975F","3363|Pine Green Medium|#728256","3362|Pine Green Dark|#5E6B47","10|Tender Green Very Light|#EDFED9","11|Tender Green Light|#E2EDB5","12|Tender Green|#CDD99A","13|Nile Green Medium Light|#BFF6E0","14|Apple Green Pale|#D0FBB2","15|Apple Green|#D1EDA4","3747|Blue Violet Very Light|#D3D7ED","341|Blue Violet Light|#B7BFDD","156|Blue Violet Medium Light|#A3AED1","340|Blue Violet Medium|#ADA7C7","155|Blue Violet Medium Dark|#9891B6","333|Blue Violet Very Dark|#5C5478","157|Cornflower Blue Very Light|#BBC3D9","794|Cornflower Blue Light|#8F9CC1","793|Cornflower Blue Medium|#707DA2","3807|Cornflower Blue|#60678C","792|Cornflower Blue Dark|#555B7B","158|Cornflower Blue Very Dark|#4C526E","791|Cornflower Blue Very Dark|#464563","3840|Lavender Blue Light|#B0C0DA","3839|Lavender Blue Medium|#7B8EAB","3838|Lavender Blue Dark|#5C7294","800|Delft Blue Pale|#C0CCDE","809|Delft Blue|#94A8C6","799|Delft Blue Medium|#748EB6","798|Delft Blue Dark|#466A8E","797|Royal Blue|#13477D","796|Royal Blue Dark|#11416D","820|Royal Blue Very Dark|#0E365C","162|Blue Ultra Very Light|#DBECF5","827|Blue Very Light|#BDDDED","813|Blue Light|#A1C2D7","826|Blue Medium|#6B9EBF","825|Blue Dark|#4781A5","824|Blue Very Dark|#396987","996|Electric Blue Medium|#30C2EC","3843|Electric Blue|#14AAD0","995|Electric Blue Dark|#2696B6","3846|Turquoise Bright Light|#06E3E6","3845|Turquoise Bright Medium|#04C4CA","3844|Turquoise Bright Dark|#12AEBA","159|Blue Gray Light|#C7CAD7","160|Blue Gray Medium|#999FB7","161|Blue Gray|#7880A4","3756|Baby Blue Ultra Very Light|#EEFCFC","775|Baby Blue Very Light|#D9EBF1","3841|Baby Blue Pale|#CDDFED","3325|Baby Blue Light|#B8D2E6","3755|Baby Blue|#93B4CE","334|Baby Blue Medium|#739FC1","322|Baby Blue Dark|#5A8FB8","312|Baby Blue Very Dark|#35668B","803|Baby Blue Ultra Very Dark|#2C597C","336|Navy Blue|#253B73","823|Navy Blue Dark|#213063","939|Navy Blue Very Dark|#1B2853","3753|Antique Blue Ultra Very Light|#DBE2E9","3752|Antique Blue Very Light|#C7D1DB","932|Antique Blue Light|#A2B5C6","931|Antique Blue Medium|#6A859E","930|Antique Blue Dark|#455C71","3750|Antique Blue Very Dark|#384C5E","828|Sky Blue Very Light|#C5E8ED","3761|Sky Blue Light|#ACD8E2","519|Sky Blue|#7EB1C8","518|Wedgewood Light|#4F93A7","3760|Wedgewood Medium|#3E85A2","517|Wedgewood Dark|#3B768F","3842|Wedgewood Very Dark|#32667C","311|Wedgewood Ultra Very Dark|#1C5066","747|Peacock Blue Very Light|#E5FCFD","3766|Peacock Blue Light|#99CFD9","807|Peacock Blue|#64ABBA","806|Peacock Blue Dark|#3D95A5","3765|Peacock Blue Very Dark|#347F8C","3811|Turquoise Very Light|#BCE3E6","598|Turquoise Light|#90C3CC","597|Turquoise|#5BA3B3","3810|Turquoise Dark|#488E9A","3809|Turquoise Very Dark|#3F7C85","3808|Turquoise Ultra Very Dark|#366970","3849|Teal Green Light|#52B3A4","3848|Teal Green Medium|#559392","3847|Teal Green Dark|#347D75","3812|Sea Green Very Dark|#2F8C84","27|White Violet|#F0EEF9","30|Blueberry Medium Light|#7D77A5","31|Blueberry|#50518D","208|Lavender Very Dark|#835B8B","3746|Blue Violet Dark|#776B98","24|White Lavender|#E0D7EE","25|Lavender Ultra Light|#DAD2E9","26|Lavender Pale|#D7CAE6","28|Eggplant Medium Light|#9086A9","29|Eggplant|#674076","32|Blueberry Dark|#4D2E8A"].map(s=>{const [n,name,hex]=s.split('|');return{n,name,hex,lab:lab(hex)}});
+const PRESETS={exlibris:[["pohja","#1c0b10"],["pinta","#2a1419"],["viiva","#4a2a31"],["teksti","#eee6e2"],["himmea","#b39a97"],["polyruusu","#c9a3a6"],["ruusu","#b5475a"],["neonpinkki","#ff7aa2"]],empty:[]};
+
+function rgb(h){h=h.replace('#','');return[0,2,4].map(i=>parseInt(h.slice(i,i+2),16))}
+function lin(c){c/=255;return c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4)}
+function lum(h){const [r,g,b]=rgb(h).map(lin);return .2126*r+.7152*g+.0722*b}
+function ratio(a,b){const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function lab(h){const [r,g,b]=rgb(h).map(lin);let X=(r*.4124+g*.3576+b*.1805)/.95047,Y=r*.2126+g*.7152+b*.0722,Z=(r*.0193+g*.1192+b*.9505)/1.08883;
+  const f=t=>t>216/24389?Math.cbrt(t):(24389/27*t+16)/116;X=f(X);Y=f(Y);Z=f(Z);return[116*Y-16,500*(X-Y),200*(Y-Z)]}
+function de2000([L1,a1,b1],[L2,a2,b2]){const r=Math.PI/180,C1=Math.hypot(a1,b1),C2=Math.hypot(a2,b2),Cm=(C1+C2)/2,G=.5*(1-Math.sqrt(Cm**7/(Cm**7+25**7)));
+  const A1=(1+G)*a1,A2=(1+G)*a2,c1=Math.hypot(A1,b1),c2=Math.hypot(A2,b2);let h1=Math.atan2(b1,A1)/r,h2=Math.atan2(b2,A2)/r;if(h1<0)h1+=360;if(h2<0)h2+=360;
+  const dL=L2-L1,dC=c2-c1;let dh=0;if(c1*c2){dh=h2-h1;if(dh>180)dh-=360;else if(dh<-180)dh+=360}const dH=2*Math.sqrt(c1*c2)*Math.sin(dh*r/2);
+  const Lm=(L1+L2)/2,cm=(c1+c2)/2;let hm=h1+h2;if(c1*c2){hm=Math.abs(h1-h2)>180?(h1+h2<360?(h1+h2+360)/2:(h1+h2-360)/2):(h1+h2)/2}
+  const T=1-.17*Math.cos((hm-30)*r)+.24*Math.cos(2*hm*r)+.32*Math.cos((3*hm+6)*r)-.2*Math.cos((4*hm-63)*r);
+  const Sl=1+.015*(Lm-50)**2/Math.sqrt(20+(Lm-50)**2),Sc=1+.045*cm,Sh=1+.015*cm*T,Rt=-2*Math.sqrt(cm**7/(cm**7+25**7))*Math.sin(60*Math.exp(-(((hm-275)/25)**2))*r);
+  return Math.sqrt((dL/Sl)**2+(dC/Sc)**2+(dH/Sh)**2+Rt*(dC/Sc)*(dH/Sh))}
+const NEAR=new Map();
+function nearest(h){if(NEAR.has(h))return NEAR.get(h);const r=nearestRaw(h);NEAR.set(h,r);return r}
+function nearestRaw(h){const L=lab(h);let best=null,bd=1e9;for(const d of DMC){const e=de2000(L,d.lab);if(e<bd){bd=e;best=d}}return{...best,de:bd}}
+function quality(de){return de<2?['q1','lähes sama']:de<5?['q2','lähellä']:de<10?['q3','suuntaa antava']:['q4','kaukana']}
+const fmt=(x,d)=>(Math.floor(x*10**d)/10**d).toFixed(d).replace('.',',');
+const slug=s=>(s||'').toLowerCase().replace(/ä/g,'a').replace(/ö/g,'o').replace(/å/g,'a').replace(/[^a-z0-9-]+/g,'-').replace(/^-+|-+$/g,'')||'vari';
+const okHex=s=>/^#?[0-9a-f]{6}$/i.test(s.trim())||/^#?[0-9a-f]{3}$/i.test(s.trim());
+const normHex=s=>{s=s.trim().replace('#','').toLowerCase();if(s.length===3)s=s.split('').map(c=>c+c).join('');return'#'+s};
+
+let pal=[];
+function save(){try{localStorage.setItem('lankalaatikko',JSON.stringify(pal))}catch(e){}}
+function load(){try{const v=JSON.parse(localStorage.getItem('lankalaatikko')||'null');if(Array.isArray(v)&&v.every(c=>okHex(c.hex)))return v}catch(e){}return null}
+
+const spools=document.getElementById('spools');
+function renderSpools(){
+  spools.innerHTML='';
+  if(!pal.length){spools.innerHTML='<li class="hint">Laatikko on tyhjä. Lisää ensimmäinen lanka tai liitä värikoodeja.</li>';return}
+  pal.forEach((c,i)=>{
+    const li=document.createElement('li');li.className='spool';
+    li.innerHTML=`<div class="reel" style="--c:${c.hex}" aria-hidden="true"><i></i></div>
+      <div class="fields">
+        <div class="line1">
+          <input type="text" class="name" id="n${i}" value="${c.name}" aria-label="Värin nimi" spellcheck="false">
+          <input type="text" class="hex" id="h${i}" value="${c.hex}" aria-label="Värikoodi" spellcheck="false" maxlength="7">
+          <input type="color" id="c${i}" value="${c.hex}" aria-label="Valitse väri">
+        </div>
+        <p class="err" id="e${i}" hidden>Kirjoita värikoodi muodossa #1c0b10.</p>
+        <div class="dmc" id="d${i}"></div>
+      </div>
+      <button type="button" class="del" aria-label="Poista ${c.name}">×</button>`;
+    spools.appendChild(li);
+    const name=li.querySelector('.name'),hex=li.querySelector('.hex'),col=li.querySelector('input[type=color]'),err=li.querySelector('.err'),reel=li.querySelector('.reel');
+    let dq=0;const setHex=v=>{c.hex=v;hex.value=v;reel.style.setProperty('--c',v);if(!dq)dq=requestAnimationFrame(()=>{dq=0;renderDmc(i)});update()};
+    name.addEventListener('input',()=>{c.name=name.value;li.querySelector('.del').setAttribute('aria-label','Poista '+c.name);update()});
+    hex.addEventListener('input',()=>{if(okHex(hex.value)){err.hidden=true;const v=normHex(hex.value);c.hex=v;col.value=v;reel.style.setProperty('--c',v);renderDmc(i);update()}else err.hidden=hex.value.length<4});
+    hex.addEventListener('blur',()=>{if(!okHex(hex.value)){hex.value=c.hex;err.hidden=true}});
+    col.addEventListener('input',()=>{err.hidden=true;setHex(col.value)});
+    li.querySelector('.del').addEventListener('click',()=>{pal.splice(i,1);renderSpools();update()});
+    renderDmc(i);
+  });
+}
+function renderDmc(i){const c=pal[i],m=nearest(c.hex),[cls,txt]=quality(m.de);c.dmc=m;
+  document.getElementById('d'+i).innerHTML=`<span class="chip" style="background:${m.hex}" aria-hidden="true"></span><span>DMC <b>${m.n}</b> ${m.name}</span><span class="q ${cls}">${txt} · ΔE ${fmt(m.de,1)}</span>`}
+
+const matrix=document.getElementById('matrix'),only=document.getElementById('only');
+function renderMatrix(){
+  if(pal.length<2){matrix.innerHTML='<tbody><tr><td style="padding:1rem;border:0" class="hint">Kontrastit näkyvät, kun paletissa on vähintään kaksi väriä.</td></tr></tbody>';document.getElementById('sum').textContent='';return}
+  let h='<thead><tr><th scope="col"><span style="font-family:var(--f-code);font-weight:400;font-size:1rem;letter-spacing:.04em">teksti \\ tausta</span></th>'+pal.map(c=>`<th scope="col"><span class="sw" style="background:${c.hex}"></span>${esc(c.name)}</th>`).join('')+'</tr></thead><tbody>';
+  let aa=0,aaa=0,pairs=0;
+  pal.forEach(f=>{h+=`<tr><th scope="row"><span class="sw" style="background:${f.hex}"></span>${esc(f.name)}</th>`;
+    pal.forEach(b=>{if(f===b){h+='<td class="cell same" aria-label="sama väri"></td>';return}
+      const r=ratio(f.hex,b.hex);pairs++;if(r>=4.5)aa++;if(r>=7)aaa++;
+      const badge=r>=7?'AAA':r>=4.5?'AA':r>=3?'iso':'✕';
+      const dim=only.checked&&r<4.5?' dim':'';
+      h+=`<td class="cell${dim}" style="background:${b.hex};color:${f.hex}" aria-label="${esc(f.name)} taustalla ${esc(b.name)}: ${fmt(r,2)}:1, ${badge==='✕'?'ei kelpaa':badge}"><span class="aa">Aa</span><span class="r">${fmt(r,2)}</span><span class="b">${badge}</span></td>`});
+    h+='</tr>'});
+  matrix.innerHTML=h+'</tbody>';
+  document.getElementById('sum').textContent=`// ${pairs} paria · ${aa} kelpaa tekstiksi (AA) · ${aaa} myös AAA`;
+}
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+function renderCss(){
+  const w=Math.max(4,...pal.map(c=>slug(c.name).length));
+  document.getElementById('css').textContent=pal.length?':root {\n'+pal.map(c=>{const m=c.dmc||nearest(c.hex);return `  ${("--"+slug(c.name)+":").padEnd(w+4)}${c.hex};  /* DMC ${m.n} ${m.name} */`}).join('\n')+'\n}':'/* paletti on tyhjä */';
+}
+let upd=0;function update(){if(upd)return;upd=requestAnimationFrame(()=>{upd=0;renderMatrix();renderCss();save();renderCard()})}
+only.addEventListener('change',renderMatrix);
+
+function setPreset(k){pal=PRESETS[k].map(([name,hex])=>({name,hex}));document.getElementById('ctitle').value=k==='exlibris'?'Ex Libris':'';document.getElementById('pname').textContent=k==='exlibris'?'ex-libris':'tyhjä';
+  ['exlibris','empty'].forEach(p=>document.getElementById('p-'+p).setAttribute('aria-pressed',p===k));renderSpools();update()}
+document.getElementById('p-exlibris').addEventListener('click',()=>setPreset('exlibris'));
+document.getElementById('p-empty').addEventListener('click',()=>setPreset('empty'));
+document.getElementById('add').addEventListener('click',()=>{const n=pal.length+1;pal.push({name:'lanka-'+n,hex:'#b5475a'});renderSpools();update();const last=document.getElementById('n'+(pal.length-1));last&&last.select()});
+
+function parse(text){const out=[];text.split(/\n|,|;/).forEach(line=>{const m=line.match(/#?\b([0-9a-f]{6}|[0-9a-f]{3})\b/i);if(!m)return;const name=line.slice(0,m.index).trim().replace(/[:=]$/,'').trim();out.push({name:name||'vari-'+(out.length+1),hex:normHex(m[1])})});return out}
+function pasteGo(replace){const t=document.getElementById('paste'),e=document.getElementById('paste-err'),got=parse(t.value);
+  if(!got.length){e.textContent='Tekstistä ei löytynyt värikoodeja. Kirjoita ne muodossa #1c0b10.';e.hidden=false;return}
+  e.hidden=true;pal=replace?got:pal.concat(got);t.value='';document.getElementById('pname').textContent='oma';
+  ['exlibris','empty'].forEach(p=>document.getElementById('p-'+p).setAttribute('aria-pressed','false'));renderSpools();update()}
+document.getElementById('paste').addEventListener('input',()=>{document.getElementById('paste-err').hidden=true});
+document.getElementById('paste-add').addEventListener('click',()=>pasteGo(false));
+document.getElementById('paste-replace').addEventListener('click',()=>pasteGo(true));
+
+document.getElementById('copy').addEventListener('click',()=>{const t=document.getElementById('css').textContent,s=document.getElementById('copied');
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(document.getElementById('css'));const w=getSelection();w.removeAllRanges();w.addRange(r);s.textContent='Valittu, kopioi pikanäppäimellä.'};
+  try{navigator.clipboard.writeText(t).then(()=>{s.textContent='Kopioitu.'},sel)}catch(e){sel()}});
+
+/* Palettikortti: drawn on a canvas so it can be saved as a PNG */
+let cardBg='dark',cardTimer;
+const CARD={dark:{bg:'#1c0b10',fg:'#eee6e2',muted:'#b39a97',rule:'#4a2a31'},light:{bg:'#f7f0ec',fg:'#2a1419',muted:'#7a5c5c',rule:'#e3cfc8'}};
+function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function renderCard(){clearTimeout(cardTimer);cardTimer=setTimeout(drawCard,250)}
+let fontsReady=null;
+async function drawCard(){
+  const T=CARD[cardBg],title=document.getElementById('ctitle').value.trim(),dmc=document.getElementById('cdmc').checked;
+  if(!fontsReady)fontsReady=Promise.all(['500 64px "Bodoni Moda"','600 34px "Cormorant Garamond"','22px "Courier Prime"','20px "VT323"'].map(f=>document.fonts.load(f))).catch(()=>{});
+  await fontsReady;
+  const W=1200,pad=80,cols=pal.length<=4?Math.max(1,pal.length):4,gap=32,sw=(W-pad*2-gap*(cols-1))/cols,sh=Math.round(sw*.7),rows=Math.ceil(pal.length/cols)||1;
+  const top=title?246:pad,rowH=sh+(dmc?168:130),H=top+rows*rowH+70;
+  const cv=document.getElementById('ccv');if(cv.width!==W)cv.width=W;if(cv.height!==H)cv.height=H;const g=cv.getContext('2d');
+  g.fillStyle=T.bg;g.fillRect(0,0,W,H);
+  if(title){g.fillStyle=T.muted;g.font='28px "VT323", "Courier New", monospace';g.fillText('PALETTI · '+pal.length+' VÄRIÄ',pad,pad+8);
+    g.fillStyle=T.fg;g.font='500 64px "Bodoni Moda", Didot, Georgia, serif';g.fillText(title,pad,pad+80);
+    g.fillStyle=T.rule;g.fillRect(pad,top-36,W-pad*2,1)}
+  pal.forEach((c,i)=>{const x=pad+(i%cols)*(sw+gap),y=top+Math.floor(i/cols)*rowH;
+    rr(g,x,y,sw,sh,14);g.fillStyle=c.hex;g.fill();
+    if(ratio(c.hex,T.bg)<1.35){g.lineWidth=2;g.strokeStyle=T.rule;g.stroke()}
+    g.fillStyle=T.fg;g.font='600 38px "Cormorant Garamond", Garamond, Georgia, serif';g.fillText(fit(g,c.name,sw),x,y+sh+52);
+    g.fillStyle=T.muted;g.font='27px "Courier Prime", "Courier New", monospace';g.fillText(c.hex.toUpperCase(),x,y+sh+94);
+    if(dmc){const m=c.dmc||nearest(c.hex);g.font='24px "Courier Prime", "Courier New", monospace';g.fillText(fit(g,'DMC '+m.n,sw),x,y+sh+132)}});
+  g.fillStyle=T.muted;g.font='26px "VT323", "Courier New", monospace';const foot='lankalaatikko / mmilymary';g.fillText(foot,W-pad-g.measureText(foot).width,H-36);
+  cv.setAttribute('aria-label','Palettikortti: '+(title||'paletti')+', '+pal.map(c=>c.name+' '+c.hex).join(', '));
+  const im=document.getElementById('cimg');im.hidden=true;document.getElementById('cprev').hidden=false;document.getElementById('cdl-s').textContent='';
+}
+function fit(g,t,w){if(g.measureText(t).width<=w)return t;while(t.length>1&&g.measureText(t+'…').width>w)t=t.slice(0,-1);return t+'…'}
+['dark','light'].forEach(k=>document.getElementById('bg-'+k).addEventListener('click',()=>{cardBg=k;['dark','light'].forEach(j=>document.getElementById('bg-'+j).setAttribute('aria-pressed',j===k));renderCard()}));
+document.getElementById('ctitle').addEventListener('input',renderCard);
+document.getElementById('cdmc').addEventListener('change',renderCard);
+document.getElementById('cdl').addEventListener('click',()=>{const st=document.getElementById('cdl-s');st.textContent='Tehdään kuvaa…';
+  document.getElementById('ccv').toBlob(b=>{if(!b){st.textContent='Kuvan teko ei onnistunut. Yritä uudelleen.';return}
+    const url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download='paletti-'+slug(document.getElementById('ctitle').value||'oma')+'.png';
+    document.body.appendChild(a);a.click();a.remove();
+    const im=document.getElementById('cimg');if(im.src.startsWith('blob:'))URL.revokeObjectURL(im.src);im.src=url;im.alt='Palettikortti kuvana';im.hidden=false;document.getElementById('cprev').hidden=true;
+    st.textContent='Jos lataus ei alkanut, tallenna kuva painamalla sitä pitkään.'},'image/png')});
+
+const saved=load();
+if(saved){pal=saved;document.getElementById('pname').textContent='oma';renderSpools();update()}else setPreset('exlibris');
+</script>
+
+</body>
+</html>
