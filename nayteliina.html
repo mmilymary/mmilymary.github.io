@@ -47,6 +47,22 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(40px,10vw,56px);line
 .legend li{display:flex;align-items:center;gap:8px}
 .legend svg{flex:none}
 .note{font-size:12px;color:var(--dim);margin:0;border-top:1px solid var(--line);padding-top:14px}
+/* Wide screens: text on the left, the cloth large on the right and kept in view */
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+@media (min-width:1000px){
+  body{font-size:17px}
+  .wrap{max-width:1500px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);grid-template-rows:repeat(7,auto) 1fr;column-gap:4.5rem;row-gap:26px;align-items:start;padding-block:40px 64px}
+  .wrap>*:not(.side){grid-column:1}
+  .side{grid-column:2;grid-row:1 / -1;position:sticky;top:24px}
+  .frame{width:min(100%,calc((100vh - 130px) * 150 / 198 + 22px));margin-inline:auto}
+  h1{font-size:76px}
+  .crumb{font-size:15px}.prompt{font-size:23px}.lead{font-size:18px;max-width:50ch}
+  .stats{gap:12px 40px}.stats dd{font-size:42px}.stats dt{font-size:14px}
+  .chip{font-size:15px;min-height:42px;padding:8px 18px}
+  .day label{font-size:14px}.status{font-size:23px}
+  .legend{font-size:15px}.note{font-size:14px}.maker{font-size:24px;margin:0}
+  pre{font-size:14px!important}
+}
 pre{font-family:var(--mono);font-size:12px;color:var(--dim);background:var(--surface);border:1px solid var(--line);padding:12px;margin:0;overflow-x:auto;white-space:pre}
 </style>
 <script data-goatcounter="https://mmilymary.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
@@ -75,10 +91,12 @@ pre{font-family:var(--mono);font-size:12px;color:var(--dim);background:var(--sur
     <button class="chip" id="v-nurja" aria-pressed="false">nurja puoli</button>
   </div>
 
-  <div class="frame" id="frame">
-    <canvas id="cv" width="600" height="792" role="img" aria-label="Ristipistoliina: kylkiluusydän medaljongissa, ruusuja ja piikkilankaa reunoilla, korppi, avain, pääkallo ja neljä yöperhosta. Haalea kuvio kirkastuu pala kerrallaan päivinä, joina GitHubiin tulee committeja."></canvas>
+  <div class="side">
+    <div class="frame" id="frame">
+      <canvas id="cv" width="600" height="792" role="img" aria-label="Ristipistoliina: kylkiluusydän medaljongissa, ruusuja ja piikkilankaa reunoilla, korppi, avain, pääkallo ja neljä yöperhosta. Haalea kuvio kirkastuu pala kerrallaan päivinä, joina GitHubiin tulee committeja."></canvas>
+    </div>
+    <p class="maker"><span id="yr2">aloitettu 2026</span> / mmilymary</p>
   </div>
-  <p class="maker"><span id="yr2">aloitettu 2026</span> / mmilymary</p>
 
   <div class="day">
     <label for="day">Valitse pistopäivä tai napauta liinaa</label>
