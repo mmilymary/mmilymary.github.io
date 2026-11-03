@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Esipuhe-paketin esimerkki · Mila Palviainen</title>
+<meta name="description" content="Esimerkki Esipuhe-paketista: brändiopas, logoversiot ja somepohjat Mila Palviaisen omasta brändistä.">
+<meta name="theme-color" content="#2e0f17">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Esipuhe-paketin esimerkki · Mila Palviainen">
+<meta property="og:description" content="Brändiopas, logoversiot ja somepohjat yhdessä ilmeessä.">
+<meta property="og:image" content="https://mmilymary.github.io/esipuhe_opas1.webp">
+<meta property="og:url" content="https://mmilymary.github.io/esipuhe.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Courier+Prime:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #1c0b10; --surface: #2a1419; --line: #4a2a31;
+    --cream: #eee6e2; --muted: #b39a97; --dusty: #c9a3a6; --rose: #b5475a; --neon: #ff7aa2;
+    --paper: #efe7dc;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--cream); font-family: "Courier Prime", ui-monospace, monospace; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--dusty); outline-offset: 3px; }
+
+  .nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 14px clamp(16px, 4vw, 48px); background: rgba(22,7,11,.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201,163,166,.18); }
+  .nav .logo { white-space: nowrap; font-family: "VT323", monospace; font-size: 24px; color: #f0d4d8; text-decoration: none; }
+  .nav .back { text-decoration: none; font-size: 15px; color: #e6dad6; }
+  .nav .back:hover { color: #fff; text-shadow: 0 0 10px rgba(255,122,162,.6); }
+
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 clamp(16px, 5vw, 60px); }
+  .label { font-weight: 700; color: var(--rose); letter-spacing: .08em; font-size: 14px; margin: 0 0 18px; }
+
+  .intro { padding: clamp(60px, 10vw, 120px) 0 clamp(40px, 6vw, 70px);
+    background: radial-gradient(ellipse 70% 70% at 50% 0%, #4a1a26 0%, #2e0f17 45%, var(--bg) 100%); }
+  .intro .kicker { font-family: "VT323", monospace; font-size: 22px; color: var(--dusty); letter-spacing: .08em; }
+  .intro h1 { font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-size: clamp(46px, 8vw, 104px); line-height: .95; letter-spacing: -.02em; margin: 12px 0 22px; }
+  .intro h1 em { font-style: italic; }
+  .note-concept { display: flex; gap: 12px; align-items: flex-start; max-width: 760px; margin: -18px 0 36px; padding: 14px 18px; border: 1px dashed rgba(201,163,166,.45); border-radius: 12px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+  .note-concept span { font-family: "VT323", monospace; font-size: 18px; color: var(--dusty); letter-spacing: .08em; white-space: nowrap; }
+  .intro .lead { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: clamp(22px, 2.6vw, 32px); line-height: 1.3; color: var(--cream); max-width: 760px; margin: 0 0 40px; }
+  .meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; border-top: 1px solid var(--line); padding-top: 22px; margin: 0; }
+  .meta dt { color: var(--dusty); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+  .meta dd { margin: 0; color: var(--cream); font-size: 15px; line-height: 1.5; }
+  .intro-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 340px); gap: clamp(28px, 6vw, 80px); align-items: start; }
+  .hero-phone { margin: 0; }
+  .hero-phone figcaption { margin-top: 16px; font-size: 14px; color: var(--muted); text-align: center; }
+  @media (max-width: 900px) { .intro-grid { grid-template-columns: 1fr; } .hero-phone { max-width: 320px; margin: 10px auto 0; } }
+
+  section { padding: clamp(56px, 8vw, 100px) 0; }
+  section + section { border-top: 1px solid rgba(74,42,49,.6); }
+  h2 { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.1; margin: 0 0 24px; }
+  p { color: var(--muted); font-size: 17px; line-height: 1.75; margin: 0 0 18px; }
+  .measure { max-width: 760px; }
+
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 26px; margin-top: 36px; align-items: start; }
+  .split > *, .gallery > *, .screens > * { min-width: 0; }
+  .page { margin: 0; }
+  .page img { display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line); box-shadow: 0 30px 50px rgba(0,0,0,.55); }
+
+  .gallery { display: grid; gap: 18px; margin-top: 32px; align-items: start; }
+  .gallery.g5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .gallery figure { margin: 0; }
+  .gallery img { display: block; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 18px 36px rgba(0,0,0,.45); }
+
+  figcaption { margin-top: 12px; font-size: 14px; line-height: 1.55; color: var(--muted); }
+  figcaption b { display: block; color: var(--cream); font-weight: 700; margin-bottom: 2px; }
+
+  .screens { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin-top: 36px; align-items: start; }
+  .screen { margin: 0; }
+  .phone { position: relative; padding: 22px 7px 7px; border-radius: 34px; background: linear-gradient(145deg, #2a1419, #0d0406 60%);
+    border: 1px solid rgba(201,163,166,.35); box-shadow: 0 30px 50px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04); }
+  .phone::before { content: ""; position: absolute; top: 8px; left: 50%; width: 30%; height: 7px; transform: translateX(-50%); border-radius: 99px; background: #000; box-shadow: inset 0 0 0 1px rgba(201,163,166,.15); }
+  .phone::after { content: ""; position: absolute; right: -3px; top: 18%; width: 3px; height: 12%; border-radius: 0 3px 3px 0; background: #3a1d23; }
+  .phone img { display: block; width: 100%; height: auto; aspect-ratio: 1080 / 1920; object-fit: cover; object-position: top; border-radius: 0 0 27px 27px; background: #0d0406; }
+
+  .end { text-align: center; }
+  .end .btns { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+  .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 20px; border-radius: 999px; text-decoration: none; font-size: 15px; border: 1px solid var(--line); color: var(--cream); transition: border-color .3s, box-shadow .3s; }
+  .btn.primary { background: var(--rose); border-color: var(--rose); color: #fff; }
+  .btn:hover { border-color: var(--neon); box-shadow: 0 0 18px rgba(255,122,162,.25); }
+  footer { border-top: 1px solid var(--line); padding: 24px 16px; text-align: center; color: var(--muted); font-size: 13px; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    .meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .split { grid-template-columns: 1fr; }
+    .gallery.g5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .screens { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 520px) { .gallery.g5 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 420px) { .nav .logo { font-size: 18px; } .nav .back { font-size: 13px; } }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* Isot näytöt: sivu kasvaa kuin selaimen zoomilla, jotta teksti ja kuvat eivät jää pieniksi.
+     Puhelimeen ja läppäriin tämä ei vaikuta. */
+  @media (min-width: 1500px) { body { zoom: 1.15; } }
+  @media (min-width: 1750px) { body { zoom: 1.3; } }
+  @media (min-width: 2200px) { body { zoom: 1.5; } }
+</style>
+<script data-goatcounter="https://mmilymary.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+<nav class="nav" aria-label="Päävalikko">
+  <a class="logo" href="index.html">&gt; mila.palviainen</a>
+  <a class="back" href="palvelut.html">← palvelut</a>
+</nav>
+
+<main>
+  <header class="intro">
+    <div class="wrap">
+      <span class="kicker">esimerkki / esipuhe</span>
+      <h1>Oma <em>brändini</em></h1>
+      <div class="intro-grid">
+        <div>
+          <p class="lead">Esipuhe on tehty yrityksille, joilla on jo sivut, mutta ilme ei vielä kulje mukana. Näytän paketin sisällön oman brändini avulla: värit, fontit, logon ja somepohjat.</p>
+          <p class="note-concept"><span>// HUOM</span>Esimerkki on tehty omalle brändilleni, ei asiakkaalle.</p>
+          <dl class="meta">
+            <div><dt>paketti</dt><dd>Esipuhe</dd></div>
+            <div><dt>sisältö</dt><dd>Väripaletti, fontit, logoversiot, somepohjat</dd></div>
+            <div><dt>muoto</dt><dd>Brändiopas PDF:nä, räätälöidyt somepohjat</dd></div>
+            <div><dt>hinta-arvio</dt><dd>350–550 €, alv 0 %</dd></div>
+          </dl>
+        </div>
+        <figure class="hero-phone"><div class="phone"><img src="esipuhe_m_kissa.webp" alt="Instagram-julkaisu puhelimella: kissa työpöydällä, skannauskehys, kohdelaatikko tekstillä KOHDE: työkaveri ja rivi TILA: tarkastaa muistiinpanot" loading="lazy"></div>
+          <figcaption>Skannaus-pohja käytössä.</figcaption></figure>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <p class="label reveal">// BRÄNDIOPAS</p>
+      <h2 class="reveal">Kaksi sivua, joista ilme löytyy.</h2>
+      <p class="measure reveal">Opas kertoo, mitä värejä, fontteja ja logoa käytetään ja missä. Sen voi antaa kenelle tahansa, joka tekee yritykselle materiaalia.</p>
+      <div class="split">
+        <figure class="page reveal"><img src="esipuhe_opas1.webp" alt="Brändioppaan sivu 1: yhdeksän värimallia nimineen ja käyttötarkoituksineen sekä kontrastitaulukko" width="900" height="1273" loading="lazy"><figcaption><b>Sivu 1</b>Värit ja kontrastit</figcaption></figure>
+        <figure class="page reveal"><img src="esipuhe_opas2.webp" alt="Brändioppaan sivu 2: logo tummalla ja vaalealla pohjalla, profiilikuva, neljä fonttia ja ohjeet ilmeen käyttöön" width="900" height="1273" loading="lazy"><figcaption><b>Sivu 2</b>Logo, fontit ja ohjeet</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="label reveal">// SOMEPOHJAT</p>
+      <h2 class="reveal">Viisi pohjaa, yksi ilme.</h2>
+      <p class="measure reveal">Pohjissa on paikka omalle kuvalle ja vähän tekstiä. Kansi, sisäsivut ja lopetus kuuluvat samaan sarjaan.</p>
+      <p class="measure reveal">Asiakkaalle pohjat suunnitellaan sen mukaan, mitä yritys julkaisee. Omat pohjani on tehty opiskeluun ja arkeen liittyviin julkaisuihin.</p>
+      <div class="gallery g5">
+        <figure class="reveal"><img src="esipuhe_pohja_skannaus.webp" alt="Skannaus-pohja: kulmakehykset, REC-rivi, kohdelaatikko ja TILA-rivi kuvan päällä" width="608" height="760" loading="lazy"><figcaption><b>Skannaus</b>oma kuva, kehys ja kohdelaatikot</figcaption></figure>
+        <figure class="reveal"><img src="esipuhe_pohja_kuvakansi.webp" alt="Kuvakansi-pohja: tagi, otsikko Tietokanta ja neonvärinen rivi oikeassa reunassa" width="608" height="760" loading="lazy"><figcaption><b>Kuvakansi</b>karusellin kansi kuvalla</figcaption></figure>
+        <figure class="reveal"><img src="esipuhe_pohja_tekstikansi.webp" alt="Tekstikansi-pohja: tagi, iso otsikko kursiivilla päättyen ja alaotsikko" width="608" height="760" loading="lazy"><figcaption><b>Tekstikansi</b>karusellin kansi ilman kuvaa</figcaption></figure>
+        <figure class="reveal"><img src="esipuhe_pohja_sisasivu.webp" alt="Sisäsivu-pohja: roomalainen numero, otsikko ja lyhyt teksti" width="608" height="760" loading="lazy"><figcaption><b>Sisäsivu</b>numero, otsikko ja teksti</figcaption></figure>
+        <figure class="reveal"><img src="esipuhe_pohja_lopetus.webp" alt="Lopetus-pohja: kysymys lukijalle ja kerro kommenteissa -rivi kursorin kanssa" width="608" height="760" loading="lazy"><figcaption><b>Lopetus</b>kysymys lukijalle</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="label reveal">// KÄYTÖSSÄ</p>
+      <h2 class="reveal">Pohjat oikeissa julkaisuissa.</h2>
+      <p class="measure reveal">Nämä julkaisut ovat omasta Instagramistani. Ne on tehty samoilla pohjilla.</p>
+      <div class="screens">
+        <figure class="screen reveal">
+          <div class="phone"><img src="esipuhe_m_tekstikansi.webp" alt="Karusellin kansi puhelimella: Mitä toivoisin jokaiselta tehtävänannolta, opiskelijan muistilista" loading="lazy"></div>
+          <figcaption><b>Tekstikansi</b>Karuselli tehtävänannoista</figcaption>
+        </figure>
+        <figure class="screen reveal">
+          <div class="phone"><img src="esipuhe_m_kuvakansi.webp" alt="Kuvakansi puhelimella: kirjapino, kallo ja läppäri, otsikko Tietokanta meidän kirjahyllyn klassikoista ja SQL-kyselyt" loading="lazy"></div>
+          <figcaption><b>Kuvakansi</b>SQL-kyselyt kirjahyllyn klassikoista</figcaption>
+        </figure>
+        <figure class="screen reveal">
+          <div class="phone"><img src="esipuhe_m_lappari.webp" alt="Skannaus-julkaisu puhelimella: tarroilla koristeltu läppäri ja pitsisukkahousut kohdelaatikoissa" loading="lazy"></div>
+          <figcaption><b>Skannaus</b>Arkikuva kohdelaatikoilla</figcaption>
+        </figure>
+        <figure class="screen reveal">
+          <div class="phone"><img src="esipuhe_m_lopetus.webp" alt="Karusellin viimeinen sivu puhelimella: Mitä klassikoita sun hyllystä löytyy? ja kerro kommenteissa" loading="lazy"></div>
+          <figcaption><b>Lopetus</b>Kysymys kommentteihin</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="end">
+    <div class="wrap reveal">
+      <p class="label">// SINUN YRITYKSELLESI</p>
+      <h2>Haluatko oman esipuheen?</h2>
+      <p>Esipuhe sopii, kun sivut ovat jo olemassa, mutta ilme ja sanoma eivät vielä välity niistä.</p>
+      <div class="btns">
+        <a class="btn primary" href="palvelut.html">← palvelut ja hinnat</a>
+        <a class="btn" href="mailto:mila.palviainen2@gmail.com?subject=Esipuhe">hei, jutellaanko!</a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>© 2026 Mila Palviainen · Tampere</footer>
+
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  const toTop = () => { if (!location.hash) window.scrollTo(0, 0); };
+  toTop(); addEventListener('load', toTop); addEventListener('pageshow', toTop);
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
