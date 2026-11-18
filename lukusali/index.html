@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lukusali</title>
+<meta name="description" content="Milan työpöytä: apurit ja työkalut yhdessä hyllyssä.">
+<meta name="theme-color" content="#1C0B10">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* Layout: tervehdys ja tähti ylhäällä, kirjahylly keskellä, pöytä (linkit ja muistio) alhaalla. Yksi tumma teema. */
+:root {
+  color-scheme: dark;
+  --pohja: #1C0B10;
+  --pinta: #2A1419;
+  --viiva: #4A2A31;
+  --teksti: #EEE6E2;
+  --himmea: #B39A97;
+  --polyruusu: #C9A3A6;
+  --ruusu: #B5475A;
+  --neon: #FF7AA2;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --otsikko: 'Bodoni Moda', Georgia, serif;
+  --leipa: 'Courier Prime', 'Courier New', monospace;
+  --mono: 'VT323', 'Courier New', monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--pohja); color: var(--teksti); font-family: var(--leipa); font-size: 15px; line-height: 1.6; }
+a { color: var(--neon); }
+a:hover { color: var(--teksti); }
+a:focus-visible, button:focus-visible, textarea:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 56px; display: flex; flex-direction: column; gap: 44px; }
+header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 18px; border-bottom: 1px solid var(--viiva); font-family: var(--mono); font-size: 24px; }
+header .merkki { display: flex; align-items: center; gap: 12px; }
+header .pvm { color: var(--himmea); font-size: 22px; }
+h1 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(44px, 7vw, 72px); line-height: 1.03; text-wrap: balance; }
+h1 em { color: var(--polyruusu); }
+h2 { margin: 0; font-family: var(--otsikko); font-weight: 400; font-size: 30px; line-height: 1.2; }
+h3 { margin: 0; font-family: var(--otsikko); font-weight: 400; font-size: 28px; line-height: 1.15; }
+p { margin: 0; }
+.tagi { font-family: var(--mono); font-size: 20px; color: var(--polyruusu); letter-spacing: 0.06em; }
+.himmea { color: var(--himmea); }
+.alku { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; }
+.alku .teksti { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+.alku .teksti p { max-width: 54ch; }
+.tahti { flex: 0 1 300px; margin: 0 auto; position: relative; width: 300px; max-width: 100%; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; }
+.tahti .keha { position: absolute; border-radius: 50%; }
+.tahti .k1 { inset: 0; border: 1px solid var(--viiva); }
+.tahti .k2 { inset: 28px; border: 1px dashed var(--viiva); }
+.tahti .k3 { inset: 62px; border: 1px solid var(--ruusu); opacity: 0.55; }
+.tahti .k4 { inset: 96px; background: var(--pinta); box-shadow: 0 0 70px rgba(255,122,162,0.25); }
+.tahti svg { position: relative; width: 38%; height: 38%; filter: drop-shadow(0 0 16px rgba(255,122,162,0.6)); }
+.osio { display: flex; flex-direction: column; gap: 18px; }
+.osio-otsikko { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.hyllyalue { display: flex; flex-wrap: wrap; gap: 28px; align-items: stretch; }
+.hylly-kehys { flex: 2 1 460px; min-width: 0; display: flex; flex-direction: column; }
+.hylly { display: flex; align-items: flex-end; gap: 6px; padding: 24px 18px 0; min-height: 380px; overflow-x: auto; }
+.lauta { height: 14px; background: var(--viiva); border-top: 1px solid var(--himmea); border-radius: 2px; box-shadow: 0 10px 24px rgba(0,0,0,0.5); }
+.kirja {
+  flex: 0 0 auto; cursor: pointer; font: inherit; color: var(--teksti);
+  border: 1px solid var(--viiva); border-radius: 3px 3px 2px 2px;
+  padding: 14px 0; display: flex; flex-direction: column; align-items: center; gap: 10px;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.kirja[aria-pressed="true"] { transform: translateY(-16px); box-shadow: 0 0 28px rgba(255,122,162,0.35); }
+.kirja .nauha { width: 70%; height: 5px; border-top: 1px solid var(--polyruusu); border-bottom: 1px solid var(--polyruusu); opacity: 0.8; }
+.kirja .viiva { width: 50%; border-top: 1px solid var(--polyruusu); opacity: 0.6; }
+.kirja .nro { font-family: var(--display); font-size: 22px; line-height: 1; }
+.kirja .nimi { flex-grow: 1; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--otsikko); font-size: 21px; letter-spacing: 0.08em; white-space: nowrap; }
+.kirja .tila { font-size: 12px; }
+.kirja.tulossa { background: transparent !important; border-style: dashed; color: var(--himmea); }
+.kirja.tulossa .nauha, .kirja.tulossa .viiva { opacity: 0.3; }
+.kortti { flex: 1 1 280px; min-width: 0; background: var(--pinta); border: 1px solid var(--viiva); border-radius: 10px; padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+.kortti .alaosa { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--viiva); display: flex; flex-direction: column; gap: 12px; }
+.nappi { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border-radius: 6px; background: var(--neon); color: var(--pohja); font-weight: 700; text-decoration: none; }
+.nappi:hover { color: var(--pohja); filter: brightness(1.08); }
+.poyta { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+.linkit { flex: 1 1 320px; min-width: 0; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--viiva); }
+.linkit li { border-bottom: 1px solid var(--viiva); }
+.linkit a { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 14px 2px; min-height: 48px; text-decoration: none; color: var(--teksti); }
+.linkit a:hover { color: var(--neon); }
+.linkit a span:last-child { font-family: var(--mono); font-size: 19px; color: var(--himmea); white-space: nowrap; }
+.muistio { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.muistio label { font-family: var(--mono); font-size: 20px; color: var(--polyruusu); }
+.muistio textarea { width: 100%; min-height: 190px; resize: vertical; padding: 14px; background: var(--pinta); color: var(--teksti); border: 1px solid var(--viiva); border-radius: 8px; font: inherit; }
+footer { border-top: 1px solid var(--viiva); padding-top: 16px; font-size: 13px; color: var(--himmea); }
+@media (prefers-reduced-motion: no-preference) {
+  .tahti .k2 { animation: kierto 90s linear infinite; }
+  .tahti svg { animation: hehku 4s ease-in-out infinite; }
+  @keyframes kierto { to { transform: rotate(360deg); } }
+  @keyframes hehku { 0%, 100% { opacity: 0.78; } 50% { opacity: 1; } }
+}
+@media (prefers-reduced-motion: reduce) { .kirja { transition: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="merkki">
+      <svg width="22" height="22" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="#EEE6E2"/></svg>
+      <span>› lukusali</span>
+    </div>
+    <span class="pvm" id="pvm"></span>
+  </header>
+
+  <section class="alku" aria-labelledby="tervehdys">
+    <div class="teksti">
+      <p class="tagi">› MILA PALVIAINEN · TYÖPÖYTÄ</p>
+      <h1 id="tervehdys">Huomenta, <em>Mila.</em></h1>
+      <p class="himmea">Valitse kirja hyllystä. Jokainen avaa yhden apurin tai työkalun. Mitään ei lähetetä, julkaista tai poisteta ilman lupaasi.</p>
+    </div>
+    <div class="tahti" aria-hidden="true">
+      <div class="keha k1"></div><div class="keha k2"></div><div class="keha k3"></div><div class="keha k4"></div>
+      <svg viewBox="0 0 100 100">
+        <defs><linearGradient id="kromi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.45" stop-color="#B39A97"/><stop offset="0.6" stop-color="#EEE6E2"/><stop offset="1" stop-color="#C9A3A6"/></linearGradient></defs>
+        <path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="url(#kromi)"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="osio" aria-labelledby="hylly-otsikko">
+    <div class="osio-otsikko">
+      <h2 id="hylly-otsikko">Kirjahylly</h2>
+      <span class="tagi himmea">› apurit</span>
+    </div>
+    <div class="hyllyalue">
+      <div class="hylly-kehys">
+        <div class="hylly" id="hylly" role="group" aria-label="Apurit hyllyssä"></div>
+        <div class="lauta" aria-hidden="true"></div>
+      </div>
+      <article class="kortti" id="kortti" aria-live="polite"></article>
+    </div>
+  </section>
+
+  <section class="osio" aria-labelledby="poyta-otsikko">
+    <div class="osio-otsikko">
+      <h2 id="poyta-otsikko">Pöydällä</h2>
+      <span class="tagi himmea">› pikalinkit ja muistio</span>
+    </div>
+    <div class="poyta">
+      <ul class="linkit" id="linkit"></ul>
+      <div class="muistio">
+        <label for="muistio">› pöytämuistio</label>
+        <textarea id="muistio" placeholder="Kirjoita tähän, mitä teet seuraavaksi."></textarea>
+        <p class="himmea" id="muistio-tila" style="font-size:13px"></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>Lukusali on käynnistin. Se ei näe apureiden tilaa, vaan avaa ne.</footer>
+</main>
+
+<script>
+/* ====== MUOKKAA NÄITÄ ======
+   Vaihda osoitteet omiisi. Tyhjä osoite ('') piilottaa Avaa-napin. */
+var LINKIT = {
+  projekti:  'https://claude.ai/project/01a0e6c2-f761-715a-8f8f-6bc1cc1a15fe', // Mila/Some/Portfolio (tarkista, että osoite on oikea)
+  vahti:     '',  // ajastettujen tehtävien sivu Claudessa
+  vahin:     'https://claude.ai/artifact/HkEPxct9vzyPGZi44Tc52f',
+  tavoitteet:'https://claude.ai/artifact/FScYHW7n7HLqCQRjnJZwyz',
+  palvelut:  'https://mmilymary.github.io/palvelut.html',
+  portfolio: 'https://mmilymary.github.io/',
+  recap:     'https://mmilymary.github.io/recap-generator',
+  instagram: 'https://www.instagram.com/mmilymary/'
+};
+
+var KIRJAT = [
+  { id: 'arkisto', nro: 'I', nimi: 'Arkistonhoitaja', rooli: 'second brain', kuvaus: 'Muistaa projektit, paketit ja päätökset. Vastaa vain tiedostojen pohjalta.', tila: 'käytössä', lisa: 'Avaa projektin Claudessa.', url: LINKIT.projekti, w: 110, h: 330, bg: '#B5475A', valmis: true },
+  { id: 'kirjuri', nro: 'II', nimi: 'Kirjuri', rooli: 'some', kuvaus: 'Ideat, kuvatekstit ja recapin versiot kolmeen teemaan.', tila: 'ei vielä tehty', lisa: 'Tämä apuri odottaa vuoroaan.', url: '', w: 92, h: 300, bg: '#2A1419', valmis: false },
+  { id: 'vahti', nro: 'III', nimi: 'Vahti', rooli: 'kilpailijat', kuvaus: 'Tarkistaa viiden kilpailijan paketit ja hinnat ja etsii uusia tekijöitä.', tila: 'ajastettu', lisa: 'Ajo joka perjantai klo 9.13.', url: LINKIT.vahti, w: 100, h: 345, bg: '#4A2A31', valmis: true },
+  { id: 'seula', nro: 'IV', nimi: 'Seula', rooli: 'ideat', kuvaus: 'Pisteyttää uuden idean: asiakkaat, brändi, näyte ja työmäärä.', tila: 'käytössä', lisa: 'Kirjoita projektissa "Seulo:" ja idea.', url: LINKIT.projekti, w: 96, h: 315, bg: '#2A1419', valmis: true },
+  { id: 'sihteeri', nro: 'V', nimi: 'Sihteeri', rooli: 'sähköposti', kuvaus: 'Lajittelee Gmailin ja kirjoittaa vastausluonnokset. Ei lähetä mitään.', tila: 'ei vielä tehty', lisa: 'Tämä apuri odottaa vuoroaan.', url: '', w: 92, h: 295, bg: '#2A1419', valmis: false },
+  { id: 'vahin', nro: 'VI', nimi: 'Vähin', rooli: 'liikunta', kuvaus: 'Mikä on vähintä, mitä jaksat tänään? Yksi pisto näyteliinaan.', tila: 'käytössä', lisa: 'Avaa oman sovelluksensa.', url: LINKIT.vahin, w: 104, h: 335, bg: '#B5475A', valmis: true }
+];
+
+var PIKALINKIT = [
+  ['Tavoitteet ja apurit', 'dokumentti', LINKIT.tavoitteet],
+  ['Palvelut-sivu', 'portfolio', LINKIT.palvelut],
+  ['Portfolio', 'etusivu', LINKIT.portfolio],
+  ['Recap-generaattori', 'työkalu', LINKIT.recap],
+  ['Instagram', '@mmilymary', LINKIT.instagram]
+];
+/* ====== MUOKATTAVA OSA PÄÄTTYY ====== */
+
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+var valittu = 'arkisto';
+function piirraHylly() {
+  document.getElementById('hylly').innerHTML = KIRJAT.map(function (k) {
+    return '<button type="button" class="kirja' + (k.valmis ? '' : ' tulossa') + '" data-id="' + k.id + '" aria-pressed="' + (k.id === valittu) + '" aria-label="' + esc(k.nimi + ', ' + k.tila) + '" style="width:' + k.w + 'px;height:' + k.h + 'px;background:' + k.bg + '">' +
+      '<span class="nauha" aria-hidden="true"></span><span class="nro">' + k.nro + '</span>' +
+      '<svg width="14" height="14" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="currentColor"/></svg>' +
+      '<span class="viiva" aria-hidden="true"></span><span class="nimi">' + esc(k.nimi) + '</span><span class="viiva" aria-hidden="true"></span>' +
+      '<span class="tila" aria-hidden="true">' + (k.valmis ? '●' : '○') + '</span><span class="nauha" aria-hidden="true"></span></button>';
+  }).join('');
+  document.querySelectorAll('.kirja').forEach(function (b) {
+    b.addEventListener('click', function () { valittu = b.getAttribute('data-id'); piirraHylly(); piirraKortti(); });
+  });
+}
+function piirraKortti() {
+  var k = KIRJAT.filter(function (x) { return x.id === valittu; })[0] || KIRJAT[0];
+  document.getElementById('kortti').innerHTML =
+    '<span class="tagi">' + k.nro + ' · ' + esc(k.rooli) + '</span>' +
+    '<h3>' + esc(k.nimi) + '</h3>' +
+    '<p class="himmea">' + esc(k.kuvaus) + '</p>' +
+    '<div class="alaosa"><span><span style="color:' + (k.valmis ? 'var(--polyruusu)' : 'var(--himmea)') + '">' + (k.valmis ? '●' : '○') + '</span> ' + esc(k.tila) + '</span>' +
+    '<span class="himmea" style="font-size:13px">' + esc(k.lisa) + '</span>' +
+    (k.url ? '<a class="nappi" href="' + esc(k.url) + '" target="_blank" rel="noopener">Avaa ' + esc(k.nimi) + '</a>' : '') +
+    '</div>';
+}
+
+document.getElementById('linkit').innerHTML = PIKALINKIT.filter(function (l) { return l[2]; }).map(function (l) {
+  return '<li><a href="' + esc(l[2]) + '" target="_blank" rel="noopener"><span>' + esc(l[0]) + '</span><span>› ' + esc(l[1]) + '</span></a></li>';
+}).join('');
+
+// Päivä, viikko ja tervehdys
+var nyt = new Date();
+var PAIVAT = ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'];
+function viikko(d) {
+  var t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  var p = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - p);
+  var alku = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  return Math.ceil(((t - alku) / 86400000 + 1) / 7);
+}
+document.getElementById('pvm').textContent = PAIVAT[nyt.getDay()] + ' ' + nyt.getDate() + '.' + (nyt.getMonth() + 1) + '. · vk ' + viikko(nyt);
+var h = nyt.getHours();
+document.getElementById('tervehdys').innerHTML = (h < 10 ? 'Huomenta' : h < 17 ? 'Päivää' : 'Iltaa') + ', <em>Mila.</em>';
+
+// Pöytämuistio tallentuu vain tähän selaimeen
+var muistio = document.getElementById('muistio');
+var tilaTeksti = document.getElementById('muistio-tila');
+var tallennusToimii = true;
+try { muistio.value = localStorage.getItem('lukusali-muistio') || ''; } catch (e) { tallennusToimii = false; }
+tilaTeksti.textContent = tallennusToimii ? 'Tallentuu tähän selaimeen.' : 'Tämä selain ei tallenna muistiota.';
+muistio.addEventListener('input', function () {
+  try { localStorage.setItem('lukusali-muistio', muistio.value); } catch (e) { tilaTeksti.textContent = 'Tallennus ei onnistunut.'; }
+});
+
+piirraHylly();
+piirraKortti();
+
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('sw.js').catch(function () {});
+}
+</script>
+</body>
+</html>
