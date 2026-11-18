@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vähin</title>
+<meta name="description" content="Mikä on vähintä, mitä jaksat tänään?">
+<meta name="theme-color" content="#1C0B10">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>html{box-sizing:border-box}body{margin:0}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+</head>
+<body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Courier+Prime:wght@400;700&family=VT323&display=swap">
+<style>
+/* Layout: one narrow phone column, a sticky header, content cards, fixed bottom tab bar. Dark only (brand). */
+:root{
+  --bg:#1c0b10; --panel:#2a1419; --panel2:#24101a; --line:#4a2a31; --line2:#3a2228;
+  --ink:#eee6e2; --muted:#b39a97; --dim:#8a6a70; --rose:#c9a3a6; --wine:#7a1c3a; --neon:#ff7aa2; --olive:#a4a36a;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --mono:"Courier Prime","Courier New",ui-monospace,monospace;
+  --pix:"VT323","Courier New",monospace;
+  color-scheme:dark;
+}
+html,body{background:var(--bg);color:var(--ink)}
+body{font:16px/1.5 var(--mono);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 96px}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--neon);outline-offset:2px}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:18px 12px;border-bottom:1px solid var(--line2);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.brand{display:flex;align-items:center;gap:10px;font:600 28px/1 var(--serif);letter-spacing:.14em;text-transform:uppercase}
+.brand svg{width:22px;height:22px;filter:drop-shadow(0 0 6px rgba(255,122,162,.6))}
+.cmd{font:14px var(--mono);color:var(--muted)}
+.cmd b{font-weight:400;color:var(--neon)}
+h1{font:500 40px/1.08 var(--serif);margin:0;text-wrap:balance}
+h1 em,h2 em{color:var(--rose)}
+h2{font:500 28px/1.15 var(--serif);margin:0;text-wrap:balance}
+h3{font:700 13px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0}
+p{margin:0}
+.muted{color:var(--muted)} .small{font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chip{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:12px 6px;text-align:center;font-size:14px;transition:border-color .15s,background .15s}
+.chip:hover{border-color:var(--rose)}
+.chip[aria-pressed="true"]{border-color:var(--neon);background:#3a1824;box-shadow:0 0 0 1px var(--neon) inset}
+.chip .big{display:block;font:30px/1 var(--pix);color:var(--ink)}
+.btn{background:var(--wine);border:1px solid var(--wine);border-radius:6px;padding:12px 16px;font-weight:700;text-align:center}
+.btn:hover{filter:brightness(1.15)}
+.btn.neon{background:var(--neon);border-color:var(--neon);color:#2a0d16}
+.btn.ghost{background:transparent;border-color:var(--line);font-weight:400}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>.btn{flex:1 1 140px}
+.move{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:baseline;padding-block:10px;border-top:1px solid var(--line2)}
+.move:first-child{border-top:0}
+.move .n{font:22px var(--pix);color:var(--neon)}
+.move .nm{font-weight:700}
+.move .rp{font:22px var(--pix);color:var(--ink);white-space:nowrap}
+.move .how{grid-column:2/4;font-size:13px;color:var(--muted)}
+.tag{display:inline-block;font:12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--rose);border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.day{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.dot{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font:16px var(--pix)}
+.dot.on{background:var(--neon);border-color:var(--neon);color:#2a0d16;box-shadow:0 0 10px rgba(255,122,162,.55)}
+.dot.walk{background:var(--olive);border-color:var(--olive);color:#1c0b10}
+.dot.today{outline:1px dashed var(--rose);outline-offset:3px}
+.bar{height:10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--olive);width:0;transition:width .4s}
+.stat{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-variant-numeric:tabular-nums}
+.stat b{font:28px var(--pix);font-weight:400}
+.quiet{font:500 italic 24px/1.25 var(--serif);color:var(--rose)}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--panel2);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+nav.tabs button{background:none;border:0;padding:12px 4px 14px;font-size:13px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav.tabs button span{font:22px/1 var(--pix)}
+nav.tabs button[aria-current="page"]{color:var(--neon)}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--neon)}
+select{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:10px;color:var(--ink);font:inherit}
+.toggle{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-block:6px}
+.toggle input{width:22px;height:22px;accent-color:var(--neon)}
+.plate{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.slot{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.slot .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.slot .v{font:600 20px/1.2 var(--serif)}
+.slot .h{font-size:12px;color:var(--rose)}
+.list{display:flex;flex-wrap:wrap;gap:6px}
+.list span{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--ink)}
+.meals{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.meal{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:10px 2px;font-size:12px;text-align:center}
+.meal[aria-pressed="true"]{border-color:var(--olive);color:var(--olive)}
+.cloth{display:grid;gap:3px;justify-content:center;background:#efe6dc0f;padding:16px;border-radius:6px;border:1px solid var(--line)}
+.cell{width:20px;height:20px;border:1px dotted #4a2a31;position:relative}
+.cell.pat{border:1px solid #6a3a44}
+.cell.st::before,.cell.st::after{content:"";position:absolute;left:50%;top:-1px;width:3px;height:24px;background:var(--neon);border-radius:2px;box-shadow:0 0 4px rgba(255,122,162,.6)}
+.cell.st::before{transform:translateX(-50%) rotate(45deg)} .cell.st::after{transform:translateX(-50%) rotate(-45deg)}
+/* session overlay */
+.ov{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.ov .wrap{gap:18px}
+.ring{width:220px;height:220px;margin:0 auto;position:relative}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .t{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .t b{font:64px/1 var(--pix);font-weight:400;display:block}
+.ring circle{fill:none;stroke-width:10}
+.ring .bg{stroke:var(--line2)} .ring .fg{stroke:var(--neon);stroke-linecap:round;filter:drop-shadow(0 0 6px rgba(255,122,162,.6));transition:stroke-dashoffset .25s linear}
+.steps{display:flex;gap:4px}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--line2)}
+.steps i.done{background:var(--rose)} .steps i.cur{background:var(--neon)}
+.setdots{display:flex;gap:8px;justify-content:center}
+.setdots i{width:14px;height:14px;border-radius:50%;border:1px solid var(--rose)}
+.setdots i.done{background:var(--rose)}
+.note{font-size:13px;color:var(--muted);border-left:2px solid var(--wine);padding-left:10px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* Leveä näyttö: sisältö kahteen palstaan ja valikko sisällön levyiseksi. Puhelimella mikään ei muutu. */
+.koti{font:14px var(--mono);color:var(--muted);text-decoration:none;padding:6px 0}
+.koti:hover{color:var(--neon)}
+a.koti:focus-visible{outline:2px solid var(--neon);outline-offset:2px}
+@media (min-width:900px){
+  .wrap{max-width:1040px}
+  .ov .wrap{max-width:620px}
+  h1{font-size:56px}
+  body{padding-block:0 120px}
+  nav.tabs{left:50%;right:auto;bottom:18px;transform:translateX(-50%);width:min(520px,calc(100% - 48px));border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.45)}
+  #view>section{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 40px!important;align-items:start}
+  #view>section>h1,#view>section>p{grid-column:1/-1}
+  #view[data-tab=tanaan]>section{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+  #view[data-tab=tanaan]>section>*{grid-column:1}
+  #view[data-tab=tanaan]>section>.card:last-child{grid-column:2;grid-row:1/span 8}
+  #view[data-tab=liina]>section>.cloth{justify-self:center}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand" aria-label="Vähin">
+      <svg viewBox="-50 -50 100 100" aria-hidden="true"><defs><linearGradient id="chr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#c9b9bd"/><stop offset=".55" stop-color="#7e6a70"/><stop offset="1" stop-color="#eee6e2"/></linearGradient></defs><path d="M0 -48 C 4 -12 12 -4 48 0 C 12 4 4 12 0 48 C -4 12 -12 4 -48 0 C -12 -4 -4 -12 0 -48 Z" fill="url(#chr)"/></svg>
+      Vähin
+    </div>
+    <a class="koti" href="../lukusali/">‹ lukusali</a>
+    <div class="cmd" id="hdrcmd">› <b>tänään</b></div>
+  </header>
+
+  <main id="view"></main>
+  <p class="small muted" id="savenote" style="text-align:center"></p>
+</div>
+
+<nav class="tabs" aria-label="Näkymät">
+  <button data-tab="tanaan" aria-current="page"><span>✦</span>Tänään</button>
+  <button data-tab="ohjelma"><span>≡</span>Ohjelma</button>
+  <button data-tab="ruoka"><span>◐</span>Ruoka</button>
+  <button data-tab="liina"><span>✕</span>Liina</button>
+</nav>
+
+<div class="ov" id="ov" hidden></div>
+
+<script>
+// ---------- data ----------
+const HOW = {
+  marssi:"Marssi paikallaan, kädet mukana. Rauhallinen tahti.",
+  kpyor:"Pyöritä käsiä isoina ympyröinä eteen ja taakse.",
+  lanpyor:"Kädet lanteilla. Pyöritä lantiota rauhallisesti.",
+  kyykkytuoli:"Istu tuolille ja nouse ylös ilman käsiä. Paino kantapäillä.",
+  seinapun:"Kädet seinään olkapäiden leveydelle. Rinta kohti seinää ja takaisin.",
+  kissa:"Nelinkontin. Pyöristä selkä ylös, sitten notkolle. Hengitä mukana.",
+  lattiapun:"Selinmakuu, polvet koukussa. Paina käsipainot ylös rinnan päälle ja laske hitaasti.",
+  otokka:"Selinmakuu, kädet ylhäällä ja polvet 90°. Ojenna vastakkainen käsi ja jalka, alaselkä lattiassa.",
+  kulmasoutu:"Toinen käsi ja polvi tuolin päällä. Vedä painoa kylkeen, kyynärpää lähellä vartaloa.",
+  pullapart:"Kuminauha suorin käsin edessä. Vedä kädet sivuille, lavat yhteen.",
+  pystypun:"Istu tuolilla selkä suorana. Paina käsipainot pään yläpuolelle ja laske hartioiden tasolle.",
+  hauis:"Seiso suorana. Koukista kyynärpäät ja nosta painot olkapäille. Laske hitaasti.",
+  maljakyykky:"Pidä yhtä käsipainoa rinnan edessä. Kyykky tuolin reunalle ja nouse.",
+  lantionnosto:"Selinmakuu, polvet koukussa. Nosta lantio ylös ja purista pakarat. Laske hitaasti.",
+  lantionnostokp:"Kuten lantionnosto, käsipaino lantion päällä.",
+  rdl:"Polvet pehmeinä. Työnnä lantio taakse ja laske painot reisiä pitkin. Selkä suorana.",
+  sivulankku:"Kyljellään kyynärvarren varassa, polvet koukussa. Nosta lantio ylös ja pidä.",
+  askeltaakse:"Ota tuolista tukea. Astu taakse ja laske polvi kohti lattiaa. Vaihda jalkaa.",
+  sivuaskel:"Kuminauha polvien yläpuolella. Pieniä askelia sivulle, polvet ulospäin.",
+  sivuaskelnoband:"Puolikyykyssä pieniä askelia sivulle ilman nauhaa.",
+  lankkupolvet:"Kyynärvarret ja polvet maassa. Vartalo suorana linjana. Hengitä.",
+  portaat:"Kävele portaat ylös ja alas rauhallisesti.",
+  venyttely:"Venyttele mitä tekee mieli. Rauhallisesti ja hengittäen.",
+  naruveto:"Kuminauha edessä. Vedä kyynärpäät taakse kuin soutaisit."
+};
+const M = (id,name,reps,extra={}) => Object.assign({id,name,reps,how:HOW[id]||""},extra);
+
+const WARMUP = [M("marssi","Marssi paikallaan","45 s"),M("kpyor","Käsien pyörittely","10+10"),M("kissa","Kissa ja lehmä","8"),M("kyykkytuoli","Kyykky tuolille, hidas","8")];
+
+// blocks: type pari = liikepari (lepo jokaisen liikkeen jälkeen), super = supersarja (lyhyt siirtymä)
+const WORKOUTS = {
+  A:{name:"Ylävartalo",blocks:[
+    {type:"pari",moves:[M("lattiapun","Lattiapunnerrus · käsipainot","10–12",{rest:30,w:"4–6 kg"}),M("otokka","Kuollut ötökkä","8+8",{rest:90})]},
+    {type:"pari",moves:[M("kulmasoutu","Kulmasoutu yhdellä kädellä","10+10",{rest:30,w:"6–8 kg"}),M("pullapart","Kuminauhaveto sivuille","15",{rest:90,band:true,alt:M("seinapun","Seinäpunnerrus","10")})]},
+    {type:"super",moves:[M("pystypun","Pystypunnerrus istuen","10",{rest:10,w:"3–5 kg"}),M("hauis","Hauiskääntö","10",{rest:90,w:"4–6 kg"})]}
+  ]},
+  B:{name:"Alavartalo",blocks:[
+    {type:"pari",moves:[M("maljakyykky","Maljakyykky tuolille","10–12",{rest:30,w:"6–10 kg"}),M("lantionnosto","Lantionnosto","15",{rest:90})]},
+    {type:"pari",moves:[M("rdl","Romanialainen maastaveto","10–12",{rest:30,w:"2 × 6–8 kg"}),M("sivulankku","Sivulankku polvet maassa","20 s / puoli",{rest:90})]},
+    {type:"super",moves:[M("askeltaakse","Askelkyykky taakse tuella","8+8",{rest:10}),M("sivuaskel","Sivuaskeleet kuminauhalla","10+10",{rest:90,band:true,alt:M("sivuaskelnoband","Sivuaskeleet puolikyykyssä","10+10")})]}
+  ]},
+  C:{name:"Koko vartalo",blocks:[
+    {type:"pari",moves:[M("maljakyykky","Maljakyykky tuolille","10–12",{rest:30,w:"6–10 kg"}),M("naruveto","Soutu kuminauhalla","12",{rest:90,band:true,alt:M("kulmasoutu","Kulmasoutu yhdellä kädellä","10+10")})]},
+    {type:"pari",moves:[M("lantionnostokp","Lantionnosto käsipainolla","12",{rest:30,w:"8–12 kg"}),M("lattiapun","Lattiapunnerrus · käsipainot","10–12",{rest:90,w:"4–6 kg"})]},
+    {type:"super",moves:[M("pystypun","Pystypunnerrus istuen","10",{rest:10,w:"3–5 kg"}),M("otokka","Kuollut ötökkä","8+8",{rest:90})]}
+  ]}
+};
+const ORDER = ["A","B","C"];
+const FINISHER = {name:"Loppukiri · 3 min",moves:[M("seinapun","Seinäpunnerrus","10"),M("marssi","Marssi polvet ylös","20"),M("lankkupolvet","Lankku polvet maassa","20 s")],note:"Kierroksia niin monta kuin ehdit kolmessa minuutissa. Omaan tahtiin."};
+
+const MINI = [M("kyykkytuoli","Kyykky tuolille","10"),M("seinapun","Seinäpunnerrus","10"),M("marssi","Marssi paikallaan","1 min"),M("lantionnosto","Lantionnosto","15"),M("lankkupolvet","Lankku polvet maassa","2 × 20 s"),M("hauis","Hauiskääntö","12"),M("venyttely","Venyttely","1 min"),M("portaat","Portaat kerran","1 krs")];
+const PIKA = [M("kyykkytuoli","Kyykky tuolille","40 s"),M("seinapun","Seinäpunnerrus","40 s"),M("marssi","Marssi polvet ylös","40 s")];
+
+const LEVELS = [null,
+  {sets:2,fin:false,txt:"2 sarjaa"},
+  {sets:3,fin:false,txt:"3 sarjaa"},
+  {sets:3,fin:true,txt:"3 sarjaa + loppukiri"},
+  {sets:4,fin:false,txt:"4 sarjaa"},
+  {sets:4,fin:true,txt:"4 sarjaa + loppukiri"}];
+
+const FOOD = {
+  pro:{k:"Proteiini",h:"kämmenen kokoinen",items:["Kana","Kala","Tonnikala","Kananmunat","Raejuusto","Rahka tai skyr","Jauheliha","Tofu","Linssit","Kinkkuleike"]},
+  hh:{k:"Hiilihydraatti",h:"nyrkin kokoinen",items:["Peruna","Riisi","Täysjyväpasta","Kaurapuuro","Ruisleipä","Bataatti","Tortilla","Kvinoa","Näkkileipä"]},
+  ras:{k:"Rasva",h:"peukalon kokoinen",items:["Oliiviöljy","Avokado","Pähkinät","Siemenet","Juusto","Levite","Maapähkinävoi"]},
+  kas:{k:"Kasvikset",h:"puoli lautasta",items:["Salaatti","Kurkku","Tomaatti","Paprika","Pakastekasvikset","Parsakaali","Porkkana","Marjat","Hedelmä"]}
+};
+const MEALS = ["Aamu","Lounas","Väli","Päivä","Ilta"];
+
+// ---------- state ----------
+const todayKey = (d=new Date()) => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+let S = {v:1,start:todayKey(),log:{},aero:{},level:1,done:0,easy:0,goalT:2,goalA:60,band:true,meals:{},last:{},hist:{}};
+let docRef=null, saveTimer=null, saving=false, pending=false, tab="tanaan", pick=null, miniIdx=0;
+
+function lsGet(){try{const r=localStorage.getItem("vahin");return r?JSON.parse(r):null}catch(e){return null}}
+function lsSet(){try{localStorage.setItem("vahin",JSON.stringify(S))}catch(e){}}
+function save(){lsSet(); if(!docRef) return; clearTimeout(saveTimer); saveTimer=setTimeout(flush,700)}
+async function flush(){ if(saving){pending=true;return} saving=true; try{await docRef.set(JSON.parse(JSON.stringify(S)))}catch(e){setNote("Tallennus epäonnistui. Tiedot ovat tallessa tässä selaimessa.")} saving=false; if(pending){pending=false;flush()} }
+function setNote(t){document.getElementById("savenote").textContent=t}
+
+async function boot(){
+  const loc=lsGet(); if(loc) S=Object.assign(S,loc);
+  render();
+  let done=false; const to=setTimeout(()=>{if(!done)setNote("Tallentuu tähän selaimeen.")},10000);
+  try{
+    const db=await (window.claude?.use?.("db")??null); const user=await (window.claude?.use?.("user")??null);
+    if(db&&user){ const id=await user.id(); if(id){
+      docRef=db.collection("data/users/"+id).doc("vahin");
+      const snap=await docRef.get(); done=true; clearTimeout(to);
+      if(snap.exists){ const d=snap.data(); if(d&&d.v) {S=Object.assign(S,d); lsSet(); render();} }
+      else { await docRef.set(JSON.parse(JSON.stringify(S))); }
+      setNote("Tallessa tililläsi. Toimii millä tahansa laitteella.");
+      return; } }
+  }catch(e){}
+  done=true; clearTimeout(to); setNote("Tallentuu tähän selaimeen.");
+}
+
+// ---------- helpers ----------
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function weekDays(){const d=new Date();const wd=(d.getDay()+6)%7;const mon=new Date(d);mon.setDate(d.getDate()-wd);return [...Array(7)].map((_,i)=>{const x=new Date(mon);x.setDate(mon.getDate()+i);return x})}
+function aeroWeek(){return weekDays().reduce((a,d)=>a+(S.aero[todayKey(d)]||0),0)}
+function treeniWeek(){return weekDays().filter(d=>S.log[todayKey(d)]==="treeni").length}
+function activeDays(){const s=new Set(Object.keys(S.log).filter(k=>S.log[k]&&S.log[k]!=="ei"));Object.keys(S.aero).forEach(k=>{if(S.aero[k]>0)s.add(k)});return s.size}
+function nextW(){return ORDER[S.done%3]}
+function resolve(m){return (m.band&&!S.band&&m.alt)?Object.assign({},m.alt,{rest:m.rest}):m}
+function mark(type){const k=todayKey(); const cur=S.log[k]; const rank={ei:0,mini:1,aero:1,treeni:2}; if(!cur||rank[type]>=rank[cur]) S.log[k]=type; save()}
+function nums(s){return (String(s||"").match(/\d+/g)||[]).map(Number)}
+function topReps(r){const n=nums(r);return n.length?n[n.length-1]:0}
+function lastOf(id){return (S.last||{})[id]}
+function hint(m){const l=lastOf(m.id);if(!l)return "";return l.reps>=topReps(m.reps)&&l.kg<15?`Viimeksi ${l.kg} kg × ${l.reps}. Kokeile nyt ${l.kg+1} kg.`:`Viimeksi ${l.kg} kg × ${l.reps}.`}
+function moveRow(m,i){m=resolve(m);const l=m.w?lastOf(m.id):null;return `<div class="move"><span class="n">${i}</span><span class="nm">${esc(m.name)}${m.w?` <span class="small muted">· ${l?`<b style="color:var(--olive);font-weight:400">${l.kg} kg × ${l.reps}</b>`:esc(m.w)}</span>`:""}</span><span class="rp">${esc(m.reps)}</span><span class="how">${esc(m.how)}</span></div>`}
+
+// ---------- views ----------
+function render(){
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-current",b.dataset.tab===tab?"page":"false"));
+  $("#hdrcmd").innerHTML="› <b>"+({tanaan:"tänään",ohjelma:"ohjelma",ruoka:"ruoka",liina:"näyteliina"}[tab])+"</b>";
+  $("#view").dataset.tab=tab;$("#view").innerHTML={tanaan:vToday,ohjelma:vProgram,ruoka:vFood,liina:vLiina}[tab]();
+  bind();
+}
+
+function vWeek(){
+  const t=todayKey();
+  return `<div class="card"><h3>Tämä viikko</h3><div class="week">${weekDays().map(d=>{const k=todayKey(d);const l=S.log[k];const a=S.aero[k]||0;const cls=l==="treeni"||l==="mini"?"on":(a>0||l==="aero")?"walk":"";return `<div class="day">${"MTKTPLS"[(d.getDay()+6)%7]}<span class="dot ${cls} ${k===t?"today":""}">${cls?"✕":""}</span></div>`}).join("")}</div>
+  <div class="stat"><span class="small muted">Treenit</span><b>${treeniWeek()} / ${S.goalT}</b></div>
+  <div class="stat"><span class="small muted">Liike, minuuttia</span><b>${aeroWeek()} / ${S.goalA}</b></div><div class="bar"><i style="width:${Math.min(100,aeroWeek()/S.goalA*100)}%"></i></div></div>`;
+}
+
+function vToday(){
+  const k=todayKey(); const st=S.log[k];
+  const opts=[["1","minuutti","min1"],["5","minuuttia","min5"],["15","minuuttia","min15"],["✦","Koko treeni","full"],["◦","Liike","walk"],["–","Ei tänään","ei"]];
+  let res="";
+  if(pick==="min1"){const m=MINI[miniIdx%MINI.length];res=`<div class="card"><span class="tag">yksi minuutti</span>${moveRow(m,"1")}<div class="row"><button class="btn neon" data-act="done-mini">Tehty</button><button class="btn ghost" data-act="other">Anna toinen</button></div></div>`}
+  if(pick==="min5"){res=`<div class="card"><span class="tag">pikakierros · 5 min</span>${PIKA.map((m,i)=>moveRow(m,i+1)).join("")}<p class="note">40 s työtä, 20 s lepoa. Kaksi kierrosta. Ajastin ohjaa.</p><button class="btn neon" data-act="start-pika">Aloita</button></div>`}
+  if(pick==="min15"){const w=WORKOUTS[nextW()];const b=w.blocks[0];res=`<div class="card"><span class="tag">15 min · ${esc(w.name.toLowerCase())}</span><h3>Lämmittely</h3>${WARMUP.map((m,i)=>moveRow(m,i+1)).join("")}<h3>Liikepari · 2 sarjaa</h3>${b.moves.map((m,i)=>moveRow(m,i+1)).join("")}<button class="btn neon" data-act="start-15">Aloita</button></div>`}
+  if(pick==="full"){const id=nextW();const w=WORKOUTS[id];const L=LEVELS[S.level];res=`<div class="card"><span class="tag">treeni ${id} · ${esc(w.name.toLowerCase())}</span><p class="muted small">Taso ${S.level} · ${L.txt} · noin ${18+L.sets*6} min</p>${w.blocks.map((b,bi)=>`<h3>${b.type==="pari"?"Liikepari":"Supersarja"} ${bi+1}</h3>${b.moves.map((m,i)=>moveRow(m,bi*2+i+1)).join("")}`).join("")}<button class="btn neon" data-act="start-full">Aloita treeni</button></div>`}
+  if(pick==="walk"){res=`<div class="card"><span class="tag">liike</span><p>Kävely, pyöräily, uinti tai mikä vain, jossa pystyt puhumaan puuskuttamatta.</p><label class="field" for="wmin">Minuutit: <b id="wminv" style="color:var(--ink)">20</b><input id="wmin" type="range" min="5" max="90" step="5" value="20"></label><button class="btn neon" data-act="log-walk">Kirjaa</button></div>`}
+  if(pick==="ei"){res=`<div class="card"><p class="quiet">Selvä. Huomenna uusi päivä.</p><p class="small muted">Välissä oleva päivä ei pura mitään liinasta.</p></div>`}
+  const done = st&&st!=="ei" ? `<div class="card"><p class="quiet">${st==="treeni"?"Treeni tehty tänään.":"Tänään liikuttu."} Uusi pisto liinassa.</p><p class="small muted">Lisää saa tehdä, mutta ei tarvitse.</p></div>` : "";
+  return `<section style="display:flex;flex-direction:column;gap:20px;padding-top:20px">
+    <h1>Mikä on <em>vähintä</em>, mitä jaksat tänään?</h1>
+    ${done}
+    <div class="chips" role="group" aria-label="Valitse">${opts.map(o=>`<button class="chip" data-pick="${o[2]}" aria-pressed="${pick===o[2]}"><span class="big">${o[0]}</span>${o[1]}</button>`).join("")}</div>
+    ${res}${vWeek()}</section>`;
+}
+
+function vProgram(){
+  const L=LEVELS[S.level];
+  return `<section style="display:flex;flex-direction:column;gap:20px;padding-top:20px">
+  <h1>Kotitreeni <em>kolmessa osassa</em></h1>
+  <p class="muted">Treenit vuorottelevat A, B ja C. Seuraavana on <b style="color:var(--neon)">${nextW()} · ${WORKOUTS[nextW()].name}</b>. Tehtyjä treenejä yhteensä ${S.done}.</p>
+  <div class="card"><h3>Taso ${S.level} / 5</h3><p>${L.txt}. Kun vastaat kolme kertaa peräkkäin "kevyt", taso nousee. "Raskas" laskee tasoa.</p>
+  <div class="row"><button class="btn ghost" data-act="lvl-">Taso alas</button><button class="btn ghost" data-act="lvl+">Taso ylös</button></div>
+  <p class="note">Painot: kun viimeinen toisto tuntuu helpolta, ota seuraava paino. Käsipainot riittävät 15 kiloon asti.</p></div>
+  ${ORDER.map(id=>{const w=WORKOUTS[id];return `<div class="card"><span class="tag">treeni ${id}</span><h2>${esc(w.name)}</h2><h3>Lämmittely</h3>${WARMUP.map((m,i)=>moveRow(m,i+1)).join("")}${w.blocks.map((b,bi)=>`<h3>${b.type==="pari"?"Liikepari":"Supersarja"} ${bi+1} · ${b.type==="pari"?"lepo jokaisen liikkeen jälkeen":"liikkeet putkeen"}</h3>${b.moves.map((m,i)=>moveRow(m,bi*2+i+1)).join("")}`).join("")}</div>`}).join("")}
+  <div class="card"><h3>Loppukiri · tasoilla 3 ja 5</h3>${FINISHER.moves.map((m,i)=>moveRow(m,i+1)).join("")}<p class="note">${FINISHER.note}</p></div>
+  <div class="card"><h3>Asetukset</h3>
+   <label class="field" for="goalT">Treenejä viikossa: <b id="goalTv" style="color:var(--ink)">${S.goalT}</b><input id="goalT" type="range" min="1" max="4" value="${S.goalT}"></label>
+   <label class="field" for="goalA">Liikettä viikossa, minuuttia: <b id="goalAv" style="color:var(--ink)">${S.goalA}</b><input id="goalA" type="range" min="20" max="150" step="10" value="${S.goalA}"></label>
+   <p class="small muted">Sun materiaaleissa tavoite on 80 minuuttia viikossa. Aloita pienemmästä ja nosta.</p>
+   <div class="toggle"><label for="band">Kuminauha käytössä</label><input id="band" type="checkbox" ${S.band?"checked":""}></div>
+  </div>
+  <p class="note">Jos tulee kipua, huimausta tai rintakipua, lopeta ja kysy lääkäriltä. Jos sinulla on jokin sairaus, varmista ensin, mikä liikunta sopii.</p>
+  </section>`;
+}
+
+function vFood(){
+  const k=todayKey(); const m=S.meals[k]||[];
+  const f=window._plate||(window._plate=randPlate());
+  return `<section style="display:flex;flex-direction:column;gap:20px;padding-top:20px">
+  <h1>Kokoa <em>lautanen</em></h1>
+  <p class="muted">Yksi jokaisesta ryhmästä. Kasviksia saa ottaa vapaasti. Mittana oma käsi.</p>
+  <div class="card"><div class="plate">${Object.keys(FOOD).map(g=>`<div class="slot"><span class="k">${FOOD[g].k}</span><span class="v">${esc(f[g])}</span><span class="h">${FOOD[g].h}</span></div>`).join("")}</div>
+  <div class="row"><button class="btn neon" data-act="plate">Arvo uusi ateria</button></div></div>
+  <div class="card"><h3>Ateriarytmi tänään</h3><div class="meals">${MEALS.map((x,i)=>`<button class="meal" data-meal="${i}" aria-pressed="${!!m[i]}">${x}</button>`).join("")}</div><p class="small muted">Säännöllinen rytmi pitää nälän tasaisena. Merkitse, jos haluat. Ei tarvitse.</p></div>
+  ${Object.keys(FOOD).map(g=>`<div class="card"><h3>${FOOD[g].k} · ${FOOD[g].h}</h3><div class="list">${FOOD[g].items.map(i=>`<span>${esc(i)}</span>`).join("")}</div></div>`).join("")}
+  <p class="note">Tarkat määrät grammoina löytyvät omista ruokavalio-ohjelmistasi. Tämä on arjen pikaversio.</p>
+  </section>`;
+}
+function randPlate(){const r=a=>a[Math.floor(Math.random()*a.length)];return {pro:r(FOOD.pro.items),hh:r(FOOD.hh.items),ras:r(FOOD.ras.items),kas:r(FOOD.kas.items)}}
+
+// star pattern for the cross-stitch cloth
+const N=13, C=6, P=.6; const STAR=[];
+for(let y=0;y<N;y++)for(let x=0;x<N;x++){if(Math.pow(Math.abs(x-C),P)+Math.pow(Math.abs(y-C),P)<=Math.pow(C,P)+.02)STAR.push(y*N+x)}
+// stitch order: from centre outwards
+STAR.sort((a,b)=>{const d=i=>Math.hypot(i%N-C,Math.floor(i/N)-C);return d(a)-d(b)});
+function vLiina(){
+  const n=activeDays(); const total=STAR.length; const filled=new Set(STAR.slice(0,Math.min(n,total)));
+  const pat=new Set(STAR); const round=Math.floor(n/total);
+  return `<section style="display:flex;flex-direction:column;gap:20px;padding-top:20px">
+  <h1>Näyte<em>liina</em></h1>
+  <p class="muted">Jokainen päivä, jona liikut, on yksi pisto. Tähti valmistuu ${total} pistolla. Välissä oleva päivä ei pura mitään.</p>
+  <div class="cloth" style="grid-template-columns:repeat(${N},20px)">${[...Array(N*N)].map((_,i)=>`<i class="cell ${pat.has(i)?"pat":""} ${filled.has(i)?"st":""}"></i>`).join("")}</div>
+  <div class="card"><div class="stat"><span class="muted">Pistoja</span><b>${Math.min(n,total)} / ${total}</b></div>${round>0?`<p class="quiet">Tähti valmis ${round} kertaa. Uusi liina on jo alussa.</p>`:""}
+  <div class="stat"><span class="muted">Treenejä yhteensä</span><b>${S.done}</b></div></div>
+  </section>`;
+}
+
+// ---------- events ----------
+function bind(){
+  document.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{pick=b.dataset.pick;if(pick==="ei"){S.log[todayKey()]=S.log[todayKey()]||"ei";save()}render()});
+  document.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>act(b.dataset.act));
+  document.querySelectorAll("[data-meal]").forEach(b=>b.onclick=()=>{const k=todayKey();const m=S.meals[k]||[false,false,false,false,false];m[+b.dataset.meal]=!m[+b.dataset.meal];S.meals[k]=m;save();b.setAttribute("aria-pressed",m[+b.dataset.meal])});
+  const wm=$("#wmin"); if(wm) wm.oninput=()=>$("#wminv").textContent=wm.value;
+  const gT=$("#goalT"); if(gT){gT.oninput=()=>$("#goalTv").textContent=gT.value; gT.onchange=()=>{S.goalT=+gT.value;save()}}
+  const gA=$("#goalA"); if(gA){gA.oninput=()=>$("#goalAv").textContent=gA.value; gA.onchange=()=>{S.goalA=+gA.value;save()}}
+  const bd=$("#band"); if(bd) bd.onchange=()=>{S.band=bd.checked;save();render()};
+}
+function act(a){
+  if(a==="other"){miniIdx++;render()}
+  if(a==="done-mini"){mark("mini");pick=null;render()}
+  if(a==="log-walk"){const v=+$("#wmin").value;const k=todayKey();S.aero[k]=(S.aero[k]||0)+v;mark("aero");pick=null;render()}
+  if(a==="lvl+"){S.level=Math.min(5,S.level+1);S.easy=0;save();render()}
+  if(a==="lvl-"){S.level=Math.max(1,S.level-1);S.easy=0;save();render()}
+  if(a==="plate"){window._plate=randPlate();render()}
+  if(a==="start-pika") runSession(buildPika(),"mini");
+  if(a==="start-15") runSession(build15(),"mini");
+  if(a==="start-full") runSession(buildFull(),"treeni");
+}
+
+// ---------- session player ----------
+// step: {kind:"warm"|"work"|"rest"|"timed", move, set, sets, secs, label}
+function buildPika(){const s=[];for(let r=0;r<2;r++)PIKA.forEach((m,i)=>{s.push({kind:"timed",move:m,secs:40,label:`Kierros ${r+1}/2`});if(!(r===1&&i===2))s.push({kind:"rest",secs:20,next:PIKA[(i+1)%3]})});return s}
+function build15(){const s=WARMUP.map(m=>({kind:"warm",move:m,label:"Lämmittely"}));const b=WORKOUTS[nextW()].blocks[0];addBlock(s,b,2);return trim(s)}
+function buildFull(){const w=WORKOUTS[nextW()];const L=LEVELS[S.level];const s=WARMUP.map(m=>({kind:"warm",move:m,label:"Lämmittely"}));w.blocks.forEach(b=>addBlock(s,b,L.sets));trim(s);if(L.fin)s.push({kind:"timed",move:{name:FINISHER.name,reps:"3 min",how:FINISHER.moves.map(m=>m.reps+" "+m.name.toLowerCase()).join(" · ")},secs:180,label:"Loppukiri"});return s}
+function addBlock(s,b,sets){const lab=b.type==="pari"?"Liikepari":"Supersarja";for(let k=1;k<=sets;k++)b.moves.forEach((m0,i)=>{const m=resolve(m0);s.push({kind:"work",move:m,set:k,sets,label:lab});s.push({kind:"rest",secs:m.rest||60,next:resolve(b.moves[(i+1)%b.moves.length])})})}
+function trim(s){while(s.length&&s[s.length-1].kind==="rest")s.pop();return s}
+
+let sess=null, tick=null, wake=null;
+async function runSession(steps,type){
+  sess={steps,i:0,type,left:0};
+  try{wake=await navigator.wakeLock?.request("screen")}catch(e){wake=null}
+  $("#ov").hidden=false; document.body.style.overflow="hidden"; drawStep();
+}
+function endSession(){clearInterval(tick);tick=null;try{wake?.release()}catch(e){}wake=null;$("#ov").hidden=true;document.body.style.overflow="";sess=null;render()}
+function ring(frac,big,small){const r=95,c=2*Math.PI*r;return `<div class="ring"><svg viewBox="0 0 220 220"><circle class="bg" cx="110" cy="110" r="${r}"/><circle class="fg" id="rfg" cx="110" cy="110" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-frac)}"/></svg><div class="t"><div><b id="rbig">${big}</b><span class="small muted">${small}</span></div></div></div>`}
+function drawStep(){
+  clearInterval(tick);tick=null;
+  const st=sess.steps[sess.i]; const n=sess.steps.length;
+  const bar=`<div class="steps">${sess.steps.map((_,j)=>`<i class="${j<sess.i?"done":j===sess.i?"cur":""}"></i>`).join("")}</div>`;
+  const top=st?`<div class="row" style="justify-content:space-between;align-items:center"><span class="cmd">› <b>${sess.type==="treeni"?"treeni":"vähin"}</b> ${sess.i+1}/${n}</span><button class="btn ghost" data-s="quit" style="flex:0 0 auto;padding:8px 12px">Lopeta tähän</button></div>`:"";
+  let body="";
+  if(!st){ // finished
+    body=`<h1>${sess.early?"Lopetit kesken. <em>Sekin lasketaan.</em>":"Valmis. <em>Hyvä.</em>"}</h1><p class="muted">Miltä tämä tuntui?</p><div class="row"><button class="btn ghost" data-feel="easy">Kevyt</button><button class="btn ghost" data-feel="ok">Sopiva</button><button class="btn ghost" data-feel="hard">Raskas</button></div>${sess.type==="treeni"&&!sess.early?`<p class="small muted">Kevyt ${S.easy||0}/3 tasolla ${S.level}. Kolmas kevyt peräkkäin nostaa tasoa.</p>`:""}`;
+  } else if(st.kind==="rest"){
+    sess.left=st.secs;
+    body=`<span class="tag">lepo</span>${ring(1,st.secs,"sekuntia")}<p class="muted" style="text-align:center">Seuraavaksi: <b style="color:var(--ink)">${esc(st.next.name)}</b></p><div class="row"><button class="btn ghost" data-s="plus">+15 s</button><button class="btn neon" data-s="next">Jatka nyt</button></div>`;
+  } else if(st.kind==="timed"){
+    sess.left=st.secs;
+    body=`<span class="tag">${esc(st.label)}</span><h2>${esc(st.move.name)}</h2>${ring(1,st.secs,"sekuntia")}<p class="muted">${esc(st.move.how||"")}</p><button class="btn neon" data-s="next">Seuraava</button>`;
+  } else {
+    const m=st.move;
+    body=`<span class="tag">${esc(st.label)}</span><h1>${esc(m.name)}</h1><div style="text-align:center;font:72px/1 var(--pix)">${esc(m.reps)}</div>${m.w&&st.kind==="work"?logUI(m):""}${st.kind==="work"?`<div class="setdots">${[...Array(st.sets)].map((_,j)=>`<i class="${j<st.set-1?"done":""}"></i>`).join("")}</div><p style="text-align:center" class="small muted">Sarja ${st.set} / ${st.sets}</p>`:""}<p class="muted">${esc(m.how||"")}</p><button class="btn neon" data-s="next">${st.kind==="work"?"Sarja tehty":"Tehty"}</button>`;
+  }
+  $("#ov").innerHTML=`<div class="wrap">${top}${st?bar:""}${body}<p class="note">Saat lopettaa kesken. Sekin lasketaan.</p></div>`;
+  $("#ov").querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{const s=b.dataset.s;if(s==="next"){if(st&&st.kind==="work"&&st.move.w)record(st);sess.i++;drawStep()}if(s==="plus"){sess.left+=15;st.secs+=15}if(s==="quit"){finish(true)}});
+  $("#ov").querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{const [f,d]=b.dataset.k.split(":");const id=st.move.id;sess.v[id][f]=Math.max(f==="kg"?0:1,Math.min(f==="kg"?15:50,sess.v[id][f]+(+d)));$("#v-"+f).textContent=sess.v[id][f]});
+  $("#ov").querySelectorAll("[data-feel]").forEach(b=>b.onclick=()=>feel(b.dataset.feel));
+  if(st&&(st.kind==="rest"||st.kind==="timed")){
+    tick=setInterval(()=>{sess.left--;const big=$("#rbig"),fg=$("#rfg");if(big)big.textContent=Math.max(0,sess.left);if(fg){const c=2*Math.PI*95;fg.style.strokeDashoffset=c*(1-Math.max(0,sess.left)/st.secs)}if(sess.left<=0){try{navigator.vibrate?.(200)}catch(e){}sess.i++;drawStep()}},1000);
+  }
+}
+function logUI(m){sess.v=sess.v||{};if(!sess.v[m.id]){const l=lastOf(m.id);const top=topReps(m.reps);let kg=l?l.kg:nums(m.w)[0]||2;if(l&&l.reps>=top&&kg<15)kg++;sess.v[m.id]={kg,reps:nums(m.reps)[0]||10}}const v=sess.v[m.id];const h=hint(m);
+  return `<div class="card" style="gap:10px"><div class="row" style="justify-content:space-around;gap:18px">${[["kg","kg",1],["reps","toistoa",1]].map(([f,lab,step])=>`<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div class="row" style="align-items:center;gap:8px;flex-wrap:nowrap"><button class="btn ghost" data-k="${f}:-${step}" aria-label="Vähemmän ${lab}" style="padding:8px 14px">−</button><b id="v-${f}" style="font:40px/1 var(--pix);font-weight:400;min-width:2ch;text-align:center">${v[f]}</b><button class="btn ghost" data-k="${f}:${step}" aria-label="Enemmän ${lab}" style="padding:8px 14px">+</button></div><span class="small muted">${lab}</span></div>`).join("")}</div>${h?`<p class="small" style="color:var(--olive);text-align:center">${esc(h)}</p>`:`<p class="small muted" style="text-align:center">Ehdotus: ${esc(m.w)}</p>`}</div>`}
+function record(st){const id=st.move.id,v=sess.v&&sess.v[id];if(!v)return;S.last=S.last||{};S.hist=S.hist||{};S.last[id]={kg:v.kg,reps:v.reps,d:todayKey()};const h=S.hist[id]=S.hist[id]||[];h.push({d:todayKey(),kg:v.kg,reps:v.reps});if(h.length>40)h.splice(0,h.length-40);save()}
+function finish(early){ if(sess.i===0){endSession();return} sess.early=true; sess.i=sess.steps.length; drawStep() }
+function feel(f){
+  if(sess.early){ if(f==="hard"&&sess.type==="treeni"&&S.level>1){S.level--;S.easy=0} mark("mini"); pick=null; endSession(); return }
+  if(sess.type==="treeni"){S.done++; if(f==="easy"){S.easy=(S.easy||0)+1; if(S.easy>=3&&S.level<5){S.level++;S.easy=0}} else if(f==="hard"){S.easy=0; if(S.level>1)S.level--} else S.easy=0;}
+  mark(sess.type); pick=null; endSession();
+}
+
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>{tab=b.dataset.tab;pick=null;render();window.scrollTo(0,0)});
+boot();
+if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+</script>
+</body>
+</html>
