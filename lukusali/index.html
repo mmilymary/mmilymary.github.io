@@ -85,6 +85,13 @@ p { margin: 0; }
 .linkit a { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 14px 2px; min-height: 48px; text-decoration: none; color: var(--teksti); }
 .linkit a:hover { color: var(--neon); }
 .linkit a span:last-child { font-family: var(--mono); font-size: 19px; color: var(--himmea); white-space: nowrap; }
+.palikat { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+.palikka { display: flex; flex-direction: column; justify-content: space-between; gap: 10px; min-height: 92px; padding: 16px; background: var(--pinta); border: 1px solid var(--viiva); border-radius: 8px; text-decoration: none; color: var(--teksti); }
+.palikka:hover { border-color: var(--polyruusu); color: var(--teksti); }
+.palikka .nimi { font-family: var(--otsikko); font-size: 22px; line-height: 1.15; }
+.palikka .tagi { font-size: 18px; color: var(--himmea); }
+.palikka.paa { border-color: var(--ruusu); }
+.palikka.paa .tagi { color: var(--polyruusu); }
 .muistio { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
 .muistio label { font-family: var(--mono); font-size: 20px; color: var(--polyruusu); }
 .muistio textarea { width: 100%; min-height: 190px; resize: vertical; padding: 14px; background: var(--pinta); color: var(--teksti); border: 1px solid var(--viiva); border-radius: 8px; font: inherit; }
@@ -137,6 +144,14 @@ footer { border-top: 1px solid var(--viiva); padding-top: 16px; font-size: 13px;
     </div>
   </section>
 
+  <section class="osio" aria-labelledby="exlibris-otsikko">
+    <div class="osio-otsikko">
+      <h2 id="exlibris-otsikko">Ex Libris</h2>
+      <span class="tagi himmea">› omat työkalut</span>
+    </div>
+    <nav class="palikat" id="exlibris" aria-label="Ex Libris"></nav>
+  </section>
+
   <section class="osio" aria-labelledby="poyta-otsikko">
     <div class="osio-otsikko">
       <h2 id="poyta-otsikko">Pöydällä</h2>
@@ -185,6 +200,17 @@ var PIKALINKIT = [
   ['Recap-generaattori', 'työkalu', LINKIT.recap],
   ['Instagram', '@mmilymary', LINKIT.instagram]
 ];
+// Ex Libris: nimi, pieni teksti ja osoite. Lisää tai poista rivejä vapaasti.
+var EXLIBRIS = [
+  ['Ex Libris', 'koko hylly', '../exlibris.html'],
+  ['Lunttilaput', 'avaa', '../lunttilaput.html'],
+  ['Marginalia', 'avaa', '../marginalia.html'],
+  ['Grimoire', 'avaa', '../grimoire.html'],
+  ['Näyteliina', 'avaa', '../nayteliina.html'],
+  ['Lankalaatikko', 'avaa', '../lankalaatikko.html'],
+  ['Urakartta', 'avaa', '../urakartta.html'],
+  ['Palimpsesti', 'avaa', '../palimpsesti.html']
+];
 /* ====== MUOKATTAVA OSA PÄÄTTYY ====== */
 
 function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -213,6 +239,10 @@ function piirraKortti() {
     (k.url ? '<a class="nappi" href="' + esc(k.url) + '">Avaa ' + esc(k.nimi) + '</a>' : '') +
     '</div>';
 }
+
+document.getElementById('exlibris').innerHTML = EXLIBRIS.map(function (e, i) {
+  return '<a class="palikka' + (i === 0 ? ' paa' : '') + '" href="' + esc(e[2]) + '"><span class="nimi">' + esc(e[0]) + '</span><span class="tagi">› ' + esc(e[1]) + '</span></a>';
+}).join('');
 
 document.getElementById('linkit').innerHTML = PIKALINKIT.filter(function (l) { return l[2]; }).map(function (l) {
   return '<li><a href="' + esc(l[2]) + '"><span>' + esc(l[0]) + '</span><span>› ' + esc(l[1]) + '</span></a></li>';
