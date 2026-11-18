@@ -210,12 +210,12 @@ function piirraKortti() {
     '<p class="himmea">' + esc(k.kuvaus) + '</p>' +
     '<div class="alaosa"><span><span style="color:' + (k.valmis ? 'var(--polyruusu)' : 'var(--himmea)') + '">' + (k.valmis ? '●' : '○') + '</span> ' + esc(k.tila) + '</span>' +
     '<span class="himmea" style="font-size:13px">' + esc(k.lisa) + '</span>' +
-    (k.url ? '<a class="nappi" href="' + esc(k.url) + '" target="_blank" rel="noopener">Avaa ' + esc(k.nimi) + '</a>' : '') +
+    (k.url ? '<a class="nappi" href="' + esc(k.url) + '">Avaa ' + esc(k.nimi) + '</a>' : '') +
     '</div>';
 }
 
 document.getElementById('linkit').innerHTML = PIKALINKIT.filter(function (l) { return l[2]; }).map(function (l) {
-  return '<li><a href="' + esc(l[2]) + '" target="_blank" rel="noopener"><span>' + esc(l[0]) + '</span><span>› ' + esc(l[1]) + '</span></a></li>';
+  return '<li><a href="' + esc(l[2]) + '"><span>' + esc(l[0]) + '</span><span>› ' + esc(l[1]) + '</span></a></li>';
 }).join('');
 
 // Päivä, viikko ja tervehdys
