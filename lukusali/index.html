@@ -152,6 +152,13 @@ footer { border-top: 1px solid var(--viiva); padding-top: 16px; font-size: 13px;
     <nav class="palikat" id="exlibris" aria-label="Ex Libris"></nav>
   </section>
 
+  <section class="osio" aria-labelledby="tyokalut-otsikko">
+    <div class="osio-otsikko">
+      <h2 id="tyokalut-otsikko">Design-työkalut</h2>
+    </div>
+    <nav class="palikat" id="tyokalut" aria-label="Design-työkalut"></nav>
+  </section>
+
   <section class="osio" aria-labelledby="poyta-otsikko">
     <div class="osio-otsikko">
       <h2 id="poyta-otsikko">Pöydällä</h2>
@@ -197,7 +204,6 @@ var PIKALINKIT = [
   ['Tavoitteet ja apurit', 'dokumentti', LINKIT.tavoitteet],
   ['Palvelut-sivu', 'portfolio', LINKIT.palvelut],
   ['Portfolio', 'etusivu', LINKIT.portfolio],
-  ['Recap-generaattori', 'työkalu', LINKIT.recap],
   ['Instagram', '@mmilymary', LINKIT.instagram]
 ];
 // Ex Libris: nimi, pieni teksti ja osoite. Lisää tai poista rivejä vapaasti.
@@ -207,9 +213,13 @@ var EXLIBRIS = [
   ['Marginalia', 'avaa', '../marginalia.html'],
   ['Grimoire', 'avaa', '../grimoire.html'],
   ['Näyteliina', 'avaa', '../nayteliina.html'],
-  ['Lankalaatikko', 'avaa', '../lankalaatikko.html'],
   ['Urakartta', 'avaa', '../urakartta.html'],
   ['Palimpsesti', 'avaa', '../palimpsesti.html']
+];
+// Design-työkalut: piilossa portfoliosta, löytyvät vain täältä.
+var TYOKALUT = [
+  ['Lankalaatikko', 'väripaletit', '../lankalaatikko.html'],
+  ['Recap-generaattori', 'viikkokooste', LINKIT.recap]
 ];
 /* ====== MUOKATTAVA OSA PÄÄTTYY ====== */
 
@@ -242,6 +252,10 @@ function piirraKortti() {
 
 document.getElementById('exlibris').innerHTML = EXLIBRIS.map(function (e, i) {
   return '<a class="palikka' + (i === 0 ? ' paa' : '') + '" href="' + esc(e[2]) + '"><span class="nimi">' + esc(e[0]) + '</span><span class="tagi">› ' + esc(e[1]) + '</span></a>';
+}).join('');
+
+document.getElementById('tyokalut').innerHTML = TYOKALUT.map(function (e) {
+  return '<a class="palikka" href="' + esc(e[2]) + '"><span class="nimi">' + esc(e[0]) + '</span><span class="tagi">› ' + esc(e[1]) + '</span></a>';
 }).join('');
 
 document.getElementById('linkit').innerHTML = PIKALINKIT.filter(function (l) { return l[2]; }).map(function (l) {
