@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Käsikirjoitus-paketin esimerkki · Mila Palviainen</title>
+<meta name="description" content="Esimerkki Käsikirjoitus-lisäpalvelusta: laaja brändikirja Mila Palviaisen omasta brändistä.">
+<meta name="theme-color" content="#2e0f17">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Käsikirjoitus-paketin esimerkki · Mila Palviainen">
+<meta property="og:description" content="Brändikirja, joka kokoaa tarinan, kohdeasiakkaan ja ilmeen yksiin kansiin.">
+<meta property="og:image" content="https://mmilymary.github.io/img/kasikirjoitus_sanamerkki.webp">
+<meta property="og:url" content="https://mmilymary.github.io/kasikirjoitus.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Courier+Prime:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #1c0b10; --surface: #2a1419; --line: #4a2a31;
+    --cream: #eee6e2; --muted: #b39a97; --dusty: #c9a3a6; --rose: #b5475a; --neon: #ff7aa2;
+    --paper: #efe7dc;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--cream); font-family: "Courier Prime", ui-monospace, monospace; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--dusty); outline-offset: 3px; }
+
+  .nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 14px clamp(16px, 4vw, 48px); background: rgba(22,7,11,.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201,163,166,.18); }
+  .nav .logo { white-space: nowrap; font-family: "VT323", monospace; font-size: 24px; color: #f0d4d8; text-decoration: none; }
+  .nav .back { text-decoration: none; font-size: 15px; color: #e6dad6; }
+  .nav .back:hover { color: #fff; text-shadow: 0 0 10px rgba(255,122,162,.6); }
+
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 clamp(16px, 5vw, 60px); }
+  .label { font-weight: 700; color: var(--rose); letter-spacing: .08em; font-size: 14px; margin: 0 0 18px; }
+
+  .intro { padding: clamp(60px, 10vw, 120px) 0 clamp(40px, 6vw, 70px);
+    background: radial-gradient(ellipse 70% 70% at 50% 0%, #4a1a26 0%, #2e0f17 45%, var(--bg) 100%); }
+  .intro .kicker { font-family: "VT323", monospace; font-size: 22px; color: var(--dusty); letter-spacing: .08em; }
+  .intro h1 { font-family: "Bodoni Moda", serif; font-weight: 500; font-variation-settings: "opsz" 11; font-optical-sizing: none; font-size: clamp(46px, 8vw, 104px); line-height: .95; letter-spacing: -.02em; margin: 12px 0 22px; }
+  .intro h1 em { font-style: italic; }
+  .note-concept { display: flex; gap: 12px; align-items: flex-start; max-width: 760px; margin: -18px 0 36px; padding: 14px 18px; border: 1px dashed rgba(201,163,166,.45); border-radius: 12px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+  .note-concept span { font-family: "VT323", monospace; font-size: 18px; color: var(--dusty); letter-spacing: .08em; white-space: nowrap; }
+  .intro .lead { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: clamp(22px, 2.6vw, 32px); line-height: 1.3; color: var(--cream); max-width: 760px; margin: 0 0 40px; }
+  .meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; border-top: 1px solid var(--line); padding-top: 22px; margin: 0; }
+  .meta dt { color: var(--dusty); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
+  .meta dd { margin: 0; color: var(--cream); font-size: 15px; line-height: 1.5; }
+  .intro-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 340px); gap: clamp(28px, 6vw, 80px); align-items: start; }
+  .hero-phone { margin: 0; }
+  .hero-phone figcaption { margin-top: 16px; font-size: 14px; color: var(--muted); text-align: center; }
+  @media (max-width: 900px) { .intro-grid { grid-template-columns: 1fr; } .hero-phone { max-width: 320px; margin: 10px auto 0; } }
+
+  section { padding: clamp(56px, 8vw, 100px) 0; }
+  section + section { border-top: 1px solid rgba(74,42,49,.6); }
+  h2 { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.1; margin: 0 0 24px; }
+  p { color: var(--muted); font-size: 17px; line-height: 1.75; margin: 0 0 18px; }
+  .measure { max-width: 760px; }
+
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 26px; margin-top: 36px; align-items: start; }
+  .split > *, .gallery > *, .screens > * { min-width: 0; }
+  .page { margin: 0; }
+  .page img { display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line); box-shadow: 0 30px 50px rgba(0,0,0,.55); }
+
+  .gallery { display: grid; gap: 18px; margin-top: 32px; align-items: start; }
+  .gallery.g5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .gallery figure { margin: 0; }
+  .gallery img { display: block; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 18px 36px rgba(0,0,0,.45); }
+
+  figcaption { margin-top: 12px; font-size: 14px; line-height: 1.55; color: var(--muted); }
+  figcaption b { display: block; color: var(--cream); font-weight: 700; margin-bottom: 2px; }
+
+  .screens { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin-top: 36px; align-items: start; }
+  .screen { margin: 0; }
+  .phone { position: relative; padding: 22px 7px 7px; border-radius: 34px; background: linear-gradient(145deg, #2a1419, #0d0406 60%);
+    border: 1px solid rgba(201,163,166,.35); box-shadow: 0 30px 50px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.04); }
+  .phone::before { content: ""; position: absolute; top: 8px; left: 50%; width: 30%; height: 7px; transform: translateX(-50%); border-radius: 99px; background: #000; box-shadow: inset 0 0 0 1px rgba(201,163,166,.15); }
+  .phone::after { content: ""; position: absolute; right: -3px; top: 18%; width: 3px; height: 12%; border-radius: 0 3px 3px 0; background: #3a1d23; }
+  .phone img { display: block; width: 100%; height: auto; aspect-ratio: 1080 / 1920; object-fit: cover; object-position: top; border-radius: 0 0 27px 27px; background: #0d0406; }
+
+  .end { text-align: center; }
+  .end .btns { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+  .btn { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 20px; border-radius: 999px; text-decoration: none; font-size: 15px; border: 1px solid var(--line); color: var(--cream); transition: border-color .3s, box-shadow .3s; }
+  .btn.primary { background: var(--rose); border-color: var(--rose); color: #fff; }
+  .btn:hover { border-color: var(--neon); box-shadow: 0 0 18px rgba(255,122,162,.25); }
+  footer { border-top: 1px solid var(--line); padding: 24px 16px; text-align: center; color: var(--muted); font-size: 13px; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    .meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .split { grid-template-columns: 1fr; }
+    .gallery.g5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .screens { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 520px) { .gallery.g5 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 420px) { .nav .logo { font-size: 18px; } .nav .back { font-size: 13px; } }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* Isot näytöt: sivu kasvaa kuin selaimen zoomilla, jotta teksti ja kuvat eivät jää pieniksi.
+     Puhelimeen ja läppäriin tämä ei vaikuta. */
+  @media (min-width: 1500px) { body { zoom: 1.15; } }
+  @media (min-width: 1750px) { body { zoom: 1.3; } }
+  @media (min-width: 2200px) { body { zoom: 1.5; } }
+</style>
+<style>
+  /* Käsikirjoitus: brändikirjan sivut HTML:nä, jotta oikeat fontit näkyvät */
+  .deck { display: grid; gap: clamp(22px, 3vw, 36px); margin-top: 30px; }
+  .slide-fig { margin: 0; }
+  .slide-fig figcaption { margin-top: 10px; font-size: 14px; color: var(--muted); }
+  .slide-fig figcaption b { color: var(--cream); font-weight: 700; margin-right: 8px; }
+  .slide { container-type: inline-size; position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 12px; border: 1px solid rgba(201,163,166,.28);
+    background: radial-gradient(ellipse 70% 80% at 30% 15%, #3a1520 0%, #2a1018 45%, #1a090e 100%); color: var(--cream); }
+  .slide > img.full { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .s-in { position: absolute; inset: 0; padding: 3.2cqw 6.9cqw 2.6cqw; display: flex; flex-direction: column; }
+  .s-top { display: flex; justify-content: space-between; font-family: "VT323", monospace; font-size: 1.25cqw; letter-spacing: .06em; color: var(--muted); border-bottom: 1px solid rgba(201,163,166,.25); padding-bottom: .6cqw; }
+  .s-top b { color: var(--neon); font-weight: 400; }
+  .s-title { display: flex; align-items: baseline; gap: 1.4cqw; margin: 2.2cqw 0 1.8cqw; }
+  .s-title i { font-family: "VT323", monospace; font-style: normal; font-size: 3.4cqw; color: var(--neon); line-height: 1; }
+  .s-title h3 { margin: 0; font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: 4.6cqw; line-height: 1; }
+  .s-body { flex: 1; min-height: 0; overflow: hidden; margin-bottom: 1.2cqw; }
+  .s-foot { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(201,163,166,.25); padding-top: .9cqw;
+    font-family: "Cormorant Garamond", serif; font-size: 1.15cqw; letter-spacing: .4em; color: var(--muted); }
+  .s-foot svg { width: 1.2cqw; height: 1.2cqw; fill: var(--neon); }
+  .s-kv { margin: 0; font-size: 1.1cqw; line-height: 1.45; }
+  .s-kv p { margin: 0 0 .9cqw; font-size: 1.3cqw; line-height: 1.5; color: var(--cream); }
+  .s-kv p.s-lbl { font-size: 1.5cqw; color: var(--neon); margin-bottom: .8cqw; }
+  .s-kv span { color: var(--neon); }
+  .s-lbl { font-family: "VT323", monospace; font-size: 1.5cqw; line-height: 1.2; color: var(--neon); letter-spacing: .06em; margin: 0 0 .8cqw; }
+  .s-two { display: grid; grid-template-columns: 2.1fr 1fr; gap: 3.5cqw; height: 100%; }
+  .s-grid { position: relative; overflow: hidden; }
+  .s-grid img { position: absolute; top: 0; right: 0; height: 100%; width: auto; max-width: 100%; object-fit: cover; object-position: top; border-radius: .5cqw; border: 1px solid rgba(201,163,166,.25); }
+  .s-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6cqw; margin-top: 2cqw; }
+  .s-card { border: 1px solid rgba(201,163,166,.25); border-radius: .8cqw; background: rgba(26,9,14,.55); padding: 1.6cqw 1.6cqw; }
+  .s-card h4 { margin: 0 0 .8cqw; font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: 2.1cqw; }
+  .s-card p { margin: 0; font-size: 1.2cqw; line-height: 1.5; color: #d9cbc7; }
+  .s-lead { font-size: 1.3cqw; line-height: 1.55; margin: 0 0 1cqw; max-width: 82cqw; color: var(--cream); }
+  .s-vis { display: grid; grid-template-columns: 1.15fr 1px 1fr; gap: 3cqw; height: 100%; }
+  .s-vis .rule { background: rgba(201,163,166,.25); }
+  .sw { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.2cqw; }
+  .sw div { font-size: 1.15cqw; line-height: 1.35; color: var(--muted); }
+  .sw i { display: block; aspect-ratio: 3 / 4.4; border-radius: .6cqw; border: 1px solid rgba(201,163,166,.3); margin-bottom: .9cqw; }
+  .sw b { display: block; font-family: "Cormorant Garamond", serif; font-weight: 500; font-size: 1.9cqw; color: var(--cream); }
+  .sw code { display: block; font-family: "VT323", monospace; font-size: 1.4cqw; color: var(--neon); margin: .2cqw 0 .3cqw; }
+  .fonts { display: grid; gap: 1.2cqw; }
+  .fonts div { border: 1px solid rgba(201,163,166,.25); border-radius: .8cqw; background: rgba(26,9,14,.55); padding: 1.2cqw 1.6cqw; }
+  .fonts .f1 { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 3.3cqw; line-height: 1.05; }
+  .fonts .f2 { font-family: "Courier Prime", monospace; font-size: 1.9cqw; }
+  .fonts .f3 { font-family: "VT323", monospace; font-size: 2.3cqw; }
+  .fonts small { display: block; font-family: "Courier Prime", monospace; font-style: normal; font-size: 1.15cqw; color: var(--muted); margin-top: .5cqw; }
+  .fonts small span { color: var(--neon); }
+  .cover-tag { position: absolute; left: 0; right: 0; bottom: 7cqw; text-align: center; font-family: "VT323", monospace; font-size: 1.9cqw; letter-spacing: .12em; color: var(--neon); }
+</style>
+<script data-goatcounter="https://mmilymary.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+<nav class="nav" aria-label="Päävalikko">
+  <a class="logo" href="index.html">&gt; mila.palviainen</a>
+  <a class="back" href="palvelut.html">← palvelut</a>
+</nav>
+
+<main>
+  <header class="intro">
+    <div class="wrap">
+      <span class="kicker">esimerkki / käsikirjoitus</span>
+      <h1>Oma <em>brändikirjani</em></h1>
+      <p class="lead">Käsikirjoitus kokoaa yrityksen tarinan, kohdeasiakkaan, äänensävyn ja ilmeen yksiin kansiin. Näytän, miltä se näyttää oman brändikirjani avulla.</p>
+      <p class="note-concept"><span>// HUOM</span>Esimerkki on tehty omalle brändilleni, ei asiakkaalle.</p>
+      <dl class="meta">
+        <div><dt>paketti</dt><dd>Käsikirjoitus, lisäpalvelu</dd></div>
+        <div><dt>sisältö</dt><dd>Tarina, kohdeasiakas, äänensävy, visuaalinen ohjeisto, somekanavat</dd></div>
+        <div><dt>muoto</dt><dd>Noin 10–15 sivua</dd></div>
+        <div><dt>hinta-arvio</dt><dd>250–450 €, alv 0 %</dd></div>
+      </dl>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <p class="label reveal">// BRÄNDIKIRJA</p>
+      <h2 class="reveal">Sivu kerrallaan.</h2>
+      <div class="deck">
+        <figure class="slide-fig reveal"><div class="slide"><img class="full" src="img/kasikirjoitus_kansi.webp" alt="Brändikirjan kansi: MILA PALVIAINEN, IT-tradenomiopiskelija ja taiteilija, kukkia ja ketjuja kulmissa" width="1600" height="900" loading="lazy"><span class="cover-tag">BRAND BOOK 2026</span></div><figcaption><b>Kansi</b>Tunnelma heti ensimmäisellä sivulla</figcaption></figure>
+        <figure class="slide-fig reveal"><div class="slide"><img class="full" src="img/kasikirjoitus_sanamerkki.webp" alt="Brändikirjan sivu: sanamerkki päätunnuksena ja pystyversiona sekä tähti neljänä värinä" width="1600" height="900" loading="lazy"></div><figcaption><b>Sanamerkki</b>Tunnuksen versiot ja käyttöohjeet</figcaption></figure>
+        <figure class="slide-fig reveal"><div class="slide"><div class="s-in">
+            <div class="s-top"><span>03 · verkoston rakentaminen</span><b>09 / 19</b></div>
+            <div class="s-title"><i>08</i><h3>Ammatillinen kohderyhmäni</h3></div>
+            <div class="s-body"><div class="s-two">
+              <div class="s-kv">
+                <p class="s-lbl">// ihanneseuraaja ja asiakaspersoona</p>
+                <p><span>Ikäryhmä:</span> 28–38-vuotiaat.</p>
+                <p><span>Ammatti ja asema:</span> Pienyrittäjät, käsityöläiset, paikalliset palveluntarjoajat (kuten hyvinvointi- ja kauneusala tai leipomot) sekä luovat alanvaihtajat.</p>
+                <p><span>Elämäntyyli:</span> Yrittäjähenkisiä ja esteettisesti tarkkoja tyyppejä, jotka asuvat usein vanhoissa taloissa, omistavat kissoja ja täyttävät kotinsa kirjoilla, taiteella ja persoonallisilla esineillä. Arvostavat käsityötä ja omaa tunnelmaa enemmän kuin valmispohjia.</p>
+                <p><span>Brändit ja kiinnostuksen kohteet:</span> Indie-brändit, luonnonkosmetiikka, käsityöt, vintage, taide ja teknologia.</p>
+                <p><span>Tavoite:</span> Haluan kasvattaa verkostoani seuraavan puolen vuoden aikana 150 uudella seuraajalla ja kontaktilla, joiden kanssa syntyy oikeaa keskustelua ja asiakastöitä.</p>
+              </div>
+              <div class="s-grid"><img src="img/kasikirjoitus_grid.webp" alt="Instagram-profiilin ruudukko: tummia, viininpunaisia kuvia töistä, kasvoista ja käsitöistä" loading="lazy" width="462" height="837"></div>
+            </div></div>
+            <div class="s-foot"><span>MILA PALVIAINEN</span><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z"/></svg></div>
+          </div></div><figcaption><b>Kohdeasiakas</b>Kenelle brändi puhuu</figcaption></figure>
+        <figure class="slide-fig reveal"><div class="slide"><div class="s-in">
+            <div class="s-top"><span>04 · tavoitteellinen viestintä</span><b>14 / 19</b></div>
+            <div class="s-title"><i>13</i><h3>Sisältöstrategiani</h3></div>
+            <div class="s-body"><p class="s-lead">Mun sisältöstrategia nojaa Konstantia Darvidoun (2024) artikkelissa esiteltyyn kohderyhmän määrittelyyn, sisältöaukkoanalyysiin ja kilpailija-analyysiin. Kun tutkin suomenkielistä somea, huomasin selvän tyhjän raon: kukaan muu ei yhdistä teknologiaa, dark academia -estetiikkaa ja tekniikan historian naisia, ja pienyrityksiltä puuttuu tekijä, joka tekee persoonallisia sivuja ilman mainostoimistohintoja.</p>
+              <p class="s-lead">Toteutan strategiaa 10 julkaisun kuukausikalenterilla, joka jakautuu kolmeen teemaan:</p>
+              <div class="s-cards">
+                <div class="s-card"><h4>1. Näytöt ja palvelut</h4><p>Asiakascase-karusellit ja palvelupaketit. Näytän valmiita töitä, kuten KoFin brändiä ja verkkokauppaa, ja kerron, mitä asiakkaat voivat ostaa minulta. Näillä julkaisuilla toivon asiakkaita.</p></div>
+                <div class="s-card"><h4>2. Arvot ja tarinat</h4><p>Kerron asioista, jotka mua itseäni kiinnostaa ja joista välitän, kuten Marginaalissa-sarjassa naisista tekniikan historiassa. Näillä julkaisuilla ihmiset tutustuvat siihen, kuka mä oon ja mitä ajattelen.</p></div>
+                <div class="s-card"><h4>3. Käsityö ja oppiminen</h4><p>Näytän tekemistä, joka on vielä kesken. Kuten weekly recapit, opituista asioista tehdyt julkaisut ja projektien rakentamisen vaiheita. Näihin voi samaistua.</p></div>
+              </div></div>
+            <div class="s-foot"><span>MILA PALVIAINEN</span><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z"/></svg></div>
+          </div></div><figcaption><b>Sisältöstrategia</b>Mitä julkaistaan ja miksi</figcaption></figure>
+        <figure class="slide-fig reveal"><div class="slide"><div class="s-in">
+            <div class="s-top"><span>04 · tavoitteellinen viestintä</span><b>15 / 19</b></div>
+            <div class="s-title"><i>14</i><h3>Visuaalinen suunnitelmani</h3></div>
+            <div class="s-body"><div class="s-vis">
+              <div><p class="s-lbl">// väripaletti</p>
+                <div class="sw">
+                  <div><i style="background:#1c0b10"></i><b>Yö</b><code>#1c0b10</code>Sivujen päätausta</div>
+                  <div><i style="background:#b5475a"></i><b>Veri</b><code>#b5475a</code>Isot korostukset ja koristeet</div>
+                  <div><i style="background:#c9a3a6"></i><b>Ruusu</b><code>#c9a3a6</code>Tagit ja pienet korostukset</div>
+                  <div><i style="background:#ff7aa2"></i><b>Neon</b><code>#ff7aa2</code>Linkit ja hover, säästeliäästi</div>
+                </div></div>
+              <div class="rule"></div>
+              <div><p class="s-lbl">// fontit</p>
+                <div class="fonts">
+                  <div class="f1">Otsikot ja nostot<small><span>Cormorant Garamond</span>, kursiivi 40–48 pt</small></div>
+                  <div class="f2">Leipäteksti ja kuvaukset<small><span>Courier Prime</span>, 16–18 pt</small></div>
+                  <div class="f3">&gt; tunnisteet · 22.11.2026<small><span>VT323</span>, 14–16 pt</small></div>
+                </div></div>
+            </div></div>
+            <div class="s-foot"><span>MILA PALVIAINEN</span><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z"/></svg></div>
+          </div></div><figcaption><b>Visuaalinen suunnitelma</b>Värit ja fontit</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="end">
+    <div class="wrap reveal">
+      <p class="label">// SINUN YRITYKSELLESI</p>
+      <h2>Haluatko oman käsikirjoituksen?</h2>
+      <p>Käsikirjoitus sopii Esipuheen pariksi, kun haluat, että ilme ja sanoma pysyvät samana kaikkialla, missä yrityksesi näkyy.</p>
+      <div class="btns">
+        <a class="btn primary" href="palvelut.html">← palvelut ja hinnat</a>
+        <a class="btn" href="mailto:mila.palviainen2@gmail.com?subject=K%C3%A4sikirjoitus">hei, jutellaanko!</a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>© 2026 Mila Palviainen · Tampere</footer>
+
+<script>
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  const toTop = () => { if (!location.hash) window.scrollTo(0, 0); };
+  toTop(); addEventListener('load', toTop); addEventListener('pageshow', toTop);
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
