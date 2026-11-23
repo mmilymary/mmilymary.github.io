@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1C0B10">
+<title>Somen runko · Lukusali</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pohja: #1C0B10; --pinta: #2A1419; --viiva: #4A2A31; --teksti: #EEE6E2; --himmea: #B39A97;
+  --polyruusu: #C9A3A6; --ruusu: #B5475A; --neon: #FF7AA2;
+  --display: 'Cormorant Garamond', Georgia, serif; --leipa: 'Courier Prime', 'Courier New', monospace; --mono: 'VT323', 'Courier New', monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--pohja); color: var(--teksti); font-family: var(--leipa); font-size: 15px; line-height: 1.65; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 22px 20px 70px; }
+.top { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 20px; color: var(--himmea); border-bottom: 1px solid var(--viiva); padding-bottom: 14px; }
+.top a { color: var(--polyruusu); text-decoration: none; }
+.top a:hover { color: var(--neon); }
+h1 { font-family: var(--display); font-weight: 400; font-style: italic; font-size: clamp(40px, 9vw, 60px); line-height: 1; margin: 34px 0 6px; }
+.lead { color: var(--himmea); margin: 0 0 8px; }
+h2 { font-family: var(--display); font-weight: 500; font-size: 30px; margin: 44px 0 12px; }
+h2 i { font-family: var(--mono); font-style: normal; font-size: 22px; color: var(--neon); margin-right: 10px; }
+p { margin: 0 0 12px; }
+.rytmi { display: grid; gap: 10px; }
+.rivi { display: grid; grid-template-columns: 140px 1fr; gap: 14px; background: var(--pinta); border: 1px solid var(--viiva); border-radius: 10px; padding: 14px 16px; }
+.rivi .kun { font-family: var(--mono); font-size: 20px; color: var(--neon); line-height: 1.2; }
+.rivi b { font-weight: 700; }
+.rivi small { display: block; color: var(--himmea); font-size: 13px; }
+.rivi.tarkea { border-color: var(--ruusu); }
+.tyypit { display: grid; gap: 12px; }
+.tyyppi { background: var(--pinta); border: 1px solid var(--viiva); border-radius: 10px; padding: 16px 18px; }
+.tyyppi h3 { margin: 0 0 2px; font-family: var(--display); font-style: italic; font-weight: 500; font-size: 26px; }
+.tyyppi .teht { font-family: var(--mono); font-size: 18px; color: var(--polyruusu); margin: 0 0 6px; }
+.tyyppi .kuvaus { color: var(--himmea); margin: 0 0 10px; }
+.tyyppi ul { margin: 0; padding-left: 0; list-style: none; }
+.tyyppi li { padding: 4px 0 4px 18px; position: relative; border-top: 1px dashed rgba(74,42,49,.8); }
+.tyyppi li::before { content: '›'; position: absolute; left: 2px; color: var(--neon); }
+.tyyppi li small { color: var(--himmea); }
+.huom { margin-top: 10px; color: var(--himmea); font-size: 13px; }
+footer { margin-top: 50px; font-family: var(--mono); font-size: 18px; color: var(--himmea); border-top: 1px solid var(--viiva); padding-top: 12px; }
+@media (max-width: 520px) { .rivi { grid-template-columns: 1fr; gap: 4px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a href="./">‹ lukusali</a><span>somen runko</span></div>
+
+  <h1>Somen runko</h1>
+  <p class="lead">Yksi sivu. Tämä korvaa aiemmat kalenterit ja briefit. Päivitetty 23.11.2026.</p>
+
+  <h2><i>01</i>Viikkorytmi</h2>
+  <p>Kaksi feed-julkaisua viikossa ja recap, jos jaksat. Päivä on suunta, ei sääntö. Julkaise klo 18–21.</p>
+  <div class="rytmi">
+    <div class="rivi tarkea"><div class="kun">ti–ke</div><div><b>Myynti</b><small>Tehtävä: myynti</small></div></div>
+    <div class="rivi"><div class="kun">to</div><div><b>Vaihtuva:</b> minusta, projektit, käsityöt ja oppiminen tai Marginaalissa<small>Tehtävä: luottamus tai tunnettuus</small></div></div>
+    <div class="rivi"><div class="kun">pe–la</div><div><b>Recap</b>, vapaaehtoinen<small>Tehtävä: luottamus</small></div></div>
+    <div class="rivi"><div class="kun">milloin vain</div><div><b>Storyt</b>, kun huvittaa<small>Ei suunnitella</small></div></div>
+    <div class="rivi tarkea"><div class="kun">joka viikko</div><div><b>3 viestiä yrittäjille</b><small>Some tukee, mutta asiakkaat tulevat viesteistä ja verkostosta. Arvonnan katsojista 90 % oli jo seuraajia.</small></div></div>
+  </div>
+  <p class="huom">Vaihtuvan julkaisun voi valita fiiliksen mukaan. Jos haluat vaihtelua, kierrätä järjestyksessä: minusta, projektit, käsityöt ja oppiminen, Marginaalissa.</p>
+
+  <h2><i>02</i>Julkaisutyypit</h2>
+  <p>Esimerkit ovat ideapankki. Ota mikä tahansa, kun et keksi itse.</p>
+  <div class="tyypit">
+    <section class="tyyppi">
+      <h3>Myynti</h3>
+      <p class="teht">› kerran viikossa</p>
+      <p class="kuvaus">Kertoo suoraan, mitä palvelua myyt ja miten tilataan.</p>
+      <ul>
+        <li>Mitä Esipuheessa saa: selaa omaa brändikirjaasi</li>
+        <li>Sama postaus kahdesti: valmispohja vs. oma ilme</li>
+        <li>Vastaus vastaväitteeseen: hinta, "teen itse Canvalla" tai "en tiedä mitä tarvitsen"</li>
+        <li>Valmis asiakastyö, kun lupa on: KoFi tai pikatarkistus</li>
+        <li>Miten tilaus etenee: viesti, keskustelu, tarjous, osamaksu</li>
+        <li>Käsikirjoitus: mitä laajassa brändikirjassa on</li>
+      </ul>
+    </section>
+    <section class="tyyppi">
+      <h3>Minusta</h3>
+      <p class="kuvaus">Ihmiset ostavat sinulta, kun tuntevat sinut.</p>
+      <ul>
+        <li>Hain IT-alalle vahingossa <small>(Reel-versio kiinnitetystä esittelykarusellista)</small></li>
+        <li>Kosmetologista koodariksi</li>
+        <li>Miksi en mielistele</li>
+        <li>Kasvokuva ja yksi ajatus viikosta</li>
+      </ul>
+    </section>
+    <section class="tyyppi">
+      <h3>Projektit</h3>
+      <p class="kuvaus">Näyttää, mitä osaat rakentaa.</p>
+      <ul>
+        <li>Lukusali</li>
+        <li>Ex Libris ja lunttilaput</li>
+        <li>Vähin</li>
+        <li>Näyteliina tai Lankalaatikko</li>
+        <li>Portfolion uudistus</li>
+        <li>Widow's Den -konsepti</li>
+      </ul>
+    </section>
+    <section class="tyyppi">
+      <h3>Käsityöt ja oppiminen</h3>
+      <p class="kuvaus">Keskeneräistä ja aitoa. Tuo tunnettuutta.</p>
+      <ul>
+        <li>Savityöt</li>
+        <li>Laukut ja ompelu</li>
+        <li>Kirjonta</li>
+        <li>Postikortit ja tarrat <small>(ei korvaa viikon myyntijulkaisua)</small></li>
+        <li>SQL- tai Python-kysely</li>
+      </ul>
+    </section>
+    <section class="tyyppi">
+      <h3>Marginaalissa</h3>
+      <p class="kuvaus">Naiset tekniikan historiassa. Vain tarkistetut faktat ja lähde mukaan.</p>
+      <ul>
+        <li>Ada Lovelace</li>
+        <li>Grace Hopper ja koi</li>
+        <li>Hedy Lamarr <small>(patentti haettu 6/1941, myönnetty 11.8.1942)</small></li>
+        <li>Lisää aiheita? Faktat tarkistetaan ennen julkaisua.</li>
+      </ul>
+    </section>
+  </div>
+
+  <footer>MILA PALVIAINEN · lukusali</footer>
+</div>
+</body>
+</html>
