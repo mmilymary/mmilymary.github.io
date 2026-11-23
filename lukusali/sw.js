@@ -1,7 +1,7 @@
 // Lukusali: pieni välimuisti, jotta sivu aukeaa myös ilman verkkoa.
 // Kun muutat sivua, nosta versionumeroa, niin selain hakee uuden version.
-const VERSIO = 'lukusali-v7';
-const TIEDOSTOT = ['./', 'index.html', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png'];
+const VERSIO = 'lukusali-v8';
+const TIEDOSTOT = ['./', 'index.html', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png', 'some.html'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSIO).then((c) => c.addAll(TIEDOSTOT)).then(() => self.skipWaiting()));
