@@ -78,7 +78,9 @@
   .flipbox .back { position: absolute; inset: 0; opacity: 0; transition: opacity .5s ease; }
   .card.flip.on .back { opacity: 1; }
   .flipbtn { display: inline-block; margin-top: 10px; padding: 6px 14px; font-family: "VT323", monospace; font-size: 18px; letter-spacing: .04em; color: var(--rose); background: transparent; border: 1px solid var(--rose); border-radius: 999px; cursor: pointer; transition: background .2s, color .2s; }
-  .flipbtn:hover, .flipbtn[aria-pressed="true"] { background: var(--rose); color: var(--bg); }
+  .card .cprice { font-family: "Bodoni Moda", serif; font-style: normal; font-size: 20px; color: var(--dusty); display: block; margin-top: 4px; font-variant-numeric: lining-nums; }
+  @media (hover: hover) { .flipbtn:hover { background: var(--rose); color: var(--bg); } }
+  .flipbtn[aria-pressed="true"] { background: var(--rose); color: var(--bg); }
   .flipbtn:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
   .card .hint.muted { color: var(--muted); }
   .card .hint { display: block; margin-top: 6px; font-family: "VT323", monospace; font-size: 17px; color: var(--rose); letter-spacing: .04em; }
@@ -214,11 +216,8 @@
             <img src="img/kasityot/kaantopussukka.webp" alt="Kääntöpussukka: paisley- ja leopardikuvioinen puoli, viininpunainen satiinikaulus" loading="lazy" width="900" height="1200">
             <img class="back" src="img/kasityot/kaantopussukka_2.webp" alt="Sama pussukka käännettynä: viininpunainen puoli ja kuvioitu kaulus" loading="lazy" width="900" height="1200">
           </div>
-          <figcaption><b>Kääntöpussukka</b>kaksi puolta, kaksi tunnelmaa <button type="button" class="flipbtn" aria-pressed="false">↻ käännä</button></figcaption>
+          <figcaption><b>Kääntöpussukka <span class="cprice">29 €</span></b>kaksi puolta, kaksi tunnelmaa <button type="button" class="flipbtn" aria-pressed="false">↻ käännä</button></figcaption>
         </figure>
-      </div>
-      <div class="prices reveal">
-        <div class="price"><span>kääntöpussukka</span><b>29 €</b></div>
       </div>
     </div>
   </section>
