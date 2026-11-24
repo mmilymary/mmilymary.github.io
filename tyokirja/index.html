@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brändityökirja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Courier+Prime:wght@400;700&family=Bodoni+Moda:wght@500&family=Jost:wght@300..700&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>:root{--star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-60 -60 120 120'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='0' stop-color='%23FF7AA2' stop-opacity='.45'/%3E%3Cstop offset='1' stop-color='%23FF7AA2' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='c' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.35' stop-color='%23d9c9cc'/%3E%3Cstop offset='.5' stop-color='%23fff'/%3E%3Cstop offset='.7' stop-color='%23c9a3a6'/%3E%3Cstop offset='1' stop-color='%238f7177'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle r='58' fill='url%28%23g%29'/%3E%3Cpath d='M0 -48 C 4 -12 12 -4 48 0 C 12 4 4 12 0 48 C -4 12 -12 4 -48 0 C -12 -4 -4 -12 0 -48 Z' fill='url%28%23c%29'/%3E%3Cpath d='M0 -40 C 2 -20 4 -12 8 -9' stroke='%23fff' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")}
+/* VOICE: rauhallinen ja arvokas, kuin hyvin painettu työkirja. Lämmin, ei vitsikäs.
+   IDEA: kirja, jossa on nimisivu, sisällysluettelo ja luvut, joiden marginaaleihin kirjoitetaan.
+   PICTURE: kromattu tähti nimisivulla, ex libris -asiakaskortti, kilpailijakartta ja neljä laatikkoa.
+   COLOUR and TYPE: viininpunainen yö, kerma ja ohuet linjat. Neon vain mittarin numerossa. Cormorant, Courier vain pienissä merkinnöissä.
+   LAYOUT: yksi leveä palsta, paljon ilmaa, tehtävät ohuiden viivojen väleissä. */
+:root{color-scheme:dark;--bg:#1c0b10;--bg2:#241016;--line:#4a2a31;--line2:#6b4248;--ink:#eee6e2;--mut:#b39a97;--rose:#c9a3a6;--wine:#7a1c3a;--neon:#FF7AA2}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:80px;scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:19px/1.6 "Cormorant Garamond",Georgia,serif;overflow-x:clip;font-variant-numeric:lining-nums}
+.lbl{font:12px/1.4 "Courier Prime",ui-monospace,monospace;color:var(--mut)}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .in{max-width:780px;margin:0 auto;padding:10px max(5vw,16px);display:flex;align-items:center;gap:18px}
+.nav{display:flex;gap:2px;overflow-x:auto;flex:1}
+.nav a{flex:none;font-size:16px;color:var(--rose);text-decoration:none;padding:10px 10px;min-height:44px;display:flex;align-items:center}
+.nav a:hover,.nav a:focus-visible{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+.bar{height:1px;background:var(--line)}
+.bar i{display:block;height:100%;width:0;background:var(--rose);transition:width .5s}
+main{max-width:780px;margin:0 auto;padding:0 max(5vw,16px) 80px}
+.hero{padding:72px 0 56px;border-bottom:1px solid var(--line);text-align:center}
+.hero svg{width:44px;height:44px;filter:drop-shadow(0 0 10px rgba(255,122,162,.35))}
+.hero .lbl{display:block;margin:18px 0 8px}
+h1{font-weight:400;font-size:clamp(44px,8vw,64px);line-height:1.05;margin:0 0 20px;text-wrap:balance}
+h1 em{color:var(--rose)}
+.lead{font-size:22px;font-style:italic;max-width:38ch;margin:0 auto;color:var(--ink)}
+.rule{width:60px;height:1px;background:var(--line2);margin:28px auto 16px}
+section{padding:64px 0 16px;border-bottom:1px solid var(--line)}
+h2{font-weight:400;font-size:38px;line-height:1.1;margin:0 0 24px;text-wrap:balance}
+h2 .lbl{display:block;margin-bottom:10px}
+.txt p{margin:0 0 1em;max-width:58ch}
+.txt p:first-child::first-letter{font-size:3.1em;float:left;line-height:.85;padding:6px 8px 0 0;color:var(--rose)}
+.quote{text-align:center;font-style:italic;font-size:24px;color:var(--rose);margin:36px auto;max-width:28ch;line-height:1.35}
+.task{padding:32px 0 36px;border-top:1px solid var(--line);margin-top:28px}
+.task .n{display:flex;justify-content:space-between;gap:10px}
+.task.done .n b{color:var(--rose)}
+.task .n b{font-weight:400}
+.task h3{font-weight:500;font-size:26px;line-height:1.25;margin:10px 0 6px}
+.task p.h{color:var(--mut);margin:0 0 20px;font-size:18px;font-style:italic}
+textarea,input[type=text]{width:100%;font:19px/1.6 "Cormorant Garamond",serif;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line2);border-radius:0;padding:10px 2px;min-height:46px}
+textarea{min-height:96px;resize:vertical;border:1px solid var(--line);padding:12px 14px;background:var(--bg2)}
+textarea::placeholder,input::placeholder{color:#8a7074;font-style:italic}
+textarea:focus,input:focus{outline:none;border-color:var(--rose)}
+button:focus-visible,a:focus-visible,input[type=range]:focus-visible{outline:1px solid var(--rose);outline-offset:3px}
+.fill{display:grid;gap:18px}
+.fill label{display:grid;gap:2px;color:var(--rose);font-size:17px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px;margin:0 0 18px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);color:var(--ink);font:18px/1.35 "Cormorant Garamond",serif;padding:10px 0;min-height:48px;cursor:pointer}
+.opt::before{content:"";width:14px;height:14px;border:1px solid var(--line2);flex:none}
+.opt[aria-pressed=true]::before{background:var(--rose);border-color:var(--rose);box-shadow:inset 0 0 0 3px var(--bg)}
+.persona{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start}
+.sl{margin-bottom:18px}
+.sl .ends{display:flex;justify-content:space-between;gap:14px;font-size:16px;color:var(--mut)}
+.sl .ends span:last-child{text-align:right}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:1px;background:var(--line2)}
+input[type=range]::-moz-range-track{height:1px;background:var(--line2)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:34px;height:34px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-60 -60 120 120'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='0' stop-color='%23FF7AA2' stop-opacity='.45'/%3E%3Cstop offset='1' stop-color='%23FF7AA2' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='c' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.35' stop-color='%23d9c9cc'/%3E%3Cstop offset='.5' stop-color='%23fff'/%3E%3Cstop offset='.7' stop-color='%23c9a3a6'/%3E%3Cstop offset='1' stop-color='%238f7177'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle r='58' fill='url%28%23g%29'/%3E%3Cpath d='M0 -48 C 4 -12 12 -4 48 0 C 12 4 4 12 0 48 C -4 12 -12 4 -48 0 C -12 -4 -4 -12 0 -48 Z' fill='url%28%23c%29'/%3E%3Cpath d='M0 -40 C 2 -20 4 -12 8 -9' stroke='%23fff' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;margin-top:-17px;border:0}
+input[type=range]::-moz-range-thumb{width:34px;height:34px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-60 -60 120 120'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='0' stop-color='%23FF7AA2' stop-opacity='.45'/%3E%3Cstop offset='1' stop-color='%23FF7AA2' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='c' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.35' stop-color='%23d9c9cc'/%3E%3Cstop offset='.5' stop-color='%23fff'/%3E%3Cstop offset='.7' stop-color='%23c9a3a6'/%3E%3Cstop offset='1' stop-color='%238f7177'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle r='58' fill='url%28%23g%29'/%3E%3Cpath d='M0 -48 C 4 -12 12 -4 48 0 C 12 4 4 12 0 48 C -4 12 -12 4 -48 0 C -12 -4 -4 -12 0 -48 Z' fill='url%28%23c%29'/%3E%3Cpath d='M0 -40 C 2 -20 4 -12 8 -9' stroke='%23fff' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;border:0;border-radius:0}
+.card{border:1px solid var(--line2);outline:1px solid var(--line);outline-offset:-7px;padding:30px 28px;text-align:center;position:sticky;top:90px;background:var(--bg2)}
+.card svg{width:22px;height:22px;display:block;margin:0 auto 8px}
+.card h4{font-weight:400;font-size:34px;line-height:1.1;margin:6px 0 4px}
+.card .job{font-style:italic;color:var(--rose);margin:0 0 16px;min-height:1.5em}
+.card ul{list-style:none;margin:0;padding:0;font-size:17px;line-height:1.4}
+.card li{padding:9px 0;border-top:1px solid var(--line)}
+.card li.e{color:var(--mut);font-style:italic}
+.door{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.col h5{margin:0 0 6px;font-weight:500;font-size:18px;padding-bottom:6px;border-bottom:1px solid var(--line2)}
+.col.in h5{color:var(--rose)}
+.pc{padding:10px 0;border-bottom:1px solid var(--line);font-size:18px;line-height:1.3}
+.pc .acts{display:flex;gap:14px;margin-top:2px}
+.pc button,.link{background:none;border:0;padding:6px 0;min-height:36px;font:12px "Courier Prime",monospace;color:var(--mut);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.pc button:hover,.link:hover{color:var(--ink)}
+.empty{color:#8a7074;font-style:italic;font-size:16px;padding:10px 0}
+.add{display:flex;gap:16px;align-items:end;margin-bottom:24px}.add input{flex:1}
+.btn{font:16px "Cormorant Garamond",serif;font-weight:600;min-height:44px;padding:10px 22px;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:0}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line2)}
+.meter{margin-top:24px;text-align:center}
+.meter label{display:block;color:var(--rose);font-size:20px}
+.big{font:500 clamp(56px,11vw,80px)/1.1 "Bodoni Moda",serif;color:var(--neon);margin:8px 0}
+.meter .ends{display:flex;justify-content:space-between;font-size:16px;color:var(--mut)}
+.verdict{font-size:22px;font-style:italic;min-height:1.5em;color:var(--rose);margin:14px 0 0}
+.sum{border:1px solid var(--line2);outline:1px solid var(--line);outline-offset:-7px;padding:36px clamp(20px,4vw,40px);margin-top:24px;background:var(--bg2)}
+.sum pre{white-space:pre-wrap;font:17px/1.6 "Cormorant Garamond",serif;color:var(--ink);margin:0 0 24px;overflow-wrap:anywhere}
+.btns{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.ok{font:13px "Courier Prime",monospace;color:var(--rose)}
+footer{max-width:780px;margin:0 auto;padding:36px max(5vw,16px) 56px;display:flex;justify-content:center;align-items:center;gap:10px;font:12px "Courier Prime",monospace;color:var(--mut);letter-spacing:.25em}
+footer svg{width:16px;height:16px;filter:drop-shadow(0 0 5px rgba(255,122,162,.5))}
+.dlg{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;padding:20px;z-index:9}
+.dlg.on{display:flex}
+.dlg>div{background:var(--bg2);border:1px solid var(--line2);padding:28px;max-width:380px}
+.dlg p{margin:0 0 18px}
+@media(max-width:640px){body{font-size:18px}.persona{grid-template-columns:1fr;gap:28px}.card{position:static}.door{grid-template-columns:1fr;gap:20px}.opts{grid-template-columns:1fr}.hero{padding:48px 0 40px}h2{font-size:32px}.top .lbl{display:none}}
+
+.view{display:none}.view.on{display:block}
+.toc{list-style:none;margin:40px 0 0;padding:0;border-top:1px solid var(--line2)}
+.toc li{border-bottom:1px solid var(--line)}
+.toc a{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:22px 4px;color:var(--ink);text-decoration:none}
+.toc a:hover .tt,.toc a:focus-visible .tt{color:var(--rose)}
+.toc .no{font:500 28px "Bodoni Moda",serif;color:var(--rose)}
+.toc .tt{font-size:28px;line-height:1.15;display:block}
+.toc .ds{font-style:italic;color:var(--mut);font-size:17px}
+.toc li.soon a{pointer-events:none;opacity:.5}
+.cover-dl{text-align:center;margin:48px 0 0}
+.cover-dl .btns{justify-content:center;margin-top:14px}
+.next{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:40px;padding-top:24px;border-top:1px solid var(--line)}
+.next a{color:var(--rose);font-size:20px;text-decoration:none;min-height:44px;display:flex;align-items:center}
+.next a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+.top .bk{font-size:16px;color:var(--ink);text-decoration:none;flex:none;min-height:44px;display:flex;align-items:center}
+.map{position:relative;aspect-ratio:1/1;max-height:560px;width:100%;margin:8px auto 0;border:1px solid var(--line2);background:linear-gradient(var(--line),var(--line)) center/1px 100% no-repeat,linear-gradient(var(--line),var(--line)) center/100% 1px no-repeat,var(--bg2);touch-action:none}
+.ax{position:absolute;font-style:italic;font-size:16px;color:var(--mut);pointer-events:none;padding:6px 10px}
+.ax.l{left:0;top:50%;transform:translateY(-115%)}.ax.r{right:0;top:50%;transform:translateY(-115%)}
+.ax.t{top:0;left:50%;transform:translateX(6px)}.ax.b{bottom:0;left:50%;transform:translateX(6px)}
+.dot{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;cursor:grab;user-select:none;padding:6px;min-width:44px;min-height:44px;background:none;border:0;color:var(--ink);font:16px "Cormorant Garamond",serif}
+.dot i{width:12px;height:12px;border-radius:50%;background:var(--rose);flex:none;box-shadow:0 0 0 4px var(--bg2)}
+.dot.me i{width:26px;height:26px;border-radius:0;box-shadow:none;background:var(--star) center/contain no-repeat}
+.dot span{background:#241016dd;padding:0 4px;white-space:nowrap;max-width:9em;overflow:hidden;text-overflow:ellipsis}
+.names{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:20px}
+.board,.map{user-select:none;-webkit-user-select:none}.board{position:relative;aspect-ratio:4/3;max-height:560px;width:100%;border:1px solid var(--line2);touch-action:none;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;background:var(--bg2)}
+.q{border:1px solid var(--line);padding:10px 12px;font-size:16px;font-style:italic;color:var(--mut)}
+.q b{display:block;font-weight:500;font-style:normal;color:var(--rose);font-size:19px}
+.center{position:absolute;left:50%;top:50%;width:16%;height:16%;transform:translate(-50%,-50%);border:1px dashed var(--line2);border-radius:50%;pointer-events:none}
+.note2{position:absolute;transform:translate(-50%,-50%);background:var(--bg);color:var(--ink);font:16px/1.25 "Cormorant Garamond",serif;padding:8px 28px 8px 12px;max-width:44%;min-height:44px;display:flex;align-items:center;border:1px solid var(--line2);cursor:grab;text-align:left;box-shadow:0 6px 16px #0008}
+.note2 .x{position:absolute;right:2px;top:2px;width:24px;height:24px;font:14px "Courier Prime",monospace;color:var(--mut);display:grid;place-items:center}
+.hint{font:12px "Courier Prime",monospace;color:var(--mut);margin:12px 0 0}
+@media(max-width:640px){.names{grid-template-columns:1fr}.board{aspect-ratio:3/4}.note2{max-width:48%;font-size:15px}.toc a{grid-template-columns:40px minmax(0,1fr)}.toc .pr{grid-column:2}}
+.radar{border:1px solid var(--line2);outline:1px solid var(--line);outline-offset:-7px;background:var(--bg2);padding:24px 16px;text-align:center;position:sticky;top:90px}
+.radar svg{width:100%;max-width:340px;height:auto;display:block;margin:6px auto 0;overflow:visible}
+.radar .src{font-size:15px;font-style:italic;color:var(--mut);margin:10px 0 0}
+.rels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.rel{text-align:left;background:transparent;border:1px solid var(--line);color:var(--ink);padding:14px 16px;cursor:pointer;font:19px/1.3 "Cormorant Garamond",serif;min-height:44px}
+.rel i{display:block;color:var(--mut);font-size:17px;margin-top:4px}
+.rel[aria-pressed=true]{border-color:var(--rose);background:var(--bg2)}
+.rel[aria-pressed=true] b{color:var(--rose)}
+.rel b{font-weight:500}
+.words{display:flex;flex-wrap:wrap;gap:8px 8px;margin:8px 0 18px}
+.wd{background:transparent;border:1px solid var(--line);color:var(--ink);font:18px "Cormorant Garamond",serif;padding:8px 14px;min-height:44px;cursor:pointer}
+.wd[data-s="1"]{border-color:var(--rose);color:var(--bg);background:var(--rose)}
+.wd[data-s="2"]{color:var(--mut);text-decoration:line-through;border-style:dashed}
+.picked{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;border-top:1px solid var(--line2);padding-top:14px}
+.picked h5{margin:0 0 4px;font-weight:500;font-size:18px;color:var(--rose)}
+.picked p{margin:0;font-size:19px}
+.plain{font-style:italic;color:var(--rose);font-size:21px;border-left:1px solid var(--line2);padding-left:16px;margin:0 0 18px}
+@media(max-width:640px){.rels{grid-template-columns:1fr}.radar{position:static}}
+body{background:radial-gradient(1100px 520px at 50% -120px,#3b1621 0%,rgba(59,22,33,0) 70%) no-repeat,var(--bg)}
+.side{display:none}
+@media(min-width:1100px){
+ .top .in,footer{max-width:1240px}
+ main{max-width:1240px}
+ #v-kansi.on{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:center;min-height:calc(100vh - 140px);padding:48px 0}
+ #v-kansi .hero{border:1px solid var(--line2);outline:1px solid var(--line);outline-offset:-10px;padding:96px 56px;background:radial-gradient(circle at 50% 30%,#3b1621,var(--bg2) 70%);box-shadow:0 30px 80px #0009}
+ #v-kansi .hero h1{font-size:72px}
+ #v-kansi .toc{margin-top:0}
+ #v-kansi .cover-dl{text-align:left}
+ #v-kansi .cover-dl .btns{justify-content:flex-start}
+ .view[data-ch].on{display:grid;grid-template-columns:240px minmax(0,780px);gap:0 88px;justify-content:center}
+ .view[data-ch]>*{grid-column:2}
+ .view[data-ch]>.side{display:block;grid-column:1;grid-row:1/span 20;align-self:start;position:sticky;top:96px;padding-top:72px}
+ .side .no{font:500 64px/1 "Bodoni Moda",serif;color:var(--rose)}
+ .side .tt{font-size:26px;line-height:1.15;margin:10px 0 24px}
+ .side ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line2)}
+ .side li a{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);color:var(--mut);text-decoration:none;font-size:18px;line-height:1.25}
+ .side li a:hover,.side li a.cur{color:var(--ink)}
+ .side li a.cur{color:var(--rose)}
+ .side .meter2{margin-top:22px}
+ .side .meter2 .t{height:1px;background:var(--line2);margin-top:8px}
+ .side .meter2 .t i{display:block;height:1px;background:var(--rose)}
+ .side .chs{margin-top:36px;display:grid;gap:4px}
+ .side .chs a{color:var(--mut);text-decoration:none;font-size:16px}
+ .side .chs a:hover{color:var(--ink)}
+ #subnav{visibility:hidden}
+ .view[data-ch] .hero{padding-top:80px}
+}
+.chrome{background:linear-gradient(115deg,#fff 0%,#e9dcdf 30%,#c4aeb2 46%,#fff 60%,#ffb3c8 78%,#c9a3a6 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes pulse{50%{filter:drop-shadow(0 0 34px rgba(255,122,162,.75))}}
+.toc a:hover .no,.toc a:focus-visible .no{color:var(--neon);text-shadow:0 0 18px rgba(255,122,162,.6)}
+.hero{position:relative}
+.hero>*{position:relative}
+.hero[data-num]::before{content:attr(data-num);position:absolute;left:50%;top:30px;transform:translateX(-50%);font:500 300px/1 "Bodoni Moda",serif;color:rgba(201,163,166,.045);pointer-events:none}
+@media(min-width:1100px){
+ #v-kansi{position:relative}
+ #v-kansi.on::after{content:"";position:absolute;right:-180px;top:-40px;width:820px;height:820px;transform:none;background:var(--star) center/contain no-repeat;opacity:.045;pointer-events:none;z-index:-1}
+ #v-kansi .hero{min-height:660px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 48px}
+ #v-kansi .hero>svg{width:104px!important;height:104px!important;filter:drop-shadow(0 0 22px rgba(255,122,162,.55));animation:pulse 5s ease-in-out infinite}
+ #v-kansi .hero h1{font-size:68px;white-space:nowrap;margin-top:6px}
+
+ #v-kansi .tocwrap{grid-column:2}
+ .toc .tt{font-size:32px}
+ .view[data-ch] .hero h1{font-size:72px}
+ .view[data-ch] .hero>svg{width:56px;height:56px}
+}
+@media(max-width:1099px){
+ #v-kansi{position:relative;padding-top:24px}
+ #v-kansi .hero{border:1px solid var(--line2);outline:1px solid var(--line);outline-offset:-8px;padding:56px 22px 60px;background:radial-gradient(circle at 50% 25%,#3b1621,var(--bg2) 70%);box-shadow:0 24px 60px #0009;max-width:560px;margin:0 auto}
+ #v-kansi .hero>svg{width:84px!important;height:84px!important;filter:drop-shadow(0 0 20px rgba(255,122,162,.55));animation:pulse 5s ease-in-out infinite}
+ #v-kansi .hero h1{font-size:clamp(40px,11vw,60px);white-space:nowrap;margin-top:4px}
+ #v-kansi .tocwrap{max-width:560px;margin:0 auto}
+ .view[data-ch] .hero>svg{width:52px;height:52px;filter:drop-shadow(0 0 16px rgba(255,122,162,.5));animation:pulse 5s ease-in-out infinite}
+ .hero[data-num]::before{font-size:240px;top:20px}
+}
+
+.hero.cover{border-bottom:0}
+@media(max-width:1099px){
+ #v-kansi .hero{padding:64px 24px 52px;margin-top:8px}
+ #v-kansi .hero .lead{font-size:20px}
+ #v-kansi .cover-dl .lbl{max-width:34ch;margin:0 auto;line-height:1.6}
+ .toc .tt{font-size:25px}
+ .toc a{padding:20px 2px}
+}
+.toc .ds{display:block;line-height:1.35;margin-top:4px}
+@media(max-width:640px){.toc a{grid-template-columns:36px minmax(0,1fr) auto}.toc .pr{grid-column:auto;align-self:start;padding-top:8px}}
+
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:pre-wrap}
+.sum{padding:0;border:0;outline:0;background:none;margin-top:28px}
+.sum .prev{display:block;width:100%;height:auto;box-shadow:0 24px 60px #000a;margin-bottom:24px;min-height:200px;background:var(--bg2)}
+.sum .btns{justify-content:center}
+
+.sumwrap{grid-column:1/-1;border:0;padding:56px 0 0;max-width:780px;margin:0 auto}
+.sumwrap h2{text-align:center}
+@media(min-width:1100px){#v-kansi .sumwrap{grid-column:1/-1;width:100%}}
+.palette{display:flex;gap:8px;min-height:120px;margin:0 0 24px}
+.pslot{flex:1;min-width:0;border:1px solid var(--line2);display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:10px;cursor:pointer;font:13px "Courier Prime",monospace;text-align:left;min-height:120px}
+.pslot:first-child{flex:1.5}
+.pslot b{font:500 16px "Cormorant Garamond",serif}
+.cgroup{display:grid;grid-template-columns:120px minmax(0,1fr);align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.cgroup .sw{display:flex;gap:8px;flex-wrap:wrap}
+.swb{width:44px;height:44px;border:1px solid var(--line2);cursor:pointer;border-radius:50%}
+.swb[aria-pressed=true]{outline:2px solid var(--ink);outline-offset:3px}
+#addcol{margin-top:18px;align-items:center}
+#addcol #ownhex{flex:0 1 140px;font:16px "Courier Prime",monospace;text-transform:lowercase}
+#addcol input[type=color]{width:56px;height:44px;border:1px solid var(--line2);background:none;padding:2px;flex:none}
+@media(max-width:640px){.cgroup{grid-template-columns:1fr}.palette{flex-wrap:wrap}.pslot{min-width:30%}}
+.coluse{margin-top:22px}
+.share{display:flex;height:44px;border:1px solid var(--line2)}
+.share i{display:flex;align-items:center;padding-left:10px;font:13px "Courier Prime",monospace;font-style:normal;min-width:0}
+.uses{list-style:none;margin:0;padding:0}
+.uses li{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:17px;line-height:1.3}
+.uses li>i{width:40px;height:40px;border:1px solid var(--line2)}
+.uses b{font-weight:500;color:var(--rose)}
+.uses .cr{display:flex;align-items:center;gap:8px;font:12px "Courier Prime",monospace;color:var(--mut);white-space:nowrap}
+.uses .cr i{width:14px;height:14px;border-radius:50%;border:1px solid var(--line2)}
+.trylbl{margin-top:34px}.trylbl h4{font-weight:500;font-size:22px;margin:0 0 4px}
+.patrow[hidden]{display:none}
+.patrow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 18px}
+.patb{background:transparent;border:1px solid var(--line);color:var(--ink);font:17px "Cormorant Garamond",serif;padding:8px 14px;min-height:44px;cursor:pointer}
+.patb[aria-pressed=true]{border-color:var(--rose);color:var(--rose)}
+.colgrid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:28px;align-items:start;margin-top:22px}.colgrid .coluse{margin-top:0}.mocks{display:grid;gap:8px}
+.mocks figure{margin:0}.mocks .wide{grid-column:1/-1}
+.mocks canvas{width:100%;height:auto;display:block;border:1px solid var(--line2);background:var(--bg2)}
+.mocks figcaption{font:12px "Courier Prime",monospace;color:var(--mut);margin-top:6px}
+.mocks.dim{opacity:.4}
+@media(max-width:640px){.uses li{grid-template-columns:32px minmax(0,1fr)}.uses .cr{grid-column:2;white-space:normal}.mocks{grid-template-columns:1fr}}
+
+@media(max-width:760px){.colgrid{grid-template-columns:1fr}.mocks{max-width:340px}}
+
+.tyset{display:flex;gap:18px;margin-top:12px;flex-wrap:wrap}.tyset label{flex:1;min-width:120px;display:flex;flex-direction:column;gap:6px;font:12px 'Courier Prime',monospace;color:var(--mut,#b39a97);letter-spacing:.04em}.tyset input{width:100%;accent-color:#ff7aa2}
+.tyf{display:flex;gap:6px;flex-basis:100%;flex-wrap:wrap}.tyf button{font:13px 'Courier Prime',monospace;background:transparent;color:#eee6e2;border:1px solid #4a2a31;border-radius:999px;padding:7px 14px;cursor:pointer}.tyf button[aria-pressed=true]{border-color:#ff7aa2;color:#ff7aa2}
+
+.colgrid{grid-template-columns:1fr!important}
+.mocks{max-width:none!important;margin-top:8px;padding:clamp(22px,5vw,44px) clamp(16px,5vw,44px);border-radius:20px;background:radial-gradient(120% 90% at 50% 0%,#3a1a22 0%,#22100f00 70%),#160a0d;border:1px solid #3a2026;justify-items:center;gap:18px}
+.mocks .lbl{justify-self:center}
+.mocks canvas{width:min(100%,380px)!important;border:0!important;border-radius:14px;box-shadow:0 2px 0 rgba(255,255,255,.04) inset,0 28px 60px -18px rgba(0,0,0,.85),0 0 0 1px rgba(238,230,226,.08)}
+.tyset{width:min(100%,380px);margin-top:0}
+.thm{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:14px 0 10px}.thm span{font:12px 'Courier Prime',monospace;color:#b39a97;margin-right:6px}.thm button{font:13px 'Courier Prime',monospace;background:transparent;color:#eee6e2;border:1px solid #4a2a31;border-radius:999px;padding:6px 14px;cursor:pointer}.thm button[aria-pressed=true]{border-color:#ff7aa2;color:#ff7aa2}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="1">
+   <stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#d9c9cc"/><stop offset=".5" stop-color="#6e5a5e"/><stop offset=".62" stop-color="#f3e7ea"/><stop offset=".85" stop-color="#ffb3c8"/><stop offset="1" stop-color="#8f7177"/>
+  </linearGradient>
+  <path id="sp" d="M0 -48 C 4 -12 12 -4 48 0 C 12 4 4 12 0 48 C -4 12 -12 4 -48 0 C -12 -4 -4 -12 0 -48 Z"/>
+ </defs>
+</svg>
+
+<header class="top">
+ <div class="in">
+  <a class="bk" href="#kansi">Brändityökirja</a>
+  <nav class="nav" id="subnav" aria-label="Alaluvut"></nav>
+  <span class="lbl" id="cnt"></span>
+ </div>
+ <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+</header>
+
+<main>
+<!-- ============ KANSI ============ -->
+<div class="view" id="v-kansi">
+ <div class="hero cover">
+  <svg viewBox="-60 -60 120 120" aria-hidden="true" style="width:64px;height:64px"><use href="#sp" fill="url(#chrome)"/></svg>
+  <span class="lbl">Mila Palviainen</span>
+  <h1 class="chrome">Brändi&shy;työkirja</h1>
+  <p class="lead">Avuksi oman erottuvuuden löytämiseen ja rohkeampaan näkymiseen.</p>
+  <div class="rule"></div>
+  <span class="lbl">Viisi lukua · 33 tehtävää</span>
+ </div>
+ <div class="tocwrap"><ol class="toc">
+  <li><a href="#luku-1"><span class="no">1</span><span><span class="tt">Mistä lähdet</span><span class="ds">Miksi teet tätä, mihin olet menossa ja mitä arvostat.</span></span><span class="lbl pr" id="pr1"></span></a></li>
+  <li><a href="#luku-2"><span class="no">2</span><span><span class="tt">Kenelle teet</span><span class="ds">Se yksi ihminen, hänen huolensa ja kenet jätät ulos.</span></span><span class="lbl pr" id="pr2"></span></a></li>
+  <li><a href="#luku-3"><span class="no">3</span><span><span class="tt">Erottuvuus</span><span class="ds">Mikä sinussa on omaa ja missä kohtaa alaa on tilaa.</span></span><span class="lbl pr" id="pr3"></span></a></li>
+  <li><a href="#luku-4"><span class="no">4</span><span><span class="tt">Ääni ja sanat</span><span class="ds">Miltä tekstisi kuulostavat ja millä sanoilla puhut.</span></span><span class="lbl pr" id="pr4"></span></a></li>
+  <li><a href="#luku-5"><span class="no">5</span><span><span class="tt">Mielikuvat ja ilme</span><span class="ds">Tunnelma, värit, kuvat ja materiaalit.</span></span><span class="lbl pr" id="pr5"></span></a></li>
+ </ol>
+ <div class="cover-dl">
+  <p class="lbl">Vastaukset tallentuvat vain tähän selaimeen. Lataa ne itsellesi luvun lopussa tai koko kirjana tästä.</p>
+  <div class="thm" role="group" aria-label="Latausten väriteema"><span>Latausten tyyli</span><button type="button" data-thm="tumma">Tumma</button><button type="button" data-thm="vaalea">Vaalea</button></div><div class="btns"><button class="btn" data-dl="pdf" data-ch="all" hidden>Lataa koko kirja</button><button class="btn ghost" data-dl="png" data-ch="sum" hidden>Lataa tiivistelmä</button><button class="btn ghost" data-copy="all">Kopioi teksti</button></div>
+ </div></div>
+ <section class="sumwrap" aria-label="Tiivistelmä">
+  <h2><span class="lbl">Tiivistelmä</span>Brändisi yhdellä sivulla</h2>
+  <div class="sum"><img class="prev" id="prevsum" alt="Tiivistelmän esikatselu"></div>
+ </section>
+</div>
+
+<!-- ============ LUKU 1 ============ -->
+<div class="view" id="v-luku-1" data-ch="1">
+ <aside class="side" aria-label="Luvun sisältö"></aside>
+ <div class="hero" data-num="1">
+  <svg viewBox="-60 -60 120 120" aria-hidden="true"><use href="#sp" fill="url(#chrome)"/></svg>
+  <span class="lbl">Luku 1</span>
+  <h1>Mistä <em>lähdet</em></h1>
+  <p class="lead">Ennen kuin mietit asiakkaita tai värejä, kannattaa selvittää, miksi teet tätä ja mihin olet menossa.</p>
+  <div class="rule"></div>
+  <span class="lbl">5 tehtävää · noin 35 minuuttia</span>
+ </div>
+
+ <section id="s1-1" data-sub="1.1">
+  <h2><span class="lbl">1.1</span>Miksi teet tätä</h2>
+  <div class="txt">
+   <p>Missio kertoo, miksi yrityksesi on olemassa. Tuotteet ja palvelut voivat vaihtua vuosien aikana, mutta syy tehdä pysyy yleensä samana.</p>
+   <p>Esimerkiksi kukkakauppias myy kukkia, mutta hänen syynsä voi olla se, että ihmiset muistaisivat ilahduttaa toisiaan myös tavallisina päivinä.</p>
+  </div>
+  <div class="task" data-t="m1"><div class="n lbl">Tehtävä 1<b></b></div>
+   <h3>Miksi aloitit?</h3>
+   <p class="h">Kirjoita rehellisesti, mikä sai sinut aloittamaan. Syy voi olla pieni tai iso.</p>
+   <textarea data-k="e1" aria-label="Tehtävä 1"></textarea></div>
+  <div class="task" data-t="m2"><div class="n lbl">Tehtävä 2<b></b></div>
+   <h3>Täydennä lause</h3>
+   <p class="h">Ajattele, mikä muuttuu asiakkaasi arjessa, kun hän käyttää palveluasi tai tuotettasi.</p>
+   <div class="fill"><label>Teen tätä, jotta... <input type="text" data-k="e2" placeholder="esim. ihmiset uskaltaisivat näyttää omannäköisiltään"></label></div></div>
+ </section>
+
+ <section id="s1-2" data-sub="1.2">
+  <h2><span class="lbl">1.2</span>Mihin olet menossa</h2>
+  <div class="txt">
+   <p>Visio kuvaa, millainen yrityksesi on muutaman vuoden päästä, jos kaikki menee hyvin. Se auttaa tekemään valintoja jo nyt, koska voit kysyä itseltäsi, viekö tämä minua oikeaan suuntaan.</p>
+  </div>
+  <div class="task" data-t="m3"><div class="n lbl">Tehtävä 3<b></b></div>
+   <h3>Kuvaile tavallinen päivä kolmen vuoden päästä</h3>
+   <p class="h">Mitä teet, kenen kanssa ja missä? Kirjoita niin kuin se olisi jo totta.</p>
+   <textarea data-k="e3" aria-label="Tehtävä 3"></textarea></div>
+  <div class="task" data-t="m4"><div class="n lbl">Tehtävä 4<b></b></div>
+   <h3>Tiivistä visio yhteen lauseeseen</h3>
+   <p class="h">Lause kertoo, millaisen muutoksen haluat nähdä omalla alallasi tai asiakkaidesi elämässä.</p>
+   <div class="fill"><label>Uskon, että... <input type="text" data-k="e4" placeholder="esim. jokaisella pienyrittäjällä pitäisi olla ilme, joka tuntuu omalta"></label></div></div>
+ </section>
+
+ <section id="s1-3" data-sub="1.3">
+  <h2><span class="lbl">1.3</span>Mitä arvostat</h2>
+  <div class="txt">
+   <p>Monen yrityksen arvoiksi on kirjoitettu laatu, luotettavuus ja asiakaslähtöisyys. Ne ovat hyviä asioita, mutta koska lähes kaikki käyttävät niitä, ne eivät kerro yrityksestä paljoakaan.</p>
+   <p>Toimivampi arvo on lause, joka ohjaa tekemistä. Esimerkiksi laatu voisi olla: "Teen vähemmän, mutta kunnolla."</p>
+  </div>
+  <div class="task" data-t="m5"><div class="n lbl">Tehtävä 5<b></b></div>
+   <h3>Kirjoita arvosi auki</h3>
+   <p class="h">Valitse enintään kolme sanaa, jotka olisit kirjoittanut arvoiksesi, tai lisää oma. Kirjoita sitten jokaisesta lause, joka kertoo, miten se näkyy tekemisessäsi.</p>
+   <div class="opts" id="vals"></div>
+   <form class="add" id="addv"><input type="text" id="nv" aria-label="Oma arvo" placeholder="Lisää oma sana" maxlength="30"><button class="btn ghost" type="submit">Lisää</button></form>
+   <div class="fill" id="valsent"></div></div>
+ </section>
+
+ <section id="s1-5" data-sub="Yhteenveto" style="border:0">
+  <h2><span class="lbl">Luvun loppu</span>Oma yhteenveto</h2>
+  <div class="txt"><p>Tältä vastauksesi näyttävät ladattuna. Kuva päivittyy sitä mukaa kuin täytät tehtäviä.</p></div>
+  <div class="sum"><img class="prev" id="prev1" alt="Yhteenvedon esikatselu"><pre id="sum1" class="vh"></pre>
+   <div class="thm" role="group" aria-label="Latausten väriteema"><span>Latausten tyyli</span><button type="button" data-thm="tumma">Tumma</button><button type="button" data-thm="vaalea">Vaalea</button></div><div class="btns"><button class="btn" data-dl="pdf" data-ch="1" hidden>Lataa PDF</button><button class="btn ghost" data-dl="png" data-ch="1" hidden>Lataa kuvana</button><button class="btn ghost" data-copy="1">Kopioi teksti</button></div></div>
+  <div class="next"><a href="#kansi">← Sisällysluettelo</a><a href="#luku-2">Luku 2: Kenelle teet →</a></div>
+ </section>
+</div>
+
+<!-- ============ LUKU 2 ============ -->
+<div class="view" id="v-luku-2" data-ch="2">
+ <aside class="side" aria-label="Luvun sisältö"></aside>
+ <div class="hero" data-num="2">
+  <svg viewBox="-60 -60 120 120" aria-hidden="true"><use href="#sp" fill="url(#chrome)"/></svg>
+  <span class="lbl">Luku 2</span>
+  <h1>Kenelle <em>teet</em></h1>
+  <p class="lead">Ei tarvitse olla kaikkea kaikille. Voit olla juuri se oikea juttu yhdelle tietylle yleisölle.</p>
+  <div class="rule"></div>
+  <span class="lbl">7 tehtävää · noin 45 minuuttia</span>
+ </div>
+
+ <section id="s2-1" data-sub="2.1">
+  <h2><span class="lbl">2.1</span>Se yksi ihminen</h2>
+  <div class="txt">
+   <p>Kohderyhmä kuvataan usein ikähaarukkana, esimerkiksi naiset 25–45. Se on hyvä alku, mutta sen perusteella on vaikea tietää, mitä sivuille tai somepostaukseen kannattaisi kirjoittaa.</p>
+   <p>Helpompaa on ajatella yhtä ihmistä, jonka tunnet tai jonka voit kuvitella tarkasti. Kun teksti on kirjoitettu hänelle, moni muukin tunnistaa siitä itsensä.</p>
+  </div>
+  <div class="task" data-t="a1"><div class="n lbl">Tehtävä 1<b></b></div>
+   <h3>Anna hänelle nimi ja arki</h3>
+   <p class="h">Voit ajatella nykyistä asiakasta tai sellaista, jolle haluaisit tehdä.</p>
+   <div class="fill">
+    <label>Nimi <input type="text" data-k="pn" placeholder="esim. Saara"></label>
+    <label>Mitä hän tekee? <input type="text" data-k="pj" placeholder="esim. pyörittää pientä kukkakauppaa yksin"></label>
+   </div></div>
+  <div class="task" data-t="a2"><div class="n lbl">Tehtävä 2<b></b></div>
+   <h3>Millainen hän on ostajana?</h3>
+   <p class="h">Siirrä jokaista säädintä. Asiakaskortti täydentyy valintojesi mukaan.</p>
+   <div class="persona">
+    <div id="sliders"></div>
+    <div class="card" aria-live="polite">
+     <svg viewBox="-60 -60 120 120" aria-hidden="true"><use href="#sp" fill="url(#chrome)"/></svg>
+     <span class="lbl">Asiakaskortti</span>
+     <h4 id="cn">Nimetön</h4>
+     <p class="job" id="cj"></p>
+     <ul id="cl"></ul>
+    </div>
+   </div></div>
+ </section>
+
+ <section id="s2-2" data-sub="2.2">
+  <h2><span class="lbl">2.2</span>Ennen kuin hän löytää sinut</h2>
+  <div class="txt">
+   <p>Harva asiakas etsii suoraan brändisuunnittelijaa, kampaajaa tai koruseppää. Useimmiten hänellä on jokin ongelma tai toive, ja hän etsii siihen ratkaisua.</p>
+   <p>Kun tiedät, mikä häntä vaivaa, tiedät myös, mistä kannattaa puhua.</p>
+  </div>
+  <div class="task" data-t="a3"><div class="n lbl">Tehtävä 3<b></b></div>
+   <h3>Mikä häntä turhauttaa juuri nyt?</h3>
+   <p class="h">Kirjoita niin kuin hän itse sen sanoisi, ilman markkinointikieltä.</p>
+   <textarea data-k="a3" aria-label="Tehtävä 3"></textarea></div>
+  <div class="task" data-t="a4"><div class="n lbl">Tehtävä 4<b></b></div>
+   <h3>Mitä hän kysyy kaverilta tai hakukoneelta?</h3>
+   <p class="h">Esimerkiksi "miten saan nettisivut näyttämään ammattimaisilta".</p>
+   <textarea data-k="a4" aria-label="Tehtävä 4"></textarea></div>
+  <div class="task" data-t="a5"><div class="n lbl">Tehtävä 5<b></b></div>
+   <h3>Mitä hän pelkää, kun ostaa?</h3>
+   <p class="h">Valitse sopivat ja lisää omia. Näihin huoliin kannattaa vastata myöhemmin omissa teksteissä.</p>
+   <div class="opts" id="chips"></div>
+   <textarea data-k="a5" aria-label="Tehtävä 5, omat lisäykset" placeholder="Omat lisäykset"></textarea></div>
+ </section>
+
+ <section id="s2-3" data-sub="2.3">
+  <h2><span class="lbl">2.3</span>Kenet jätät oven ulkopuolelle</h2>
+  <div class="txt">
+   <p>Voi tuntua oudolta päättää, kenelle ei halua tehdä. Rajaaminen kuitenkin auttaa, koska tietyille ihmisille suunnatun viestin he tunnistavat helpommin omakseen.</p>
+  </div>
+  <div class="task" data-t="a6"><div class="n lbl">Tehtävä 6<b></b></div>
+   <h3>Päästä sisään tai jätä ulos</h3>
+   <p class="h">Lajittele vähintään viisi. Voit lisätä omia.</p>
+   <form class="add" id="addc"><input type="text" id="nc" aria-label="Uusi kortti" placeholder="Lisää oma, esim. haluaa kaiken heti" maxlength="60"><button class="btn ghost" type="submit">Lisää</button></form>
+   <div class="door">
+    <div class="col"><h5>Lajittelematta</h5><div id="c0"></div></div>
+    <div class="col in"><h5>Sisään</h5><div id="c1"></div></div>
+    <div class="col"><h5>Ei tällä kertaa</h5><div id="c2"></div></div>
+   </div></div>
+  <div class="task" data-t="a7"><div class="n lbl">Tehtävä 7<b></b></div>
+   <h3>Kirjoita rajaus näkyviin</h3>
+   <p class="h">Täydennä lause niin, että voisit käyttää sitä esimerkiksi sivuillasi.</p>
+   <div class="fill"><label>Tämä ei ole sinua varten, jos... <input type="text" data-k="a7" placeholder="esim. haluat saman näköisen sivun kuin kaikilla muilla"></label>
+   <label>Mutta jos... <input type="text" data-k="a7b" placeholder="esim. haluat, että sinut tunnistetaan, puhutaan"></label></div></div>
+ </section>
+
+ <section id="s2-5" data-sub="Yhteenveto" style="border:0">
+  <h2><span class="lbl">Luvun loppu</span>Oma yhteenveto</h2>
+  <div class="txt"><p>Tältä vastauksesi näyttävät ladattuna. Kuva päivittyy sitä mukaa kuin täytät tehtäviä.</p></div>
+  <div class="sum"><img class="prev" id="prev2" alt="Yhteenvedon esikatselu"><pre id="sum2" class="vh"></pre>
+   <div class="thm" role="group" aria-label="Latausten väriteema"><span>Latausten tyyli</span><button type="button" data-thm="tumma">Tumma</button><button type="button" data-thm="vaalea">Vaalea</button></div><div class="btns"><button class="btn" data-dl="pdf" data-ch="2" hidden>Lataa PDF</button><button class="btn ghost" data-dl="png" data-ch="2" hidden>Lataa kuvana</button><button class="btn ghost" data-copy="2">Kopioi teksti</button></div></div>
+  <div class="next"><a href="#luku-1">← Luku 1: Mistä lähdet</a><a href="#luku-3">Luku 3: Erottuvuus →</a></div>
+ </section>
+</div>
+
+<!-- ============ LUKU 3 ============ -->
+<div class="view" id="v-luku-3" data-ch="3">
+ <aside class="side" aria-label="Luvun sisältö"></aside>
+ <div class="hero" data-num="3">
+  <svg viewBox="-60 -60 120 120" aria-hidden="true"><use href="#sp" fill="url(#chrome)"/></svg>
+  <span class="lbl">Luku 3</span>
+  <h1>Erottuvuus <em>löytyy läheltä</em></h1>
+  <p class="lead">Erottuvuutta ei yleensä tarvitse keksiä tyhjästä. Se löytyy usein asioista, joita pidät itsestäänselvinä.</p>
+  <div class="rule"></div>
+  <span class="lbl">8 tehtävää · noin 55 minuuttia</span>
+ </div>
+
+ <section id="s3-1" data-sub="3.1">
+  <h2><span class="lbl">3.1</span>Mikä sinussa on omaa</h2>
+  <div class="txt">
+   <p>Moni pienyrittäjä karsii yrityksensä ilmeestä kaiken, mikä tuntuu liian henkilökohtaiselta. Lopputulos on siisti, mutta helposti samanlainen kuin muilla.</p>
+   <p>Asiakas muistaa yrityksen usein juuri jostain pienestä ja persoonallisesta yksityiskohdasta.</p>
+  </div>
+  <div class="task" data-t="b1"><div class="n lbl">Tehtävä 1<b></b></div>
+   <h3>Mistä on vaikea olla puhumatta?</h3>
+   <p class="h">Se voi olla aihe, harrastus tai mikä tahansa, josta innostut. Sen ei tarvitse liittyä yritykseesi.</p>
+   <textarea data-k="b1" aria-label="Tehtävä 1"></textarea></div>
+  <div class="task" data-t="b2"><div class="n lbl">Tehtävä 2<b></b></div>
+   <h3>Mitä keräät tai mihin palaat aina?</h3>
+   <p class="h">Esimerkiksi esineitä, värejä, materiaaleja tai aikakausia. Katso ympärillesi kotona.</p>
+   <textarea data-k="b2" aria-label="Tehtävä 2"></textarea></div>
+  <div class="task" data-t="b3"><div class="n lbl">Tehtävä 3<b></b></div>
+   <h3>Mistä sinulle on sanottu "vähän liikaa"?</h3>
+   <p class="h">Kirjoita palaute ylös sellaisenaan. Usein siinä on jotain, mikä tekee sinusta tunnistettavan.</p>
+   <textarea data-k="b3" aria-label="Tehtävä 3"></textarea></div>
+ </section>
+
+ <section id="s3-2" data-sub="3.2">
+  <h2><span class="lbl">3.2</span>Kilpailijakartta</h2>
+  <div class="txt">
+   <p>Oman paikan näkee parhaiten, kun vertaa itseään muihin saman alan tekijöihin. Kartalta näet, mihin moni on jo asettunut ja missä on vielä tilaa.</p>
+  </div>
+  <div class="task" data-t="b4"><div class="n lbl">Tehtävä 4<b></b></div>
+   <h3>Nimeä kolme kilpailijaa ja siirrä ne kartalle</h3>
+   <p class="h">Kilpailija, esikuva tai yritys, johon sinua verrataan. Siirrä lopuksi tähti kohtaan, jossa haluaisit itse olla.</p>
+   <div class="names">
+    <input type="text" data-k="c0" aria-label="Kilpailija 1" placeholder="Kilpailija 1">
+    <input type="text" data-k="c1" aria-label="Kilpailija 2" placeholder="Kilpailija 2">
+    <input type="text" data-k="c2" aria-label="Kilpailija 3" placeholder="Kilpailija 3">
+   </div>
+   <div class="map" id="map">
+    <span class="ax t">rohkea</span><span class="ax b">hillitty</span>
+    <span class="ax l">minimalistinen</span><span class="ax r">koristeellinen</span>
+   </div>
+   <p class="hint">Raahaa pisteitä. Näppäimistöllä nuolinäppäimet.</p></div>
+  <div class="task" data-t="b5"><div class="n lbl">Tehtävä 5<b></b></div>
+   <h3>Missä kartalla on tyhjää?</h3>
+   <p class="h">Sopisiko se paikka sinulle? Mitä sinun pitäisi tehdä toisin, jotta olisit siellä?</p>
+   <textarea data-k="b5" aria-label="Tehtävä 5"></textarea></div>
+ </section>
+
+ <section id="s3-3" data-sub="3.3">
+  <h2><span class="lbl">3.3</span>Neljä laatikkoa</h2>
+  <div class="txt">
+   <p>Tämä on tuttu nelikenttä eli SWOT. Kirjoita lapuille asioita itsestäsi ja yrityksestäsi ja siirrä ne sopivaan laatikkoon.</p>
+   <p>Jos jokin asia sopisi sekä vahvuuksiin että heikkouksiin, kannattaa pysähtyä sen kohdalle. Se voi olla juuri se, mikä erottaa sinut muista.</p>
+  </div>
+  <div class="task" data-t="b6"><div class="n lbl">Tehtävä 6<b></b></div>
+   <h3>Lajittele vähintään kolme lappua</h3>
+   <p class="h">Esimerkiksi "puhun suoraan", "ei kokemusta isoista asiakkaista" tai "rakastan tummia värejä".</p>
+   <form class="add" id="addn"><input type="text" id="nn" aria-label="Uusi lappu" placeholder="Kirjoita lappu" maxlength="60"><button class="btn ghost" type="submit">Lisää</button></form>
+   <div class="board" id="board">
+    <div class="q"><b>Vahvuudet</b>missä olet hyvä</div><div class="q"><b>Heikkoudet</b>mikä puuttuu tai horjuu</div>
+    <div class="q"><b>Mahdollisuudet</b>mitä ympärillä on tarjolla</div><div class="q"><b>Uhat</b>mikä voisi estää</div>
+    <span class="center"></span>
+   </div>
+   <p class="hint">Uusi lappu ilmestyy keskelle. Raahaa se laatikkoon. × poistaa.</p></div>
+  <div class="task" data-t="b7"><div class="n lbl">Tehtävä 7<b></b></div>
+   <h3>Mikä heikkous on vahvuus oikealle yleisölle?</h3>
+   <p class="h">Valitse yksi lappu heikkouksista. Kenelle juuri se olisi syy valita sinut?</p>
+   <textarea data-k="b7" aria-label="Tehtävä 7"></textarea></div>
+ </section>
+
+ <section id="s3-4" data-sub="3.4">
+  <h2><span class="lbl">3.4</span>Kokoa se yhteen lauseeseen</h2>
+  <div class="txt">
+   <p>Kokoa luvun tehtävät yhteen lauseeseen, joka kertoo selkeästi, mitä teet, kenelle ja mikä sinussa on erilaista. Iskulauseen voi hioa siitä myöhemmin.</p>
+  </div>
+  <div class="task" data-t="b8"><div class="n lbl">Tehtävä 8<b></b></div>
+   <h3>Kokoa lause</h3>
+   <p class="h">Mieti ensin kolme osaa erikseen. Kirjoita sitten niistä yksi sujuva lause omin sanoin. Ensimmäinen versio saa olla kömpelö.</p>
+   <div class="fill">
+    <label>Teen... <input type="text" data-k="b8a" placeholder="esim. käsin tehtyjä koruja"></label>
+    <label>ihmisille, jotka... <input type="text" data-k="b8b" placeholder="esim. haluavat jotain, mitä muilla ei ole"></label>
+    <label>Minut erottaa muista... <input type="text" data-k="b8c" placeholder="esim. se, että jokaisessa on pala vanhaa"></label>
+    <label style="margin-top:14px">Kirjoita nyt koko lause omin sanoin <textarea data-k="b8x" aria-label="Koko lause" placeholder="esim. Teen käsin tehtyjä koruja ihmisille, jotka haluavat jotain, mitä muilla ei ole. Jokaisessa on pala vanhaa."></textarea></label>
+   </div></div>
+ </section>
+
+ <section id="s3-6" data-sub="Yhteenveto" style="border:0">
+  <h2><span class="lbl">Luvun loppu</span>Oma yhteenveto</h2>
+  <div class="txt"><p>Tältä vastauksesi näyttävät ladattuna. Kuva päivittyy sitä mukaa kuin täytät tehtäviä.</p></div>
+  <div class="sum"><img class="prev" id="prev3" alt="Yhteenvedon esikatselu"><pre id="sum3" class="vh"></pre>
+   <div class="thm" role="group" aria-label="Latausten väriteema"><span>Latausten tyyli</span><button type="button" data-thm="tumma">Tumma</button><button type="button" data-thm="vaalea">Vaalea</button></div><div class="btns"><button class="btn" data-dl="pdf" data-ch="3" hidden>Lataa PDF</button><button class="btn ghost" data-dl="png" data-ch="3" hidden>Lataa kuvana</button><button class="btn ghost" data-copy="3">Kopioi teksti</button></div></div>
+  <div class="next"><a href="#luku-2">← Luku 2: Kenelle</a><a href="#luku-4">Luku 4: Ääni ja sanat →</a></div>
+ </section>
+</div>
+
+<!-- ============ LUKU 4 ============ -->
+<div class="view" id="v-luku-4" data-ch="4">
+ <aside class="side" aria-label="Luvun sisältö"></aside>
+ <div class="hero" data-num="4">
+  <svg viewBox="-60 -60 120 120" aria-hidden="true"><use href="#sp" fill="url(#chrome)"/></svg>
+  <span class="lbl">Luku 4</span>
+  <h1>Ääni <em>ja sanat</em></h1>
+  <p class="lead">Kahdessa kahvilassa voi olla täsmälleen sama kahvi. Silti toiseen palataan, koska siellä on mukavampi olla. Sama pätee yrityksen teksteihin.</p>
+  <div class="rule"></div>
+  <span class="lbl">6 tehtävää · noin 40 minuuttia</span>
+ </div>
+
+ <section id="s4-1" data-sub="4.1">
+  <h2><span class="lbl">4.1</span>Äänensävy</h2>
+  <div class="txt">
+   <p>Äänensävy tarkoittaa sitä, miltä tekstisi kuulostavat. Samaa asiaa voi kertoa muodollisesti tai rennosti, vakavasti tai huumorilla.</p>
+   <p>Nielsen Norman Group on jakanut äänensävyn neljään ulottuvuuteen. Niiden avulla on helpompi päättää, miltä haluat kuulostaa, ja pysyä siinä.</p>
+  </div>
+  <div class="task" data-t="c1"><div class="n lbl">Tehtävä 1<b></b></div>
+   <h3>Valitse äänensävysi</h3>
+   <p class="h">Siirrä jokaista säädintä sen mukaan, miltä haluat tekstiesi kuulostavan.</p>
+   <div class="persona">
+    <div id="psl"></div>
+    <div class="card" aria-live="polite">
+     <svg viewBox="-60 -60 120 120" aria-hidden="true"><use href="#sp" fill="url(#chrome)"/></svg>
+     <span class="lbl">Äänikortti</span>
+     <p class="job" id="tone" style="font-size:22px;margin-top:10px"></p>
+     <ul id="tonel"></ul>
+    </div>
+   </div></div>
+  <div class="task" data-t="c2"><div class="n lbl">Tehtävä 2<b></b></div>
+   <h3>Vastaa pettyneelle asiakkaalle</h3>
+   <p class="h">Asiakkaan tilaus on myöhässä, ja hän kysyy siitä ärtyneenä. Kirjoita lyhyt vastaus valitsemallasi äänensävyllä.</p>
+   <textarea data-k="d2" aria-label="Tehtävä 2"></textarea></div>
+ </section>
+
+ <section id="s4-2" data-sub="4.2">
+  <h2><span class="lbl">4.2</span>Millainen suhde teillä on</h2>
+  <div class="txt">
+   <p>Asiakkaalla on yrityksen kanssa aina jonkinlainen suhde, vaikka sitä ei olisi mietitty. Kun suhde on tiedossa, on helpompi valita, miten asiakkaalle puhutaan.</p>
+  </div>
+  <div class="task" data-t="c3"><div class="n lbl">Tehtävä 3<b></b></div>
+   <h3>Valitse yksi tai kaksi</h3>
+   <p class="h">Mikä näistä kuvaa parhaiten sitä, mitä asiakas saa sinulta?</p>
+   <div class="rels" id="rels"></div></div>
+  <div class="task" data-t="c4"><div class="n lbl">Tehtävä 4<b></b></div>
+   <h3>Mitä asiakas kertoo sinusta kaverilleen?</h3>
+   <p class="h">Kirjoita yksi lause niin kuin asiakas sen sanoisi. Tällainen lause on usein parempi kuin itse keksitty mainoslause.</p>
+   <textarea data-k="d4" aria-label="Tehtävä 4"></textarea></div>
+ </section>
+
+ <section id="s4-3" data-sub="4.3">
+  <h2><span class="lbl">4.3</span>Sanat</h2>
+  <div class="txt">
+   <p>Muutama itse valittu sana auttaa pitämään tekstit samansävyisinä. Yhtä hyödyllistä on päättää, miltä et halua kuulostaa.</p>
+  </div>
+  <div class="task" data-t="c5"><div class="n lbl">Tehtävä 5<b></b></div>
+   <h3>Kolme sanaa ja kaksi ei koskaan</h3>
+   <p class="h">Napauta sanaa kerran, jos se kuvaa sinua, ja toisen kerran, jos et halua kuulostaa siltä koskaan. Kolmas napautus poistaa valinnan.</p>
+   <div class="words" id="words"></div>
+   <div class="picked"><div><h5 id="yh">Kuulostaa</h5><p id="wyes"></p></div><div><h5 id="nh">Ei koskaan</h5><p id="wnev"></p></div></div></div>
+  <div class="task" data-t="c6"><div class="n lbl">Tehtävä 6<b></b></div>
+   <h3>Kirjoita sama asia omalla äänelläsi</h3>
+   <p class="h">Tämä lause voisi olla kenen tahansa sivulta:</p>
+   <p class="plain">Tervetuloa! Meiltä löydät laadukkaita tuotteita ja ystävällistä palvelua.</p>
+   <textarea data-k="d6" aria-label="Tehtävä 6" placeholder="Sama asia sinun sanoillasi"></textarea></div>
+ </section>
+
+ <section id="s4-5" data-sub="Yhteenveto" style="border:0">
+  <h2><span class="lbl">Luvun loppu</span>Oma yhteenveto</h2>
+  <div class="txt"><p>Tältä vastauksesi näyttävät ladattuna. Kuva päivittyy sitä mukaa kuin täytät tehtäviä.</p></div>
+  <div class="sum"><img class="prev" id="prev4" alt="Yhteenvedon esikatselu"><pre id="sum4" class="vh"></pre>
+   <div class="thm" role="group" aria-label="Latausten väriteema"><span>Latausten tyyli</span><button type="button" data-thm="tumma">Tumma</button><button type="button" data-thm="vaalea">Vaalea</button></div><div class="btns"><button class="btn" data-dl="pdf" data-ch="4" hidden>Lataa PDF</button><button class="btn ghost" data-dl="png" data-ch="4" hidden>Lataa kuvana</button><button class="btn ghost" data-copy="4">Kopioi teksti</button></div></div>
+  <div class="next"><a href="#luku-3">← Luku 3: Erottuvuus</a><a href="#luku-5">Luku 5: Mielikuvat ja ilme →</a></div>
+ </section>
+</div>
+
+<!-- ============ LUKU 5 ============ -->
+<div class="view" id="v-luku-5" data-ch="5">
+ <aside class="side" aria-label="Luvun sisältö"></aside>
+ <div class="hero" data-num="5">
+  <svg viewBox="-60 -60 120 120" aria-hidden="true"><use href="#sp" fill="url(#chrome)"/></svg>
+  <span class="lbl">Luku 5</span>
+  <h1>Mielikuvat <em>ja ilme</em></h1>
+  <p class="lead">Ilme ei ala väreistä vaan tunnelmasta. Kun tiedät, mitä haluat asiakkaan tuntevan, värit ja kuvat on helpompi valita.</p>
+  <div class="rule"></div>
+  <span class="lbl">7 tehtävää · noin 45 minuuttia</span>
+ </div>
+
+ <section id="s5-1" data-sub="5.1">
+  <h2><span class="lbl">5.1</span>Tunnelma ensin</h2>
+  <div class="txt">
+   <p>Asiakas muodostaa käsityksen yrityksestä muutamassa sekunnissa, usein ennen kuin hän lukee yhtään lausetta. Siksi kannattaa ensin päättää, millaisen tunteen haluat herättää.</p>
+  </div>
+  <div class="task" data-t="g1"><div class="n lbl">Tehtävä 1<b></b></div>
+   <h3>Mitä asiakkaan pitäisi tuntea?</h3>
+   <p class="h">Ajattele hetkeä, jolloin hän näkee sivusi tai somesi ensimmäistä kertaa.</p>
+   <textarea data-k="h1" aria-label="Tehtävä 1" placeholder="esim. Että täällä on lämmintä ja vähän salaperäistä, ja että tekijä välittää yksityiskohdista."></textarea></div>
+  <div class="task" data-t="g2"><div class="n lbl">Tehtävä 2<b></b></div>
+   <h3>Millainen paikka brändisi olisi?</h3>
+   <p class="h">Kuvaile paikka, joka tuntuu samalta kuin yrityksesi. Valo, äänet, tuoksut, mitä pöydällä on.</p>
+   <textarea data-k="h2" aria-label="Tehtävä 2" placeholder="esim. Vanha kirjasto iltavalossa. Puulattia narisee ja pöydällä on kuivattuja kukkia."></textarea></div>
+ </section>
+
+ <section id="s5-2" data-sub="5.2">
+  <h2><span class="lbl">5.2</span>Värit</h2>
+  <div class="txt">
+   <p>Värit herättävät mielikuvia, mutta sama väri voi tuntua eri ihmisistä erilaiselta. Valitse siksi tunnelman mukaan, ei pelkän lempivärin.</p>
+   <p>Hyvässä paletissa on yksi pääväri, yksi tukiväri, yksi korostusväri ja pari rauhallista neutraalia. Alla näet heti, missä kutakin väriä käytetään ja toimivatko ne yhdessä.</p>
+  </div>
+  <div class="task" data-t="g3"><div class="n lbl">Tehtävä 3<b></b></div>
+   <h3>Kokoa paletti</h3>
+   <p class="h">Valitse 3–5 väriä. Ensimmäinen valinta on pääväri, toinen tukiväri ja kolmas korostusväri. Napauta valittua väriä uudelleen, niin se poistuu.</p>
+   <div class="palette" id="pal"></div>
+   <div id="groups"></div>
+   <form class="add" id="addcol"><label class="lbl" for="owncol" style="align-self:center">Oma väri</label><input type="color" id="owncol" value="#7a1c3a" aria-label="Valitse oma väri"><input type="text" id="ownhex" placeholder="#7a1c3a" maxlength="7" aria-label="Hex-koodi" autocomplete="off" spellcheck="false"><button class="btn ghost" type="submit">Lisää</button></form>
+   <div class="colgrid"><div class="coluse" id="coluse"></div><div class="mocks"><span class="lbl">Värit yhdessä</span><canvas id="mk-post" width="600" height="600" aria-label="Esimerkki väreistä somepostauksessa"></canvas><div class="tyset"><div class="tyf" role="group" aria-label="Otsikon fontti"><button type="button" data-tf="klassinen">Klassinen</button><button type="button" data-tf="selkea">Selkeä</button><button type="button" data-tf="koriste">Koristeellinen</button></div><label>Otsikon koko<input type="range" id="tys" min="70" max="130" step="1"></label><label>Paksuus<input type="range" id="tyw" min="300" max="700" step="100"></label></div></div></div></div>
+  <div class="task" data-t="g4"><div class="n lbl">Tehtävä 4<b></b></div>
+   <h3>Miksi juuri nämä värit?</h3>
+   <p class="h">Miten ne liittyvät tehtävän 1 tunteeseen?</p>
+   <textarea data-k="h4" aria-label="Tehtävä 4"></textarea></div>
+ </section>
+
+ <section id="s5-3" data-sub="5.3">
+  <h2><span class="lbl">5.3</span>Kuvat ja materiaalit</h2>
+  <div class="txt">
+   <p>Kuvat kertovat brändistä usein enemmän kuin teksti. Kun kuvilla on yhteinen tyyli, yrityksen tunnistaa jo ennen kuin näkee nimen.</p>
+  </div>
+  <div class="task" data-t="g5"><div class="n lbl">Tehtävä 5<b></b></div>
+   <h3>Millaisia kuvia käytät?</h3>
+   <p class="h">Valitse sopivat. Kolme riittää hyvin.</p>
+   <div class="opts" id="imgs"></div></div>
+  <div class="task" data-t="g6"><div class="n lbl">Tehtävä 6<b></b></div>
+   <h3>Materiaalit ja mitä vältät</h3>
+   <p class="h">Mitkä pinnat, materiaalit tai yksityiskohdat sopivat brändiisi? Ja mikä ei sovi koskaan?</p>
+   <div class="fill">
+    <label>Sopii... <input type="text" data-k="h6a" placeholder="esim. sametti, vanha paperi, messinki, käsinkirjoitettu"></label>
+    <label>Ei koskaan... <input type="text" data-k="h6b" placeholder="esim. kiiltävä muovi, kuvapankin hymyilevät ihmiset"></label>
+   </div></div>
+ </section>
+
+ <section id="s5-4" data-sub="5.4">
+  <h2><span class="lbl">5.4</span>Rohkeustehtävä</h2>
+  <div class="txt">
+   <p>Olet nyt kirjoittanut auki, miksi teet, kenelle teet, mikä sinussa erottuu, miltä kuulostat ja miltä haluat näyttää. Lopuksi valitse yksi teko, jolla tuot tämän näkyviin.</p>
+   <p>Se voi olla uusi esittelyteksti sivuillesi, somepostaus, hinnan nosto tai viesti asiakkaalle, jota olet jännittänyt.</p>
+   <p class="quote">Jos ei vähän pelota ja nolota, juttu on liian pieni.</p>
+  </div>
+  <div class="task" data-t="g7"><div class="n lbl">Tehtävä 7<b></b></div>
+   <h3>Mitä teet tällä viikolla?</h3>
+   <p class="h">Valitse teko, joka tuntuu vähän liian isolta. Käytä apuna kirjan aiempia vastauksia.</p>
+   <textarea data-k="d7" aria-label="Rohkea teko"></textarea>
+   <div class="meter" data-om="om4"></div>
+   <div class="fill" style="margin-top:28px"><label>Milloin julkaiset? <input type="text" data-k="d7d" placeholder="esim. torstaina klo 19"></label></div></div>
+ </section>
+
+ <section id="s5-5" data-sub="Yhteenveto" style="border:0">
+  <h2><span class="lbl">Luvun loppu</span>Oma yhteenveto</h2>
+  <div class="txt"><p>Tältä vastauksesi näyttävät ladattuna. Kuva päivittyy sitä mukaa kuin täytät tehtäviä.</p></div>
+  <div class="sum"><img class="prev" id="prev5" alt="Yhteenvedon esikatselu"><pre id="sum5" class="vh"></pre>
+   <div class="thm" role="group" aria-label="Latausten väriteema"><span>Latausten tyyli</span><button type="button" data-thm="tumma">Tumma</button><button type="button" data-thm="vaalea">Vaalea</button></div><div class="btns"><button class="btn" data-dl="pdf" data-ch="5" hidden>Lataa PDF</button><button class="btn ghost" data-dl="png" data-ch="5" hidden>Lataa kuvana</button><button class="btn ghost" data-copy="5">Kopioi teksti</button></div></div>
+  <div class="next"><a href="#luku-4">← Luku 4: Ääni ja sanat</a><a href="#kansi">Sisällysluettelo →</a></div>
+ </section>
+</div>
+
+<p class="ok" id="ok" role="status" style="text-align:center;min-height:1.4em"></p>
+<p style="text-align:center"><button class="link" id="clear">Tyhjennä kaikki vastaukset</button></p>
+</main>
+
+<footer><svg viewBox="-60 -60 120 120" aria-hidden="true"><use href="#sp" fill="url(#chrome)"/></svg>MILA PALVIAINEN</footer>
+
+<div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dq"><div>
+ <p id="dq">Tyhjennetäänkö kaikki vastaukset kaikista luvuista? Tätä ei voi perua.</p>
+ <div class="btns"><button class="btn" id="yes">Tyhjennä</button><button class="btn ghost" id="no">Peru</button></div>
+</div></div>
+
+<script>
+{
+const KEY='brandityokirja';
+const $=id=>document.getElementById(id);
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const SL=[
+ ['raha','Etsii edullisinta','Maksaa mielellään laadusta',['Vertailee hintoja tarkasti','Katsoo hintaa, mutta ei pelkkää hintaa','Maksaa mielellään, kun jälki on hyvää']],
+ ['maku','Hillitty maku','Rohkea maku',['Pitää siististä ja neutraalista','Pitää persoonallisesta, mutta ei liikaa','Haluaa erottua, saa olla outoa']],
+ ['ohj','Haluaa valmiit ohjeet','Haluaa vapaat kädet',['Haluaa tietää tarkalleen mitä tapahtuu','Haluaa ehdotuksia ja valita itse','Luottaa tekijään ja antaa vapaat kädet']],
+ ['aika','Kiire','Aikaa ja kärsivällisyyttä',['Tarvitsee valmista nopeasti','Etenee omaan tahtiin','Haluaa tehdä kunnolla, ei kiirettä']],
+ ['tar','Ei kerro itsestään','Kertoo tarinansa mielellään',['Puhuu mieluummin tuotteesta','Kertoo, kun kysytään','Hänen tarinansa on puoli brändiä']]];
+const CHIPS=['Rahat menevät hukkaan','Ei osaa sanoa mitä haluaa','Lopputulos ei näytä häneltä','Tekijä ei kuuntele','Näyttää liian isolta tai kalliilta','Pitää osata itse jotain teknistä'];
+const CARDS=['Haluaa halvimman','Haluaa saman kuin kilpailijalla','Arvostaa käsityötä','Uskaltaa kokeilla','Haluaa valmiin huomenna','Kertoo tarinansa mielellään','Ei halua kuulla mielipiteitä','Rakastaa yksityiskohtia'];
+const DEF=()=>({sl100:true,f:{},sl:{},chips:[],cards:CARDS.map((t,i)=>({id:i,t,c:0})),om1:0,om2:0,om3:0,om4:0,vw:[],pal:[],img:[],pat:'ei',pe:{},rel:[],w:{},notes:[],moved:false,pos:{me:[50,50],c0:[25,70],c1:[70,30],c2:[40,25]}});
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+S=Object.assign(DEF(),S);if(!S.sl100){Object.keys(S.sl).forEach(k=>S.sl[k]=S.sl[k]*50);S.sl100=true}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const val=k=>(S.f[k]||'').trim();
+
+/* --- reititys --- */
+const VIEWS=['kansi','luku-1','luku-2','luku-3','luku-4','luku-5'];
+let cur='kansi';
+const route=()=>{const h=location.hash.slice(1);cur=VIEWS.includes(h)?h:'kansi';
+ document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+cur));
+ const v=$('v-'+cur);$('subnav').innerHTML=[...v.querySelectorAll('section[data-sub]')].map(s=>`<a href="#${cur}" data-go="${s.id}">${s.dataset.sub}</a>`).join('');
+ drawSide();window.scrollTo(0,0);update()};
+const drawSide=()=>{const v=$('v-'+cur);const sd=v.querySelector('.side');if(!sd)return;const ch=v.dataset.ch;const t=TITLE[ch];
+ sd.innerHTML=`<div class="no">${t[0].split(' ')[1]}</div><div class="tt">${t[1]}${t[2]}</div><ol>${[...v.querySelectorAll('section[data-sub]')].map(x=>`<li><a href="#${cur}" data-go="${x.id}"><span>${x.querySelector('h2').lastChild.textContent}</span></a></li>`).join('')}</ol>
+ <div class="meter2 lbl"><span class="pc2"></span><div class="t"><i></i></div></div>
+ <div class="chs"><span class="lbl" style="margin-bottom:6px">Muut luvut</span>${VIEWS.filter(x=>x!==cur).map(x=>x==='kansi'?`<a href="#kansi">Sisällysluettelo</a>`:`<a href="#${x}">${TITLE[$('v-'+x).dataset.ch][0]}: ${TITLE[$('v-'+x).dataset.ch][1]}${TITLE[$('v-'+x).dataset.ch][2]}</a>`).join('')}</div>`};
+document.addEventListener('click',e=>{const a=e.target.closest('.side [data-go]');if(!a)return;e.preventDefault();$(a.dataset.go).scrollIntoView()});
+const spy=()=>{const v=$('v-'+cur);const sd=v&&v.querySelector('.side');if(!sd)return;let id=null;v.querySelectorAll('section[data-sub]').forEach(x=>{if(x.getBoundingClientRect().top<200)id=x.id});
+ sd.querySelectorAll('[data-go]').forEach(a=>a.classList.toggle('cur',a.dataset.go===id))};
+window.addEventListener('scroll',spy,{passive:true});
+$('subnav').addEventListener('click',e=>{const a=e.target.closest('[data-go]');if(!a)return;e.preventDefault();$(a.dataset.go).scrollIntoView()});
+window.addEventListener('hashchange',route);
+
+/* --- tekstikentät --- */
+document.querySelectorAll('[data-k]').forEach(el=>{el.value=S.f[el.dataset.k]||'';el.addEventListener('input',()=>{S.f[el.dataset.k]=el.value;update()})});
+
+/* --- luku 2: säätimet, valinnat, ovi --- */
+$('sliders').innerHTML=SL.map(([k,a,b])=>`<div class="sl"><label for="s-${k}" class="ends"><span>${a}</span><span>${b}</span></label><input type="range" id="s-${k}" min="0" max="100" step="1" value="${S.sl[k]??50}" aria-label="${a} tai ${b}"></div>`).join('');
+SL.forEach(([k])=>$('s-'+k).addEventListener('input',e=>{S.sl[k]=+e.target.value;update()}));
+const lev=v=>v<34?0:v<67?1:2;
+const traits=()=>SL.filter(([k])=>k in S.sl).map(([k,,,l])=>l[lev(S.sl[k])]);
+const drawChips=()=>{$('chips').innerHTML=CHIPS.map((c,i)=>`<button class="opt" type="button" data-i="${i}" aria-pressed="${S.chips.includes(c)}">${c}</button>`).join('')};
+$('chips').addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;const c=CHIPS[b.dataset.i];S.chips=S.chips.includes(c)?S.chips.filter(x=>x!==c):[...S.chips,c];drawChips();update()});
+const drawCards=()=>{[0,1,2].forEach(col=>{$('c'+col).innerHTML=S.cards.filter(x=>x.c===col).map(x=>`<div class="pc">${esc(x.t)}<div class="acts">${
+ col!==1?`<button data-id="${x.id}" data-to="1">Sisään</button>`:''}${col!==2?`<button data-id="${x.id}" data-to="2">Ulos</button>`:''}${col!==0?`<button data-id="${x.id}" data-to="0">Takaisin</button>`:''}</div></div>`).join('')||'<p class="empty">Ei vielä mitään</p>'})};
+document.querySelector('.door').addEventListener('click',e=>{const b=e.target.closest('button[data-to]');if(!b)return;S.cards.find(x=>x.id==b.dataset.id).c=+b.dataset.to;drawCards();update()});
+$('addc').addEventListener('submit',e=>{e.preventDefault();const t=$('nc').value.trim();if(!t)return;S.cards.push({id:Date.now(),t,c:0});$('nc').value='';drawCards();update()});
+
+/* --- oksennusmittarit --- */
+const VERD=v=>!v?'Siirrä mittaria.':v<6?'Tämä on vielä aika pieni. Voisiko tekoa kasvattaa hieman?':v<9?'Hyvä. Tämä on sopivan kokoinen haaste.':'Mittari on tapissa. Juuri tällaista tekoa tässä haetaan.';
+document.querySelectorAll('[data-om]').forEach(m=>{const k=m.dataset.om;
+ m.innerHTML=`<label for="${k}">Oksennusmittari. Kuinka paljon tämä pelottaa?</label><div class="big"></div><input type="range" id="${k}" min="1" max="10" step="1"><div class="ends"><span>1 · ihan ok</span><span>10 · mihin olen ryhtynyt</span></div><p class="verdict" role="status"></p>`;
+ m.querySelector('input').addEventListener('input',e=>{S[k]=+e.target.value;drawOm();update()})});
+const drawOm=()=>document.querySelectorAll('[data-om]').forEach(m=>{const v=S[m.dataset.om];m.querySelector('input').value=v||1;m.querySelector('.big').textContent=v||'?';m.querySelector('.verdict').textContent=VERD(v)});
+
+/* --- luku 3: kartta --- */
+const clamp=v=>Math.max(4,Math.min(96,v));
+const map=$('map');const DOTS=['me','c0','c1','c2'];
+const label=k=>k==='me'?'Sinä':(val(k)||'Kilpailija '+(+k[1]+1));
+const drawDots=()=>{map.querySelectorAll('.dot').forEach(d=>d.remove());DOTS.forEach(k=>{const b=document.createElement('button');b.type='button';b.className='dot'+(k==='me'?' me':'');b.dataset.k=k;
+ b.innerHTML='<i></i><span></span>';map.appendChild(b);placeDot(b)})};
+const placeDot=b=>{const [x,y]=S.pos[b.dataset.k];b.style.left=x+'%';b.style.top=y+'%'};
+const dragOn=(box,sel,get,done)=>{let d=null,mv=false;
+ box.addEventListener('pointerdown',e=>{const b=e.target.closest(sel);if(!b||e.target.closest('.x'))return;d=b;mv=false;b.setPointerCapture(e.pointerId);e.preventDefault()});
+ box.addEventListener('pointermove',e=>{if(!d)return;const r=box.getBoundingClientRect(),o=get(d);o.x=clamp((e.clientX-r.left)/r.width*100);o.y=clamp((e.clientY-r.top)/r.height*100);o.set(d);mv=true});
+ const end=()=>{if(d){d=null;if(mv)done()}};box.addEventListener('pointerup',end);box.addEventListener('pointercancel',end);
+ box.addEventListener('keydown',e=>{const b=e.target.closest(sel);if(!b)return;const dd={ArrowLeft:[-3,0],ArrowRight:[3,0],ArrowUp:[0,-3],ArrowDown:[0,3]}[e.key];if(!dd)return;e.preventDefault();
+  const o=get(b);o.x=clamp(o.x+dd[0]);o.y=clamp(o.y+dd[1]);o.set(b);done()})};
+dragOn(map,'.dot',b=>{const k=b.dataset.k;const o={x:S.pos[k][0],y:S.pos[k][1],set:el=>{S.pos[k]=[o.x,o.y];placeDot(el)}};return new Proxy(o,{set(t,p,v){t[p]=v;return true}})},()=>{S.moved=true;update()});
+const where=([x,y])=>`${x<40?'minimalistinen':x>60?'koristeellinen':'keskellä'}, ${y<40?'rohkea':y>60?'hillitty':'keskellä'}`;
+
+/* --- luku 3: neljä laatikkoa --- */
+const QN=['Vahvuudet','Heikkoudet','Mahdollisuudet','Uhat'];
+const quad=n=>!n.s?null:(n.x>=50?1:0)+(n.y>=50?2:0);
+const board=$('board');
+const drawNotes=()=>{board.querySelectorAll('.note2').forEach(d=>d.remove());S.notes.forEach(n=>{const b=document.createElement('button');b.type='button';b.className='note2';b.dataset.id=n.id;
+ b.innerHTML='<span></span><span class="x" aria-hidden="true">×</span>';b.firstChild.textContent=n.t;b.setAttribute('aria-label',n.t+'. Siirrä nuolinäppäimillä, Delete poistaa.');
+ b.style.left=n.x+'%';b.style.top=n.y+'%';board.appendChild(b)})};
+const nById=id=>S.notes.find(n=>n.id==id);
+$('addn').addEventListener('submit',e=>{e.preventDefault();const t=$('nn').value.trim();if(!t)return;const k=S.notes.filter(n=>quad(n)===null).length;
+ S.notes.push({id:Date.now(),t,x:50,y:clamp(38+(k%4)*8)});$('nn').value='';drawNotes();update()});
+board.addEventListener('click',e=>{const x=e.target.closest('.x');if(!x)return;const b=x.closest('.note2');S.notes=S.notes.filter(n=>n.id!=b.dataset.id);drawNotes();update()});
+board.addEventListener('keydown',e=>{if(e.key!=='Delete'&&e.key!=='Backspace')return;const b=e.target.closest('.note2');if(!b)return;S.notes=S.notes.filter(n=>n.id!=b.dataset.id);drawNotes();update()});
+dragOn(board,'.note2',b=>{const n=nById(b.dataset.id);n.s=true;return {get x(){return n.x},set x(v){n.x=v},get y(){return n.y},set y(v){n.y=v},set:el=>{el.style.left=n.x+'%';el.style.top=n.y+'%'}}},()=>update());
+
+/* --- luku 4 --- */
+const TONE=[['hau','Vakava','Hauska',['vakavilta','hauskoilta']],['ren','Muodollinen','Rento',['muodollisilta','rennoilta']],['suo','Kunnioittava','Suorasukainen',['kunnioittavilta','suorasukaisilta']],['inn','Asiallinen','Innostunut',['asiallisilta','innostuneilta']]];
+$('psl').innerHTML=TONE.map(([k,a,b])=>`<div class="sl"><label for="p-${k}" class="ends"><span>${a}</span><span>${b}</span></label><input type="range" id="p-${k}" min="0" max="4" step="1" value="${S.pe[k]??2}" aria-label="${a} tai ${b}"></div>`).join('');
+TONE.forEach(([k])=>$('p-'+k).addEventListener('input',e=>{S.pe[k]=+e.target.value;drawTone();update()}));
+const toneWords=()=>TONE.filter(([k])=>k in S.pe&&S.pe[k]!==2).map(([k,,,w])=>{const v=S.pe[k];return (v===0||v===4?'hyvin ':'melko ')+w[v<2?0:1]});
+const toneText=()=>{const w=toneWords();if(!TONE.some(([k])=>k in S.pe))return '';if(!w.length)return 'Tekstisi kuulostavat tasapainoisilta. Mikään sävy ei korostu.';
+ return 'Tekstisi kuulostavat '+(w.length>1?w.slice(0,-1).join(', ')+' ja '+w[w.length-1]:w[0])+'.'};
+const drawTone=()=>{$('tone').textContent=toneText()||'Siirrä säätimiä.';
+ $('tonel').innerHTML=TONE.map(([k,a,b])=>{const v=S.pe[k]??2;return `<li style="display:flex;justify-content:space-between;gap:10px"><span style="color:${v<2?'#eee6e2':'#8a7074'}">${a}</span><span aria-hidden="true">${[0,1,2,3,4].map(i=>i===v?'✦':'·').join(' ')}</span><span style="color:${v>2?'#eee6e2':'#8a7074'}">${b}</span></li>`}).join('')};
+const RELS=[['Kumppanuus','Autat minua pääsemään tavoitteisiini.'],['Ystävyys','Olet aina tukenani.'],['Ihastus','Nautin jokaisesta hetkestä kanssasi.'],['Korvaamattomuus','Annat minulle jotain, mitä muut eivät anna.'],['Arvostus','Näytän paremmalta muiden silmissä kanssasi.'],['Pieni pahe','En kertoisi kenellekään, mutta teet minut iloiseksi.']];
+const drawRels=()=>{$('rels').innerHTML=RELS.map(([n,q],i)=>`<button type="button" class="rel" data-i="${i}" aria-pressed="${S.rel.includes(n)}"><b>${n}</b><i>"${q}"</i></button>`).join('')};
+$('rels').addEventListener('click',e=>{const b=e.target.closest('.rel');if(!b)return;const n=RELS[b.dataset.i][0];
+ if(S.rel.includes(n))S.rel=S.rel.filter(x=>x!==n);else{if(S.rel.length>=2)S.rel.shift();S.rel.push(n)}drawRels();update()});
+const WORDS=['ajaton','asiallinen','eloisa','energinen','harkittu','herkkä','hienostunut','juhlava','kapinallinen','kevyt','kodikas','käsintehty','leikkisä','lempeä','luonnollinen','luotettava','lämmin','maanläheinen','moderni','nostalginen','omaperäinen','pehmeä','raikas','rauhallinen','rehellinen','rento','rohkea','romanttinen','salaperäinen','selkeä','tumma','turvallinen','utelias','vahva','viileä','villi','ylellinen','yllättävä','yhteisöllinen','ystävällinen'];
+const wl=s=>WORDS.filter(w=>S.w[w]===s);
+const drawWords=()=>{$('words').innerHTML=WORDS.map(w=>`<button type="button" class="wd" data-w="${w}" data-s="${S.w[w]||0}" aria-label="${w}: ${S.w[w]===1?'kuulostaa':S.w[w]===2?'ei koskaan':'ei valittu'}">${w}</button>`).join('')};
+$('words').addEventListener('click',e=>{const b=e.target.closest('.wd');if(!b)return;const w=b.dataset.w;let n=((S.w[w]||0)+1)%3;
+ if(n===1&&wl(1).length>=3)n=2;if(n===2&&wl(2).length>=2)n=0;if(n)S.w[w]=n;else delete S.w[w];drawWords();update()});
+
+/* --- luku 5 --- */
+const ROLES=['Pääväri','Tukiväri','Korostusväri','Neutraali','Neutraali'];
+const CG5=[['Lämmin',['#b5543c','#d98e5f','#e9c4a0','#7a3b2e','#f3e3d3']],['Raikas',['#2f7d6d','#8fc9b9','#f2f7f4','#3a6ea5','#f4d35e']],['Tumma',['#1c0b10','#2b2d42','#3d2c2e','#5c1a2b','#0f3b3a']],
+ ['Pehmeä',['#e8c6cf','#cdb4db','#f6e7d8','#b8c5d6','#e3d5ca']],['Luonnollinen',['#6b705c','#a5a58d','#cb997e','#ddbea9','#3f4238']],['Rohkea',['#ff7aa2','#e63946','#ffb703','#3a0ca3','#06d6a0']]];
+const lum=h=>{const n=parseInt(h.slice(1),16);return (0.299*(n>>16)+0.587*(n>>8&255)+0.114*(n&255))/255};
+const USE=['Taustat ja isot pinnat','Otsikot, kuviot ja tukipinnat','Napit, linkit ja pienet yksityiskohdat','Leipäteksti ja rauhalliset taustat','Leipäteksti ja rauhalliset taustat'];
+const SHARE=[60,30,10];
+const PATS=[['ei','Ei elementtiä'],['linja','Linjapiirros'],['metalli','Metallinen'],['kaari','Kaarikehys'],['tahdet','Tähtitaivas'],['viuhkat','Art deco']];
+const MOTS=[['kuu','Kuu'],['kynttila','Kynttilä'],['lehti','Lehti'],['tulppaani','Tulppaani'],['tahti','Tähti']];
+const rl=h=>{const n=parseInt(h.slice(1),16);return [n>>16,n>>8&255,n&255].map(v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4}).reduce((a,v,i)=>a+v*[.2126,.7152,.0722][i],0)};
+const cr=(a,b)=>{const x=rl(a),y=rl(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+const bestText=bg=>{let best=null,br=0;S.pal.filter(c=>c!==bg).forEach(c=>{const q=cr(bg,c);if(q>br){br=q;best=c}});if(br<4.5){const w=cr(bg,'#ffffff'),k=cr(bg,'#1a1a1a');return w>=k?['#ffffff',w,false]:['#1a1a1a',k,false]}return [best,br,true]};
+const crNote=q=>q>=4.5?'helppo lukea':q>=3?'vain isoon tekstiin':'ei tekstiin';
+const PSZ={kukat:48,lehdet:48,sydamet:40,kuut:44,leopardi:120,tiikeri:120};
+const patTile=(type,col)=>{const z=PSZ[type]||36;const t=document.createElement('canvas');t.width=t.height=z;const g=t.getContext('2d');g.strokeStyle=g.fillStyle=col;g.lineWidth=3;g.lineCap='round';
+ if(type==='pilkut'){g.beginPath();g.arc(18,18,4,0,7);g.fill()}
+ else if(type==='raidat'){g.lineWidth=5;g.beginPath();for(let k=-36;k<=36;k+=18){g.moveTo(k,36);g.lineTo(k+36,0)}g.stroke()}
+ else if(type==='ruudut'){g.lineWidth=2;g.strokeRect(0,0,36,36)}
+ else if(type==='aallot'){g.lineWidth=2.5;g.beginPath();g.moveTo(0,18);g.bezierCurveTo(9,4,9,4,18,18);g.bezierCurveTo(27,32,27,32,36,18);g.stroke()}
+ else if(type==='tahdet'){g.save();g.translate(18,18);g.scale(.14,.14);g.fill(STAR);g.restore()}
+ else if(type==='kaaret'){g.lineWidth=2.5;[0,18,36].forEach(x=>{g.beginPath();g.arc(x,36,18,Math.PI,2*Math.PI);g.stroke()})}
+ else if(type==='shakki'){g.fillRect(0,0,18,18);g.fillRect(18,18,18,18)}
+ else if(type==='viuhkat'){g.lineWidth=1.8;[[18,36],[0,18],[36,18],[18,0]].forEach(([x,y])=>[17,11,5].forEach(q=>{g.beginPath();g.arc(x,y,q,Math.PI,2*Math.PI);g.stroke()}))}
+ else if(type==='kuut'){g.beginPath();g.arc(22,22,10,0,7);g.fill();g.globalCompositeOperation='destination-out';g.beginPath();g.arc(27,18,9,0,7);g.fill();g.globalCompositeOperation='source-over'}
+ else if(type==='sydamet'){g.save();g.translate(20,22);g.beginPath();g.moveTo(0,7);g.bezierCurveTo(-11,-1,-6,-10,0,-4);g.bezierCurveTo(6,-10,11,-1,0,7);g.fill();g.restore()}
+ else if(type==='kukat'){g.save();g.translate(24,24);for(let k=0;k<5;k++){const a=k*Math.PI*2/5;g.beginPath();g.arc(Math.cos(a)*7,Math.sin(a)*7,5,0,7);g.fill()}g.globalCompositeOperation='destination-out';g.beginPath();g.arc(0,0,3.5,0,7);g.fill();g.restore();g.globalCompositeOperation='source-over';[[0,0],[48,0],[0,48],[48,48]].forEach(([x,y])=>{g.beginPath();g.arc(x,y,2.5,0,7);g.fill()})}
+ else if(type==='lehdet'){const leaf=(x,y,a)=>{g.save();g.translate(x,y);g.rotate(a);g.beginPath();g.moveTo(0,-11);g.quadraticCurveTo(8,0,0,11);g.quadraticCurveTo(-8,0,0,-11);g.fill();g.globalCompositeOperation='destination-out';g.lineWidth=1.2;g.beginPath();g.moveTo(0,-9);g.lineTo(0,9);g.stroke();g.restore();g.globalCompositeOperation='source-over'};leaf(14,14,.7);leaf(36,36,-.7)}
+ else if(type==='leopardi'){const ros=[[20,22,11],[70,14,10],[104,58,12],[48,66,12],[14,100,10],[82,104,9]];g.lineCap='butt';
+  ros.forEach(([x,y,q],i)=>{const o=i*1.7;[[0,1.4,6],[2.1,3.4,5],[4.0,5.5,6.5]].forEach(([a,b2,lw])=>{g.lineWidth=lw;g.beginPath();g.arc(x,y,q,a+o,b2+o);g.stroke()})});
+  [[46,34],[30,84],[92,30],[66,96],[112,92],[6,58],[86,76],[60,44]].forEach(([x,y],i)=>{g.beginPath();g.ellipse(x,y,3.5+i%3,2.6,i,0,7);g.fill()})}
+ else if(type==='tiikeri'){const lens=(x0,y0,len,mw,bend,tilt)=>{const L=[],R=[];for(let k=0;k<=24;k++){const t=k/24,x=x0+len*t,y=y0+tilt*len*t+bend*Math.sin(Math.PI*t),w=mw*Math.pow(Math.sin(Math.PI*t),.8);L.push([x,y-w]);R.push([x,y+w])}
+   g.beginPath();L.forEach(([x,y],k)=>k?g.lineTo(x,y):g.moveTo(x,y));R.reverse().forEach(([x,y])=>g.lineTo(x,y));g.closePath();g.fill()};
+  const st=[[-10,8,80,6,6,.12],[58,20,74,5,-5,.1],[-20,40,90,7,7,.08],[64,54,70,5,-6,.14],[-8,76,78,6,5,.1],[60,90,76,6,-7,.12],[8,104,60,4,4,.06],[30,24,30,3,3,.3],[86,70,26,3,-3,.3]];
+  [-120,0,120].forEach(ox=>[-120,0,120].forEach(oy=>st.forEach(([x,y,l,w,b,tl])=>lens(x+ox,y+oy,l,w,b,tl))))}
+ return t};
+const fillPat=(c,x,y,w,h,col,alpha,sc=1)=>{if(!S.pat||S.pat==='ei')return;const p=c.createPattern(patTile(S.pat,col),'repeat');c.save();c.globalAlpha=alpha;c.beginPath();c.rect(x,y,w,h);c.clip();c.translate(x,y);c.scale(sc,sc);c.fillStyle=p;c.fillRect(0,0,w/sc+40,h/sc+40);c.restore()};
+const palAt=i=>S.pal[i]||S.pal[S.pal.length-1]||'#7a1c3a';
+const lightest=()=>S.pal.slice().sort((a,b)=>rl(b)-rl(a))[0]||'#f3e3d3';
+const bgSoft=()=>S.pal.length>3?palAt(3):lightest();
+const rrP=(c,x,y,w,h,q)=>{c.beginPath();c.roundRect?c.roundRect(x,y,w,h,q):c.rect(x,y,w,h)};
+const spk=(c,x,y,q)=>{c.beginPath();c.moveTo(x,y-q);c.quadraticCurveTo(x,y,x+q,y);c.quadraticCurveTo(x,y,x,y+q);c.quadraticCurveTo(x,y,x-q,y);c.quadraticCurveTo(x,y,x,y-q);c.closePath()};
+const drawMotif=(c,m,cx,cy,s,col,lw)=>{c.save();c.translate(cx,cy);const k=s/50;c.scale(k,k);c.lineWidth=lw/k;c.strokeStyle=c.fillStyle=col;c.lineCap='round';c.lineJoin='round';
+ const dot=(x,y)=>{c.beginPath();c.arc(x,y,2.2,0,7);c.fill()};
+ if(m==='kuu'){c.beginPath();c.arc(0,0,40,-0.28*Math.PI,0.28*Math.PI,true);c.arc(22,0,31.06,1.468,-1.468,false);c.closePath();c.stroke();spk(c,40,-30,9);c.stroke();spk(c,46,20,6);c.stroke();dot(32,-6);dot(54,-4)}
+ if(m==='kynttila'){c.strokeRect(-12,-4,24,44);c.beginPath();c.moveTo(-12,2);c.lineTo(12,2);c.stroke();c.beginPath();c.ellipse(0,42,26,5,0,0,7);c.stroke();c.beginPath();c.moveTo(0,-4);c.lineTo(0,-12);c.stroke();
+  c.beginPath();c.moveTo(0,-40);c.bezierCurveTo(12,-28,10,-14,0,-12);c.bezierCurveTo(-10,-14,-12,-28,0,-40);c.stroke();c.beginPath();c.moveTo(0,-28);c.bezierCurveTo(4,-22,4,-17,0,-16);c.bezierCurveTo(-4,-17,-4,-22,0,-28);c.stroke();
+  c.save();c.setLineDash([1,6]);c.lineWidth=2.4/k*k/k*k;c.beginPath();c.arc(0,-22,24,0,7);c.stroke();c.restore();spk(c,34,-36,7);c.stroke()}
+ if(m==='lehti'){c.beginPath();c.moveTo(-20,30);c.quadraticCurveTo(-30,-22,26,-40);c.quadraticCurveTo(26,10,-20,30);c.stroke();c.beginPath();c.moveTo(-20,30);c.lineTo(26,-40);c.moveTo(-20,30);c.lineTo(-32,48);c.stroke();
+  [[-12,14,-20,10],[-4,2,-14,-4],[4,-10,-6,-18],[0,8,12,6],[8,-4,18,-8]].forEach(([a,b2,e,f])=>{c.beginPath();c.moveTo(a,b2);c.lineTo(e,f);c.stroke()});spk(c,-38,-22,8);c.stroke();dot(34,22)}
+ if(m==='tulppaani'){c.beginPath();c.moveTo(0,-4);c.lineTo(0,46);c.stroke();c.beginPath();c.moveTo(-18,-36);c.lineTo(-9,-24);c.lineTo(0,-40);c.lineTo(9,-24);c.lineTo(18,-36);c.quadraticCurveTo(22,-4,0,-4);c.quadraticCurveTo(-22,-4,-18,-36);c.stroke();
+  c.beginPath();c.moveTo(0,32);c.quadraticCurveTo(-28,28,-30,10);c.quadraticCurveTo(-8,12,0,32);c.stroke();c.beginPath();c.moveTo(0,20);c.quadraticCurveTo(26,16,28,-2);c.quadraticCurveTo(6,2,0,20);c.stroke();spk(c,32,-38,8);c.stroke();dot(-28,-26)}
+ if(m==='tahti'){spk(c,0,0,34);c.stroke();spk(c,34,-30,8);c.stroke();spk(c,-36,26,6);c.stroke();dot(-30,-28);dot(36,30)}
+ c.restore()};
+const metalStar=(c,x,y,q,tint,glow)=>{c.save();c.translate(x,y);c.scale(q/48,q/48);const g=c.createLinearGradient(-48,-48,48,48);[[0,'#ffffff'],[.3,tint],[.5,'#ffffff'],[.72,tint],[1,'#8f7177']].forEach(([a,b2])=>g.addColorStop(a,b2));
+ c.shadowColor=glow;c.shadowBlur=q*.8;c.fillStyle=g;c.fill(STAR);c.shadowBlur=0;c.strokeStyle='rgba(255,255,255,.7)';c.lineWidth=2.5;c.lineCap='round';c.beginPath();c.moveTo(0,-40);c.quadraticCurveTo(2,-20,8,-10);c.stroke();c.restore()};
+const rng=seed=>()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296};
+const blob=(g,cx,cy,rad,n,rnd,var_)=>{const pts=[];for(let k=0;k<n;k++){const a=k/n*Math.PI*2,q=rad*(1-var_+rnd()*var_*2);pts.push([cx+Math.cos(a)*q,cy+Math.sin(a)*q])}
+ g.beginPath();const mid=(p,q2)=>[(p[0]+q2[0])/2,(p[1]+q2[1])/2];let m0=mid(pts[n-1],pts[0]);g.moveTo(m0[0],m0[1]);for(let k=0;k<n;k++){const p=pts[k],m=mid(p,pts[(k+1)%n]);g.quadraticCurveTo(p[0],p[1],m[0],m[1])}g.closePath();g.fill()};
+const printCache={};
+const printTile=(type,cols)=>{const key=type+cols.join();if(printCache[key])return printCache[key];const T=type==='leopardi'?200:240;const t=document.createElement('canvas');t.width=t.height=T;const g=t.getContext('2d');const R=rng(type==='leopardi'?7:type==='tiikeri'?11:23);
+ const wrapDraw=fn=>[-T,0,T].forEach(ox=>[-T,0,T].forEach(oy=>{g.save();g.translate(ox,oy);fn();g.restore()}));
+ if(type==='leopardi'){const spots=[];for(let gx=0;gx<4;gx++)for(let gy=0;gy<4;gy++)spots.push([gx*50+10+R()*30,gy*50+10+R()*30,12+R()*9,R()*6,R()]);
+  spots.forEach(([x,y,q,rot,kind])=>wrapDraw(()=>{if(kind<.8){g.globalAlpha=.55;g.fillStyle=cols[1];blob(g,x,y,q*.85,9,R,.28);g.globalAlpha=1;g.fillStyle=cols[0];const segs=2+Math.floor(R()*3);
+   for(let k=0;k<segs;k++){const a0=rot+k*Math.PI*2/segs+.3,a1=a0+Math.PI*2/segs-.55-R()*.35,th=q*(.34+R()*.16);for(let a=a0;a<=a1;a+=.06){const tt=(a-a0)/(a1-a0),rr=th*Math.pow(Math.sin(Math.PI*tt),.45)+.6;g.beginPath();g.arc(x+Math.cos(a)*q*1.02,y+Math.sin(a)*q*1.02,rr,0,7);g.fill()}}}
+   else{g.fillStyle=cols[0];blob(g,x,y,q*.42,7,R,.35)}}))}
+ if(type==='tiikeri'){g.fillStyle=cols[0];for(let i=0;i<22;i++){const y0=i*11+R()*6,x0=R()*T,len=70+R()*130,mw=3+R()*5.5,amp=4+R()*7,ph=R()*6,fq=1+R()*1.5;const L=[],Rr=[];
+   for(let k=0;k<=30;k++){const tt=k/30,x=x0+len*tt,y=y0-.42*len*tt+amp*Math.sin(tt*Math.PI*fq+ph),w=mw*Math.pow(Math.sin(Math.PI*tt),.7)*(0.75+R()*.5);L.push([x,y-w]);Rr.push([x,y+w])}
+   wrapDraw(()=>{g.beginPath();L.forEach(([x,y],k)=>k?g.lineTo(x,y):g.moveTo(x,y));Rr.slice().reverse().forEach(([x,y])=>g.lineTo(x,y));g.closePath();g.fill()})}}
+ if(type==='maasto'){for(let i=0;i<26;i++){const x=R()*T,y=R()*T,q=22+R()*34,col=cols[i%3];wrapDraw(()=>{g.fillStyle=col;blob(g,x,y,q,11,R,.45);g.fillStyle=col;blob(g,x+q*.6,y-q*.3,q*.55,9,R,.4)})}}
+ printCache[key]=t;return t};
+const fillPrint=(c,type,x,y,w,h,sc)=>{const k=S.pal.length;const cols=type==='maasto'?[palAt(1),palAt(Math.min(2,k-1)),S.pal[3]||lightest()]:[palAt(1),palAt(2)];const p=c.createPattern(printTile(type,cols),'repeat');
+ c.save();c.beginPath();c.rect(x,y,w,h);c.clip();c.translate(x,y);c.scale(sc*.9,sc*.9);c.globalAlpha=type==='maasto'?.85:.9;c.fillStyle=p;c.fillRect(0,0,w/(sc*.9)+10,h/(sc*.9)+10);c.restore()};
+const SKY=[[.08,.1,7],[.22,.05,3],[.36,.14,4],[.62,.07,6],[.8,.12,3],[.92,.06,5],[.05,.42,4],[.94,.38,6],[.12,.7,3],[.9,.66,4],[.06,.9,6],[.3,.94,3],[.7,.92,5],[.86,.88,3],[.5,.04,3],[.16,.26,3],[.84,.24,3]];
+const mock=(c,type,x,y,w,h,sc=1)=>{const f=(z,wt='400',it='')=>`${it}${wt} ${Math.round(z*sc)}px "Cormorant Garamond",Georgia,serif`,mono=z=>`${Math.round(z*sc)}px "Courier Prime",monospace`;c.save();c.beginPath();c.rect(x,y,w,h);c.clip();
+ if(type==='post'){const bg=palAt(0),ac0=palAt(2),st='ei',mot=S.mot||'kuu',cx=x+w/2;c.fillStyle=bg;c.fillRect(x,y,w,h);const [tc]=bestText(bg);
+  const vis=pref=>{const order=[...pref,...S.pal];const ok=order.find(col=>col&&col!==bg&&cr(bg,col)>=3);return ok||tc};const tuki=vis([palAt(1),palAt(2)]),ac=cr(bg,ac0)>=3?ac0:vis([palAt(2),palAt(1)]);
+  if(st==='viuhkat')fillPat(c,x,y,w,h,tuki,.4,sc);
+  if(st==='tahdet')SKY.forEach(([fx,fy,q],i)=>{spk(c,x+fx*w,y+fy*h,q*2.2*sc);c.fillStyle=i%5===0?ac:tuki;c.globalAlpha=.85;c.fill();c.globalAlpha=1});
+  if(st==='kaari'){c.strokeStyle=tuki;c.lineWidth=1.6*sc;[0,9*sc].forEach(o=>{const x0=x+w*.1+o,x1=x+w*.9-o,yb=y+h*.93-o,rad=(x1-x0)/2,yt=y+h*.07+o+rad;c.beginPath();c.moveTo(x0,yb);c.lineTo(x0,yt);c.arc((x0+x1)/2,yt,rad,Math.PI,2*Math.PI);c.lineTo(x1,yb);c.closePath();c.stroke()})}
+  const big=st==='linja'||st==='metalli'||st==='kaari';
+  if(st==='linja'||st==='kaari')drawMotif(c,mot,cx,y+h*(st==='kaari'?.4:.33),h*(st==='kaari'?.13:.16),st==='kaari'?ac:tuki,2.2*sc);
+  if(st==='metalli')metalStar(c,cx,y+h*.33,h*.17,tuki,ac);
+  c.textAlign='center';
+  if(!big){const ws3=(typeof wl==='function'?wl(1):[]).slice(0,3);const T=S.ty||{};const ks=(T.s||100)/100,wt=T.w||400;
+   const lines=ws3.length===3?ws3.map(wd=>wd[0].toUpperCase()+wd.slice(1)+'.'):['Tervetuloa'];const FAM={klassinen:'"Cormorant Garamond",Georgia,serif',selkea:'"Jost","Helvetica Neue",Arial,sans-serif',koriste:'"Pinyon Script","Cormorant Garamond",cursive'}[T.f||'klassinen'];const wt2=T.f==='koriste'?400:wt;const bf=z=>`${wt2} ${Math.round(z*sc)}px ${FAM}`;
+   let z=(lines.length===3?(T.f==='koriste'?40:T.f==='selkea'?28:34):(T.f==='koriste'?52:42))*ks;c.font=bf(z);while(Math.max(...lines.map(l=>c.measureText(l).width))>w*.68&&z>10){z-=1;c.font=bf(z)}
+   const lh=z*sc*(T.f==='klassinen'||!T.f?1.08:1.25),sub=17*sc,gap=lh*.55,pad=h*.055,blk=lines.length*lh+gap+sub,bh=blk+pad*2,top=y+h*.5-(bh+h*.05+36*sc)/2;c._bot=top+bh;
+   c.fillStyle=bg;c.fillRect(x+w*.1,top,w*.8,bh);c.strokeStyle=tuki;c.lineWidth=1.5*sc;c.strokeRect(x+w*.1,top,w*.8,bh);c.fillStyle=tc;c.textBaseline='alphabetic';
+   lines.forEach((l,i)=>{const yy=top+pad+lh*(i+1)-lh*.22;c.fillText(l,cx,yy);if(T.f==='koriste'&&wt>400){c.strokeStyle=tc;c.lineWidth=(wt-400)/100*.45*sc;c.lineJoin='round';c.strokeText(l,cx,yy)}});
+   c.font=f(17,'400','italic ');c.fillText('Uusimmat työt nyt esillä',cx,top+pad+lines.length*lh+gap+sub*.75)}
+  else{const ty=st==='kaari'?.66:.62;c.fillStyle=tc;c.font=f(34,'500');c.fillText('Uutta pajalta',cx,y+h*ty);c.font=f(18,'400','italic ');c.fillText('Lue lisää profiilista',cx,y+h*(ty+.07))}
+  const [at]=bestText(ac);const by0=st==='kaari'?.8:.78,by=c._bot?((c._bot-y)/h+.05):by0;c._bot=0;rrP(c,cx-62*sc,y+h*by,124*sc,36*sc,18*sc);c.fillStyle=ac;c.fill();c.fillStyle=at;c.font=f(17,'600');try{c.letterSpacing=Math.round(2*sc)+'px'}catch(e){}c.fillText('Tutustu',cx,y+h*by+24*sc);try{c.letterSpacing='0px'}catch(e){}}
+ if(type==='card'){const bg=bgSoft();c.fillStyle=bg;c.fillRect(x,y,w,h);c.fillStyle=palAt(0);c.fillRect(x+w*.7,y,w*.3,h);fillPat(c,x+w*.7,y,w*.3,h,palAt(1),.55,sc);
+  const [tc]=bestText(bg);c.textAlign='left';c.fillStyle=tc;c.font=f(30,'500');c.fillText('Oma Nimi',x+w*.08,y+h*.44);c.font=f(16,'400','italic ');c.fillText('Yritys ja ammatti',x+w*.08,y+h*.57);
+  c.fillStyle=palAt(2);c.fillRect(x+w*.08,y+h*.67,w*.16,3*sc)}
+ if(type==='web'){const bg=bgSoft();c.fillStyle=bg;c.fillRect(x,y,w,h);const nb=palAt(0);c.fillStyle=nb;c.fillRect(x,y,w,h*.16);const [nt]=bestText(nb);
+  c.fillStyle=nt;c.textAlign='left';c.font=f(17,'600');c.fillText('Yritys',x+w*.05,y+h*.105);c.textAlign='right';c.font=mono(11);c.fillText('PALVELUT   TIETOA   YHTEYS',x+w*.95,y+h*.1);
+  c.fillStyle=palAt(1);c.globalAlpha=S.pat&&S.pat!=='ei'?1:.25;c.fillRect(x+w*.64,y+h*.16,w*.36,h*.84);c.globalAlpha=1;fillPat(c,x+w*.64,y+h*.16,w*.36,h*.84,bgSoft(),.5,sc);
+  const [ht]=bestText(bg);c.textAlign='left';c.fillStyle=ht;c.font=f(32,'500');c.fillText('Otsikko tähän',x+w*.06,y+h*.45);c.font=f(16,'400','italic ');c.fillText('Lyhyt kuvaus siitä, mitä teet.',x+w*.06,y+h*.56);
+  const ac=palAt(2);const [at]=bestText(ac);rrP(c,x+w*.06,y+h*.67,140*sc,38*sc,19*sc);c.fillStyle=ac;c.fill();c.fillStyle=at;c.textAlign='center';c.font=mono(12);c.fillText('OTA YHTEYTTÄ',x+w*.06+70*sc,y+h*.67+24*sc)}
+ c.restore();c.textAlign='left'};
+let _mkF=0;const drawMocks=()=>{if(!_mkF){_mkF=1;document.fonts&&Promise.all([300,400,500,600,700].flatMap(w=>[`${w} 40px "Cormorant Garamond"`,`${w} 40px "Jost"`]).concat(['400 40px "Pinyon Script"']).map(q=>document.fonts.load(q,'Aä'))).then(()=>drawMocks()).catch(()=>{})}const has3=S.pal.length>=2;document.querySelector('.mocks').classList.toggle('dim',!has3);[['post',2]].forEach(([t,k])=>{const cv=$('mk-'+t),c=cv.getContext('2d');c.clearRect(0,0,cv.width,cv.height);
+ if(!S.pal.length){c.fillStyle='#241016';c.fillRect(0,0,cv.width,cv.height);return}mock(c,t,0,0,cv.width,cv.height,k)})};
+const drawUse=()=>{const k=Math.min(S.pal.length,3);const tot=SHARE.slice(0,k).reduce((a,b)=>a+b,0)||1;
+ $('coluse').innerHTML=S.pal.length?`<div class="share">${S.pal.slice(0,3).map((c,i)=>`<i style="background:${c};flex:${SHARE[i]}"><span style="color:${bestText(c)[0]}">${Math.round(SHARE[i]/tot*100)} %</span></i>`).join('')}</div>
+ <p class="hint" style="margin:6px 0 14px">Nyrkkisääntö: pääväriä noin 60 %, tukiväriä 30 % ja korostusta 10 %.</p>
+ <ul class="uses">${S.pal.map((c,i)=>{const [tc,q]=bestText(c);return `<li><i style="background:${c}"></i><span><b>${ROLES[i]}</b> · ${USE[i]}</span><span class="cr"><i style="background:${tc}"></i>${q.toFixed(1)}:1 · ${crNote(q)}</span></li>`}).join('')}</ul>`:''};
+const drawPatsX=()=>{const cur=PATS.some(p=>p[0]===S.pat)?S.pat:'ei';$('pats').innerHTML=PATS.map(([k,n])=>`<button type="button" class="patb" data-p="${k}" aria-pressed="${cur===k}">${n}</button>`).join('');
+ const showM=cur==='linja'||cur==='kaari';$('mots').hidden=!showM;$('mots').innerHTML='<span class="lbl">Motiivi</span>'+MOTS.map(([k,n])=>`<button type="button" class="patb" data-m="${k}" aria-pressed="${(S.mot||'kuu')===k}">${n}</button>`).join('')};
+
+const drawPal=()=>{drawUse();drawMocks();$('pal').innerHTML=S.pal.length?S.pal.map((c,i)=>`<button type="button" class="pslot" data-c="${c}" style="background:${c};color:${lum(c)>.6?'#1c0b10':'#eee6e2'}" aria-label="Poista ${ROLES[i]} ${c}"><b>${ROLES[i]}</b><span>${c}</span></button>`).join(''):'<p class="empty">Valitse värejä alta.</p>';
+ $('groups').innerHTML=CG5.map(([g,cs])=>`<div class="cgroup"><span class="lbl">${g}</span><div class="sw">${cs.map(c=>`<button type="button" class="swb" data-c="${c}" style="background:${c}" aria-pressed="${S.pal.includes(c)}" aria-label="${g} ${c}"></button>`).join('')}</div></div>`).join('')};
+const togCol=c=>{if(S.pal.includes(c))S.pal=S.pal.filter(x=>x!==c);else{if(S.pal.length>=5){msg('Paletissa voi olla enintään viisi väriä.');return}S.pal.push(c)}drawPal();update()};
+document.querySelector('#v-luku-5').addEventListener('click',e=>{const b=e.target.closest('.swb,.pslot');if(b)togCol(b.dataset.c)});
+const normHex=v=>{v=String(v||'').trim().replace(/^#/,'');if(/^[0-9a-f]{3}$/i.test(v))v=v.split('').map(x=>x+x).join('');return /^[0-9a-f]{6}$/i.test(v)?'#'+v.toLowerCase():null};
+$('ownhex').addEventListener('input',e=>{const h=normHex(e.target.value);if(h)$('owncol').value=h});
+$('owncol').addEventListener('input',e=>{$('ownhex').value=e.target.value});
+$('addcol').addEventListener('submit',e=>{e.preventDefault();const t=$('ownhex').value.trim();const h=t?normHex(t):$('owncol').value;if(!h){msg('Tarkista hex-koodi, esim. #7a1c3a.');return}togCol(h)});
+const IMGS=['Lähikuvat yksityiskohdista','Ihmiset ja kasvot','Tekeminen ja kädet','Keskeneräinen ja työn alla','Tuotteet rauhallisella taustalla','Tummat ja dramaattiset','Kirkkaat ja ilmavat','Vintage ja rakeinen','Luonto ja luonnonvalo','Asetelmat ja esineet'];
+const drawImgs=()=>{$('imgs').innerHTML=IMGS.map((t,i)=>`<button class="opt" type="button" data-i="${i}" aria-pressed="${S.img.includes(t)}">${t}</button>`).join('')};
+$('imgs').addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;const t=IMGS[b.dataset.i];S.img=S.img.includes(t)?S.img.filter(x=>x!==t):[...S.img,t];drawImgs();update()});
+
+/* --- valmiit tehtävät --- */
+const DONE={m1:()=>val('e1'),m2:()=>val('e2'),m3:()=>val('e3'),m4:()=>val('e4'),m5:()=>S.vw.length&&S.vw.every(w=>val('v_'+w)),
+ a1:()=>val('pn')&&val('pj'),a2:()=>Object.keys(S.sl).length===SL.length,a3:()=>val('a3'),a4:()=>val('a4'),a5:()=>S.chips.length||val('a5'),
+ a6:()=>S.cards.filter(x=>x.c).length>=5,a7:()=>val('a7'),
+ b1:()=>val('b1'),b2:()=>val('b2'),b3:()=>val('b3'),b4:()=>(val('c0')||val('c1')||val('c2'))&&S.moved,b5:()=>val('b5'),
+ b6:()=>S.notes.filter(n=>quad(n)!==null).length>=3,b7:()=>val('b7'),b8:()=>val('b8x'),
+ c1:()=>TONE.every(([k])=>k in S.pe),c2:()=>val('d2'),c3:()=>S.rel.length,c4:()=>val('d4'),c5:()=>wl(1).length===3&&wl(2).length===2,c6:()=>val('d6'),
+ g1:()=>val('h1'),g2:()=>val('h2'),g3:()=>S.pal.length>=3,g4:()=>val('h4'),g5:()=>S.img.length,g6:()=>val('h6a')||val('h6b'),g7:()=>val('d7')&&S.om4};
+const count=p=>{const k=Object.keys(DONE).filter(x=>x[0]===p);return [k.filter(x=>DONE[x]()).length,k.length]};
+
+/* --- yhteenvedot --- */
+const brave=(t,d,om)=>val(t)?val(t)+(val(d)?' ('+val(d)+')':'')+(S[om]?'\nOksennusmittari: '+S[om]+'/10':''):'';
+const VWORDS=['Laatu','Luotettavuus','Asiakaslähtöisyys','Ammattitaito','Rehellisyys','Vastuullisuus','Intohimo','Yhteisöllisyys','Luovuus','Joustavuus'];
+const drawVals=()=>{const all=[...VWORDS,...S.vw.filter(w=>!VWORDS.includes(w))];
+ $('vals').innerHTML=all.map(w=>`<button class="opt" type="button" data-v="${esc(w)}" aria-pressed="${S.vw.includes(w)}">${esc(w)}</button>`).join('');
+ $('valsent').innerHTML=S.vw.map(w=>`<label>${esc(w)} tarkoittaa minulle, että... <input type="text" data-vk="${esc(w)}" value="${esc(S.f['v_'+w]||'')}"></label>`).join('')};
+$('vals').addEventListener('click',e=>{const b=e.target.closest('.opt');if(!b)return;const w=b.dataset.v;
+ if(S.vw.includes(w))S.vw=S.vw.filter(x=>x!==w);else{if(S.vw.length>=3){msg('Valitse enintään kolme.');return}S.vw.push(w)}drawVals();update()});
+$('addv').addEventListener('submit',e=>{e.preventDefault();const w=$('nv').value.trim();if(!w)return;$('nv').value='';
+ if(!S.vw.includes(w)){if(S.vw.length>=3){msg('Valitse enintään kolme.');return}S.vw.push(w)}drawVals();update()});
+$('valsent').addEventListener('input',e=>{const k=e.target.dataset.vk;if(!k)return;S.f['v_'+k]=e.target.value;update()});
+const parts3=()=>[['Teen',val('b8a')],['Kenelle',val('b8b')],['Erottaa',val('b8c')]].filter(([,v])=>v).map(([k,v])=>k+': '+v).join('\n');
+const sent3=()=>val('b8x')||parts3();
+const SEC={
+ 1:()=>[['Miksi aloitin',val('e1')],['Teen tätä, jotta',val('e2')],['Tavallinen päivä kolmen vuoden päästä',val('e3')],['Uskon, että',val('e4')],
+  ['Arvot',S.vw.map(w=>w+': '+(val('v_'+w)||'...')).join('\n')]],
+ 2:()=>[['Asiakas',val('pn')?val('pn')+(val('pj')?', '+val('pj'):''):''],['Millainen hän on',traits().map(t=>'· '+t).join('\n')],['Mikä turhauttaa',val('a3')],['Mitä hän kysyy',val('a4')],
+  ['Mitä hän pelkää',[...S.chips,val('a5')].filter(Boolean).join(', ')],['Sisään',S.cards.filter(x=>x.c===1).map(x=>x.t).join(', ')],['Ei tällä kertaa',S.cards.filter(x=>x.c===2).map(x=>x.t).join(', ')],
+  ['Ääneen sanottuna',val('a7')?`Tämä ei ole sinua varten, jos ${val('a7')}.${val('a7b')?' Mutta jos '+val('a7b')+'.':''}`:'']],
+ 3:()=>[['Mistä on vaikea olla puhumatta',val('b1')],['Mitä keräät',val('b2')],['"Vähän liikaa"',val('b3')],['Kartalla',S.moved?DOTS.map(k=>`${label(k)}: ${where(S.pos[k])}`).join('\n'):''],
+  ['Tyhjä paikka kartalla',val('b5')],['Neljä laatikkoa',QN.map((q,i)=>{const l=S.notes.filter(n=>quad(n)===i).map(n=>n.t);return l.length?q+': '+l.join(', '):''}).filter(Boolean).join('\n')],
+  ['Heikkous, joka on vahvuus',val('b7')],['Lause',sent3()]],
+ 4:()=>[['Äänensävy',toneText()],['Vastaus pettyneelle asiakkaalle',val('d2')],['Suhde asiakkaaseen',S.rel.map(n=>n+' · "'+RELS.find(x=>x[0]===n)[1]+'"').join('\n')],
+  ['Asiakas kertoo kaverilleen',val('d4')],['Kuulostaa',wl(1).join(', ')],['Ei koskaan',wl(2).join(', ')],['Omalla äänellä',val('d6')]],
+ 5:()=>[['Tunne',val('h1')],['Paikka',val('h2')],['Paletti',S.pal.map((c,i)=>ROLES[i]+': '+c+' ('+USE[i].toLowerCase()+')').join('\n')+(false?'\nGraafinen tyyli: '+PATS.find(p=>p[0]===S.pat)[1]+((S.pat==='linja'||S.pat==='kaari')?' ('+MOTS.find(m=>m[0]===(S.mot||'kuu'))[1].toLowerCase()+')':''):'')],['Miksi nämä värit',val('h4')],['Kuvat',S.img.join(', ')],['Sopii',val('h6a')],['Ei koskaan',val('h6b')],['Rohkea teko',brave('d7','d7d','om4')]]};
+const TITLE={1:['Luku 1','Mistä ','lähdet'],2:['Luku 2','Kenelle ','teet'],3:['Luku 3','Erottuvuus ','löytyy läheltä'],4:['Luku 4','Ääni ','ja sanat'],5:['Luku 5','Mielikuvat ','ja ilme']};
+const text=ch=>(ch==='all'?['1','2','3','4','5']:[ch]).map(c=>[`BRÄNDITYÖKIRJA · ${TITLE[c][0].toUpperCase()}: ${(TITLE[c][1]+TITLE[c][2]).toUpperCase()}`,'',...SEC[c]().flatMap(([h,v])=>[h+':',v||'(tyhjä)',''])].join('\n').trim()).join('\n\n\n');
+
+/* --- päivitys --- */
+const update=()=>{document.querySelectorAll('.task').forEach(t=>{const ok=!!DONE[t.dataset.t]();t.classList.toggle('done',ok);t.querySelector('.n b').textContent=ok?'valmis':''});
+ const PF={1:'m',2:'a',3:'b',4:'c',5:'g'};let D=0,N=0,cd=0,cn=0;Object.entries(PF).forEach(([c,p])=>{const [a,b]=count(p);$('pr'+c).textContent=a+' / '+b;D+=a;N+=b;if(cur==='luku-'+c){cd=a;cn=b}});
+ const [d,n]=cur==='kansi'?[D,N]:[cd,cn];$('cnt').textContent=d+' / '+n;const sd=document.querySelector('.view.on .side');if(sd&&sd.querySelector('.pc2')){sd.querySelector('.pc2').textContent=d+' / '+n+' tehtävää';sd.querySelector('.meter2 i').style.width=(d/n*100)+'%'}$('bar').style.width=(d/n*100)+'%';
+ $('cn').textContent=val('pn')||'Nimetön';$('cj').textContent=val('pj');const tr=traits();$('cl').innerHTML=tr.length?tr.map(t=>`<li>${t}</li>`).join(''):'<li class="e">Siirrä säätimiä</li>';
+ map.querySelectorAll('.dot').forEach(b=>{b.querySelector('span').textContent=label(b.dataset.k);b.setAttribute('aria-label',label(b.dataset.k)+'. Siirrä nuolinäppäimillä.')});
+ schedPrev();$('sum5').textContent=text('5');$('sum1').textContent=text('1');$('sum2').textContent=text('2');$('sum3').textContent=text('3');$('sum4').textContent=text('4');
+ $('yh').textContent='Kuulostaa '+wl(1).length+' / 3';$('nh').textContent='Ei koskaan '+wl(2).length+' / 2';$('wyes').textContent=wl(1).join(', ')||'Ei vielä valittu';$('wnev').textContent=wl(2).join(', ')||'Ei vielä valittu';save()};
+
+/* --- lataus: brändikirjan sivut --- */
+const W=1240,PH=1754,M=120;
+const STAR=new Path2D('M0 -48 C 4 -12 12 -4 48 0 C 12 4 4 12 0 48 C -4 12 -12 4 -48 0 C -12 -4 -4 -12 0 -48 Z');
+const PD={paper:'#1c0b10',ink:'#eee6e2',wine:'#e9cdd2',rose:'#c9a3a6',mut:'#b39a97',rule:'#4a2a31',soft:'#2a1419',fill:'#7a1c3a',line2:'#6b4248',onFill:'#eee6e2'},PL={paper:'#f8f0f1',ink:'#2a1419',wine:'#7a1c3a',rose:'#8f5560',mut:'#86686e',rule:'#e3cfd4',soft:'#f0e2e6',fill:'#7a1c3a',line2:'#c9a3ab',onFill:'#f8f0f1'};const P={...PD};const LT=()=>S.thm==='vaalea';const applyThm=()=>Object.assign(P,LT()?PL:PD);const GL=a=>LT()?`rgba(232,198,207,${a*.55})`:`rgba(59,22,33,${a})`;
+const CG='"Cormorant Garamond",Georgia,serif',CP='"Courier Prime",monospace',BM='"Bodoni Moda",serif';
+const F={lbl:`18px ${CP}`,sec:`500 26px ${CG}`,num:`500 40px ${BM}`,p:`400 30px ${CG}`,pi:`italic 400 30px ${CG}`,q:`italic 400 48px ${CG}`,lead:`italic 400 34px ${CG}`,ct:`600 34px ${CG}`,cd:`400 26px ${CG}`,big:`500 120px ${CG}`,nm:`500 62px ${CG}`,chip:`400 26px ${CG}`,bnum:`500 54px ${BM}`};
+const X=document.createElement('canvas').getContext('2d');
+const wrap=(font,t,mw)=>{X.font=font;const out=[];String(t).split('\n').forEach(par=>{let line='';par.split(' ').forEach(w=>{const tt=line?line+' '+w:w;if(X.measureText(tt).width>mw&&line){out.push(line);line=w}else line=tt});out.push(line)});return out};
+const txt=(c,font,col,t,x,y,al='left',ls=0)=>{c.font=font;c.fillStyle=col;c.textAlign=al;try{c.letterSpacing=ls+'px'}catch(e){}c.fillText(t,x,y);try{c.letterSpacing='0px'}catch(e){}};
+const chromeG=(c,x0,y0,x1,y1)=>{const g=c.createLinearGradient(x0,y0,x1,y1);(LT()?[[0,'#5a1a2e'],[.3,'#9a4a5e'],[.46,'#3a1420'],[.6,'#8a3a50'],[.8,'#c4567a'],[1,'#5a2a35']]:[[0,'#ffffff'],[.3,'#e9dcdf'],[.46,'#b9a3a7'],[.6,'#ffffff'],[.8,'#ffb3c8'],[1,'#c9a3a6']]).forEach(([a,b])=>g.addColorStop(a,b));return g};
+const starAt=(c,x,y,s,col='chrome',glow=0)=>{c.save();c.translate(x,y);c.scale(s,s);c.shadowColor='rgba(255,122,162,.5)';c.shadowBlur=glow||(col==='chrome'?14:0);c.fillStyle=col==='chrome'?chromeG(c,-48,-48,48,48):col;c.fill(STAR);c.restore()};
+const starRule=(c,y,x0=M,x1=W-M)=>{const cx=(x0+x1)/2;c.fillStyle=P.line2;c.fillRect(x0,y,cx-26-x0,1.5);c.fillRect(cx+26,y,x1-cx-26,1.5);starAt(c,cx,y,.2)};
+const secHead=(c,y,n,label,center)=>{if(center){txt(c,F.lbl,P.mut,label.toUpperCase(),W/2,y+20,'center',4);return}
+ starAt(c,M+12,y+21,.16);txt(c,F.sec,P.ink,label.toUpperCase(),M+42,y+30,'left',3);c.fillStyle=P.rule;c.fillRect(M,y+52,W-2*M,1)};
+/* lohkotyypit */
+const B={
+ text:(n,label,v)=>{const L=wrap(F.p,v,W-2*M);return{h:76+L.length*44+40,draw:(c,y)=>{secHead(c,y,n,label);L.forEach((l,i)=>txt(c,F.p,P.ink,l,M,y+108+i*44))}}},
+ quote:(n,label,v,pre='')=>{const L=wrap(F.q,(pre?pre+' ':'')+v,W-2*M-120);return{h:70+L.length*62+70,draw:(c,y)=>{secHead(c,y,n,label,true);
+  starAt(c,W/2-X.measureText(label.toUpperCase()).width/2-40,y+14,.12,P.rose);starAt(c,W/2+X.measureText(label.toUpperCase()).width/2+40,y+14,.12,P.rose);L.forEach((l,i)=>txt(c,F.q,P.wine,l,W/2,y+104+i*62,'center'))}}},
+ cards:(n,label,items)=>{const k=items.length,g=36,cw=(W-2*M-g*(k-1))/k;const D=items.map(([,d])=>wrap(F.cd,d||'',cw));const mx=Math.max(1,...D.map(d=>d.length));
+  return{h:76+64+50+mx*36+44,draw:(c,y)=>{secHead(c,y,n,label);items.forEach(([t],i)=>{const x=M+i*(cw+g);c.fillStyle=P.line2;c.fillRect(x,y+80,cw,2);
+   txt(c,F.bnum,P.rose,String(i+1).padStart(2,'0'),x,y+148);txt(c,F.ct,P.wine,t,x,y+196);D[i].forEach((l,j)=>txt(c,F.cd,P.ink,l,x,y+236+j*36))})}}},
+ profile:(n,label,name,job,tr)=>{const J=job?wrap(F.pi,job,W-2*M-80):[];const h=76+40+64+J.length*40+20+tr.length*46+50;
+  return{h:h+30,draw:(c,y)=>{secHead(c,y,n,label);c.fillStyle=P.soft;c.fillRect(M,y+76,W-2*M,h-76);c.strokeStyle=P.rule;c.lineWidth=1.5;c.strokeRect(M+10,y+86,W-2*M-20,h-96);
+   txt(c,F.nm,P.wine,name||'Nimetön',W/2,y+170,'center');J.forEach((l,i)=>txt(c,F.pi,P.mut,l,W/2,y+214+i*40,'center'));
+   const y0=y+214+J.length*40+20;tr.forEach((t,i)=>{X.font=F.p;const tw=X.measureText(t).width;starAt(c,W/2-tw/2-22,y0+i*46-9,.13);txt(c,F.p,P.ink,t,W/2+6,y0+i*46,'center')})}}},
+ chips:(n,label,groups)=>{X.font=F.chip;const rows=[];groups.forEach(([sub,list,style])=>{if(!list.length)return;let x=M,line=[];const lines=[line];
+   list.forEach(w=>{const cw=X.measureText(w).width+44;if(x+cw>W-M&&line.length){line=[];lines.push(line);x=M}line.push([w,x,cw]);x+=cw+12});rows.push([sub,lines,style])});
+  const h=76+rows.reduce((a,[,ls])=>a+40+ls.length*66,0)+30;
+  return{h,draw:(c,y)=>{secHead(c,y,n,label);let yy=y+90;rows.forEach(([sub,lines,style])=>{txt(c,F.lbl,P.mut,sub.toUpperCase(),M,yy+14,'left',3);yy+=34;
+   lines.forEach(ln=>{ln.forEach(([w,x,cw])=>{c.beginPath();c.roundRect?c.roundRect(x,yy,cw,50,25):c.rect(x,yy,cw,50);
+    if(style==='fill'){c.fillStyle=P.fill;c.fill();txt(c,F.chip,P.onFill,w,x+22,yy+34)}else{c.strokeStyle=P.rule;c.lineWidth=1.5;c.stroke();txt(c,F.chip,P.mut,w,x+22,yy+34);c.fillStyle=P.mut;c.fillRect(x+20,yy+26,cw-40,1.5)}});yy+=66})})}}},
+ two:(n,label,a,b)=>{const cw=(W-2*M-48)/2;const A=a[1].flatMap(t=>wrap(F.p,t,cw-30).map((l,j)=>[l,!j])),Bl=b[1].flatMap(t=>wrap(F.p,t,cw-30).map((l,j)=>[l,!j]));const mx=Math.max(A.length,Bl.length,1);
+  return{h:76+60+mx*42+40,draw:(c,y)=>{secHead(c,y,n,label);[[a,A,M,P.wine],[b,Bl,M+cw+48,P.mut]].forEach(([g,L,x,col])=>{txt(c,F.ct,col,g[0],x,y+122);
+   L.forEach(([l,first],i)=>{if(first)starAt(c,x+8,y+168+i*42-9,.1,col===P.wine?'chrome':P.line2);txt(c,F.p,P.ink,l,x+30,y+168+i*42)})})}}},
+ meter:(n,label,v,when,om)=>{const L=wrap(F.p,v,W-2*M-80);const h=60+L.length*44+200;
+  return{h:h+40,draw:(c,y)=>{c.fillStyle=P.soft;c.fillRect(M,y,W-2*M,h);c.strokeStyle=P.line2;c.lineWidth=1.5;c.strokeRect(M,y,W-2*M,h);txt(c,F.lbl,P.mut,label.toUpperCase(),M+40,y+46,'left',4);
+   L.forEach((l,i)=>txt(c,F.p,P.ink,l,M+40,y+96+i*44));const y0=y+96+L.length*44+24;
+   txt(c,F.pi,P.rose,'Oksennusmittari',M+40,y0+8);if(when)txt(c,F.pi,P.mut,when,W-M-40,y+48,'right');
+   const x0=M+60,x1=W-M-60,yy=y0+76;c.fillStyle=P.line2;c.fillRect(x0,yy,x1-x0,1.5);
+   for(let i=0;i<10;i++){const x=x0+i/9*(x1-x0);c.beginPath();c.arc(x,yy,3,0,7);c.fillStyle=P.line2;c.fill()}
+   if(om){const x=x0+(om-1)/9*(x1-x0);c.fillStyle=P.rose;c.fillRect(x0,yy,x-x0,1.5);starAt(c,x,yy,.34,'chrome',26);txt(c,`500 30px ${BM}`,P.ink,String(om),x,yy-30,'center')}
+   txt(c,`16px ${CP}`,P.mut,'1 · ihan ok',x0,yy+44);txt(c,`16px ${CP}`,P.mut,'10 · mihin olen ryhtynyt',x1,yy+44,'right')}}},
+ colors:(n,lab)=>{const k=S.pal.length,rowH=100,rows=k*rowH,sz=340,body=Math.max(rows,sz+40);return{own:true,h:76+80+body+40,draw:(c,y)=>{secHead(c,y,n,lab);
+   let x=M;const k3=Math.min(k,3),tot=SHARE.slice(0,k3).reduce((a,b)=>a+b,0);S.pal.slice(0,3).forEach((col,i)=>{const w=(W-2*M)*SHARE[i]/tot;c.fillStyle=col;c.fillRect(x,y+80,w,46);txt(c,`16px ${CP}`,bestText(col)[0],Math.round(SHARE[i]/tot*100)+' %',x+14,y+110);x+=w});
+   const y0=y+160;S.pal.forEach((col,i)=>{const yy=y0+i*rowH;c.fillStyle=col;c.fillRect(M,yy,56,56);c.strokeStyle=P.line2;c.lineWidth=1;c.strokeRect(M,yy,56,56);const [tc,q]=bestText(col);
+    txt(c,F.ct,P.wine,ROLES[i]+'  ',M+78,yy+24);X.font=F.ct;txt(c,`20px ${CP}`,P.mut,col.toUpperCase(),M+78+X.measureText(ROLES[i]+'  ').width,yy+22);txt(c,F.cd,P.ink,USE[i],M+78,yy+56);txt(c,`italic 22px ${CG}`,P.mut,'Teksti päällä '+q.toFixed(1)+':1 · '+crNote(q),M+78,yy+86)});
+   const mx=W-M-sz;txt(c,F.lbl,P.mut,'VÄRIT YHDESSÄ',mx,y0+4,'left',3);mock(c,'post',mx,y0+20,sz,sz,sz/600*2);c.strokeStyle=P.line2;c.strokeRect(mx,y0+20,sz,sz)}}},
+ palette:(n,lab)=>{const k=S.pal.length,g=16,cw=(W-2*M-g*(k-1))/k;return{h:76+300+40,draw:(c,y)=>{secHead(c,y,n,lab);S.pal.forEach((col,i)=>{const x=M+i*(cw+g),hh=i===0?240:i<3?200:160,yy=y+80+(240-hh);
+   c.fillStyle=col;c.fillRect(x,yy,cw,hh);c.strokeStyle=P.line2;c.lineWidth=1;c.strokeRect(x,yy,cw,hh);txt(c,F.lbl,P.mut,ROLES[i].toUpperCase(),x,y+356,'left',2);txt(c,`20px ${CP}`,P.ink,col.toUpperCase(),x,y+384)})}}},
+ map:(n,lab)=>{const sz=540;return{h:76+sz+60,draw:(c,y)=>{secHead(c,y,n,lab);const x0=M,y0=y+90;c.fillStyle=P.soft;c.fillRect(x0,y0,sz,sz);c.fillStyle=P.rule;c.fillRect(x0+sz/2,y0,1,sz);c.fillRect(x0,y0+sz/2,sz,1);
+   txt(c,`italic 20px ${CG}`,P.mut,'rohkea',x0+sz/2+8,y0+26);txt(c,`italic 20px ${CG}`,P.mut,'hillitty',x0+sz/2+8,y0+sz-12);txt(c,`italic 20px ${CG}`,P.mut,'minimalistinen',x0+8,y0+sz/2-10);txt(c,`italic 20px ${CG}`,P.mut,'koristeellinen',x0+sz-8,y0+sz/2-10,'right');
+   const placed=[];DOTS.forEach(k=>{const [px,py]=S.pos[k];const x=x0+px/100*sz,yy=y0+py/100*sz;if(k==='me')starAt(c,x,yy,.3);else{c.beginPath();c.arc(x,yy,8,0,7);c.fillStyle=P.rose;c.fill()}
+    const fnt=k==='me'?`600 24px ${CG}`:`24px ${CG}`;X.font=fnt;const tw=X.measureText(label(k)).width;
+    const opts=[[x+16,yy+8,'left'],[x-16,yy+8,'right'],[x-tw/2,yy+38,'left'],[x-tw/2,yy-18,'left']];
+    const box=([lx,ly,al])=>{const l=al==='right'?lx-tw:lx;return [l,ly-20,l+tw,ly+6]};
+    const fits=o=>{const [l,t,r,bt]=box(o);return l>=x0+4&&r<=x0+sz-4&&t>=y0&&bt<=y0+sz&&!placed.some(([a,b2,c2,d2])=>l<c2+6&&r>a-6&&t<d2+4&&bt>b2-4)};
+    const ch=opts.find(fits)||opts[px>62?1:0];placed.push(box(ch));txt(c,fnt,P.ink,label(k),ch[0],ch[1],ch[2])});
+   const lx=x0+sz+48;DOTS.forEach((k,i)=>{txt(c,F.ct,k==='me'?P.wine:P.ink,label(k),lx,y0+40+i*92);txt(c,F.pi,P.mut,where(S.pos[k]),lx,y0+76+i*92)})}}},
+ swot:(n,label)=>{const cw=(W-2*M-20)/2;const G=QN.map((q,i)=>[q,S.notes.filter(x=>quad(x)===i).flatMap(x=>wrap(F.cd,x.t,cw-60))]);const rh=i=>Math.max(G[i][1].length,G[i+1][1].length,1)*36+90;
+  return{h:76+rh(0)+rh(2)+20+40,draw:(c,y)=>{secHead(c,y,n,label);[0,1,2,3].forEach(i=>{const x=M+(i%2)*(cw+20),yy=y+80+(i<2?0:rh(0)+20),h=rh(i<2?0:2);
+   c.fillStyle=i===0?P.soft:P.paper;c.fillRect(x,yy,cw,h);c.strokeStyle=P.rule;c.lineWidth=1.5;c.strokeRect(x,yy,cw,h);txt(c,F.ct,P.wine,G[i][0],x+24,yy+48);
+   G[i][1].forEach((l,j)=>txt(c,F.cd,P.ink,'· '+l,x+24,yy+88+j*36))})}}},
+ tone:(n,label)=>{const t=wrap(F.q,toneText()||'',W-2*M-80);return{h:76+t.length*62+30+TONE.length*60+40,draw:(c,y)=>{secHead(c,y,n,label);t.forEach((l,i)=>txt(c,F.q,P.wine,l,W/2,y+130+i*62,'center'));
+   const y0=y+130+t.length*62;TONE.forEach(([k,a,b],i)=>{const v=S.pe[k]??2,yy=y0+i*60;txt(c,F.p,v<2?P.ink:P.mut,a,W/2-170,yy,'right');txt(c,F.p,v>2?P.ink:P.mut,b,W/2+170,yy,'left');
+    for(let j=0;j<5;j++){const x=W/2-120+j*60;if(j===v)starAt(c,x,yy-10,.24);else{c.beginPath();c.arc(x,yy-10,4,0,7);c.fillStyle=P.rule;c.fill()}}})}}}
+};
+const has=v=>v&&String(v).trim();
+const dot=t=>/[.!?]$/.test(t.trim())?t.trim():t.trim()+'.';
+const lc=t=>{t=String(t||'').trim();return t&&!/^[A-ZÅÄÖ]{2}/.test(t)?t[0].toLowerCase()+t.slice(1):t};
+const VIS={
+ 1:()=>[has(val('e2'))&&['quote','Teen tätä, jotta',val('e2')],has(val('e1'))&&['text','Miksi aloitin',val('e1')],has(val('e3'))&&['text','Tavallinen päivä kolmen vuoden päästä',val('e3')],
+  has(val('e4'))&&['text','Uskon, että',val('e4')],S.vw.length&&['cards','Arvot',S.vw.map(w=>[w,val('v_'+w)])]],
+ 2:()=>[(has(val('pn'))||traits().length)&&['profile','Asiakas',val('pn'),val('pj'),traits()],has(val('a3'))&&['text','Mikä häntä turhauttaa',val('a3')],has(val('a4'))&&['text','Mitä hän kysyy',val('a4')],
+  (S.chips.length||has(val('a5')))&&['chips','Mitä hän pelkää',[['Huolet',[...S.chips,...(val('a5')?[val('a5')]:[])],'fill']]],
+  S.cards.some(x=>x.c)&&['two','Kenet päästät sisään',['Sisään',S.cards.filter(x=>x.c===1).map(x=>x.t)],['Ei tällä kertaa',S.cards.filter(x=>x.c===2).map(x=>x.t)]],
+  has(val('a7'))&&['quote','Ääneen sanottuna',`Tämä ei ole sinua varten, jos ${dot(lc(val('a7')))}${val('a7b')?' Mutta jos '+dot(lc(val('a7b'))):''}`]],
+ 3:()=>[has(val('b1'))&&['text','Mistä on vaikea olla puhumatta',val('b1')],has(val('b2'))&&['text','Mitä keräät',val('b2')],has(val('b3'))&&['quote','Vähän liikaa',val('b3')],
+  S.moved&&['map','Kilpailijakartta'],has(val('b5'))&&['text','Tyhjä paikka kartalla',val('b5')],S.notes.some(x=>quad(x)!==null)&&['swot','Neljä laatikkoa'],has(val('b7'))&&['text','Heikkous, joka on vahvuus',val('b7')],
+  has(val('b8x'))?['quote','Yhdellä lauseella',val('b8x')]:has(parts3())&&['text','Lauseen palat',parts3()]],
+ 4:()=>[TONE.some(([k])=>k in S.pe)&&['tone','Äänensävy'],has(val('d2'))&&['text','Vastaus pettyneelle asiakkaalle',val('d2')],S.rel.length&&['cards','Suhde asiakkaaseen',S.rel.map(r=>[r,'"'+RELS.find(x=>x[0]===r)[1]+'"'])],
+  has(val('d4'))&&['quote','Asiakas kertoo kaverilleen',val('d4')],(wl(1).length||wl(2).length)&&['chips','Sanat',[['Kuulostaa',wl(1),'fill'],['Ei koskaan',wl(2),'line']]],has(val('d6'))&&['text','Omalla äänellä',val('d6')]],
+ 5:()=>[has(val('h1'))&&['quote','Asiakkaan pitäisi tuntea',val('h1')],has(val('h2'))&&['text','Brändi paikkana',val('h2')],S.pal.length&&['colors','Värit ja niiden käyttö'],has(val('h4'))&&['text','Miksi nämä värit',val('h4')],
+  S.img.length&&['chips','Kuvat',[['Kuvatyyli',S.img,'fill']]],(has(val('h6a'))||has(val('h6b')))&&['two','Materiaalit',['Sopii',val('h6a')?[val('h6a')]:[]],['Ei koskaan',val('h6b')?[val('h6b')]:[]]],has(val('d7'))&&['meter','Rohkea teko',val('d7'),val('d7d'),S.om4]]};
+const blocks=ch=>{const sp=VIS[ch]().filter(Boolean);if(!sp.length)return [B.text(1,'Vastaukset','Tässä luvussa ei ole vielä vastauksia.')];
+ let n=0;return sp.map(([t,...a])=>B[t](t==='quote'||t==='meter'?0:++n,...a))};
+const frameD=c=>{const h=c.canvas.height;c.lineWidth=1.5;c.strokeStyle=P.line2;c.strokeRect(40,40,W-80,h-80);c.strokeStyle=P.rule;c.strokeRect(52,52,W-104,h-104)};
+const head=(c,ch,first)=>{c.fillStyle=P.paper;c.fillRect(0,0,W,c.canvas.height);const gl=c.createRadialGradient(W/2,0,0,W/2,0,700);gl.addColorStop(0,GL(.9));gl.addColorStop(1,GL(0));c.fillStyle=gl;c.fillRect(0,0,W,700);frameD(c);txt(c,F.lbl,P.mut,'BRÄNDITYÖKIRJA',M,92,'left',4);txt(c,F.lbl,P.mut,TITLE[ch][0].toUpperCase(),W-M,92,'right',4);starRule(c,122);
+ if(!first)return 190;const a=TITLE[ch][1],b=TITLE[ch][2];let fs=112;const mw=()=>{X.font=`400 ${fs}px ${CG}`;const wa=X.measureText(a).width;X.font=`italic 400 ${fs}px ${CG}`;return [wa,X.measureText(b).width]};
+ while(mw()[0]+mw()[1]>W-2*M-40&&fs>56)fs-=4;const [wa,wb]=mw();const x0=W/2-(wa+wb)/2;const g=chromeG(c,x0,170,x0+wa+wb,260);
+ c.save();c.shadowColor='rgba(255,122,162,.25)';c.shadowBlur=24;c.textAlign='left';c.fillStyle=g;c.font=`400 ${fs}px ${CG}`;c.fillText(a,x0,250);c.font=`italic 400 ${fs}px ${CG}`;c.fillText(b,x0+wa,250);c.restore();const lead=document.querySelector('#v-luku-'+ch+' .hero .lead');const L=wrap(F.lead,lead?lead.textContent:'',W-2*M-120);
+ L.forEach((l,i)=>txt(c,F.lead,P.mut,l,W/2,316+i*46,'center'));const y=316+L.length*46+30;starRule(c,y);return y+60};
+const foot=(c,h,pg)=>{starRule(c,h-110);txt(c,F.lbl,P.mut,'MILA PALVIAINEN',W/2,h-64,'center',8);if(pg)txt(c,F.lbl,P.mut,pg,W-M,h-64,'right',2)};
+const canvas=h=>{const cv=document.createElement('canvas');cv.width=W;cv.height=h;return cv};
+const tall=ch=>{if(ch==='sum')return summaryPage();const bl=blocks(ch);const pre=canvas(10).getContext('2d');const top=head(pre,ch,true);const h=top+bl.reduce((a,b)=>a+b.h,0)+160;
+ const cv=canvas(h),c=cv.getContext('2d');let y=head(c,ch,true);bl.forEach(b=>{b.draw(c,y);y+=b.h});foot(c,h);return cv};
+const chapterPages=ch=>{const bl=blocks(ch);const pages=[];let cur=null,y=0;const bot=PH-150;
+ const newp=first=>{const cv=canvas(PH),c=cv.getContext('2d');y=head(c,ch,first);cur={cv,c};pages.push(cur)};newp(true);
+ bl.forEach(b=>{if((b.own&&y>520)||(y+b.h>bot&&y>200))newp(false);b.draw(cur.c,y);y+=b.h});return pages};
+const coverPage=()=>{const cv=canvas(PH),c=cv.getContext('2d');c.fillStyle=P.paper;c.fillRect(0,0,W,PH);const gl=c.createRadialGradient(W/2,620,0,W/2,620,700);gl.addColorStop(0,GL(1));gl.addColorStop(1,GL(0));c.fillStyle=gl;c.fillRect(0,0,W,PH);frameD(c);
+ txt(c,F.lbl,P.mut,'BRÄNDITYÖKIRJA',M,120,'left',4);txt(c,F.lbl,P.mut,new Date().getFullYear()+'',W-M,120,'right',4);starAt(c,W/2,620,1.5,'chrome',60);
+ txt(c,F.lbl,P.mut,'MILA PALVIAINEN',W/2,780,'center',8);c.save();c.font=`400 120px ${CG}`;c.textAlign='center';X.font=c.font;const tw=X.measureText('Brändityökirja').width;c.fillStyle=chromeG(c,W/2-tw/2,850,W/2+tw/2,930);c.shadowColor='rgba(255,122,162,.25)';c.shadowBlur=24;c.fillText('Brändityökirja',W/2,920);c.restore();
+ txt(c,F.lead,P.mut,'Avuksi oman erottuvuuden löytämiseen',W/2,1000,'center');txt(c,F.lead,P.mut,'ja rohkeampaan näkymiseen.',W/2,1048,'center');starRule(c,1130,W/2-200,W/2+200);
+ txt(c,F.lbl,P.mut,new Date().toLocaleDateString('fi-FI'),W/2,1190,'center',3);return cv};
+/* tiivistelmä ja Esipuhe-sivu */
+const chromeTitle=(c,a,b,y,fs0)=>{let fs=fs0;const mw=()=>{X.font=`400 ${fs}px ${CG}`;const wa=X.measureText(a).width;X.font=`italic 400 ${fs}px ${CG}`;return [wa,X.measureText(b).width]};
+ while(mw()[0]+mw()[1]>W-2*M-40&&fs>50)fs-=4;const [wa,wb]=mw();const x0=W/2-(wa+wb)/2;c.save();c.shadowColor='rgba(255,122,162,.25)';c.shadowBlur=24;c.textAlign='left';c.fillStyle=chromeG(c,x0,y-80,x0+wa+wb,y);
+ c.font=`400 ${fs}px ${CG}`;c.fillText(a,x0,y);c.font=`italic 400 ${fs}px ${CG}`;c.fillText(b,x0+wa,y);c.restore()};
+const pageBase=(right)=>{const cv=canvas(PH),c=cv.getContext('2d');c.fillStyle=P.paper;c.fillRect(0,0,W,PH);const gl=c.createRadialGradient(W/2,0,0,W/2,0,700);gl.addColorStop(0,GL(.9));gl.addColorStop(1,GL(0));c.fillStyle=gl;c.fillRect(0,0,W,700);frameD(c);
+ txt(c,F.lbl,P.mut,'BRÄNDITYÖKIRJA',M,92,'left',4);txt(c,F.lbl,P.mut,right,W-M,92,'right',4);starRule(c,122);return {cv,c}};
+const cLabel=(c,t,y)=>{X.font=F.lbl;const w=X.measureText(t.toUpperCase()).width+t.length*4;txt(c,F.lbl,P.mut,t.toUpperCase(),W/2,y,'center',4);starAt(c,W/2-w/2-26,y-6,.11,P.rose);starAt(c,W/2+w/2+22,y-6,.11,P.rose)};
+const summaryPage=()=>{const {cv,c}=pageBase('TIIVISTELMÄ');chromeTitle(c,'Brändisi ','yhdellä sivulla',250,96);let y=300;
+ const Q=[];const sec=(label,draw,h)=>Q.push([h,yy=>{cLabel(c,label,yy+40);draw(yy+60)}]);
+ const cq=(t,font,lh,col)=>{const L=wrap(font,t,W-2*M-100);return [L,L.length*lh]};
+ if(has(val('e2'))){const [L,h]=cq(val('e2'),F.q,58);sec('Teen tätä, jotta',yy=>L.forEach((l,i)=>txt(c,F.q,P.wine,l,W/2,yy+44+i*58,'center')),90+h)}
+ const kL=has(val('pn'))?[val('pn'),val('pj')]:null,uL=has(val('e4'))?wrap(F.p,val('e4'),(W-2*M-60)/2):null;
+ if(kL||uL){const cw=(W-2*M-60)/2;const jl=kL&&kL[1]?wrap(F.pi,kL[1],cw):[];const h=Math.max(kL?60+jl.length*40:0,uL?uL.length*44:0)+110;Q.push([h,y=>{
+  c.fillStyle=P.line2;c.fillRect(W/2,y+40,1,h-60);
+  if(kL){txt(c,F.lbl,P.mut,'KENELLE',M+cw/2,y+40,'center',4);txt(c,`500 44px ${CG}`,P.wine,kL[0],M+cw/2,y+104,'center');jl.forEach((l,i)=>txt(c,F.pi,P.mut,l,M+cw/2,y+146+i*40,'center'))}
+  if(uL){const x=W/2+30+cw/2;txt(c,F.lbl,P.mut,'USKON, ETTÄ',x,y+40,'center',4);uL.forEach((l,i)=>txt(c,F.p,P.ink,l,x,y+100+i*44,'center'))}}])}
+ if(has(sent3())){const t=sent3();const [L,h]=cq(t,F.lead,46);
+  sec('Mikä erottaa',yy=>L.forEach((l,i)=>txt(c,F.lead,P.ink,l,W/2,yy+36+i*46,'center')),80+h)}
+ if(S.vw.length){sec('Arvot',yy=>{const t=S.vw.join('   ✦   ');txt(c,`500 38px ${CG}`,P.wine,t,W/2,yy+44,'center')},120)}
+ if(TONE.some(([k])=>k in S.pe)){const [L,h]=cq(toneText(),F.pi,42);sec('Äänensävy',yy=>L.forEach((l,i)=>txt(c,F.pi,P.ink,l,W/2,yy+36+i*42,'center')),80+h)}
+ if(wl(1).length||wl(2).length){sec('Sanat',yy=>{X.font=F.chip;const items=[...wl(1).map(w=>[w,1]),...wl(2).map(w=>[w,2])];const ws=items.map(([w])=>X.measureText(w).width+44);let x=W/2-(ws.reduce((a,b)=>a+b,0)+12*(ws.length-1))/2;
+  items.forEach(([w,s],i)=>{c.beginPath();c.roundRect?c.roundRect(x,yy+8,ws[i],50,25):c.rect(x,yy+8,ws[i],50);if(s===1){c.fillStyle=P.fill;c.fill();txt(c,F.chip,P.onFill,w,x+22,yy+42)}else{c.strokeStyle=P.line2;c.lineWidth=1.5;c.stroke();txt(c,F.chip,P.mut,w,x+22,yy+42);c.fillStyle=P.mut;c.fillRect(x+20,yy+34,ws[i]-40,1.5)}x+=ws[i]+12})},120)}
+ if(S.pal.length)sec('Paletti',yy=>{const k=S.pal.length,sz=64,g=24,x0=W/2-(k*sz+(k-1)*g)/2;S.pal.forEach((col,i)=>{c.beginPath();c.arc(x0+i*(sz+g)+sz/2,yy+40,sz/2,0,7);c.fillStyle=col;c.fill();c.strokeStyle=P.line2;c.lineWidth=1.5;c.stroke()})},120);
+ if(!Q.length){txt(c,F.pi,P.mut,'Täytä työkirjan tehtäviä, niin brändisi kokoontuu tälle sivulle.',W/2,420,'center')}
+ else{let tot=0;const keep=Q.filter(([h])=>(tot+h<=PH-180-300)&&(tot+=h,true));const gap=Math.min(90,(PH-180-300-tot)/(keep.length+1));y=300+gap*.6;keep.forEach(([h,dr])=>{dr(y);y+=h+gap})}
+ foot(c,PH,'');return cv};
+const esipuhePage=()=>{const {cv,c}=pageBase('SEURAAVAKSI');const gl=c.createRadialGradient(W/2,560,0,W/2,560,520);gl.addColorStop(0,GL(1));gl.addColorStop(1,GL(0));c.fillStyle=gl;c.fillRect(0,200,W,800);
+ starAt(c,W/2,520,1,'chrome',50);txt(c,F.lbl,P.mut,'KUN HALUAT VIEDÄ ILMEEN LOPPUUN',W/2,680,'center',4);chromeTitle(c,'Esipuhe',' ',790,110);
+ const L=wrap(F.lead,'Vastauksesi ovat valmis pohja brändi-ilmeelle. Jos haluat viedä ilmeen loppuun yhdessä, Esipuheessa teen sinulle väripaletin, fontit, logoversiot, somepohjat ja brändioppaan näiden vastausten pohjalta.',W-2*M-160);
+ L.forEach((l,i)=>txt(c,F.lead,P.ink,l,W/2,880+i*48,'center'));let y=880+L.length*48+50;starRule(c,y,W/2-200,W/2+200);
+ txt(c,`500 34px ${CG}`,P.wine,'Mila Palviainen',W/2,y+80,'center');txt(c,F.pi,P.mut,'brändi- ja verkkosuunnittelija · Tampere ja etänä',W/2,y+124,'center');txt(c,`22px ${CP}`,P.rose,'mmilymary.github.io',W/2,y+180,'center',2);
+ foot(c,PH,'');return cv};
+const pdfPages=ch=>{const chs=ch==='all'?['1','2','3','4','5']:[ch];const pg=chs.flatMap(chapterPages);const out=ch==='all'?[coverPage()]:[];const tail=ch==='all'?[summaryPage(),esipuhePage()]:[];const tot=pg.length+out.length+tail.length;
+ const off=out.length;pg.forEach((p,i)=>{foot(p.c,PH,tot>1?(i+off+1)+' / '+tot:'');out.push(p.cv)});return out.concat(tail)};
+const fontsReady=()=>Promise.all(Object.values(F).concat([`500 130px ${BM}`,`italic 20px ${CG}`,`600 24px ${CG}`]).map(f=>document.fonts.load(f,'äÄ')).concat([document.fonts.load(`500 60px ${CG}`,'Ä')])).catch(()=>{});
+let prevT=null;const schedPrev=()=>{clearTimeout(prevT);prevT=setTimeout(drawPrev,450)};
+;(()=>{applyThm();const bs=[...document.querySelectorAll('[data-thm]')];const mk=()=>bs.forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.thm===(S.thm||'tumma'))));mk();bs.forEach(x=>x.addEventListener('click',()=>{S.thm=x.dataset.thm;applyThm();mk();save();schedPrev()}))})();
+;(()=>{const a=document.getElementById('tys'),b=document.getElementById('tyw');if(!a)return;const g=()=>S.ty||(S.ty={s:100,w:400,f:'klassinen'});a.value=g().s;b.value=g().w;
+const on=()=>{g().s=+a.value;g().w=+b.value;try{save()}catch(e){}drawMocks();try{schedPrev&&schedPrev()}catch(e){}};a.addEventListener('input',on);const fb=[...document.querySelectorAll('[data-tf]')];const mark=()=>fb.forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.tf===(g().f||'klassinen'))));mark();fb.forEach(x=>x.addEventListener('click',()=>{g().f=x.dataset.tf;mark();on()}));b.addEventListener('input',on)})();
+const drawPrev=()=>{if(cur==='kansi'){const im=$('prevsum');if(im)fontsReady().then(()=>{try{im.src=summaryPage().toDataURL('image/jpeg',.88)}catch(e){}});return}const v=$('v-'+cur);if(!v||!v.dataset.ch)return;const ch=v.dataset.ch;const img=$('prev'+ch);if(!img)return;
+ fontsReady().then(()=>{try{img.src=tall(ch).toDataURL('image/jpeg',.88)}catch(e){}})};
+const msg=t=>{$('ok').textContent=t;setTimeout(()=>$('ok').textContent='',4000)};
+let DL=null;
+const fail=e=>{const c=(e&&e.code)||(e&&e.name)||'tuntematon';try{console.log('lataus',c,e&&e.message)}catch(_){}
+ const t=c==='declined'?'Lataus peruttiin.':c==='rate_limited'?'Odota hetki ja yritä uudelleen.':c==='host_unavailable'?'Tämä sovellus ei osaa tallentaa tiedostoja. Avaa työkirja selaimessa tai tietokoneella.':c==='too_large'?'Tiedosto on liian suuri tähän näkymään.':'Lataus ei onnistunut tässä näkymässä ('+c+').';
+ $('ok').textContent=t;clearTimeout(window.__okT);window.__okT=setTimeout(()=>$('ok').textContent='',12000)};
+/* oma PDF-kirjoitin: JPEG-sivut ilman ulkoista kirjastoa */
+const jpegBytes=cv=>new Promise((res,rej)=>cv.toBlob(bl=>bl?bl.arrayBuffer().then(ab=>res(new Uint8Array(ab)),rej):rej({code:'unavailable'}),'image/jpeg',.9));
+const pdfBlob=async cvs=>{const enc=new TextEncoder();const parts=[];let len=0;const offs=[];
+ const push=x=>{const u=typeof x==='string'?enc.encode(x):x;parts.push(u);len+=u.length};
+ const obj=(id,fn)=>{offs[id]=len;push(id+' 0 obj\n');fn();push('\nendobj\n')};
+ const n=cvs.length,PW=595.28,PHt=841.89;push('%PDF-1.4\n');push(new Uint8Array([37,226,227,207,211,10]));
+ obj(1,()=>push('<< /Type /Catalog /Pages 2 0 R >>'));
+ obj(2,()=>push('<< /Type /Pages /Kids ['+cvs.map((_,i)=>(3+i*3)+' 0 R').join(' ')+'] /Count '+n+' >>'));
+ for(let i=0;i<n;i++){const cv=cvs[i],jb=await jpegBytes(cv);const cs=`q ${PW} 0 0 ${PHt} 0 0 cm /Im0 Do Q`;
+  obj(3+i*3,()=>push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PW} ${PHt}] /Resources << /XObject << /Im0 ${4+i*3} 0 R >> >> /Contents ${5+i*3} 0 R >>`));
+  obj(4+i*3,()=>{push(`<< /Type /XObject /Subtype /Image /Width ${cv.width} /Height ${cv.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jb.length} >>\nstream\n`);push(jb);push('\nendstream')});
+  obj(5+i*3,()=>push(`<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`))}
+ const total=3+n*3,xo=len;push(`xref\n0 ${total}\n0000000000 65535 f \n`);for(let id=1;id<total;id++)push(String(offs[id]).padStart(10,'0')+' 00000 n \n');
+ push(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xo}\n%%EOF\n`);return new Blob(parts,{type:'application/pdf'})};
+const fname=ch=>ch==='sum'?'brandi-yhdella-sivulla':ch==='all'?'brandityokirja':'brandityokirja-luku'+ch;
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-dl]');if(!b||!DL)return;const ch=b.dataset.ch;
+ try{await fontsReady();let data,ext;
+  if(b.dataset.dl==='png'){data=await new Promise(r=>tall(ch).toBlob(r,'image/png'));ext='png'}
+  else{msg('Kootaan PDF:ää...');data=await pdfBlob(pdfPages(ch));ext='pdf'}
+  await DL.save({filename:fname(ch)+'.'+ext,data});msg('Ladattu.')}catch(err){fail(err)}});
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-copy]');if(!b)return;
+ try{await navigator.clipboard.writeText(text(b.dataset.copy));msg('Kopioitu.')}catch(err){msg('Kopiointi ei onnistunut. Valitse teksti yhteenvedosta.')}});
+(async()=>{try{const WEB={save:async({filename,data})=>{const u=URL.createObjectURL(data);const l=document.createElement('a');l.href=u;l.download=filename;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}};
+  if(!window.claude||!claude.use){DL=WEB}else{DL=await claude.use('downloads')||WEB};if(DL){document.querySelectorAll('[data-dl]').forEach(b=>b.hidden=false);document.querySelectorAll('[data-copy]').forEach(b=>b.hidden=true)}}catch(e){}})();
+
+/* --- tyhjennys --- */
+$('clear').addEventListener('click',()=>{$('dlg').classList.add('on');$('no').focus()});
+$('no').addEventListener('click',()=>$('dlg').classList.remove('on'));
+$('yes').addEventListener('click',()=>{S=DEF();document.querySelectorAll('[data-k]').forEach(el=>el.value='');SL.forEach(([k])=>$('s-'+k).value=50);TONE.forEach(([k])=>$('p-'+k).value=2);drawTone();drawRels();drawWords();drawVals();drawPal();drawImgs();
+ drawChips();drawCards();drawDots();drawNotes();drawOm();update();$('dlg').classList.remove('on');msg('Tyhjennetty.')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('dlg').classList.remove('on')});
+
+drawChips();drawCards();drawDots();drawNotes();drawOm();drawTone();drawRels();drawWords();drawVals();drawPal();drawImgs();route();
+window.__t={pdfPages,tall,fontsReady,pdfBlob};
+}
+
+</script>
+</body>
+</html>
