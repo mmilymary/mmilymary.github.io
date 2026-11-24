@@ -70,6 +70,20 @@
   .card figcaption { margin-top: 14px; font-size: 14px; line-height: 1.55; color: var(--muted); }
   .card figcaption b { display: block; color: var(--cream); font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 500; font-size: 22px; line-height: 1.15; margin-bottom: 4px; }
 
+
+  /* uniikit */
+  .cards.uniikit { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cards.uniikit .card img { aspect-ratio: 3 / 4; }
+  .flipbox { position: relative; }
+  .flipbox .back { position: absolute; inset: 0; opacity: 0; transition: opacity .5s ease; }
+  .card.flip.on .back { opacity: 1; }
+  .flipbtn { display: inline-block; margin-top: 10px; padding: 6px 14px; font-family: "VT323", monospace; font-size: 18px; letter-spacing: .04em; color: var(--rose); background: transparent; border: 1px solid var(--rose); border-radius: 999px; cursor: pointer; transition: background .2s, color .2s; }
+  .flipbtn:hover, .flipbtn[aria-pressed="true"] { background: var(--rose); color: var(--bg); }
+  .flipbtn:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
+  .card .hint.muted { color: var(--muted); }
+  .card .hint { display: block; margin-top: 6px; font-family: "VT323", monospace; font-size: 17px; color: var(--rose); letter-spacing: .04em; }
+  @media (max-width: 720px) { .cards.uniikit { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
   .prices { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px; }
   .price { display: flex; align-items: baseline; gap: 14px; padding: 16px 22px; border: 1px solid var(--line); border-radius: 14px; background: rgba(42,20,25,.55); }
   .price span { font-size: 14px; color: var(--muted); letter-spacing: .04em; }
@@ -183,16 +197,28 @@
   </section>
 
   <section>
-    <div class="wrap split flip">
-      <figure class="photo reveal">
-        <img src="img/kasityot/laukku.webp" alt="Uniikki viininpunainen toilettilaukku pöydällä. Taustalla hapsuvarjostin, pääkallo, kehystetyt kuvat ja tammihärkäkortti." loading="lazy" width="1200" height="1600">
-      </figure>
+    <div class="wrap">
       <div class="reveal">
         <p class="label">// UNIIKIT KÄSITYÖT</p>
         <h2>Ei kahta samanlaista.</h2>
         <p class="big">Teen käsitöitä sen mukaan, mitä milloinkin tulee mieleen. Jokainen on uniikki kappale.</p>
-        <p>Kuvassa viininpunainen toilettilaukku. Seuraava voi olla aivan eri värinen, ja materiaaleista osa on kierrätettyjä.</p>
-        <span class="tag">› hinta tuotteen mukaan, kysy lisää</span>
+        <p>Seuraava voi olla aivan eri värinen, ja materiaaleista osa on kierrätettyjä.</p>
+      </div>
+      <div class="cards uniikit">
+        <figure class="card reveal">
+          <img src="img/kasityot/laukku.webp" alt="Viininpunainen toilettilaukku pöydällä" loading="lazy" width="1200" height="1600">
+          <figcaption><b>Toilettilaukku</b>kirpputoritaftia, satiinivuori <span class="hint muted">› ei myynnissä</span></figcaption>
+        </figure>
+        <figure class="card flip reveal">
+          <div class="flipbox">
+            <img src="img/kasityot/kaantopussukka.webp" alt="Kääntöpussukka: paisley- ja leopardikuvioinen puoli, viininpunainen satiinikaulus" loading="lazy" width="900" height="1200">
+            <img class="back" src="img/kasityot/kaantopussukka_2.webp" alt="Sama pussukka käännettynä: viininpunainen puoli ja kuvioitu kaulus" loading="lazy" width="900" height="1200">
+          </div>
+          <figcaption><b>Kääntöpussukka</b>kaksi puolta, kaksi tunnelmaa <button type="button" class="flipbtn" aria-pressed="false">↻ käännä</button></figcaption>
+        </figure>
+      </div>
+      <div class="prices reveal">
+        <div class="price"><span>kääntöpussukka</span><b>29 €</b></div>
       </div>
     </div>
   </section>
@@ -233,5 +259,6 @@
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
+<script>document.querySelectorAll('.card.flip').forEach(c=>{const b=c.querySelector('.flipbtn');b.addEventListener('click',()=>{const on=c.classList.toggle('on');b.setAttribute('aria-pressed',on);});});</script>
 </body>
 </html>
