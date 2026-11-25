@@ -1,6 +1,6 @@
 // Lukusali: pieni välimuisti, jotta sivu aukeaa myös ilman verkkoa.
 // Kun muutat sivua, nosta versionumeroa, niin selain hakee uuden version.
-const VERSIO = 'lukusali-v8';
+const VERSIO = 'lukusali-v9';
 const TIEDOSTOT = ['./', 'index.html', 'manifest.webmanifest', 'icon.svg', 'icon-192.png', 'icon-512.png', 'some.html'];
 
 self.addEventListener('install', (e) => {

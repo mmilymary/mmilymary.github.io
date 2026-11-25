@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lukusali</title>
 <meta name="description" content="Milan työpöytä: apurit ja työkalut yhdessä hyllyssä.">
-<meta name="theme-color" content="#1C0B10">
+<meta name="theme-color" content="#0B1712">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -15,11 +15,11 @@
 /* Layout: tervehdys ja tähti ylhäällä, kirjahylly keskellä, pöytä (linkit ja muistio) alhaalla. Yksi tumma teema. */
 :root {
   color-scheme: dark;
-  --pohja: #1C0B10;
-  --pinta: #2A1419;
-  --viiva: #4A2A31;
+  --pohja: #0B1712;
+  --pinta: #12241B;
+  --viiva: #24402F;
   --teksti: #EEE6E2;
-  --himmea: #B39A97;
+  --himmea: #9DB3A4;
   --polyruusu: #C9A3A6;
   --ruusu: #B5475A;
   --neon: #FF7AA2;
@@ -30,7 +30,7 @@
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
-body { background: var(--pohja); color: var(--teksti); font-family: var(--leipa); font-size: 15px; line-height: 1.6; }
+body { background: radial-gradient(ellipse 90% 55% at 50% -12%, rgba(127,214,160,0.16), transparent 65%) no-repeat, var(--pohja); color: var(--teksti); font-family: var(--leipa); font-size: 15px; line-height: 1.6; }
 a { color: var(--neon); }
 a:hover { color: var(--teksti); }
 a:focus-visible, button:focus-visible, textarea:focus-visible { outline: 2px solid var(--neon); outline-offset: 3px; }
@@ -53,8 +53,8 @@ p { margin: 0; }
 .tahti .k1 { inset: 0; border: 1px solid var(--viiva); }
 .tahti .k2 { inset: 28px; border: 1px dashed var(--viiva); }
 .tahti .k3 { inset: 62px; border: 1px solid var(--ruusu); opacity: 0.55; }
-.tahti .k4 { inset: 96px; background: var(--pinta); box-shadow: 0 0 70px rgba(255,122,162,0.25); }
-.tahti svg { position: relative; width: 38%; height: 38%; filter: drop-shadow(0 0 16px rgba(255,122,162,0.6)); }
+.tahti .k4 { inset: 96px; background: var(--pinta); box-shadow: 0 0 70px rgba(127,214,160,0.28); }
+.tahti svg { position: relative; width: 38%; height: 38%; filter: drop-shadow(0 0 16px rgba(127,214,160,0.7)); }
 .osio { display: flex; flex-direction: column; gap: 18px; }
 .osio-otsikko { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .hyllyalue { display: flex; flex-wrap: wrap; gap: 28px; align-items: stretch; }
@@ -67,7 +67,7 @@ p { margin: 0; }
   padding: 14px 0; display: flex; flex-direction: column; align-items: center; gap: 10px;
   transition: transform 220ms ease, box-shadow 220ms ease;
 }
-.kirja[aria-pressed="true"] { transform: translateY(-16px); box-shadow: 0 0 28px rgba(255,122,162,0.35); }
+.kirja[aria-pressed="true"] { transform: translateY(-16px); box-shadow: 0 0 28px rgba(127,214,160,0.4); }
 .kirja .nauha { width: 70%; height: 5px; border-top: 1px solid var(--polyruusu); border-bottom: 1px solid var(--polyruusu); opacity: 0.8; }
 .kirja .viiva { width: 50%; border-top: 1px solid var(--polyruusu); opacity: 0.6; }
 .kirja .nro { font-family: var(--display); font-size: 22px; line-height: 1; }
@@ -77,8 +77,8 @@ p { margin: 0; }
 .kirja.tulossa .nauha, .kirja.tulossa .viiva { opacity: 0.3; }
 .kortti { flex: 1 1 280px; min-width: 0; background: var(--pinta); border: 1px solid var(--viiva); border-radius: 10px; padding: 24px; display: flex; flex-direction: column; gap: 12px; }
 .kortti .alaosa { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--viiva); display: flex; flex-direction: column; gap: 12px; }
-.nappi { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border-radius: 6px; background: var(--neon); color: var(--pohja); font-weight: 700; text-decoration: none; }
-.nappi:hover { color: var(--pohja); filter: brightness(1.08); }
+.nappi { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border-radius: 6px; background: #2F5E45; color: var(--teksti); border: 1px solid rgba(127,214,160,0.55); box-shadow: 0 0 18px rgba(127,214,160,0.18); font-weight: 700; text-decoration: none; }
+.nappi:hover { color: var(--teksti); filter: brightness(1.15); }
 .poyta { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
 .linkit { flex: 1 1 320px; min-width: 0; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--viiva); }
 .linkit li { border-bottom: 1px solid var(--viiva); }
@@ -119,12 +119,11 @@ footer { border-top: 1px solid var(--viiva); padding-top: 16px; font-size: 13px;
     <div class="teksti">
       <p class="tagi">› MILA PALVIAINEN · TYÖPÖYTÄ</p>
       <h1 id="tervehdys">Huomenta, <em>Mila.</em></h1>
-      <p class="himmea">Valitse kirja hyllystä. Jokainen avaa yhden apurin tai työkalun. Mitään ei lähetetä, julkaista tai poisteta ilman lupaasi.</p>
     </div>
     <div class="tahti" aria-hidden="true">
       <div class="keha k1"></div><div class="keha k2"></div><div class="keha k3"></div><div class="keha k4"></div>
       <svg viewBox="0 0 100 100">
-        <defs><linearGradient id="kromi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.45" stop-color="#B39A97"/><stop offset="0.6" stop-color="#EEE6E2"/><stop offset="1" stop-color="#C9A3A6"/></linearGradient></defs>
+        <defs><linearGradient id="kromi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="0.45" stop-color="#9DB3A4"/><stop offset="0.6" stop-color="#EEE6E2"/><stop offset="1" stop-color="#C9A3A6"/></linearGradient></defs>
         <path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="url(#kromi)"/>
       </svg>
     </div>
@@ -192,12 +191,12 @@ var LINKIT = {
 };
 
 var KIRJAT = [
-  { id: 'arkisto', nro: 'I', nimi: 'Arkistonhoitaja', rooli: 'second brain', kuvaus: 'Muistaa projektit, paketit ja päätökset. Vastaa vain tiedostojen pohjalta.', tila: 'käytössä', lisa: 'Avaa projektin Claudessa.', url: LINKIT.projekti, w: 110, h: 330, bg: '#B5475A', valmis: true },
-  { id: 'kirjuri', nro: 'II', nimi: 'Kirjuri', rooli: 'some', kuvaus: 'Ideat, kuvatekstit ja recapin versiot kolmeen teemaan.', tila: 'käytössä', lisa: 'Somen runko: viikkorytmi ja postausideat yhdellä sivulla. Kuvatekstit pyydät projektissa.', url: 'some.html', w: 92, h: 300, bg: '#4A2A31', valmis: true },
-  { id: 'vahti', nro: 'III', nimi: 'Vahti', rooli: 'kilpailijat', kuvaus: 'Tarkistaa viiden kilpailijan paketit ja hinnat ja etsii uusia tekijöitä.', tila: 'ajastettu', lisa: 'Ajo joka perjantai klo 9.13.', url: LINKIT.vahti, w: 100, h: 345, bg: '#4A2A31', valmis: true },
-  { id: 'seula', nro: 'IV', nimi: 'Seula', rooli: 'ideat', kuvaus: 'Pisteyttää uuden idean: asiakkaat, brändi, näyte ja työmäärä.', tila: 'käytössä', lisa: 'Kirjoita projektissa "Seulo:" ja idea.', url: LINKIT.projekti, w: 96, h: 315, bg: '#2A1419', valmis: true },
-  { id: 'sihteeri', nro: 'V', nimi: 'Sihteeri', rooli: 'sähköposti', kuvaus: 'Lajittelee Gmailin ja kirjoittaa vastausluonnokset. Ei lähetä mitään.', tila: 'ei vielä tehty', lisa: 'Tämä apuri odottaa vuoroaan.', url: '', w: 92, h: 295, bg: '#2A1419', valmis: false },
-  { id: 'vahin', nro: 'VI', nimi: 'Vähin', rooli: 'liikunta', kuvaus: 'Mikä on vähintä, mitä jaksat tänään? Yksi pisto näyteliinaan.', tila: 'käytössä', lisa: 'Avaa oman sovelluksensa.', url: LINKIT.vahin, w: 104, h: 335, bg: '#B5475A', valmis: true }
+  { id: 'arkisto', nro: 'I', nimi: 'Arkistonhoitaja', rooli: 'second brain', kuvaus: 'Muistaa projektit, paketit ja päätökset. Vastaa vain tiedostojen pohjalta.', tila: 'käytössä', lisa: 'Avaa projektin Claudessa.', url: LINKIT.projekti, w: 110, h: 330, bg: '#5E1F2A', valmis: true },
+  { id: 'kirjuri', nro: 'II', nimi: 'Kirjuri', rooli: 'some', kuvaus: 'Ideat, kuvatekstit ja recapin versiot kolmeen teemaan.', tila: 'käytössä', lisa: 'Somen runko: viikkorytmi ja postausideat yhdellä sivulla. Kuvatekstit pyydät projektissa.', url: 'some.html', w: 92, h: 300, bg: '#3E281E', valmis: true },
+  { id: 'vahti', nro: 'III', nimi: 'Vahti', rooli: 'kilpailijat', kuvaus: 'Tarkistaa viiden kilpailijan paketit ja hinnat ja etsii uusia tekijöitä.', tila: 'ajastettu', lisa: 'Ajo joka perjantai klo 9.13.', url: LINKIT.vahti, w: 100, h: 345, bg: '#4A2F22', valmis: true },
+  { id: 'seula', nro: 'IV', nimi: 'Seula', rooli: 'ideat', kuvaus: 'Pisteyttää uuden idean: asiakkaat, brändi, näyte ja työmäärä.', tila: 'käytössä', lisa: 'Kirjoita projektissa "Seulo:" ja idea.', url: LINKIT.projekti, w: 96, h: 315, bg: '#35221A', valmis: true },
+  { id: 'sihteeri', nro: 'V', nimi: 'Sihteeri', rooli: 'sähköposti', kuvaus: 'Lajittelee Gmailin ja kirjoittaa vastausluonnokset. Ei lähetä mitään.', tila: 'ei vielä tehty', lisa: 'Tämä apuri odottaa vuoroaan.', url: '', w: 92, h: 295, bg: '#12241B', valmis: false },
+  { id: 'vahin', nro: 'VI', nimi: 'Vähin', rooli: 'liikunta', kuvaus: 'Mikä on vähintä, mitä jaksat tänään? Yksi pisto näyteliinaan.', tila: 'käytössä', lisa: 'Avaa oman sovelluksensa.', url: LINKIT.vahin, w: 104, h: 335, bg: '#43291F', valmis: true }
 ];
 
 var PIKALINKIT = [
