@@ -72,19 +72,19 @@
 
 
   /* uniikit */
-  .cards.uniikit { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cards.uniikit { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .cards.uniikit .card img { aspect-ratio: 3 / 4; }
   .flipbox { position: relative; }
   .flipbox .back { position: absolute; inset: 0; opacity: 0; transition: opacity .5s ease; }
   .card.flip.on .back { opacity: 1; }
-  .flipbtn { display: inline-block; margin-top: 10px; padding: 6px 14px; font-family: "VT323", monospace; font-size: 18px; letter-spacing: .04em; color: var(--rose); background: transparent; border: 1px solid var(--rose); border-radius: 999px; cursor: pointer; transition: background .2s, color .2s; }
+  .flipbtn { display: table; margin-top: 10px; padding: 6px 14px; font-family: "VT323", monospace; font-size: 18px; letter-spacing: .04em; color: var(--rose); background: transparent; border: 1px solid var(--rose); border-radius: 999px; cursor: pointer; transition: background .2s, color .2s; }
   .card .cprice { font-family: "Bodoni Moda", serif; font-style: normal; font-size: 20px; color: var(--dusty); display: block; margin-top: 4px; font-variant-numeric: lining-nums; }
   @media (hover: hover) { .flipbtn:hover { background: var(--rose); color: var(--bg); } }
   .flipbtn[aria-pressed="true"] { background: var(--rose); color: var(--bg); }
   .flipbtn:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
   .card .hint.muted { color: var(--muted); }
   .card .hint { display: block; margin-top: 6px; font-family: "VT323", monospace; font-size: 17px; color: var(--rose); letter-spacing: .04em; }
-  @media (max-width: 720px) { .cards.uniikit { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 960px) { .cards.uniikit { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
   .prices { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px; }
   .price { display: flex; align-items: baseline; gap: 14px; padding: 16px 22px; border: 1px solid var(--line); border-radius: 14px; background: rgba(42,20,25,.55); }
@@ -221,6 +221,10 @@
         <figure class="card reveal">
           <img src="img/kasityot/samettikukkaro.webp" alt="Pieni ruskea samettipussukka, jossa vaaleanpunainen vuori, kiristysnauhat ja kantolenkki" loading="lazy" width="900" height="1200">
           <figcaption><b>Samettikukkaro <span class="cprice">19 €</span></b>sametti, roosa vuori, kantolenkki</figcaption>
+        </figure>
+        <figure class="card reveal">
+          <img src="img/kasityot/samettikukkaro_vihrea.webp" alt="Pieni tummanruskea samettipussukka, jossa vihreä käärmekuvioinen vuori, rusetti ja kantolenkki" loading="lazy" width="900" height="1200">
+          <figcaption><b>Samettikukkaro <span class="cprice">19 €</span></b>sametti, vihreä käärmekuviollinen vuori, kantolenkki</figcaption>
         </figure>
       </div>
     </div>
